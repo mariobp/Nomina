@@ -74,6 +74,11 @@ class MasterList(supra.SupraListView):
 # end class
 
 
+"""
+    Servicios Asistente
+"""
+
+
 class AsistenteSupraForm(supra.SupraFormView):
     model = models.Asistente
     form_class = forms.AsistenteForm
@@ -116,6 +121,65 @@ class AsistenteSupraFormDelete(supra.SupraDeleteView):
 
 class AsistenteList(MasterList):
     model = models.Asistente
+    list_display = ['first_name', 'last_name', 'username', 'identificacion', 'date', 'email', 'direccion',
+                    'telefono', 'fijo', 'creator', 'last_editor', 'imagen', 'id']
+    search_fields = ['first_name', 'last_name',
+                     'identificacion', 'email', 'username']
+    paginate_by = 10
+
+    def date(self, obj, row):
+        return obj.fecha_nacimiento.strftime("%Y-%m-%d")
+    # end def
+# end class
+
+
+"""
+    Servicios Administrador
+"""
+
+
+class AdministradorSupraForm(supra.SupraFormView):
+    model = models.Administrador
+    form_class = forms.AdministradorForm
+    response_json = False
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(AdministradorSupraForm, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def get_form_class(self):
+        if 'pk' in self.http_kwargs:
+            self.form_class = forms.AdministadorFormEdit
+        # end if
+        return self.form_class
+    # end class
+# end class
+
+
+class AdministradorSupraFormDelete(supra.SupraDeleteView):
+    model = models.Administrador
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(AdministradorSupraFormDelete, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.eliminado = True
+        user = CuserMiddleware.get_user()
+        self.object.eliminado_por = user
+        self.object.save()
+        return HttpResponse(status=200)
+    # end def
+# end class
+
+
+class AdministradorList(MasterList):
+    model = models.Administrador
     list_display = ['first_name', 'last_name', 'username', 'identificacion', 'date', 'email', 'direccion',
                     'telefono', 'fijo', 'creator', 'last_editor', 'imagen', 'id']
     search_fields = ['first_name', 'last_name',

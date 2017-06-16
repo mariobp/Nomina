@@ -54,16 +54,16 @@ class AsistenteFormEdit(MasterEdit):
 # end class
 
 
-class AdministraforForm(UserCreationForm):
+class AdministradorForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
-        super(AdministraforForm, self).__init__(*args, **kwargs)
+        super(AdministradorForm, self).__init__(*args, **kwargs)
         self.fields['fecha_nacimiento'].input_formats = (
             '%Y/%m/%d', '%d/%m/%Y', '%m/%d/%Y')
     # end def
 
     class Meta:
-        model = usuarios.Administador
+        model = usuarios.Administrador
         fields = ['username', 'password1', 'password2', 'email', 'first_name', 'last_name',
                   'identificacion', 'fecha_nacimiento', 'direccion', 'telefono', 'fijo', 'imagen']
 
@@ -80,7 +80,7 @@ class AdministadorFormEdit(MasterEdit):
     # end def
 
     class Meta:
-        model = usuarios.Administador
+        model = usuarios.Administrador
         fields = ['username', 'email', 'first_name', 'last_name', 'identificacion',
                   'fecha_nacimiento', 'direccion', 'telefono', 'fijo', 'imagen', 'eliminado']
     # end class
