@@ -2,12 +2,18 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from cuser.fields import CurrentUserField
+from django.contrib.auth.models import User
 
 # Create your models here.
 
 
 class Cargo(models.Model):
     nombre = models.CharField(max_length=100)
+    creator = CurrentUserField(add_only=True, related_name="created_cargo")
+    last_editor = CurrentUserField(related_name="last_edited_cargo")
+    eliminado = models.BooleanField(default=False)
+    eliminado_por = models.ForeignKey(User, related_name="eliminado_por_cargo", blank=True, null=True)
 
     def __unicode__(self):
         return u"%s" % (self.nombre)
@@ -18,6 +24,10 @@ class Cargo(models.Model):
 class Pension(models.Model):
     nombre = models.CharField(max_length=100)
     codigo = models.CharField(max_length=100, blank=True, null=True)
+    creator = CurrentUserField(add_only=True, related_name="created_pension")
+    last_editor = CurrentUserField(related_name="last_edited_pension")
+    eliminado = models.BooleanField(default=False)
+    eliminado_por = models.ForeignKey(User, related_name="eliminado_por_pension", blank=True, null=True)
 
     class Meta:
         verbose_name = "Pensión"
@@ -33,6 +43,10 @@ class Pension(models.Model):
 class Eps(models.Model):
     nombre = models.CharField(max_length=100)
     codigo = models.CharField(max_length=100, blank=True, null=True)
+    creator = CurrentUserField(add_only=True, related_name="created_eps")
+    last_editor = CurrentUserField(related_name="last_edited_eps")
+    eliminado = models.BooleanField(default=False)
+    eliminado_por = models.ForeignKey(User, related_name="eliminado_por_eps", blank=True, null=True)
 
     class Meta:
         verbose_name = "Eps"
@@ -48,6 +62,10 @@ class Eps(models.Model):
 class Cesantia(models.Model):
     nombre = models.CharField(max_length=100)
     codigo = models.CharField(max_length=100, blank=True, null=True)
+    creator = CurrentUserField(add_only=True, related_name="created_cesantia")
+    last_editor = CurrentUserField(related_name="last_edited_cesantia")
+    eliminado = models.BooleanField(default=False)
+    eliminado_por = models.ForeignKey(User, related_name="eliminado_por_cesantia", blank=True, null=True)
 
     class Meta:
         verbose_name = "Cesantía"
@@ -63,6 +81,10 @@ class Cesantia(models.Model):
 class CajaCompensacion(models.Model):
     nombre = models.CharField(max_length=100)
     codigo = models.CharField(max_length=100, blank=True, null=True)
+    creator = CurrentUserField(add_only=True, related_name="created_caja")
+    last_editor = CurrentUserField(related_name="last_edited_caja")
+    eliminado = models.BooleanField(default=False)
+    eliminado_por = models.ForeignKey(User, related_name="eliminado_por_caja", blank=True, null=True)
 
     class Meta:
         verbose_name = "Caja de compensación"
@@ -84,6 +106,8 @@ class Empleado(models.Model):
     eps = models.ForeignKey(Eps)
     cesantia = models.ForeignKey(Cesantia)
     cajacompensacion = models.ForeignKey(CajaCompensacion)
+    creator = CurrentUserField(add_only=True, related_name="created_empleado")
+    last_editor = CurrentUserField(related_name="last_edited_empleado")
 
     def __unicode__(self):
         return u"%s %s" % (self.nombre, self.apellidos)
@@ -93,10 +117,14 @@ class Empleado(models.Model):
 
 class TipoContrato(models.Model):
     nombre = models.CharField(max_length=100)
-    extra_diurna = models.FloatField("Hora extra diurna")
-    extra_nocturna = models.FloatField("Hora extra nocturna")
-    extra_dominical = models.FloatField("Hora extra dominical")
-    extra_dominical_nocturna = models.CharField("Hora extra dominical nocturna")
+    extra_diurna = models.IntegerField("Hora extra diurna")
+    extra_nocturna = models.IntegerField("Hora extra nocturna")
+    extra_dominical = models.IntegerField("Hora extra dominical")
+    extra_dominical_nocturna = models.IntegerField("Hora extra dominical nocturna")
+    creator = CurrentUserField(add_only=True, related_name="created_tipo_contrato")
+    last_editor = CurrentUserField(related_name="last_edited_tipo_contrato")
+    eliminado = models.BooleanField(default=False)
+    eliminado_por = models.ForeignKey(User, related_name="eliminado_por_tipo_contrato", blank=True, null=True)
 
     class Meta:
         verbose_name = "Tipo de contrato"
@@ -110,13 +138,19 @@ class TipoContrato(models.Model):
 
 
 class Contrato(models.Model):
-    empleado = models.OneToOneField(Empleado)
+    empleado = models.ForeignKey(Empleado)
     fecha_inicio = models.DateField()
     salario_base = models.CharField("Salario base legal", max_length=100)
     tipo_contrato = models.ForeignKey(TipoContrato)
     descanso_turno = models.BooleanField("Descanso entre turnos")
     inicio_descanso = models.IntegerField("Hora de inicio de descanso", blank=True, null=True)
     duracion_descanso = models.IntegerField("Duración de descanso en minutos", blank=True, null=True)
+    fecha_finalizacion = models.DateField(blank=True, null=True)
+    estado = models.BooleanField("Estado del contrato", default=False)
+    creator = CurrentUserField(add_only=True, related_name="created_contrato")
+    last_editor = CurrentUserField(related_name="last_edited_contrato")
+    eliminado = models.BooleanField(default=False)
+    eliminado_por = models.ForeignKey(User, related_name="eliminado_por_contrato", blank=True, null=True)
 
     def __unicode__(self):
         return u"Contrato de %s %s" % (self.empleado.nombre, self.empleado.apellidos)
