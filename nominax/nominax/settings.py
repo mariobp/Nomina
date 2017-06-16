@@ -25,8 +25,16 @@ SECRET_KEY = 'dvlyk+rzvt+gl19!5!$0&m#*8%qn#6dqij(w6*k5z!n@_=f1fl'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '104.236.33.228',
+    '192.168.1.16',
+    '192.168.1.19',
+    '127.0.0.1',
+    '192.168.189.128'
+]
 
+ORIGIN = "http://192.168.1.19:4200"
 
 # Application definition
 
