@@ -8,7 +8,7 @@ from cuser.fields import CurrentUserField
 # Create your models here.
 
 
-class Administador(User):
+class Administrador(User):
     identificacion = models.CharField(
         max_length=120, verbose_name="Identificación", unique=True)
     fecha_nacimiento = models.DateField(verbose_name="Fecha de nacimiento")
