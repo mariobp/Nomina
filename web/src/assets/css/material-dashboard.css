@@ -9595,11 +9595,7 @@ footer {
     background: rgba(0, 0, 0, 0.6); } }
 @media (min-width: 768px) {
   .navbar > .container-fluid .navbar-brand {
-    margin-left: 0; }
-
-  .navbar-header .collapse,
-  .navbar-toggle {
-    display: none !important; } }
+    margin-left: 0; } }
 @media (max-width: 767px) {
   .main-panel .content {
     padding-left: 0;
