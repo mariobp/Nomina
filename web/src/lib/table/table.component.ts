@@ -12,13 +12,13 @@ export class TableComponent implements OnInit {
 
     private dataTable: any;
     public service: any;
-    public columns: any[] = [];
+    public columns: any[] = [{data:'id'}];
     public columnDefs: any[] = [];
     public conf: any;
     public selectedItems: any[] = [];
     public multiSelectable = false;
 
-    constructor() {  }
+    constructor() { }
 
     ngOnInit() {
         const table = this.table.nativeElement;
@@ -31,7 +31,7 @@ export class TableComponent implements OnInit {
                 const op = {
                     page: Math.ceil(data.start / data.length) + 1,
                     num_page: data.length,
-                    sort_property: this.columns[data.order[0].column].data,
+                    sort_property: this.columns[data.order[0].column].data ,
                     sort_direction: data.order[0].dir,
                     q: data.search.value
                 };
@@ -75,16 +75,10 @@ export class TableComponent implements OnInit {
     _selectionInit(table) {
         if (this.multiSelectable) {
             const self = this;
-            $(table).on('click', 'tbody tr', function(event){
+            $(table).on('click', 'tbody tr', function (event) {
                 self._onSelectedRow(this);
                 event.preventDefault();
             });
-            // $(table).on('change', 'tbody tr td input[type=checkbox][name=selectedItems]', function(){
-            //     if ($(this).is(':checked')) {
-            //         console.log('check');
-            //         // self._onSelectedRow(this);
-            //     }
-            // });
         }
     }
 
@@ -95,7 +89,7 @@ export class TableComponent implements OnInit {
         $(tr).toggleClass('selected');
         check.prop('checked', !check.is(':checked'));
         this.selectedItems = [];
-        $.each($(table).find('tr.selected'), function() {
+        $.each($(table).find('tr.selected'), function () {
             self.selectedItems.push(self.dataTable.row(this).data());
         });
     }
@@ -105,17 +99,23 @@ export class TableComponent implements OnInit {
     }
 
     ajax(draw: number, dataSource: any, cb: any): void {
-        dataSource = this.preAjax(dataSource);
-        this.service.list(dataSource)
-            .then(res => res.json())
-            .then(data => {
-                console.log('res');
-                cb({ 'draw': draw, 'recordsTotal': data.count, 'recordsFiltered': data.num_rows, 'data': data.object_list });
-            })
-            .catch(err => {
-                cb({ 'recordsTotal': 0, 'recordsFiltered': 0, 'data': [] });
-                BsNotify.error('Ha ocurrido un error al consultar los datos');
-            });
+        if (this.service) {
+            dataSource = this.preAjax(dataSource);
+            this.service.list(dataSource)
+                .then(res => res.json())
+                .then(data => {
+                    console.log('res');
+                    this.service.data = data.object_list;
+                    cb({ 'draw': draw, 'recordsTotal': data.count, 'recordsFiltered': data.num_rows, 'data': data.object_list });
+                })
+                .catch(err => {
+                    cb({ 'recordsTotal': 0, 'recordsFiltered': 0, 'data': [] });
+                    BsNotify.error('Ha ocurrido un error al consultar los datos');
+                });
+        } else {
+            cb({ 'recordsTotal': 0, 'recordsFiltered': 0, 'data': [] });
+            BsNotify.error('No has definido un servicio que consultar');
+        }
     }
 
     renderCheckRow(data, type, full, meta) {

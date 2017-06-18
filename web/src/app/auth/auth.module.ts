@@ -7,7 +7,8 @@ import { LockComponent } from './lock/lock.component';
 import { RegistroComponent } from './registro/registro.component';
 import { AuthRoutes } from './auth.route';
 import { AuthService } from './auth.service';
-
+import { AuthGuard } from './auth.guard'
+import { AuthComponent } from './auth.component';
 @NgModule({
     imports: [
         CommonModule,
@@ -16,10 +17,14 @@ import { AuthService } from './auth.service';
         RouterModule.forChild(AuthRoutes)
     ],
     declarations: [
+        AuthComponent,
         LoginComponent,
         LockComponent,
         RegistroComponent
     ],
-    providers: [AuthService]
+    providers: [
+        AuthService,
+        AuthGuard
+    ]
 })
 export class AuthModule { }

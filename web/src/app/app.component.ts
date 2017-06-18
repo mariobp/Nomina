@@ -5,7 +5,7 @@ declare var $: any;
 
 @Component({
     selector: 'ex-nomina',
-    templateUrl: './app.component.html',
+    template: `<router-outlet></router-outlet>`,
     styleUrls: ['./app.component.scss']
 })
 

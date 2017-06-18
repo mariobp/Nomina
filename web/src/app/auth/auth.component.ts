@@ -4,7 +4,6 @@ import { Router, Event, NavigationEnd, NavigationStart } from '@angular/router';
 declare var $: any;
 
 @Component({
-    selector: 'app-auth',
     templateUrl: './auth.component.html'
 })
 export class AuthComponent implements OnInit {

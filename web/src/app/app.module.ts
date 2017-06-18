@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { HttpModule } from '@angular/http';
 import { AppRouteModule } from './app.route.module';
+import { AuthModule } from './auth/auth.module';
 import { LibModule } from '../lib/lib.module'
 import { NgModule } from '@angular/core';
 import { CallService } from '../lib/services/call.service';
@@ -15,10 +16,11 @@ import { AuthService } from './auth/auth.service';
         BrowserModule,
         HttpModule,
         CommonModule,
+        LibModule,
         AppRouteModule,
-        LibModule
+        AuthModule,
     ],
-    providers: [CallService, AuthService],
+    providers: [CallService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
