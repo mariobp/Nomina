@@ -12,7 +12,7 @@ from nominax.decorator import check_login
 from cuser.middleware import CuserMiddleware
 import models
 import forms
-
+import json as simplejson
 # Create your views here.
 supra.SupraConf.ACCECC_CONTROL["allow"] = True
 supra.SupraConf.ACCECC_CONTROL["origin"] = ORIGIN

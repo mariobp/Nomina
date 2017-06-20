@@ -12,3 +12,28 @@ urlpatterns = [
     url(r'^cargo/delete/(?P<pk>\d+)/$',
         views.CargoSupraFormDelete.as_view(), name="cargo_delete"),
 ]
+
+
+"""
+    Pension urls
+"""
+urlpatterns += [
+    url(r'^pension/form/$', views.PensionSupraForm.as_view(), name="pension"),
+    url(r'^pension/list/$', views.PensionSupraList.as_view(), name="pension_list"),
+    url(r'^pension/form/(?P<pk>\d+)/$',
+        views.PensionSupraForm.as_view(), name="pension_edit"),
+    url(r'^pension/delete/(?P<pk>\d+)/$',
+        views.PensionSupraFormDelete.as_view(), name="pension_delete"),
+]
+
+"""
+    Eps urls
+"""
+urlpatterns += [
+    url(r'^eps/form/$', views.EpsSupraForm.as_view(), name="pension"),
+    url(r'^eps/list/$', views.EpsSupraList.as_view(), name="pension_list"),
+    url(r'^eps/form/(?P<pk>\d+)/$',
+        views.EpsSupraForm.as_view(), name="pension_edit"),
+    url(r'^eps/delete/(?P<pk>\d+)/$',
+        views.EpsSupraFormDelete.as_view(), name="pension_delete"),
+]

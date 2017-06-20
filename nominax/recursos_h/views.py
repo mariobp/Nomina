@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from nominax.settings import ORIGIN
+from django.http import HttpResponse
 from supra import views as supra
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -53,6 +54,11 @@ class MasterList(supra.SupraListView):
 # end class
 
 
+"""
+    Cargos
+"""
+
+
 class CargoSupraList(MasterList):
     model = models.Cargo
     list_display = ['id', 'nombre']
@@ -87,6 +93,108 @@ class CargoSupraFormDelete(supra.SupraDeleteView):
     @csrf_exempt
     def dispatch(self, request, *args, **kwargs):
         return super(CargoSupraFormDelete, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.eliminado = True
+        user = CuserMiddleware.get_user()
+        self.object.eliminado_por = user
+        self.object.save()
+        return HttpResponse(status=200)
+    # end def
+# end class
+
+
+"""
+    Pension
+"""
+
+
+class PensionSupraList(MasterList):
+    model = models.Pension
+    list_display = ['id', 'nombre', 'codigo']
+    search_fields = ['nombre', 'codigo']
+# end class
+
+
+class PensionSupraForm(supra.SupraFormView):
+    model = models.Pension
+    form_class = forms.PensionForm
+
+    def get_form_class(self):
+        if 'pk' in self.http_kwargs:
+            self.form_class = forms.PensionFormEdit
+        # end if
+        return self.form_class
+    # end class
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(PensionSupraForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
+
+
+class PensionSupraFormDelete(supra.SupraDeleteView):
+    model = models.Pension
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(PensionSupraFormDelete, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.eliminado = True
+        user = CuserMiddleware.get_user()
+        self.object.eliminado_por = user
+        self.object.save()
+        return HttpResponse(status=200)
+    # end def
+# end class
+
+
+"""
+    Eps urls
+"""
+
+
+class EpsSupraList(MasterList):
+    model = models.Eps
+    list_display = ['id', 'nombre', 'codigo']
+    search_fields = ['nombre', 'codigo']
+# end class
+
+
+class EpsSupraForm(supra.SupraFormView):
+    model = models.Eps
+    form_class = forms.EpsForm
+
+    def get_form_class(self):
+        if 'pk' in self.http_kwargs:
+            self.form_class = forms.EpsFormEdit
+        # end if
+        return self.form_class
+    # end class
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(EpsSupraForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
+
+
+class EpsSupraFormDelete(supra.SupraDeleteView):
+    model = models.Eps
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(EpsSupraFormDelete, self).dispatch(request, *args, **kwargs)
     # end def
 
     def delete(self, request, *args, **kwargs):

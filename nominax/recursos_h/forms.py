@@ -35,3 +35,39 @@ class CargoFormEdit(MasterEdit):
         exclude = ('eliminado_por', )
     # end class
 # end class
+
+
+class PensionForm(forms.ModelForm):
+
+    class Meta:
+        model = models.Pension
+        fields = ['nombre', 'codigo']
+    # end class
+# end class
+
+
+class PensionFormEdit(MasterEdit):
+
+    class Meta:
+        model = models.Pension
+        exclude = ('eliminado_por', )
+    # end class
+# end class
+
+
+class EpsForm(forms.ModelForm):
+
+    class Meta:
+        model = models.Eps
+        fields = ['nombre', 'codigo']
+    # end class
+# end class
+
+
+class EpsFormEdit(MasterEdit):
+
+    class Meta:
+        model = models.Eps
+        exclude = ('eliminado_por', )
+    # end class
+# end class
