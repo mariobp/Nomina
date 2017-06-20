@@ -257,3 +257,54 @@ class CajaSupraFormDelete(supra.SupraDeleteView):
         return HttpResponse(status=200)
     # end def
 # end class
+
+
+"""
+    Cesantia
+"""
+
+
+class CesantiaSupraList(MasterList):
+    model = models.Cesantia
+    list_display = ['id', 'nombre', 'codigo']
+    search_fields = ['nombre', 'codigo']
+# end class
+
+
+class CesantiaSupraForm(supra.SupraFormView):
+    model = models.Cesantia
+    form_class = forms.CesantiaForm
+
+    def get_form_class(self):
+        if 'pk' in self.http_kwargs:
+            self.form_class = forms.CesantiaFormEdit
+        # end if
+        return self.form_class
+    # end class
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(CesantiaSupraForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
+
+
+class CesantiaSupraFormDelete(supra.SupraDeleteView):
+    model = models.Cesantia
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(CesantiaSupraFormDelete, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.eliminado = True
+        user = CuserMiddleware.get_user()
+        self.object.eliminado_por = user
+        self.object.save()
+        return HttpResponse(status=200)
+    # end def
+# end class

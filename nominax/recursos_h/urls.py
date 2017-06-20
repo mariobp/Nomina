@@ -50,3 +50,17 @@ urlpatterns += [
     url(r'^caja/delete/(?P<pk>\d+)/$',
         views.CajaSupraFormDelete.as_view(), name="caja_delete"),
 ]
+
+
+"""
+    Cesantia
+"""
+
+urlpatterns += [
+    url(r'^cesantia/form/$', views.CesantiaSupraForm.as_view(), name="caja"),
+    url(r'^cesantia/list/$', views.CesantiaSupraList.as_view(), name="caja_list"),
+    url(r'^cesantia/form/(?P<pk>\d+)/$',
+        views.CesantiaSupraForm.as_view(), name="caja_edit"),
+    url(r'^cesantia/delete/(?P<pk>\d+)/$',
+        views.CesantiaSupraFormDelete.as_view(), name="caja_delete"),
+]
