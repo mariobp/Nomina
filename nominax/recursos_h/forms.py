@@ -107,3 +107,37 @@ class CesantiaFormEdit(MasterEdit):
         exclude = ('eliminado_por', )
     # end class
 # end class
+
+
+class TipoContratoForm(forms.ModelForm):
+
+    class Meta:
+        model = models.TipoContrato
+        fields = ['nombre', 'extra_diurna', 'extra_nocturna', 'extra_dominical', 'extra_dominical_nocturna']
+    # end class
+# end class
+
+
+class TipoContratoFormEdit(MasterEdit):
+
+    class Meta:
+        model = models.TipoContrato
+        fields = ['nombre', 'extra_diurna', 'extra_nocturna', 'extra_dominical', 'extra_dominical_nocturna', 'eliminado']
+    # end class
+# end class
+
+
+class EmpleadoForm(forms.ModelForm):
+
+    class Meta:
+        model = models.Empleado
+        fields = ['nombre', 'apellidos', 'cedula', 'cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion']
+    # end class
+
+    def __init__(self, *args, **kwargs):
+        super(EmpleadoForm, self).__init__(*args, **kwargs)
+        self.fields['fecha_nacimiento'].input_formats = (
+            '%Y/%m/%d', '%d/%m/%Y', '%m/%d/%Y')
+        self.fields['fecha_nacimiento'].format = "m/d/y"
+    # end def
+# end class

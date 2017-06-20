@@ -57,10 +57,28 @@ urlpatterns += [
 """
 
 urlpatterns += [
-    url(r'^cesantia/form/$', views.CesantiaSupraForm.as_view(), name="caja"),
-    url(r'^cesantia/list/$', views.CesantiaSupraList.as_view(), name="caja_list"),
+    url(r'^cesantia/form/$', views.CesantiaSupraForm.as_view(), name="cesantia"),
+    url(r'^cesantia/list/$', views.CesantiaSupraList.as_view(), name="cesantia_list"),
     url(r'^cesantia/form/(?P<pk>\d+)/$',
-        views.CesantiaSupraForm.as_view(), name="caja_edit"),
+        views.CesantiaSupraForm.as_view(), name="cesantia_edit"),
     url(r'^cesantia/delete/(?P<pk>\d+)/$',
-        views.CesantiaSupraFormDelete.as_view(), name="caja_delete"),
+        views.CesantiaSupraFormDelete.as_view(), name="cesantia_delete"),
 ]
+
+
+"""
+    Tipo de contrato
+"""
+
+urlpatterns += [
+    url(r'^tipo/contrato/form/$', views.TipoContratoSupraForm.as_view(), name="tipo_contrato"),
+    url(r'^tipo/contrato/list/$', views.TipoContratoSupraList.as_view(), name="tipo_contrato_list"),
+    url(r'^tipo/contrato/form/(?P<pk>\d+)/$',
+        views.TipoContratoSupraForm.as_view(), name="tipo_contrato_edit"),
+    url(r'^tipo/contrato/delete/(?P<pk>\d+)/$',
+        views.TipoContratoSupraFormDelete.as_view(), name="tipo_contrato_delete"),
+]
+
+"""
+    Empleado
+"""

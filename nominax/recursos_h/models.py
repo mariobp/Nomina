@@ -101,6 +101,7 @@ class Empleado(models.Model):
     nombre = models.CharField(max_length=100)
     apellidos = models.CharField(max_length=150)
     cedula = models.CharField(max_length=100, unique=True)
+    fecha_nacimiento = models.DateField()
     cargo = models.ForeignKey(Cargo)
     pension = models.ForeignKey(Pension)
     eps = models.ForeignKey(Eps)

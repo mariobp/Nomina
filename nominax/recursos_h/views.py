@@ -308,3 +308,79 @@ class CesantiaSupraFormDelete(supra.SupraDeleteView):
         return HttpResponse(status=200)
     # end def
 # end class
+
+
+"""
+    Tipo contratro
+"""
+
+
+class TipoContratoSupraList(MasterList):
+    model = models.TipoContrato
+    list_display = ['id', 'nombre', 'extra_diurna', 'extra_nocturna', 'extra_dominical', 'extra_dominical_nocturna']
+    search_fields = ['nombre', ]
+# end class
+
+
+class TipoContratoSupraForm(supra.SupraFormView):
+    model = models.TipoContrato
+    form_class = forms.TipoContratoForm
+
+    def get_form_class(self):
+        if 'pk' in self.http_kwargs:
+            self.form_class = forms.TipoContratoFormEdit
+        # end if
+        return self.form_class
+    # end class
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(TipoContratoSupraForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
+
+
+class TipoContratoSupraFormDelete(supra.SupraDeleteView):
+    model = models.TipoContrato
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(TipoContratoSupraFormDelete, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.eliminado = True
+        user = CuserMiddleware.get_user()
+        self.object.eliminado_por = user
+        self.object.save()
+        return HttpResponse(status=200)
+    # end def
+# end class
+
+
+"""
+    Empleado
+"""
+
+
+class EmpleadoSupraList(MasterList):
+    model = models.Empleado
+    list_display = ['id', 'nombre', 'apellidos', 'cedula', 'cargo', 'cargo__nombre', 'pension', 'eps', 'cesantia', 'cajacompensacion']
+    search_fields = ['nombre', 'apellidos', 'cedula']
+    list_filter = ['cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion']
+# end class
+
+
+class EmpleadoSupraForm(supra.SupraFormView):
+    model = models.Empleado
+    form_class = forms.EmpleadoForm
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(EmpleadoSupraForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
