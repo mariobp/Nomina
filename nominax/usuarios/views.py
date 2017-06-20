@@ -121,15 +121,11 @@ class AsistenteSupraFormDelete(supra.SupraDeleteView):
 
 class AsistenteList(MasterList):
     model = models.Asistente
-    list_display = ['first_name', 'last_name', 'username', 'identificacion', 'date', 'email', 'direccion',
+    list_display = ['first_name', 'last_name', 'username', 'identificacion', 'fecha_nacimiento', 'email', 'direccion',
                     'telefono', 'fijo', 'creator', 'last_editor', 'imagen', 'id']
     search_fields = ['first_name', 'last_name',
                      'identificacion', 'email', 'username']
     paginate_by = 10
-
-    def date(self, obj, row):
-        return obj.fecha_nacimiento.strftime("%Y-%m-%d")
-    # end def
 # end class
 
 
@@ -180,13 +176,40 @@ class AdministradorSupraFormDelete(supra.SupraDeleteView):
 
 class AdministradorList(MasterList):
     model = models.Administrador
-    list_display = ['first_name', 'last_name', 'username', 'identificacion', 'date', 'email', 'direccion',
+    list_display = ['first_name', 'last_name', 'username', 'identificacion', 'fecha_nacimiento', 'email', 'direccion',
                     'telefono', 'fijo', 'creator', 'last_editor', 'imagen', 'id']
     search_fields = ['first_name', 'last_name',
                      'identificacion', 'email', 'username']
     paginate_by = 10
+# end class
 
-    def date(self, obj, row):
-        return obj.fecha_nacimiento.strftime("%Y-%m-%d")
+
+"""
+    Servicios para cargar imagen
+"""
+
+
+class AvatarAdminForm(supra.SupraFormView):
+    model = models.Administrador
+    form_class = forms.AdministradorAvatar
+    response_json = False
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(AvatarAdminForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
+
+
+class AvatarAsistenteForm(supra.SupraFormView):
+    model = models.Asistente
+    form_class = forms.AsistenteAvatar
+    response_json = False
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(AvatarAsistenteForm, self).dispatch(request, *args, **kwargs)
     # end def
 # end class

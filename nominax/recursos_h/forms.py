@@ -71,3 +71,39 @@ class EpsFormEdit(MasterEdit):
         exclude = ('eliminado_por', )
     # end class
 # end class
+
+
+class CajaForm(forms.ModelForm):
+
+    class Meta:
+        model = models.CajaCompensacion
+        fields = ['nombre', 'codigo']
+    # end class
+# end class
+
+
+class CajaFormEdit(MasterEdit):
+
+    class Meta:
+        model = models.CajaCompensacion
+        exclude = ('eliminado_por', )
+    # end class
+# end class
+
+
+class CesantiaForm(forms.ModelForm):
+
+    class Meta:
+        model = models.Cesantia
+        fields = ['nombre', 'codigo']
+    # end class
+# end class
+
+
+class CesantiaFormEdit(MasterEdit):
+
+    class Meta:
+        model = models.Cesantia
+        exclude = ('eliminado_por', )
+    # end class
+# end class

@@ -30,10 +30,23 @@ urlpatterns += [
     Eps urls
 """
 urlpatterns += [
-    url(r'^eps/form/$', views.EpsSupraForm.as_view(), name="pension"),
-    url(r'^eps/list/$', views.EpsSupraList.as_view(), name="pension_list"),
+    url(r'^eps/form/$', views.EpsSupraForm.as_view(), name="eps"),
+    url(r'^eps/list/$', views.EpsSupraList.as_view(), name="eps_list"),
     url(r'^eps/form/(?P<pk>\d+)/$',
-        views.EpsSupraForm.as_view(), name="pension_edit"),
+        views.EpsSupraForm.as_view(), name="eps_edit"),
     url(r'^eps/delete/(?P<pk>\d+)/$',
-        views.EpsSupraFormDelete.as_view(), name="pension_delete"),
+        views.EpsSupraFormDelete.as_view(), name="eps_delete"),
+]
+
+
+"""
+    CajaCompensacion
+"""
+urlpatterns += [
+    url(r'^caja/form/$', views.CajaSupraForm.as_view(), name="caja"),
+    url(r'^caja/list/$', views.CargoSupraList.as_view(), name="caja_list"),
+    url(r'^caja/form/(?P<pk>\d+)/$',
+        views.CajaSupraForm.as_view(), name="caja_edit"),
+    url(r'^caja/delete/(?P<pk>\d+)/$',
+        views.CajaSupraFormDelete.as_view(), name="caja_delete"),
 ]

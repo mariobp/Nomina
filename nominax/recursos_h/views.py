@@ -206,3 +206,54 @@ class EpsSupraFormDelete(supra.SupraDeleteView):
         return HttpResponse(status=200)
     # end def
 # end class
+
+
+"""
+    Caja
+"""
+
+
+class CajaSupraList(MasterList):
+    model = models.CajaCompensacion
+    list_display = ['id', 'nombre', 'codigo']
+    search_fields = ['nombre', 'codigo']
+# end class
+
+
+class CajaSupraForm(supra.SupraFormView):
+    model = models.CajaCompensacion
+    form_class = forms.CajaForm
+
+    def get_form_class(self):
+        if 'pk' in self.http_kwargs:
+            self.form_class = forms.CajaFormEdit
+        # end if
+        return self.form_class
+    # end class
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(CajaSupraForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
+
+
+class CajaSupraFormDelete(supra.SupraDeleteView):
+    model = models.CajaCompensacion
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(CajaSupraFormDelete, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.eliminado = True
+        user = CuserMiddleware.get_user()
+        self.object.eliminado_por = user
+        self.object.save()
+        return HttpResponse(status=200)
+    # end def
+# end class
