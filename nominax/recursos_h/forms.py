@@ -131,7 +131,7 @@ class EmpleadoForm(forms.ModelForm):
 
     class Meta:
         model = models.Empleado
-        fields = ['nombre', 'apellidos', 'cedula', 'cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion']
+        fields = ['nombre', 'apellidos', 'cedula', 'fecha_nacimiento', 'cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion']
     # end class
 
     def __init__(self, *args, **kwargs):
@@ -139,5 +139,24 @@ class EmpleadoForm(forms.ModelForm):
         self.fields['fecha_nacimiento'].input_formats = (
             '%Y/%m/%d', '%d/%m/%Y', '%m/%d/%Y')
         self.fields['fecha_nacimiento'].format = "m/d/y"
+    # end def
+# end class
+
+
+class ContratoForm(forms.ModelForm):
+
+    class Meta:
+        model = models.Contrato
+        fields = ["empleado", 'fecha_inicio', 'salario_base', 'tipo_contrato', 'descanso_turno', 'inicio_descanso', 'fecha_finalizacion']
+    # end class
+
+    def __init__(self, *args, **kwargs):
+        super(ContratoForm, self).__init__(*args, **kwargs)
+        self.fields['fecha_inicio'].input_formats = (
+            '%Y/%m/%d', '%d/%m/%Y', '%m/%d/%Y')
+        self.fields['fecha_inicio'].format = "m/d/y"
+        self.fields['fecha_finalizacion'].input_formats = (
+            '%Y/%m/%d', '%d/%m/%Y', '%m/%d/%Y')
+        self.fields['fecha_finalizacion'].format = "m/d/y"
     # end def
 # end class

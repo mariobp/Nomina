@@ -82,3 +82,10 @@ urlpatterns += [
 """
     Empleado
 """
+
+urlpatterns += [
+    url(r'^empleado/form/$', views.EmpleadoSupraForm.as_view(), name="tipo_contrato"),
+    url(r'^empleado/list/$', views.EmpleadoSupraList.as_view(), name="tipo_contrato_list"),
+    url(r'^empleado/form/(?P<pk>\d+)/$',
+        views.EmpleadoSupraForm.as_view(), name="tipo_contrato_edit"),
+]

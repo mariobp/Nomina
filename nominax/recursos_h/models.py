@@ -147,7 +147,6 @@ class Contrato(models.Model):
     inicio_descanso = models.IntegerField("Hora de inicio de descanso", blank=True, null=True)
     duracion_descanso = models.IntegerField("Duración de descanso en minutos", blank=True, null=True)
     fecha_finalizacion = models.DateField(blank=True, null=True)
-    estado = models.BooleanField("Estado del contrato", default=False)
     creator = CurrentUserField(add_only=True, related_name="created_contrato")
     last_editor = CurrentUserField(related_name="last_edited_contrato")
     eliminado = models.BooleanField(default=False)

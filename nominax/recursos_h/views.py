@@ -11,6 +11,7 @@ from nominax.decorator import check_login
 from cuser.middleware import CuserMiddleware
 import models
 import forms
+import json
 # Create your views here.
 supra.SupraConf.ACCECC_CONTROL["allow"] = True
 supra.SupraConf.ACCECC_CONTROL["origin"] = ORIGIN
@@ -366,17 +367,65 @@ class TipoContratoSupraFormDelete(supra.SupraDeleteView):
 """
 
 
-class EmpleadoSupraList(MasterList):
+class ContraoSupraList(supra.SupraListView):
+    model = models.Contrato
+    list_display = ('id', 'fecha_inicio', 'salario_base', 'tipo_contrato', 'tipo_contrato__nombre', 'descanso_turno', 'inicio_descanso', 'duracion_descanso', 'fecha_finalizacion')
+    list_filter = ['empleado']
+# end class
+
+
+class EmpleadoSupraList(supra.SupraListView):
     model = models.Empleado
-    list_display = ['id', 'nombre', 'apellidos', 'cedula', 'cargo', 'cargo__nombre', 'pension', 'eps', 'cesantia', 'cajacompensacion']
+    list_display = ['id', 'nombre', 'apellidos', 'cedula', 'cargo', 'cargo__nombre', 'pension', 'eps', 'cesantia', 'cajacompensacion', ('contrato', 'json')]
     search_fields = ['nombre', 'apellidos', 'cedula']
     list_filter = ['cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion']
+
+    def contrato(self, obj, now):
+        class request():
+            method = "GET"
+            GET = {'empleado': obj.pk}
+        # end class
+        lista = ContraoSupraList(dict_only=True).dispatch(request=request())
+        return json.dumps(lista)
+    # end def
+
+    @method_decorator(check_login)
+    def dispatch(self, request, *args, **kwargs):
+        return super(EmpleadoSupraList, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def get_queryset(self):
+        queryset = super(EmpleadoSupraList, self).get_queryset()
+        if self.request.GET.get('length', False):
+            self.paginate_by = self.request.GET.get('length', False)
+        # end if
+        propiedad = self.request.GET.get('sort_property', False)
+        orden = self.request.GET.get('sort_direction', False)
+        # end if
+        if propiedad and orden:
+            if orden == "asc":
+                queryset = queryset.order_by(propiedad)
+            elif orden == "desc":
+                propiedad = "-" + propiedad
+                queryset = queryset.order_by(propiedad)
+        # end if
+        return queryset
+    # end def
+# end class
+
+
+class ContratoInline(supra.SupraInlineFormView):
+    model = models.Contrato
+    base_model = models.Empleado
+    form_class = forms.ContratoForm
+    extra = 1
 # end class
 
 
 class EmpleadoSupraForm(supra.SupraFormView):
     model = models.Empleado
     form_class = forms.EmpleadoForm
+    inlines = [ContratoInline]
 
     @method_decorator(check_login)
     @csrf_exempt
