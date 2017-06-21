@@ -16,7 +16,7 @@ class Configuracion(models.Model):
     tipo_corte = models.IntegerField(choices=opciones)
     primer_dia = models.PositiveIntegerField("Primer dia de corte", validators=[MaxValueValidator(31)])
     segundo_dia = models.PositiveIntegerField("Segundo dia de corte", validators=[MaxValueValidator(31)], blank=True, null=True)
-    h_recargo_nocturno = models.TimeField()
+    h_recargo_nocturno = models.TimeField("Hora de recargo nocturno")
     creator = CurrentUserField(add_only=True, related_name="created_configuracion")
     last_editor = CurrentUserField(related_name="last_edited_configuracion")
 

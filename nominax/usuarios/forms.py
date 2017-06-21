@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from usuarios import models as usuarios
+from cuser.middleware import CuserMiddleware
 
 
 class MasterEdit(forms.ModelForm):
@@ -32,7 +33,7 @@ class AsistenteForm(UserCreationForm):
     class Meta:
         model = usuarios.Asistente
         fields = ['username', 'password1', 'password2', 'email', 'first_name', 'last_name',
-                  'identificacion', 'fecha_nacimiento', 'direccion', 'telefono', 'fijo', 'imagen']
+                  'identificacion', 'fecha_nacimiento', 'direccion', 'telefono', 'fijo']
 
 # end class
 
@@ -49,7 +50,16 @@ class AsistenteFormEdit(MasterEdit):
     class Meta:
         model = usuarios.Asistente
         fields = ['username', 'email', 'first_name', 'last_name', 'identificacion',
-                  'fecha_nacimiento', 'direccion', 'telefono', 'fijo', 'imagen', 'eliminado']
+                  'fecha_nacimiento', 'direccion', 'telefono', 'fijo', 'eliminado']
+    # end class
+# end class
+
+
+class AsistenteAvatar(forms.ModelForm):
+
+    class Media:
+        model = usuarios.Asistente
+        fields = ['imagen', ]
     # end class
 # end class
 
@@ -65,7 +75,7 @@ class AdministradorForm(UserCreationForm):
     class Meta:
         model = usuarios.Administrador
         fields = ['username', 'password1', 'password2', 'email', 'first_name', 'last_name',
-                  'identificacion', 'fecha_nacimiento', 'direccion', 'telefono', 'fijo', 'imagen']
+                  'identificacion', 'fecha_nacimiento', 'direccion', 'telefono', 'fijo']
 
 # end class
 
@@ -82,6 +92,24 @@ class AdministadorFormEdit(MasterEdit):
     class Meta:
         model = usuarios.Administrador
         fields = ['username', 'email', 'first_name', 'last_name', 'identificacion',
-                  'fecha_nacimiento', 'direccion', 'telefono', 'fijo', 'imagen', 'eliminado']
+                  'fecha_nacimiento', 'direccion', 'telefono', 'fijo', 'eliminado']
+    # end class
+# end class
+
+
+class AdministradorAvatar(forms.ModelForm):
+
+    class Meta:
+        model = usuarios.Administrador
+        fields = ['imagen', ]
+    # end class
+# end class
+
+
+class AsistenteAvatar(forms.ModelForm):
+
+    class Meta:
+        model = usuarios.Asistente
+        fields = ['imagen', ]
     # end class
 # end class

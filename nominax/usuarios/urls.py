@@ -33,3 +33,16 @@ urlpatterns += [
     url(r'^administrador/delete/(?P<pk>\d+)/$',
         views.AdministradorSupraFormDelete.as_view(), name="asistente_delete"),
 ]
+
+
+"""
+    urls avatar
+"""
+
+
+urlpatterns += [
+    url(r'^administrador/avatar/(?P<pk>\d+)/$',
+        views.AvatarAdminForm.as_view(), name="avatar_admin"),
+    url(r'^asistente/avatar/(?P<pk>\d+)/$',
+        views.AvatarAsistenteForm.as_view(), name="avatar_asistente"),
+]
