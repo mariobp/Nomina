@@ -14,15 +14,21 @@ export class TableComponent implements OnInit {
     @Input('title') public title: string;
     @Input('service') public service: any;
     @Input('columns') public columns: any[] = [{ data: 'id' }];
-    @Input('multiselect') public multiSelectable = false;
+    @Input('multiselect') public multiselect = false;
 
     private dataTable: any;
     public selectedItems: any[] = [];
 
+    public static renderCheckRow(data, type, full, meta) {
+        return `
+        <div class="checkbox">
+            <label><input type="checkbox" name="selectedItems" value="${data}"/></label>
+        </div>`;
+    }
+
     constructor() { }
 
     ngOnInit() {
-        this.selectedItems.length
         const table = this.table.nativeElement;
         const conf = {
             processing: true,
@@ -75,9 +81,9 @@ export class TableComponent implements OnInit {
     }
 
     _selectionInit(table) {
-        if (this.multiSelectable) {
+        if (this.multiselect) {
             const self = this;
-            $(table).on('click', 'tbody tr', function (event) {
+            $(table).on('click', 'tbody tr', function(event) {
                 self._onSelectedRow(this);
                 event.preventDefault();
             });
@@ -91,7 +97,7 @@ export class TableComponent implements OnInit {
         $(tr).toggleClass('selected');
         check.prop('checked', !check.is(':checked'));
         this.selectedItems = [];
-        $.each($(table).find('tr.selected'), function () {
+        $.each($(table).find('tr.selected'), function() {
             self.selectedItems.push(self.dataTable.row(this).data());
         });
     }
@@ -119,12 +125,5 @@ export class TableComponent implements OnInit {
             cb({ 'recordsTotal': 0, 'recordsFiltered': 0, 'data': [] });
             BsNotify.error('No has definido un servicio que consultar');
         }
-    }
-
-    static renderCheckRow(data, type, full, meta) {
-        return `
-        <div class="checkbox">
-            <label><input type="checkbox" name="selectedItems" value="${data}"/></label>
-        </div>`;
     }
 }

@@ -10,11 +10,15 @@ export class AsistenteService {
     public data: any[];
 
     getById(id) {
-        if (id === 0) return Promise.resolve({});
+        if (id === 0) {
+            return Promise.resolve({})
+        };
         let res;
         if (this.data) {
             res = this.data.filter(item => item.id === id);
-            if (res) return Promise.resolve(res[0]);
+            if (res) {
+                return Promise.resolve(res[0]);
+            }
             return Promise.reject(null);
         }
         return Promise.reject(null);
@@ -29,7 +33,7 @@ export class AsistenteService {
         return this._cl.post(`usuarios/asistente/from/${id}/`);
     }
     delete(id: number) {
-        return this._cl.get(`usuarios/asistente/delete/${id}/`);
+        return this._cl.delete(`usuarios/asistente/delete/${id}/`);
     }
 }
 
@@ -40,7 +44,7 @@ export class AsistenteResolver implements Resolve<any> {
         private router: Router) { }
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        let id = route.params['id'];
+        const id = route.params['id'];
         // let id = route.paramMap.get('id');
         if (isNaN(+id)) {
             console.log(`Asistente id was not a number: ${id}`);
