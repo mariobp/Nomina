@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^recursos/', include('recursos_h.urls')),
     url(r'^turnos/', include('turno.urls')),
     url(r'^nomina/', include('nomina.urls')),
+    url(r'^configuracion/', include('configuracion.urls')),
 ]
 
 if settings.DEBUG:
