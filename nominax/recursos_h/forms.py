@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django import forms
 import models
+from cuser.middleware import CuserMiddleware
 
 
 class MasterEdit(forms.ModelForm):

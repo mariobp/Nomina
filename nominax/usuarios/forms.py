@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from usuarios import models as usuarios
+from cuser.middleware import CuserMiddleware
 
 
 class MasterEdit(forms.ModelForm):

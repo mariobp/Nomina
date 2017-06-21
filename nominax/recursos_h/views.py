@@ -379,6 +379,7 @@ class EmpleadoSupraList(supra.SupraListView):
     list_display = ['id', 'nombre', 'apellidos', 'cedula', 'cargo', 'cargo__nombre', 'pension', 'eps', 'cesantia', 'cajacompensacion', ('contrato', 'json')]
     search_fields = ['nombre', 'apellidos', 'cedula']
     list_filter = ['cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion']
+    search_key = 'q'
 
     def contrato(self, obj, now):
         class request():
