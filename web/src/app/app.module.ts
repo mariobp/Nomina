@@ -1,13 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { HttpModule } from '@angular/http';
-import { AppRouteModule } from './app.route.module';
-import { AuthModule } from './auth/auth.module';
-import { LibModule } from '../lib/lib.module'
 import { NgModule } from '@angular/core';
-import { CallService } from '../lib/services/call.service';
+import { AppRouteModule } from './app.route.module';
 import { AppComponent } from './app.component';
+import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
+import { CallService } from '../lib/services/call.service';
+import { LibModule } from '../lib/lib.module'
 @NgModule({
     declarations: [
         AppComponent
@@ -18,7 +18,7 @@ import { AuthService } from './auth/auth.service';
         CommonModule,
         LibModule,
         AppRouteModule,
-        AuthModule,
+        AuthModule
     ],
     providers: [CallService],
     bootstrap: [AppComponent]

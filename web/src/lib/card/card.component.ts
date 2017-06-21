@@ -1,10 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
     selector: 'ex-card',
     templateUrl: './card.component.html'
 })
 export class CardComponent {
+    @Input('color') color: string = 'purple';
+    @Input('title') title: string;
+    @Input('subtitle') subtitle: string;
+    @Input('icon') icon: string;
+    @Input('header-text') headerText = false;
 
     constructor() { }
 }

@@ -1,28 +1,30 @@
-import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, ViewChild, trigger, transition, style, animate  } from '@angular/core';
 import { BsNotify } from '../bs.notify';
 declare var $: any;
 
 @Component({
     selector: 'ex-table',
-    templateUrl: './table.component.html',
+    templateUrl: './table.component.html'
 })
 export class TableComponent implements OnInit {
 
     @ViewChild('table') private table: ElementRef;
 
+    @Input('icon') public icon: string;
+    @Input('title') public title: string;
+    @Input('service') public service: any;
+    @Input('columns') public columns: any[] = [{ data: 'id' }];
+    @Input('multiselect') public multiSelectable = false;
+
     private dataTable: any;
-    public service: any;
-    public columns: any[] = [{data:'id'}];
-    public columnDefs: any[] = [];
-    public conf: any;
     public selectedItems: any[] = [];
-    public multiSelectable = false;
 
     constructor() { }
 
     ngOnInit() {
+        this.selectedItems.length
         const table = this.table.nativeElement;
-        this.conf = {
+        const conf = {
             processing: true,
             serverSide: true,
             pagingType: 'full_numbers',
@@ -31,7 +33,7 @@ export class TableComponent implements OnInit {
                 const op = {
                     page: Math.ceil(data.start / data.length) + 1,
                     num_page: data.length,
-                    sort_property: this.columns[data.order[0].column].data ,
+                    sort_property: this.columns[data.order[0].column].data,
                     sort_direction: data.order[0].dir,
                     q: data.search.value
                 };
@@ -68,7 +70,7 @@ export class TableComponent implements OnInit {
                 }
             }
         };
-        this.dataTable = $(table).DataTable(this.conf);
+        this.dataTable = $(table).DataTable(conf);
         this._selectionInit(table);
     }
 
@@ -104,11 +106,12 @@ export class TableComponent implements OnInit {
             this.service.list(dataSource)
                 .then(res => res.json())
                 .then(data => {
-                    console.log('res');
+                    console.log(data);
                     this.service.data = data.object_list;
                     cb({ 'draw': draw, 'recordsTotal': data.count, 'recordsFiltered': data.num_rows, 'data': data.object_list });
                 })
                 .catch(err => {
+                    console.log(err);
                     cb({ 'recordsTotal': 0, 'recordsFiltered': 0, 'data': [] });
                     BsNotify.error('Ha ocurrido un error al consultar los datos');
                 });
@@ -118,7 +121,7 @@ export class TableComponent implements OnInit {
         }
     }
 
-    renderCheckRow(data, type, full, meta) {
+    static renderCheckRow(data, type, full, meta) {
         return `
         <div class="checkbox">
             <label><input type="checkbox" name="selectedItems" value="${data}"/></label>
