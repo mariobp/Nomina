@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^usuarios/', include('usuarios.urls')),
     url(r'^recursos/', include('recursos_h.urls')),
     url(r'^turnos/', include('turno.urls')),
+    url(r'^nomina/', include('nomina.urls')),
 ]
 
 if settings.DEBUG:
