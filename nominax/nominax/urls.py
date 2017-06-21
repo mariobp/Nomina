@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^usuarios/', include('usuarios.urls')),
     url(r'^recursos/', include('recursos_h.urls')),
+    url(r'^turno/', include('turno.urls')),
 ]
 
 if settings.DEBUG:
