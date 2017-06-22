@@ -4379,9 +4379,9 @@ h2.title {
     max-height: 42px; }
     .sidebar .logo-img img,
     .off-canvas-sidebar .logo-img img {
-      width: 90px;
-      top: 16px;
-      left: 18px;
+      width: 150px;
+      top: 10px;
+      left: 40px;
       position: absolute; }
   .sidebar .sidebar-wrapper,
   .off-canvas-sidebar .sidebar-wrapper {
@@ -4760,6 +4760,14 @@ h2.title {
   .off-canvas-sidebar[data-active-color="rose"] li.active > a {
     background-color: #e91e63;
     box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(233, 30, 99, 0.4); }
+  .sidebar[data-active-color="ingecol"] .sidebar-moving-tab,
+  .off-canvas-sidebar[data-active-color="ingecol"] .sidebar-moving-tab {
+    background-color: #213b78;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(33, 59, 120, 0.4); }
+  .sidebar[data-active-color="ingecol"] li.active > a,
+  .off-canvas-sidebar[data-active-color="ingecol"] li.active > a {
+    background-color: #213b78;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(33, 59, 120, 0.4); }
   .sidebar[data-active-color="white"] .sidebar-moving-tab,
   .off-canvas-sidebar[data-active-color="white"] .sidebar-moving-tab {
     background-color: #FFFFFF;
@@ -7904,6 +7912,9 @@ fieldset[disabled] .checkbox, fieldset[disabled] .checkbox input[type=checkbox],
   margin-bottom: 0;
   border-bottom: 1px solid #ededf3;
   padding: 10px 0; }
+  .navbar.ingecol {
+    background-color: #f3801f;
+    color: #ffffff; }
   .navbar .navbar-brand {
     position: relative;
     height: 50px;
@@ -9595,7 +9606,11 @@ footer {
     background: rgba(0, 0, 0, 0.6); } }
 @media (min-width: 768px) {
   .navbar > .container-fluid .navbar-brand {
-    margin-left: 0; } }
+    margin-left: 0; }
+
+  .navbar-header .collapse,
+  .navbar-toggle {
+    display: none !important; } }
 @media (max-width: 767px) {
   .main-panel .content {
     padding-left: 0;

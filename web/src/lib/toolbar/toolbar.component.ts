@@ -64,7 +64,7 @@ export class ToolbarComponent implements OnInit {
     }
 
     getTitle() {
-        return 'Exile';
+        return 'Nomina';
     }
 
     getPath() {

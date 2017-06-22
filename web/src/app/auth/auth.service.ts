@@ -21,10 +21,7 @@ export class AuthService {
 
     private addUser(user: User) {
         this.user = user;
-        localStorage.setItem('user', JSON.stringify(this.user));
-        if (!this.sokect) {
-            this.sokect = this._cl.ws('users');
-        }
+        localStorage.setItem('user', JSON.stringify(true));
     }
 
     private removeUser(err?) {

@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { MenuMeta } from '../app.routing';
 import { AsistenteComponent, AsistenteEditComponent, AsistenteListComponent } from './asistente/asistente.component';
 import { AdminComponent } from './admin/admin.component';
-
+import { AsistenteResolver } from './asistente/asistente.service';
 
 export const UsuariosRoutes: Routes = [
     {
@@ -10,7 +10,7 @@ export const UsuariosRoutes: Routes = [
             { path: 'admin', component: AdminComponent },
             { path: 'asistente', component: AsistenteComponent, children: [
                 { path: '', component: AsistenteListComponent},
-                { path: 'edit', component: AsistenteEditComponent}
+                { path: ':id/edit', component: AsistenteEditComponent, resolve: { asistente: AsistenteResolver }}
             ]},
         ]
     }

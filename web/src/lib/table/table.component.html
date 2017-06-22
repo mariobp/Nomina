@@ -1,9 +1,4 @@
-<ex-card>
-    <div header>
-        <i class="material-icons">
-            <ng-content select="[icon]"></ng-content>
-        </i>
-    </div>
+<ex-card [icon]="icon">
     <nav class="navbar navbar-default" style="border-bottom:none;padding:0">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -13,12 +8,22 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <h4 class="navbar-brand" style="margin:0">Asistente</h4>
+                <h4 class="navbar-brand card-title" style="margin:0;margin-top:-7px;margin-left:-10px;">{{title}}</h4>
             </div>
             <div class="navbar-collapse collapse navbar-responsive-collapse">
                 <ul class="nav navbar-nav navbar-right">
+                    <li *ngIf="selectedItems.length == 1">
+                        <button [routerLink]="[selectedItems[0].id,'edit']" class="btn btn-primary btn-just-icon">
+                            <i class="material-icons">create</i>
+                        </button>
+                    </li>
+                    <li *ngIf="selectedItems.length >= 1">
+                        <button class="btn btn-primary btn-just-icon">
+                            <i class="material-icons">delete</i>
+                        </button>
+                    </li>
                     <li>
-                        <button [routerLink]="['edit']" class="btn btn-primary btn-just-icon btn-round">
+                        <button [routerLink]="['0/edit']" class="btn btn-primary btn-just-icon ">
                             <i class="material-icons">add</i>
                         </button>
                     </li>
@@ -37,5 +42,5 @@
             </thead>
         </table>
     </div>
-    <pre> selectedItems: {{selectedItems | json }}</pre> 
+    <!--<pre> selectedItems: {{selectedItems | json }}</pre> -->
 </ex-card>

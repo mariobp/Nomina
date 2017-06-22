@@ -103,21 +103,21 @@ ENV/
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
-web/dist
-web/tmp
-web/out-tsc
+**/dist
+**/tmp
+**/out-tsc
 
 # dependencies
-web/node_modules/**
+**/node_modules/**
 
 # IDEs and editors
-web/.idea
-web/.project
-web/.classpath
-web/.c9/
-web/*.launch
-web/.settings/
-web/*.sublime-workspace
+**/.idea
+**/.project
+**/.classpath
+**/.c9/
+**/*.launch
+**/.settings/
+**/*.sublime-workspace
 
 # IDE - VSCode
 .vscode/*
@@ -127,17 +127,17 @@ web/*.sublime-workspace
 !.vscode/extensions.json
 
 # misc
-web/.sass-cache
-web/connect.lock
-web/coverage
-web/libpeerconnection.log
-web/npm-debug.log
-web/testem.log
-web/typings
+**/.sass-cache
+**/connect.lock
+**/coverage
+**/libpeerconnection.log
+**/npm-debug.log
+**/testem.log
+**/typings
 
 # e2e
-web/e2e/*.js
-web/e2e/*.map
+**/e2e/*.js
+**/e2e/*.map
 
 # System Files
 .DS_Store

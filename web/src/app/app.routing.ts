@@ -6,24 +6,25 @@ import { AuthGuard } from './auth/auth.guard';
 
 export interface MenuMeta {
     title: string;
-    url?: string;
     icon: string;
+    url?: string;
     children?: MenuMeta[];
 }
 
 export const AppRoutes: Routes = [
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     {
-        path: '', component: BaseComponent, canActivate: [AuthGuard], data: { preload: true }, children: [
+        path: '', component: BaseComponent, canActivate: [AuthGuard], canActivateChild: [AuthGuard], data: { preload: true }, children: [
             { path: '', loadChildren: './home/home.module#HomeModule' },
             { path: 'usuarios', loadChildren: './usuarios/usuarios.module#UsuariosModule' },
+            { path: 'turno', loadChildren: './turno/turno.module#TurnoModule' },
             { path: 'obligaciones', loadChildren: './obligaciones/obligaciones.module#ObligacionesModule' },
-            /*{ path: 'novedades', loadChildren: './novedades/novedades.module#NovedadesModule' },
-            { path: 'informes', loadChildren: './informes/informes.module#InformesModule' },
-            { path: 'perfil', loadChildren: './usuarios/usuarios.module#UsuariosModule' },*/
+            { path: 'empleados', loadChildren: './empleados/empleados.module#EmpleadosModule' },
+            { path: 'nomina', loadChildren: './nomina/nomina.module#NominaModule' },
+            { path: 'configuracion', loadChildren: './configuracion/configuracion.module#ConfiguracionModule' }
         ]
     },
-    { path: '**', component: P404Component }
+    // { path: '**', component: P404Component }
 ];
 
 import { UsuariosMenuMeta } from './usuarios/route';
@@ -32,5 +33,9 @@ import { ObligacionesMenuMeta } from './obligaciones/route';
 export const AppMenuMeta: MenuMeta[] = [
     { title: 'Inico', url: '/dashboard', icon: 'dashboard' },
     { title: 'Usuarios', icon: 'supervisor_account', children: UsuariosMenuMeta },
+    { title: 'Turno', icon: 'assignment_ind', children: null },
     { title: 'Obligaciones', icon: 'assignment', children: ObligacionesMenuMeta },
+    { title: 'Empleados', icon: 'account_box', children: null },
+    { title: 'Nomina', icon: 'monetization_on', children: null },
+    { title: 'Configuración', icon: 'settings_applications', children: null }
 ];
