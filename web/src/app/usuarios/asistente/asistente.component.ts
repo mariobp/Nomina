@@ -5,7 +5,6 @@ import { TableComponent } from '../../../lib/table/table.component';
 import { AsistenteService } from './asistente.service';
 
 declare var $: any;
-declare var window: any;
 
 @Component({
     template: '<router-outlet></router-outlet>'
@@ -20,7 +19,7 @@ export class AsistenteEditComponent implements OnInit {
     form: FormGroup;
     asistente: any;
 
-    constructor(private _ar: ActivatedRoute, private _fb: FormBuilder) {
+    constructor(private _ar: ActivatedRoute, private _fb: FormBuilder, private _as: AsistenteService) {
 
         this.form = this._fb.group({
             username: ['', Validators.required],
@@ -37,19 +36,19 @@ export class AsistenteEditComponent implements OnInit {
         });
         this.asistente = this._ar.snapshot.data['asistente'];
         this.form.patchValue(this.asistente);
-        this.form.valueChanges.subscribe(val => {
-            console.log('cambio a: ', val);
-        });
+        // this.form.valueChanges.subscribe(val => {
+        //     console.log('cambio a: ', val);
+        // });
     }
 
     ngOnInit() {
         $('.datetimepicker').datetimepicker({
             format: 'DD/MM/YYYY',
             icons: {
-                time: "fa fa-clock-o",
-                date: "fa fa-calendar",
-                up: "fa fa-chevron-up",
-                down: "fa fa-chevron-down",
+                time: 'fa fa-clock-o',
+                date: 'fa fa-calendar',
+                up: 'fa fa-chevron-up',
+                down: 'fa fa-chevron-down',
                 previous: 'fa fa-chevron-left',
                 next: 'fa fa-chevron-right',
                 today: 'fa fa-screenshot',
@@ -76,6 +75,11 @@ export class AsistenteEditComponent implements OnInit {
 
     save() {
         console.log('save');
+        if (!!this.asistente.id) {
+            this._as.edit(this.asistente.id, this.form.value);
+        } else {
+            this._as.add(this.form.value);
+        }
     }
 }
 
@@ -118,13 +122,6 @@ export class AsistenteListComponent implements OnInit {
         console.log($event);
     }
 
-    ngOnInit() {
-        this.table.preAjax = data => {
-            if (data.sort_property === 'nombre') {
-                data.sort_property = 'first_name';
-            }
-            return data;
-        };
-    }
+    ngOnInit() { }
 
 }
