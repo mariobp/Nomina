@@ -41,8 +41,18 @@ class Configuracion(models.Model):
 # end class
 
 
-"""
 class Concepto(models.Model):
+    opciones = (
+        (1, 'Extras'),
+        (2, 'Extra nocturna'),
+        (3, 'Extra diurna'),
+        (4, 'Extra dominical')
+    )
     nombre = models.CharField(max_length=100)
-    codigo = models.CharField()
-"""
+    codigo = models.CharField(max_length=100)
+    referencia = models.IntegerField(choices=opciones)
+
+    def __unicode__(self):
+        return u"%s" % (self.nombre)
+    # end def
+# end class
