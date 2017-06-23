@@ -43,7 +43,8 @@ def islogin(request):
 class MasterList(supra.SupraListView):
     search_key = 'q'
     list_filter = ["id"]
-
+    paginate_by = 10
+    
     @method_decorator(check_login)
     def dispatch(self, request, *args, **kwargs):
         return super(MasterList, self).dispatch(request, *args, **kwargs)
@@ -51,8 +52,8 @@ class MasterList(supra.SupraListView):
 
     def get_queryset(self):
         queryset = super(MasterList, self).get_queryset()
-        if self.request.GET.get('length', False):
-            self.paginate_by = self.request.GET.get('length', False)
+        if self.request.GET.get('num_page', False):
+            self.paginate_by = self.request.GET.get('num_page', False)
         # end if
         propiedad = self.request.GET.get('sort_property', False)
         orden = self.request.GET.get('sort_direction', False)

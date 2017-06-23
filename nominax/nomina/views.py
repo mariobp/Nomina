@@ -22,6 +22,7 @@ class NominaSupraList(supra.SupraListView):
     search_fields = ['empleado__nombre', 'empleado__apellidos', 'empleado__cedula', ]
     list_filter = ['empleado', 'empleado__cargo', 'fecha']
     search_key = 'q'
+    paginate_by = 10
 
     def empleado_f(self, obj, now):
         return {"id": obj.empleado.id, "nombre": obj.empleado.nombre, "apellidos": obj.empleado.apellidos, "cedula": obj.empleado.cedula}
@@ -38,7 +39,7 @@ class NominaSupraList(supra.SupraListView):
 
     def get_queryset(self):
         queryset = super(NominaSupraList, self).get_queryset()
-        if self.request.GET.get('length', False):
+        if self.request.GET.get('num_page', False):
             self.paginate_by = self.request.GET.get('length', False)
         # end if
         propiedad = self.request.GET.get('sort_property', False)
