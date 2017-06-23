@@ -5,7 +5,7 @@ import { Component, Input } from '@angular/core';
     templateUrl: './card.component.html'
 })
 export class CardComponent {
-    @Input('color') color: string = 'purple';
+    @Input('color') color = 'purple';
     @Input('title') title: string;
     @Input('subtitle') subtitle: string;
     @Input('icon') icon: string;
