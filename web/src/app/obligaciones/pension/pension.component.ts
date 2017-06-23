@@ -2,22 +2,22 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { TableComponent } from '../../../lib/table/table.component';
-import { EpsService } from './eps.service';
+import { PensionService } from './pension.service';
 
 @Component({
     template: '<router-outlet></router-outlet>'
 })
-export class EpsComponent {}
+export class PensionComponent {}
 
 @Component({
-  templateUrl: './list.eps.component.html'
+  templateUrl: './list.pension.component.html'
 })
-export class EpsListComponent implements OnInit {
+export class PensionListComponent implements OnInit {
 
     @ViewChild('table') private table: TableComponent;
 
-    icon = 'local_hospital';
-    title = 'Eps';
+    icon = 'local_atm';
+    title = 'Pensión';
     service = this._as;
     multiselect = true;
     columns = [
@@ -32,11 +32,12 @@ export class EpsListComponent implements OnInit {
         { data: 'codigo' },
     ]
 
-    constructor(private _as: EpsService) { }
+    constructor(private _as: PensionService) { }
 
     onChange($event) {
         console.log($event);
     }
 
     ngOnInit() { }
+
 }

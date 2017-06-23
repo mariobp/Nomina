@@ -1,50 +1,43 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { TableComponent } from '../../../lib/table/table.component';
+import { CesantiasService } from './cesantias.service';
+
 @Component({
-    selector: 'app-cesantias',
-    templateUrl: './cesantias.component.html',
-    styleUrls: ['./cesantias.component.scss']
+    template: '<router-outlet></router-outlet>'
 })
-export class CesantiasComponent implements OnInit {
+export class CesantiasComponent {}
 
-    // @ViewChild('table') private table: TableComponent;
+@Component({
+  templateUrl: './list.cesantias.component.html'
+})
+export class CesantiasListComponent implements OnInit {
 
-    constructor() { }
+  @ViewChild('table') private table: TableComponent;
 
-    ngOnInit() {
-        // this.table.multiSelectable = true;
-        // // this.table.service = this._as;
-        // this.table.preAjax = data => {
-        //     if (data.sort_property === 'nombre') {
-        //         data.sort_property = 'first_name';
-        //     }
-        //     return data;
-        // };
-        // this.table.columns = [
-        //     {
-        //         className: 'text-center',
-        //         orderable: false,
-        //         searchable: false,
-        //         data: 'id',
-        //         render: this.table.renderCheckRow
-        //     },
-        //     { data: 'username' },
-        //     {
-        //         data: 'nombre',
-        //         render: (data, type, full, meta) => {
-        //             return `${data.first_name} ${data.last_name}`;
-        //         }
-        //     },
-        //     { data: 'identificacion' },
-        //     { data: 'email' },
-        //     { data: 'telefono' },
-        //     {
-        //         className: 'ex-table-btn',
-        //         orderable: false,
-        //         searchable: false,
-        //         data: 'id'
-        //     },
-        // ];
-    }
+  icon = 'accessibility';
+  title = 'Cesantía';
+  service = this._as;
+  multiselect = true;
+  columns = [
+      {
+          className: 'text-center',
+          orderable: false,
+          searchable: false,
+          data: 'id',
+          render: TableComponent.renderCheckRow
+      },
+      { data: 'nombre' },
+      { data: 'codigo' },
+  ]
+
+  constructor(private _as: CesantiasService) { }
+
+  onChange($event) {
+      console.log($event);
+  }
+
+  ngOnInit() { }
 
 }

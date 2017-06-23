@@ -1,27 +1,35 @@
 import { Routes } from '@angular/router';
 import { MenuMeta } from '../app.routing';
 
-import { SaludComponent } from './salud/salud.component';
-import { EpsComponent } from './eps/eps.component';
-import { CompensacionComponent } from './compensacion/compensacion.component';
-import { CesantiasComponent } from './cesantias/cesantias.component';
+import { PensionComponent, PensionListComponent } from './pension/pension.component';
+import { EpsComponent, EpsListComponent } from './eps/eps.component';
+import { CompensacionComponent, CompensacionListComponent } from './compensacion/compensacion.component';
+import { CesantiasComponent, CesantiasListComponent } from './cesantias/cesantias.component';
 
 
 export const ObligacionesRoutes: Routes = [
     {
         path: '', children: [
-            { path: 'salud', component: SaludComponent },
-            { path: 'eps', component: EpsComponent },
-            { path: 'compensacion', component: CompensacionComponent },
-            { path: 'cesantias', component: CesantiasComponent }
+            { path: 'pension', component: PensionComponent , children:[
+                { path: '', component: PensionListComponent },
+            ]},
+            { path: 'eps', component: EpsComponent, children: [
+                { path: '', component: EpsListComponent } ,
+            ]},
+            { path: 'compensacion', component: CompensacionComponent, children: [
+                { path: '', component: CompensacionListComponent}
+            ]},
+            { path: 'cesantias', component: CesantiasComponent, children:[
+                { path: '', component: CesantiasListComponent}
+            ] }
         ]
     }
 
 ];
 
 export const ObligacionesMenuMeta: MenuMeta[] = [
-    { title: 'Salud', url: '/obligaciones/salud', icon: 'extension' },
+    { title: 'Pensión', url: '/obligaciones/pension', icon: 'extension' },
     { title: 'Eps', url: '/obligaciones/eps', icon: 'extension' },
     { title: 'Caja de Compensación', url: '/obligaciones/compensacion', icon: 'extension' },
-    { title: 'Casantias', url: '/obligaciones/cesantias', icon: 'extension' },
+    { title: 'Cesantías', url: '/obligaciones/cesantias', icon: 'extension' },
 ];
