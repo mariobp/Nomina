@@ -6,8 +6,16 @@ from recursos_h import models as recursos
 # Create your models here.
 
 
+class Corte(models.Model):
+    fecha_inicio = models.DateField(auto_now_add=True)
+    fecha_fin = models.DateField(blank=True, null=True)
+    cerrado = models.BooleanField(default=False)
+# enc class
+
+
 class Nomina(models.Model):
     empleado = models.ForeignKey(recursos.Empleado)
+    corte = models.ForeignKey(Corte)
     fecha = models.DateField(auto_now_add=True)
     salario_base = models.CharField(max_length=100)
     subsidio_trasporte = models.CharField(max_length=100)
