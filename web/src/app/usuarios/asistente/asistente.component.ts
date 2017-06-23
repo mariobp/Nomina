@@ -36,9 +36,6 @@ export class AsistenteEditComponent implements OnInit {
         });
         this.asistente = this._ar.snapshot.data['asistente'];
         this.form.patchValue(this.asistente);
-        // this.form.valueChanges.subscribe(val => {
-        //     console.log('cambio a: ', val);
-        // });
     }
 
     ngOnInit() {
@@ -60,17 +57,6 @@ export class AsistenteEditComponent implements OnInit {
 
     isValid(): boolean {
         return this.form.valid;
-    }
-
-    fileChange($event) {
-        // this.values = this.form.value;
-        // this.values['imagen2'] = $event.target.files[0];
-        // console.log(this.values['imagen2']);
-        // window.noc = $event;
-        // this.form.value.append({image2: $event.target.files[0]});
-    }
-
-    getValues(): any {
     }
 
     save() {
