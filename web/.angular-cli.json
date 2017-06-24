@@ -72,7 +72,7 @@
         "styleExt": "scss",
         "component": {},
         "serve": {
-            "host": "192.168.1.19"
+            "host": "0.0.0.0"
         }
     }
 }
