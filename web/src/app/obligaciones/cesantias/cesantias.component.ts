@@ -7,37 +7,30 @@ import { CesantiasService } from './cesantias.service';
 @Component({
     template: '<router-outlet></router-outlet>'
 })
-export class CesantiasComponent {}
+export class CesantiasComponent { }
 
 @Component({
-  templateUrl: './list.cesantias.component.html'
+    templateUrl: './list.cesantias.component.html'
 })
-export class CesantiasListComponent implements OnInit {
+export class CesantiasListComponent {
 
-  @ViewChild('table') private table: TableComponent;
+    @ViewChild('table') private table: TableComponent;
 
-  icon = 'accessibility';
-  title = 'Cesantía';
-  service = this._as;
-  multiselect = true;
-  columns = [
-      {
-          className: 'text-center',
-          orderable: false,
-          searchable: false,
-          data: 'id',
-          render: TableComponent.renderCheckRow
-      },
-      { data: 'nombre' },
-      { data: 'codigo' },
-  ]
+    icon = 'accessibility';
+    title = 'Cesantías';
+    service = this._cs;
+    multiselect = true;
+    columns = [
+        {
+            className: 'text-center',
+            orderable: false,
+            searchable: false,
+            data: 'id',
+            render: TableComponent.renderCheckRow
+        },
+        { data: 'nombre' },
+        { data: 'codigo' },
+    ]
 
-  constructor(private _as: CesantiasService) { }
-
-  onChange($event) {
-      console.log($event);
-  }
-
-  ngOnInit() { }
-
+    constructor(private _cs: CesantiasService) { }
 }
