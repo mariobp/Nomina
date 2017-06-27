@@ -17,7 +17,7 @@ export const UsuariosRoutes: Routes = [
             {
                 path: 'asistente', component: AsistenteComponent, children: [
                     { path: '', component: AsistenteListComponent },
-                    { path: ':id/edit', component: AsistenteEditComponent, resolve: { asistente: AsistenteService } }
+                    { path: ':id/edit', component: AsistenteEditComponent, resolve: { item: AsistenteService } }
                 ]
             },
         ]
