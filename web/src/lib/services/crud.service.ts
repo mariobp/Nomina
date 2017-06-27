@@ -92,7 +92,7 @@ export class CrudBase implements Resolve<any> {
         return this.getById(+id)
             .then(item => {
                 if (item) {
-                    console.log(item);
+                    // console.log(item);
                     return item;
                 }
                 console.log(`Item was not found: ${id}`);

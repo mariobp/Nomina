@@ -24,11 +24,11 @@ export class AuthComponent implements OnInit {
     }
 
     checkFullPageBackgroundImage() {
-        let $page = $('.full-page');
-        let image_src = $page.data('image');
+        const $page = $('.full-page');
+        const image_src = $page.data('image');
 
         if (image_src !== undefined) {
-            let image_container = '<div class="full-page-background" style="background-image: url(' + image_src + ') "/>';
+            const image_container = '<div class="full-page-background" style="background-image: url(' + image_src + ') "/>';
             $page.append(image_container);
         }
     };

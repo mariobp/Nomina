@@ -55,7 +55,7 @@ export class CallService {
     }
 
     get(url: string, params?: any, head?: any): Promise<Response> {
-        console.log(this.getUrl(url));
+        // console.log(this.getUrl(url));
         return this._http.get(this.getUrl(url), this.getOptions(head, params)).toPromise();
     }
 
