@@ -24,7 +24,7 @@ supra.SupraConf.body = True
 def marcar_turno(request, pk):
     empleado = recursos_h.Empleado.objects.filter(pk=pk).first()
     if empleado:
-        ultimo = models.Turno.filter(empleado__pk=empleado.pk).order_by('pk').first()
+        ultimo = models.Turno.objects.filter(empleado__pk=empleado.pk).order_by('pk').first()
         if ultimo is None or ultimo.salida is not None:
             turno = models.Turno()
             turno.entrada = timezone.now()
