@@ -26,6 +26,13 @@ export class TableComponent implements OnInit {
         </div>`;
     }
 
+    public static renderAvatar(data, type, full, meta) {
+        if (!data) {
+            data = '/assets/img/default-avatar.png';
+        }
+        return `<div class="avatar" style="background-image: url(${data});"></div>`;
+    }
+
     constructor() { }
 
     ngOnInit() {
@@ -112,12 +119,12 @@ export class TableComponent implements OnInit {
             this.service.list(dataSource)
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data);
+                    // console.log(data);
                     this.service.data = data.object_list;
                     cb({ 'draw': draw, 'recordsTotal': data.count, 'recordsFiltered': data.num_rows, 'data': data.object_list });
                 })
                 .catch(err => {
-                    console.log(err);
+                    // console.log(err);
                     cb({ 'recordsTotal': 0, 'recordsFiltered': 0, 'data': [] });
                     BsNotify.error('Ha ocurrido un error al consultar los datos');
                 });

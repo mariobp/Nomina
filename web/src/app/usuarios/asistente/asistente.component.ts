@@ -72,7 +72,7 @@ export class AsistenteEditComponent implements OnInit {
 @Component({
     templateUrl: './list.asistente.component.html'
 })
-export class AsistenteListComponent implements OnInit {
+export class AsistenteListComponent {
 
     @ViewChild('table') private table: TableComponent;
 
@@ -103,11 +103,4 @@ export class AsistenteListComponent implements OnInit {
     ];
 
     constructor(private _as: AsistenteService) { }
-
-    onChange($event) {
-        console.log($event);
-    }
-
-    ngOnInit() { }
-
 }

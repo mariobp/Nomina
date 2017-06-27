@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FormComponent, TableComponent, RenderInput } from '../../../lib/components'
 import { AdminService } from './admin.service';
 
@@ -9,21 +10,22 @@ import { AdminService } from './admin.service';
 export class AdminComponent { }
 
 @Component({
-    template: `<ex-form
-        icon="account_circle"
-        title="Administrador"
-        [columns]="columns"
+    template: `<ex-form #f icon="account_circle" title="Administrador"
         [form]="form"
-        [renderinputs]="renderinputs">
-    </ex-form>`
+        [service]="service"
+        [columns]="columns"
+        [renderinputs]="renderinputs"></ex-form>`
 })
-export class EditAdminComponent {
+export class EditAdminComponent implements AfterViewInit {
 
     form: FormGroup;
     columns: string[];
     renderinputs: RenderInput[];
+    service = this._as;
 
-    constructor(private _fb: FormBuilder) {
+    @ViewChild('f') private _form: FormComponent;
+
+    constructor(private _fb: FormBuilder, private _as: AdminService, private _rt: Router) {
         this.form = this._fb.group({
             username: ['', Validators.required],
             password1: ['', Validators.required],
@@ -51,6 +53,13 @@ export class EditAdminComponent {
             { column: 'col1', title: 'Celular', type: 'text', name: 'telefono' },
             { column: 'col1', title: 'Telefono', type: 'text', name: 'fijo' }
         ]
+
+    }
+
+    ngAfterViewInit() {
+        this._form.successful = data => {
+            this._rt.navigate(['usuarios/admin']);
+        }
     }
 }
 
@@ -69,12 +78,19 @@ export class ListAdminComponent {
             data: 'id',
             render: TableComponent.renderCheckRow
         },
+        {
+            className: 'text-center',
+            orderable: false,
+            searchable: false,
+            data: 'imagen',
+            render: TableComponent.renderAvatar
+        },
         { data: 'username' },
         { data: 'first_name' },
         { data: 'last_name' },
         { data: 'identificacion' },
         { data: 'email' },
-        { data: 'telefono' },
+        { data: 'telefono' }
     ];
 
     constructor(private _as: AdminService) { }

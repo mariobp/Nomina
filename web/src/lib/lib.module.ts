@@ -35,14 +35,3 @@ const LibComponents = [
     exports: LibComponents
 })
 export class LibModule { }
-export {
-P404Component,
-BaseComponent,
-CardComponent,
-LoaderComponent,
-SidebarComponent,
-ToolbarComponent,
-TableComponent,
-FormComponent,
-BsNotify
-}
