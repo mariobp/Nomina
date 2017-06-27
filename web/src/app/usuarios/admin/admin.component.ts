@@ -93,5 +93,6 @@ export class ListAdminComponent {
         { data: 'telefono' }
     ];
 
+
     constructor(private _as: AdminService) { }
 }
