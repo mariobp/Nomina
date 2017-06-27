@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { CallService, CrudService } from '../../../lib/services';
+
 
 @Injectable()
-export class CesantiasService {
-    constructor() { }
+export class CesantiasService extends CrudService{
+    constructor(protected _cl: CallService, protected _rt: Router) {
+      super(_cl, _rt, 'recursos/cesantia/');
+    }
 }

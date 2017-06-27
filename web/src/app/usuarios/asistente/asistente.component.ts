@@ -77,7 +77,7 @@ export class AsistenteListComponent {
     @ViewChild('table') private table: TableComponent;
 
     icon = 'supervisor_account';
-    title = 'Asistente'
+    title = 'Asistente';
     service = this._as;
     multiselect = true;
     columns = [
