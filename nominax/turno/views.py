@@ -21,8 +21,8 @@ supra.SupraConf.ACCECC_CONTROL["methods"] = "POST, GET, PUT, DELETE ,OPTIONS"
 supra.SupraConf.body = True
 
 
-def marcar_turno(request, id):
-    empleado = recursos_h.Empleado.objects.filter(pk=id).first()
+def marcar_turno(request, pk):
+    empleado = recursos_h.Empleado.objects.filter(pk=pk).first()
     if empleado:
         ultimo = models.Turno.filter(empleado__pk=empleado.pk).order_by('pk').first()
         if ultimo is None or ultimo.salida is not None:
