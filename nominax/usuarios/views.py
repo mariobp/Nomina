@@ -44,7 +44,7 @@ class MasterList(supra.SupraListView):
     search_key = 'q'
     list_filter = ["id"]
     paginate_by = 10
-    
+
     @method_decorator(check_login)
     def dispatch(self, request, *args, **kwargs):
         return super(MasterList, self).dispatch(request, *args, **kwargs)
@@ -123,10 +123,17 @@ class AsistenteSupraFormDelete(supra.SupraDeleteView):
 class AsistenteList(MasterList):
     model = models.Asistente
     list_display = ['first_name', 'last_name', 'username', 'identificacion', 'fecha_nacimiento', 'email', 'direccion',
-                    'telefono', 'fijo', 'creator', 'last_editor', 'imagen', 'id']
+                    'telefono', 'fijo', 'creator', 'last_editor', 'avatar', 'id']
     search_fields = ['first_name', 'last_name',
                      'identificacion', 'email', 'username']
     paginate_by = 10
+
+    def avatar(self, obj, now):
+        if obj.imagen:
+            return "/media/%s" % (obj.imagen)
+        # end if
+        return None
+    # end def
 # end class
 
 
@@ -178,10 +185,17 @@ class AdministradorSupraFormDelete(supra.SupraDeleteView):
 class AdministradorList(MasterList):
     model = models.Administrador
     list_display = ['first_name', 'last_name', 'username', 'identificacion', 'fecha_nacimiento', 'email', 'direccion',
-                    'telefono', 'fijo', 'creator', 'last_editor', 'imagen', 'id']
+                    'telefono', 'fijo', 'creator', 'last_editor', 'avatar', 'id']
     search_fields = ['first_name', 'last_name',
                      'identificacion', 'email', 'username']
     paginate_by = 10
+
+    def avatar(self, obj, now):
+        if obj.imagen:
+            return "/media/%s" % (obj.imagen)
+        # end if
+        return None
+    # end def
 # end class
 
 
