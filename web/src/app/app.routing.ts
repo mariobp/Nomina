@@ -14,7 +14,7 @@ export interface MenuMeta {
 export const AppRoutes: Routes = [
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     {
-        path: '', component: BaseComponent, canActivate: [AuthGuard], canActivateChild: [AuthGuard], data: { preload: true }, children: [
+        path: '', component: BaseComponent, canActivate: [AuthGuard], data: { preload: true }, children: [
             { path: '', loadChildren: './home/home.module#HomeModule' },
             { path: 'usuarios', loadChildren: './usuarios/usuarios.module#UsuariosModule' },
             { path: 'turno', loadChildren: './turno/turno.module#TurnoModule' },
