@@ -7,6 +7,7 @@ from supra import views as supra
 from django.utils.decorators import method_decorator
 from nominax.decorator import check_login
 import models
+import json
 # Create your views here.
 supra.SupraConf.ACCECC_CONTROL["allow"] = True
 supra.SupraConf.ACCECC_CONTROL["origin"] = ORIGIN
@@ -20,7 +21,7 @@ class NominaSupraList(supra.SupraListView):
     model = models.Nomina
     list_display = ['id', 'empleado_f', 'corte_f', 'fecha', 'salario_base', 'subsidio_trasporte', 'extras', 'extra_nocturna', 'extra_diurna', 'extra_dominical', 'prestaciones_sociales', 'salario_produccion', 'bonificacion']
     search_fields = ['empleado__nombre', 'empleado__apellidos', 'empleado__cedula', ]
-    list_filter = ['empleado', 'empleado__cargo', 'fecha']
+    list_filter = ['empleado', 'empleado__cargo', 'fecha', 'corte']
     search_key = 'q'
     paginate_by = 10
 
@@ -53,5 +54,22 @@ class NominaSupraList(supra.SupraListView):
                 queryset = queryset.order_by(propiedad)
         # end if
         return queryset
+    # end def
+# end class
+
+
+class CorteSupraList(supra.SupraListView):
+    model = models.Corte
+    list_display = ['fecha_inicio', 'fecha_fin', 'cerrado', 'nominas']
+
+    def nominas(self, obj, now):
+        class request():
+            method = "GET"
+            GET = {'corte': obj.pk}
+        # end class
+        lista = ContraoSupraList(dict_only=True)
+        lista.paginate_by = None
+        lista.dispatch(request=request())
+        return json.dumps(lista)
     # end def
 # end class

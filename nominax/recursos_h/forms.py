@@ -151,6 +151,15 @@ class ContratoForm(forms.ModelForm):
         fields = ["empleado", 'fecha_inicio', 'salario_base', 'tipo_contrato', 'descanso_turno', 'inicio_descanso', 'fecha_finalizacion']
     # end class
 
+    @staticmethod
+    def get_instance(empleado):
+        instance = models.Contrato.get_instance(empleado)
+        if instance:
+            return instance
+        # end if
+        raise forms.ValidationError("El empleado no tiene un contrato vigente")
+    # end def
+
     def __init__(self, *args, **kwargs):
         super(ContratoForm, self).__init__(*args, **kwargs)
         self.fields['fecha_inicio'].input_formats = (

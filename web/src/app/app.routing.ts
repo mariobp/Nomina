@@ -29,6 +29,7 @@ export const AppRoutes: Routes = [
 
 import { UsuariosMenuMeta } from './usuarios/route';
 import { ObligacionesMenuMeta } from './obligaciones/route';
+import { ConfiguracionMenuMeta } from './configuracion/configuracion.route';
 
 export const AppMenuMeta: MenuMeta[] = [
     { title: 'Inico', url: '/dashboard', icon: 'dashboard' },
@@ -37,5 +38,5 @@ export const AppMenuMeta: MenuMeta[] = [
     { title: 'Obligaciones', icon: 'assignment', children: ObligacionesMenuMeta },
     { title: 'Empleados', icon: 'account_box', children: null },
     { title: 'Nomina', icon: 'monetization_on', children: null },
-    { title: 'Configuración', icon: 'settings_applications', children: null }
+    { title: 'Configuración', icon: 'settings_applications', children: ConfiguracionMenuMeta }
 ];
