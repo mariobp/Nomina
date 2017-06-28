@@ -5,9 +5,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DateValueAccessorModule } from 'angular-date-value-accessor';
 import { LibModule } from '../../lib/lib.module';
 import { UsuariosRoutes } from './route';
-import { AsistenteService, AsistenteResolver } from './asistente/asistente.service';
+import { AsistenteService } from './asistente/asistente.service';
 import { AsistenteComponent, AsistenteEditComponent, AsistenteListComponent } from './asistente/asistente.component';
-import { AdminComponent } from './admin/admin.component';
+import { AdminComponent, EditAdminComponent, ListAdminComponent } from './admin/admin.component';
+import { AdminService } from './admin/admin.service';
+
 @NgModule({
     imports: [
         CommonModule,
@@ -18,9 +20,16 @@ import { AdminComponent } from './admin/admin.component';
         RouterModule.forChild(UsuariosRoutes)
     ],
     declarations: [
-        AsistenteComponent, AsistenteListComponent, AsistenteEditComponent,
-        AdminComponent
+        AsistenteComponent,
+        AsistenteListComponent,
+        AsistenteEditComponent,
+        AdminComponent,
+        EditAdminComponent,
+        ListAdminComponent
     ],
-    providers: [ AsistenteService, AsistenteResolver ]
+    providers: [
+        AsistenteService,
+        AdminService
+    ]
 })
 export class UsuariosModule { }

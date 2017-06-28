@@ -4,12 +4,12 @@ import { LibModule } from '../../lib/lib.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import { SaludComponent } from './salud/salud.component';
-import { EpsComponent } from './eps/eps.component';
-import { CompensacionComponent } from './compensacion/compensacion.component';
-import { CesantiasComponent } from './cesantias/cesantias.component';
+import { PensionComponent, PensionListComponent } from './pension/pension.component';
+import { EpsComponent, EpsListComponent } from './eps/eps.component';
+import { CompensacionComponent, CompensacionListComponent } from './compensacion/compensacion.component';
+import { CesantiasComponent, CesantiasListComponent } from './cesantias/cesantias.component';
 
-import { SaludService } from './salud/salud.service';
+import { PensionService } from './pension/pension.service';
 import { EpsService } from './eps/eps.service';
 import { CompensacionService } from './compensacion/compensacion.service';
 import { CesantiasService } from './cesantias/cesantias.service';
@@ -23,7 +23,16 @@ import { ObligacionesRoutes } from './route';
         ReactiveFormsModule,
         RouterModule.forChild(ObligacionesRoutes)
     ],
-    declarations: [SaludComponent, EpsComponent, CompensacionComponent, CesantiasComponent],
-    providers: [SaludService, EpsService, CompensacionService, CesantiasService]
+    declarations: [
+      PensionComponent,
+      PensionListComponent,
+      EpsComponent,
+      EpsListComponent,
+      CompensacionComponent,
+      CompensacionListComponent,
+      CesantiasComponent,
+      CesantiasListComponent
+    ],
+    providers: [PensionService, EpsService, CompensacionService, CesantiasService]
 })
 export class ObligacionesModule { }

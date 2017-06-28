@@ -35,7 +35,7 @@ ALLOWED_HOSTS = [
     '*',
 ]
 
-ORIGIN = "http://192.168.1.19:4200"
+ORIGIN = "*"
 
 # Application definition
 

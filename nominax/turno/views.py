@@ -20,10 +20,10 @@ supra.SupraConf.ACCECC_CONTROL["methods"] = "POST, GET, PUT, DELETE ,OPTIONS"
 supra.SupraConf.body = True
 
 
-def marcar_turno(request, id):
-    empleado = recursos_h.Empleado.objects.filter(pk=id).first()
+def marcar_turno(request, pk):
+    empleado = recursos_h.Empleado.objects.filter(pk=pk).first()
     if empleado:
-        ultimo = models.Turno.filter(empleado__pk=empleado.pk).order_by('pk').first()
+        ultimo = models.Turno.objects.filter(empleado__pk=empleado.pk).order_by('pk').first()
         if ultimo is None or ultimo.salida is not None:
             turno = models.Turno()
             turno.entrada = timezone.now()
@@ -39,6 +39,7 @@ def marcar_turno(request, id):
 class MasterList(supra.SupraListView):
     search_key = 'q'
     list_filter = ["id"]
+    paginate_by = 10
 
     @method_decorator(check_login)
     def dispatch(self, request, *args, **kwargs):
@@ -47,7 +48,7 @@ class MasterList(supra.SupraListView):
 
     def get_queryset(self):
         queryset = super(MasterList, self).get_queryset()
-        if self.request.GET.get('length', False):
+        if self.request.GET.get('num_page', False):
             self.paginate_by = self.request.GET.get('length', False)
         # end if
         propiedad = self.request.GET.get('sort_property', False)

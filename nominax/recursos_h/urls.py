@@ -44,7 +44,7 @@ urlpatterns += [
 """
 urlpatterns += [
     url(r'^caja/form/$', views.CajaSupraForm.as_view(), name="caja"),
-    url(r'^caja/list/$', views.CargoSupraList.as_view(), name="caja_list"),
+    url(r'^caja/list/$', views.CajaSupraList.as_view(), name="caja_list"),
     url(r'^caja/form/(?P<pk>\d+)/$',
         views.CajaSupraForm.as_view(), name="caja_edit"),
     url(r'^caja/delete/(?P<pk>\d+)/$',

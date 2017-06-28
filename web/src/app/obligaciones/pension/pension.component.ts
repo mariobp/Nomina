@@ -2,23 +2,23 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { TableComponent } from '../../../lib/table/table.component';
-import { CesantiasService } from './cesantias.service';
+import { PensionService } from './pension.service';
 
 @Component({
     template: '<router-outlet></router-outlet>'
 })
-export class CesantiasComponent { }
+export class PensionComponent {}
 
 @Component({
-    templateUrl: './list.cesantias.component.html'
+  templateUrl: './list.pension.component.html'
 })
-export class CesantiasListComponent {
+export class PensionListComponent implements OnInit {
 
     @ViewChild('table') private table: TableComponent;
 
-    icon = 'accessibility';
-    title = 'Cesantías';
-    service = this._cs;
+    icon = 'local_atm';
+    title = 'Pensión';
+    service = this._as;
     multiselect = true;
     columns = [
         {
@@ -32,5 +32,12 @@ export class CesantiasListComponent {
         { data: 'codigo' },
     ]
 
-    constructor(private _cs: CesantiasService) { }
+    constructor(private _as: PensionService) { }
+
+    onChange($event) {
+        console.log($event);
+    }
+
+    ngOnInit() { }
+
 }
