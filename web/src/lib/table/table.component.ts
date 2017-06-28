@@ -142,7 +142,7 @@ export class TableComponent implements OnInit {
     onDelete() {
         swal({
             title: 'Estás seguro? ',
-            text: `Se eliminaran ${this.selectedItems.length} registro(s).`,
+            text: `Se eliminarán ${this.selectedItems.length} registro(s).`,
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#213b78',
@@ -157,7 +157,12 @@ export class TableComponent implements OnInit {
             Promise.all(deletedList)
                 .then(data => {
                     this.dataTable.ajax.reload();
-                    swal('Eliminado!', 'Todos los registros se eliminaron con exito', 'success');
+                    swal({
+                        title: 'Eliminado!',
+                        text: 'Todos los registros se eliminaron con exito',
+                        type: 'success',
+                        confirmButtonColor: '#213b78',
+                    });
                 })
                 .catch(err => {
                     this.dataTable.ajax.reload();

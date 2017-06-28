@@ -1,5 +1,5 @@
 <ex-card [icon]="icon" [title]="title">
-    <form class="form-horizontal" novalidate (submit)="save()" *ngIf="!ready" [formGroup]="form">
+    <form class="form-horizontal" novalidate (submit)="save()" [formGroup]="form">
         <div class="row">
             <div *ngFor="let column of columns;let last = last;" class="col-lg-{{12/columns.length}}">
                 <div class="form-horizontal">
@@ -22,7 +22,7 @@
         <div class="row">
             <div class="col-lg-6"></div>
             <div class="col-lg-6 text-right">
-                <button *ngIf="!item" class="btn btn-primary" (click)="save()" type="button">Guardar y Crear Otro</button>
+                <button *ngIf="!item" class="btn btn-primary" (click)="save(true)" type="button">Guardar y Crear Otro</button>
                 <input *ngIf="!item" class="btn btn-primary" type="submit" value="Guardar" />
                 <button *ngIf="!!item" class="btn btn-primary" (click)="delete()" type="button">Eliminar</button>
                 <input *ngIf="!!item" class="btn btn-primary" type="submit" value="Guardar Cambios" />

@@ -138,7 +138,12 @@ export class FormComponent implements OnInit {
                 this.service.delete(this.item.id)
                     .then(data => {
                         this.successful(data);
-                        swal('Eliminado!', 'Registros se eliminado con exito', 'success');
+                        swal({
+                            title: 'Eliminado!',
+                            text: 'Registros se eliminado con exito',
+                            type: 'success',
+                            confirmButtonColor: '#213b78',
+                        });
                     })
                     .catch(err => {
                         BsNotify.error('No se han podido eliminar los registros');
