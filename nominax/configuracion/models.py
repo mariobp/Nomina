@@ -18,6 +18,8 @@ class Configuracion(models.Model):
     segundo_dia = models.PositiveIntegerField("Segundo dia de corte", validators=[MaxValueValidator(31)], blank=True, null=True)
     h_recargo_nocturno_inicio = models.TimeField("Hora de inicio de recargo nocturno")
     h_recargo_nocturno_fin = models.TimeField("Hora de fin de recargo nocturno")
+    h_almuerzo_inicio = models.TimeField("Hora de inicio de almuerzo")
+    h_almuerzo_fin = models.TimeField("Hora de fin de almuerzo")
     creator = CurrentUserField(add_only=True, related_name="created_configuracion")
     last_editor = CurrentUserField(related_name="last_edited_configuracion")
 

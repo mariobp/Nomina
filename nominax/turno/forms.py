@@ -54,7 +54,7 @@ class datedelta():
         return datedelta()
     # end def
 
-    def difference(self, date_delta):
+    def difference_single(self, date_delta):
         if self.empty():
             return multi_datedelta()
         elif date_delta.empty():
@@ -73,6 +73,16 @@ class datedelta():
         # end if
         return multi_datedelta([datedelta(self.start_date, self.end_date)])
     # end def
+
+    def difference(self, date_delta):
+        if isinstance(date_delta, datedelta):
+            return difference_single(date_delta)
+        else:
+            delta = multi_datedelta([datedelta(self.start_date, self.end_date)])
+            return delta.difference(date_delta)
+        # end if
+    # end def
+
 
     def __str__(self):
         return "{%s - %s}" % (unicode(self.start_date), unicode(self.end_date))
@@ -96,14 +106,14 @@ class multi_datedelta():
     # end def
 
     def difference_single(self, date_delta):
-        multi_date_deltas = multi_datedelta(self.date_deltas)
+        multi_date_deltas = multi_datedelta()
         for single_dalta in self.date_deltas:
-            delta = date_delta.intersect(single_dalta)
+            delta = single_dalta.difference(date_delta)
             if not delta.empty():
-                date_deltas.append(delta)
+                multi_date_deltas = multi_date_deltas + delta
             # end for
         # end for
-        return multi_datedelta(date_deltas)
+        return multi_date_deltas
     # end def
 
     def intersect_single(self, date_delta):
@@ -128,11 +138,36 @@ class multi_datedelta():
         return multi_date_deltas
     # end def
 
+    def difference_multi(self, multi_date_delta):
+        multi_date_deltas = multi_datedelta(self.date_deltas)
+        for single_dalta in multi_date_delta.date_deltas:
+            multi_date_deltas = multi_date_delta.difference_single(single_dalta)
+        # end for
+        return multi_date_deltas
+    # end def
+    
+    def difference_periodic(self, periodic_time_delta):
+        multi_date_deltas = multi_datedelta(self.date_deltas)
+        multi_date_deltas = periodic_time_delta.invert().intersect(multi_date_deltas)
+        return multi_date_deltas
+    # end def
+
     def intersect(self, date_delta):
         if isinstance(date_delta, datedelta):
             return self.intersect_single(date_delta)
         elif isinstance(date_delta, multi_datedelta):
             return self.intersect_multi(date_delta)
+        # end if
+        return multi_datedelta()
+    # end def
+
+    def difference(self, date_delta):
+        if isinstance(date_delta, datedelta):
+            return self.difference_single(date_delta)
+        elif isinstance(date_delta, multi_datedelta):
+            return self.difference_multi(date_delta)
+        elif isinstance(date_delta, periodic_timedelta):
+            return self.difference_periodic(date_delta)
         # end if
         return multi_datedelta()
     # end def
@@ -166,6 +201,10 @@ class periodic_timedelta():
         self.end_time   = end_time
     # end def
 
+    def invert(self):
+        return periodic_timedelta(self.end_time, self.start_time)
+    # end def
+
     def intersec_by_day(self, single_date, date_delta):
         if self.start_time > self.end_time:
             delta1 = datedelta.for_day(single_date, time(0, 0, 0), self.end_time)
@@ -177,12 +216,29 @@ class periodic_timedelta():
         return delta.intersect(date_delta)
     # end def
 
-    def intersect(self, date_delta):
+    def intersect_single(self, date_delta):
         multi_date_delta = multi_datedelta()
         for single_date in date_delta.daterange():
             multi_date_delta = multi_date_delta + self.intersec_by_day(single_date, date_delta)
         # end for
         return multi_date_delta
+    # end def
+
+    def intersect_multi(self, multi_date_delta):
+        multi_delta = multi_datedelta()
+        for single_delta in multi_date_delta.date_deltas:
+            multi_delta = multi_delta + self.intersect_single(single_delta)
+        # end for
+        return multi_delta
+    # end def
+
+    def intersect(self, date_delta):
+        if isinstance(date_delta, datedelta):
+            return self.intersect_single(date_delta)
+        elif isinstance(date_delta, multi_datedelta):
+            return self.intersect_multi(date_delta)
+        # end if
+        return multi_datedelta()
     # end def
 
     def __str__(self):
@@ -212,6 +268,8 @@ class TurnoForm(forms.ModelForm):
     def poner_horas(self):
         h_recargo_nocturno_inicio = self.configuracion.h_recargo_nocturno_inicio
         h_recargo_nocturno_fin    = self.configuracion.h_recargo_nocturno_fin
+        h_almuerzo_inicio = self.configuracion.h_almuerzo_inicio
+        h_almuerzo_fin    = self.configuracion.h_almuerzo_fin
 
         instance = self.instance
         contrato = self.contrato
@@ -225,9 +283,10 @@ class TurnoForm(forms.ModelForm):
         nocturno = periodic_timedelta(h_recargo_nocturno_inicio, h_recargo_nocturno_fin)
         delta = datedelta(fecha_hora_entrada, fecha_hora_salida)
         delta_extra = datedelta(fecha_extra_inicio, fecha_extra_fin)
+        almuerzo = periodic_timedelta(h_almuerzo_inicio, h_almuerzo_fin)
 
+        print 'delta:', delta.difference(almuerzo)
         print 'nocturno:', nocturno
-        print 'delta:', delta 
         print 'delta_extra:', delta_extra
         delta_nocturno = nocturno.intersect(delta)
         print 'delta_nocturno', delta_nocturno
