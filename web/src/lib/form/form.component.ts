@@ -29,6 +29,7 @@ export class FormComponent implements OnInit {
     @Input('form') form: FormGroup;
     @Input('service') service: any;
 
+    private ready: Boolean = false;
     item: any;
 
     constructor(private _ar: ActivatedRoute) {
@@ -76,19 +77,28 @@ export class FormComponent implements OnInit {
     save(back?: boolean) {
         if (!!this.service) {
             const body = this.preSave(this.form.value);
+            this.ready = true;
             if (!!this.item) {
                 this.service.edit(this.item.id, body)
-                    .then(this.successful)
-                    .catch(this.error);
+                    .then(data => {
+                        this.ready = false;
+                        this.successful(data);
+                    })
+                    .catch(error => {
+                        this.ready = false;
+                        this.error(error);
+                    });
             } else {
                 this.service.add(body)
                     .then(data => {
                         this.form.reset();
+                        this.ready = false;
                         if (!back) {
                             this.successful(data);
                         }
                     })
                     .catch(error => {
+                        this.ready = false;
                         this._findErros(error.json());
                         this.error(error);
                     });

@@ -1,5 +1,5 @@
 <ex-card [icon]="icon" [title]="title">
-    <form class="form-horizontal" novalidate (submit)="save()" [formGroup]="form">
+    <form class="form-horizontal" novalidate (submit)="save()" *ngIf="!ready" [formGroup]="form">
         <div class="row">
             <div *ngFor="let column of columns;let last = last;" class="col-lg-{{12/columns.length}}">
                 <div class="form-horizontal">
@@ -29,4 +29,11 @@
             </div>
         </div>
     </form>
+    <div class="cargando" *ngIf="ready">
+        <div class="loader">
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+            </svg>
+        </div>
+    </div>
 </ex-card>
