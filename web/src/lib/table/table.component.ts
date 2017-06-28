@@ -1,6 +1,9 @@
 import { Component, OnInit, Input, ElementRef, ViewChild, trigger, transition, style, animate  } from '@angular/core';
 import { BsNotify } from '../bs.notify';
+import { CallService } from '../services';
+
 declare var $: any;
+declare var window: any;
 
 @Component({
     selector: 'ex-table',
@@ -29,11 +32,13 @@ export class TableComponent implements OnInit {
     public static renderAvatar(data, type, full, meta) {
         if (!data) {
             data = '/assets/img/default-avatar.png';
+        } else {
+            data = `${window._server}${data}`
         }
         return `<div class="avatar" style="background-image: url(${data});"></div>`;
     }
 
-    constructor() { }
+    constructor(public _cs: CallService) { }
 
     ngOnInit() {
         const table = this.table.nativeElement;
