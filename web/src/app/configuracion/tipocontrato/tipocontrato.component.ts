@@ -1,15 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormComponent, TableComponent, RenderInput } from '../../../lib/components'
 
 @Component({
-  selector: 'app-tipocontrato',
-  templateUrl: './tipocontrato.component.html',
-  styleUrls: ['./tipocontrato.component.scss']
+    template: '<router-outlet></router-outlet>'
 })
-export class TipocontratoComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-}
+export class TipocontratoComponent {}

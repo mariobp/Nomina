@@ -4,10 +4,10 @@ import { LibModule } from '../../lib/lib.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import { PensionComponent, PensionListComponent } from './pension/pension.component';
-import { EpsComponent, EpsListComponent } from './eps/eps.component';
-import { CompensacionComponent, CompensacionListComponent } from './compensacion/compensacion.component';
-import { CesantiasComponent, CesantiasListComponent } from './cesantias/cesantias.component';
+import { PensionComponent, PensionListComponent, EditPensionComponent } from './pension/pension.component';
+import { EpsComponent, EpsListComponent, EditEpsComponent } from './eps/eps.component';
+import { CompensacionComponent, CompensacionListComponent, EditCompensacionComponent } from './compensacion/compensacion.component';
+import { CesantiasComponent, CesantiasListComponent, EditCesantiasComponent } from './cesantias/cesantias.component';
 
 import { PensionService } from './pension/pension.service';
 import { EpsService } from './eps/eps.service';
@@ -26,12 +26,16 @@ import { ObligacionesRoutes } from './route';
     declarations: [
       PensionComponent,
       PensionListComponent,
+      EditPensionComponent,
       EpsComponent,
       EpsListComponent,
+      EditEpsComponent,
       CompensacionComponent,
       CompensacionListComponent,
+      EditCompensacionComponent,
       CesantiasComponent,
-      CesantiasListComponent
+      CesantiasListComponent,
+      EditCesantiasComponent
     ],
     providers: [PensionService, EpsService, CompensacionService, CesantiasService]
 })
