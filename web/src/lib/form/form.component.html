@@ -9,7 +9,7 @@
                             <div class="col-lg-9">
                                 <div class="form-group label-floating is-empty" [ngClass]="{'has-error': !!input.error }">
                                     <label class="control-label"></label>
-                                    <input class="form-control {{input.class}}" type="text" formControlName="{{input.name}}" id="id_{{input.name}}" />
+                                    <input class="form-control {{input.class}}" type="{{input.type}}" formControlName="{{input.name}}" id="id_{{input.name}}" />
                                     <span *ngIf="!!input.error" class="help-block">{{input.error}}</span>
                                 </div>
                             </div>
