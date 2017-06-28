@@ -4,6 +4,7 @@ import { CallService } from '../services';
 
 declare var $: any;
 declare var window: any;
+declare var swal: any;
 
 @Component({
     selector: 'ex-table',
@@ -137,5 +138,32 @@ export class TableComponent implements OnInit {
             cb({ 'recordsTotal': 0, 'recordsFiltered': 0, 'data': [] });
             BsNotify.error('No has definido un servicio que consultar');
         }
+    }
+    onDelete() {
+        swal({
+            title: 'Estás seguro? ',
+            text: `Se eliminaran ${this.selectedItems.length} registro(s).`,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#213b78',
+            cancelButtonColor: '#ff9800',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Eliminar'
+        }).then(() => {
+            const deletedList = [];
+            for (const item of this.selectedItems) {
+                deletedList.push(this.service.delete(item.id))
+            }
+            Promise.all(deletedList)
+                .then(data => {
+                    this.dataTable.ajax.reload();
+                    swal('Eliminado!', 'Todos los registros se eliminaron con exito', 'success');
+                })
+                .catch(err => {
+                    this.dataTable.ajax.reload();
+                    BsNotify.error('No se han podido eliminar los registros');
+                    console.error(err);
+                })
+        }, () => { });
     }
 }

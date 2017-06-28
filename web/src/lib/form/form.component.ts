@@ -2,7 +2,9 @@ import { Component, Input, OnInit, AfterContentChecked } from '@angular/core';
 import { FormGroup} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router'
 import { BsNotify } from '../../lib/bs.notify';
+
 declare var $: any;
+declare var swal: any;
 
 export interface RenderInput {
     column: string;
@@ -71,7 +73,7 @@ export class FormComponent implements OnInit {
         }
     }
 
-    save() {
+    save(back?: boolean) {
         if (!!this.service) {
             const body = this.preSave(this.form.value);
             if (!!this.item) {
@@ -82,7 +84,9 @@ export class FormComponent implements OnInit {
                 this.service.add(body)
                     .then(data => {
                         this.form.reset();
-                        this.successful(data);
+                        if (!back) {
+                            this.successful(data);
+                        }
                     })
                     .catch(error => {
                         this._findErros(error.json());
@@ -107,6 +111,31 @@ export class FormComponent implements OnInit {
             }
         }
 
+    }
+
+    delete() {
+        if (!!this.service && !!this.item) {
+            swal({
+                title: 'Está seguro?',
+                text: 'Se eliminará 1 registro.',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#213b78',
+                cancelButtonColor: '#ff9800',
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Eliminar'
+            }).then(() => {
+                this.service.delete(this.item.id)
+                    .then(data => {
+                        this.successful(data);
+                        swal('Eliminado!', 'Registros se eliminado con exito', 'success');
+                    })
+                    .catch(err => {
+                        BsNotify.error('No se han podido eliminar los registros');
+                        console.error(err);
+                    })
+            }, () => { });
+        }
     }
 
     preSave(body): any {
