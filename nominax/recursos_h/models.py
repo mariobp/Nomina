@@ -4,8 +4,7 @@ from __future__ import unicode_literals
 from django.db import models
 from cuser.fields import CurrentUserField
 from django.contrib.auth.models import User
-
-# Create your models here.
+from datetime import date
 
 
 class Cargo(models.Model):
@@ -140,17 +139,26 @@ class TipoContrato(models.Model):
 
 class Contrato(models.Model):
     empleado = models.ForeignKey(Empleado)
-    fecha_inicio = models.DateField()
-    salario_base = models.CharField("Salario base legal", max_length=100)
     tipo_contrato = models.ForeignKey(TipoContrato)
+    salario_base = models.CharField("Salario base legal", max_length=100)
+    
+    fecha_inicio = models.DateField()
+    fecha_finalizacion = models.DateField(blank=True, null=True)
+    
     descanso_turno = models.BooleanField("Descanso entre turnos")
     inicio_descanso = models.IntegerField("Hora de inicio de descanso", blank=True, null=True)
     duracion_descanso = models.IntegerField("Duración de descanso en minutos", blank=True, null=True)
-    fecha_finalizacion = models.DateField(blank=True, null=True)
+    horas_trabajo = models.IntegerField("Horas de trabajo", default=8)
+    
     creator = CurrentUserField(add_only=True, related_name="created_contrato")
     last_editor = CurrentUserField(related_name="last_edited_contrato")
     eliminado = models.BooleanField(default=False)
     eliminado_por = models.ForeignKey(User, related_name="eliminado_por_contrato", blank=True, null=True)
+
+    @staticmethod
+    def get_instance(empleado):
+        return Contrato.objects.filter(empleado=empleado).exclude(fecha_finalizacion__lte=date.today()).order_by('fecha_inicio').last()
+    # end def
 
     def __unicode__(self):
         return u"Contrato de %s %s" % (self.empleado.nombre, self.empleado.apellidos)
