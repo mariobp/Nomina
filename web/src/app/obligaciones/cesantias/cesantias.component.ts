@@ -26,8 +26,8 @@ export class EditCesantiasComponent implements AfterViewInit {
 
     constructor(private _fb: FormBuilder, private _cs: CesantiasService, private _rt: Router) {
       this.form = this._fb.group({
-          nombre: ['', Validators.required, Validators.maxLength(30)],
-          codigo: ['', Validators.required, Validators.maxLength(30)]
+          nombre: ['', [Validators.required, Validators.maxLength(30)]],
+          codigo: ['', [Validators.required, Validators.maxLength(30)]]
       });
       this.columns = ['col1', ];
       this.renderinputs = [

@@ -57,10 +57,10 @@ export class EditTipoContratoComponent implements AfterViewInit {
     constructor(private _fb: FormBuilder, private _s: TipoContratoService , private _rt: Router) {
         this.form = this._fb.group({
           nombre: ['', Validators.required],
-          extra_diurna: ['', Validators.required, Validators.min(1), Validators.max(100)],
-          extra_nocturna: ['', Validators.required, Validators.min(1), Validators.max(100)],
-          extra_dominical: ['', Validators.required, Validators.min(1), Validators.max(100)],
-          extra_dominical_nocturna: ['', Validators.required, Validators.min(1), Validators.max(100)],
+          extra_diurna: ['', [Validators.required, Validators.min(1), Validators.max(100)]],
+          extra_nocturna: ['', [Validators.required, Validators.min(1), Validators.max(100)]],
+          extra_dominical: ['', [Validators.required, Validators.min(1), Validators.max(100)]],
+          extra_dominical_nocturna: ['', [Validators.required, Validators.min(1), Validators.max(100)]],
         });
         this.columns = [ 'col1' ];
         this.renderinputs = [
