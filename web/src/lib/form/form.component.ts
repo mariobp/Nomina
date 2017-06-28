@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, AfterContentChecked } from '@angular/core';
 import { FormGroup} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router'
 import { BsNotify } from '../../lib/bs.notify';
@@ -38,20 +38,25 @@ export class FormComponent implements OnInit {
             this.item = this._ar.snapshot.data['item'];
             this.form.patchValue(this.item);
         }
-        $('.datetimepicker').datetimepicker({
-            format: 'DD/MM/YYYY',
-            icons: {
-                time: 'fa fa-clock-o',
-                date: 'fa fa-calendar',
-                up: 'fa fa-chevron-up',
-                down: 'fa fa-chevron-down',
-                previous: 'fa fa-chevron-left',
-                next: 'fa fa-chevron-right',
-                today: 'fa fa-screenshot',
-                clear: 'fa fa-trash',
-                close: 'fa fa-remove'
-            }
-        });
+    }
+
+    onLast(last: boolean) {
+        if (last) {
+            $('.datetimepicker').datetimepicker({
+                format: 'DD/MM/YYYY',
+                icons: {
+                    time: 'fa fa-clock-o',
+                    date: 'fa fa-calendar',
+                    up: 'fa fa-chevron-up',
+                    down: 'fa fa-chevron-down',
+                    previous: 'fa fa-chevron-left',
+                    next: 'fa fa-chevron-right',
+                    today: 'fa fa-screenshot',
+                    clear: 'fa fa-trash',
+                    close: 'fa fa-remove'
+                }
+            });
+        }
     }
 
     isValid(): boolean {

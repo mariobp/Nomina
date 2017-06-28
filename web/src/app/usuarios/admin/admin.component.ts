@@ -47,9 +47,9 @@ export class EditAdminComponent implements AfterViewInit {
             { column: 'col2', title: 'Correo', type: 'email', name: 'email' },
             { column: 'col1', title: 'Nombre', type: 'text', name: 'first_name' },
             { column: 'col1', title: 'Apellido', type: 'text', name: 'last_name' },
-            { column: 'col1', title: 'Identificacion', type: 'text', name: 'identificacion' },
+            { column: 'col1', title: 'Identificación', type: 'text', name: 'identificacion' },
             { column: 'col1', title: 'Fecha de nacimiento', type: 'date', name: 'fecha_nacimiento', class: 'datetimepicker' },
-            { column: 'col1', title: 'Direccion', type: 'text', name: 'direccion' },
+            { column: 'col1', title: 'Dirección', type: 'text', name: 'direccion' },
             { column: 'col1', title: 'Celular', type: 'text', name: 'telefono' },
             { column: 'col1', title: 'Telefono', type: 'text', name: 'fijo' }
         ]
@@ -82,7 +82,7 @@ export class ListAdminComponent {
             className: 'text-center',
             orderable: false,
             searchable: false,
-            data: 'imagen',
+            data: 'avatar',
             render: TableComponent.renderAvatar
         },
         { data: 'username' },
