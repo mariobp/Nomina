@@ -27,10 +27,10 @@ export class EditEpsComponent implements AfterViewInit {
 
     constructor(private _fb: FormBuilder, private _s: EpsService, private _rt: Router) {
         this.form = this._fb.group({
-            nombre: ['', Validators.required],
-            codigo: ['', Validators.required]
+            nombre: ['', Validators.required, Validators.maxLength(30)],
+            codigo: ['', Validators.required, Validators.maxLength(30)]
         });
-        this.columns = ['col1',];
+        this.columns = ['col1', ];
         this.renderinputs = [
             { column: 'col1', title: 'Nombre', type: 'text', name: 'nombre' },
             { column: 'col1', title: 'Código', type: 'text', name: 'codigo' },
