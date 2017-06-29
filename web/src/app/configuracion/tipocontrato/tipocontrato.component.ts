@@ -29,10 +29,7 @@ export class TipoContratoListComponent {
             render: TableComponent.renderCheckRow
         },
         { data: 'nombre' },
-        { data: 'extra_diurna' },
-        { data: 'extra_nocturna' },
-        { data: 'extra_dominical' },
-        { data: 'extra_dominical_nocturna' }
+        { data: 'modalidad_nombre' }
     ]
 
     constructor(private _cs: TipoContratoService) { }
@@ -57,18 +54,19 @@ export class EditTipoContratoComponent implements AfterViewInit {
     constructor(private _fb: FormBuilder, private _s: TipoContratoService , private _rt: Router) {
         this.form = this._fb.group({
           nombre: ['', Validators.required],
+          /*
           extra_diurna: ['', [Validators.required, Validators.min(1), Validators.max(100)]],
           extra_nocturna: ['', [Validators.required, Validators.min(1), Validators.max(100)]],
           extra_dominical: ['', [Validators.required, Validators.min(1), Validators.max(100)]],
-          extra_dominical_nocturna: ['', [Validators.required, Validators.min(1), Validators.max(100)]],
+          extra_dominical_nocturna: ['', [Validators.required, Validators.min(1), Validators.max(100)]],*/
         });
         this.columns = [ 'col1' ];
         this.renderinputs = [
           { column: 'col1', title: 'Nombre', type: 'text', name: 'nombre'},
-          { column: 'col1', title: 'Hora extra diurna', type: 'number', name: 'extra_diurna'},
+        /*  { column: 'col1', title: 'Hora extra diurna', type: 'number', name: 'extra_diurna'},
           { column: 'col1', title: 'Hora extra nocturna', type: 'number', name: 'extra_nocturna'},
           { column: 'col1', title: 'Hora extra dominical', type: 'number', name: 'extra_dominical'},
-          { column: 'col1', title: 'Hora extra dominical nocturna', type: 'number', name: 'extra_dominical_nocturna'}
+          { column: 'col1', title: 'Hora extra dominical nocturna', type: 'number', name: 'extra_dominical_nocturna'}*/
         ];
     }
 
