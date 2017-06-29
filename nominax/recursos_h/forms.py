@@ -114,7 +114,7 @@ class TipoContratoForm(forms.ModelForm):
 
     class Meta:
         model = models.TipoContrato
-        fields = ['nombre', 'extra_diurna', 'extra_nocturna', 'extra_dominical', 'extra_dominical_nocturna']
+        fields = ['nombre', 'modalidad']
     # end class
 # end class
 
@@ -123,7 +123,7 @@ class TipoContratoFormEdit(MasterEdit):
 
     class Meta:
         model = models.TipoContrato
-        fields = ['nombre', 'extra_diurna', 'extra_nocturna', 'extra_dominical', 'extra_dominical_nocturna', 'eliminado']
+        fields = ['nombre', 'modalidad']
     # end class
 # end class
 

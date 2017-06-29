@@ -4,6 +4,7 @@ import { CallService } from '../services';
 
 declare var $: any;
 declare var window: any;
+declare var swal: any;
 
 @Component({
     selector: 'ex-table',
@@ -18,6 +19,7 @@ export class TableComponent implements OnInit {
     @Input('service') public service: any;
     @Input('columns') public columns: any[] = [{ data: 'id' }];
     @Input('multiselect') public multiselect = false;
+    @Input('deleteable') public deleteable = true;
 
     private dataTable: any;
     public selectedItems: any[] = [];
@@ -136,6 +138,41 @@ export class TableComponent implements OnInit {
         } else {
             cb({ 'recordsTotal': 0, 'recordsFiltered': 0, 'data': [] });
             BsNotify.error('No has definido un servicio que consultar');
+        }
+    }
+
+    onDelete() {
+        if (this.deleteable) {
+            swal({
+                title: 'Estás seguro? ',
+                text: `Se eliminarán ${this.selectedItems.length} registro(s).`,
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#213b78',
+                cancelButtonColor: '#ff9800',
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Eliminar'
+            }).then(() => {
+                const deletedList = [];
+                for (const item of this.selectedItems) {
+                    deletedList.push(this.service.delete(item.id))
+                }
+                Promise.all(deletedList)
+                    .then(data => {
+                        this.dataTable.ajax.reload();
+                        swal({
+                            title: 'Eliminado!',
+                            text: 'Todos los registros se eliminaron con exito',
+                            type: 'success',
+                            confirmButtonColor: '#213b78',
+                        });
+                    })
+                    .catch(err => {
+                        this.dataTable.ajax.reload();
+                        BsNotify.error('No se han podido eliminar los registros');
+                        console.error(err);
+                    })
+            }, () => { });
         }
     }
 }

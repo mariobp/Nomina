@@ -116,11 +116,12 @@ class Empleado(models.Model):
 
 
 class TipoContrato(models.Model):
+    opciones = (
+        (1, 'Por hora'),
+        (2, 'Salario fijo')
+    )
     nombre = models.CharField(max_length=100)
-    extra_diurna = models.IntegerField("Hora extra diurna")
-    extra_nocturna = models.IntegerField("Hora extra nocturna")
-    extra_dominical = models.IntegerField("Hora extra dominical")
-    extra_dominical_nocturna = models.IntegerField("Hora extra dominical nocturna")
+    modalidad = models.IntegerField(choices=opciones)
     creator = CurrentUserField(add_only=True, related_name="created_tipo_contrato")
     last_editor = CurrentUserField(related_name="last_edited_tipo_contrato")
     eliminado = models.BooleanField(default=False)
@@ -141,15 +142,15 @@ class Contrato(models.Model):
     empleado = models.ForeignKey(Empleado)
     tipo_contrato = models.ForeignKey(TipoContrato)
     salario_base = models.CharField("Salario base legal", max_length=100)
-    
+
     fecha_inicio = models.DateField()
     fecha_finalizacion = models.DateField(blank=True, null=True)
-    
+
     descanso_turno = models.BooleanField("Descanso entre turnos")
     inicio_descanso = models.IntegerField("Hora de inicio de descanso", blank=True, null=True)
     duracion_descanso = models.IntegerField("Duración de descanso en minutos", blank=True, null=True)
     horas_trabajo = models.IntegerField("Horas de trabajo", default=8)
-    
+
     creator = CurrentUserField(add_only=True, related_name="created_contrato")
     last_editor = CurrentUserField(related_name="last_edited_contrato")
     eliminado = models.BooleanField(default=False)
