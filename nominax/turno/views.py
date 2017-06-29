@@ -28,6 +28,7 @@ def marcar_turno(request, pk):
         if ultimo is None or ultimo.salida is not None:
             turno = models.Turno()
             turno.entrada = timezone.now()
+            turno.empleado = empleado
             turno.save()
         else:
             ultimo.salida = timezone.now()
