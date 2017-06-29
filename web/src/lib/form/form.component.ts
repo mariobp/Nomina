@@ -37,10 +37,14 @@ export class FormComponent implements OnInit {
     }
     constructor(private _ar: ActivatedRoute) { }
 
+    setItem(item: any) {
+        this.item = item;
+        this.form.patchValue(this.item);
+    }
+
     ngOnInit() {
-        if (Object.keys(this._ar.snapshot.data['item']).length !== 0) {
-            this.item = this._ar.snapshot.data['item'];
-            this.form.patchValue(this.item);
+        if (!!this._ar.snapshot.data['item'] && Object.keys(this._ar.snapshot.data['item']).length !== 0) {
+            this.setItem(this._ar.snapshot.data['item']);
         }
         this.form.valueChanges.subscribe(data => this.onValueChanged(data));
     }
