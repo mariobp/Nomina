@@ -322,7 +322,7 @@ class TipoContratoSupraList(MasterList):
     list_display = ['id', 'nombre', 'modalidad_nombre', 'modalidad']
     search_fields = ['nombre', ]
 
-    def modo(self, obj, now):
+    def modalidad_nombre(self, obj, now):
         if obj.modalidad == 1:
             nombre = "Por hora"
         else:
