@@ -319,8 +319,17 @@ class CesantiaSupraFormDelete(supra.SupraDeleteView):
 
 class TipoContratoSupraList(MasterList):
     model = models.TipoContrato
-    list_display = ['id', 'nombre', 'extra_diurna', 'extra_nocturna', 'extra_dominical', 'extra_dominical_nocturna']
+    list_display = ['id', 'nombre', 'modo']
     search_fields = ['nombre', ]
+
+    def modo(self, obj, now):
+        if obj.modalidad == 1:
+            nombre = "Por hora"
+        else:
+            nombre = "Salario fijo"
+        # end if
+        return {"id": obj.modalidad, "nombre": nombre}
+    # end def
 # end class
 
 

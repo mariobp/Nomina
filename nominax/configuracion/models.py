@@ -20,6 +20,10 @@ class Configuracion(models.Model):
     h_recargo_nocturno_fin = models.TimeField("Hora de fin de recargo nocturno")
     h_almuerzo_inicio = models.TimeField("Hora de inicio de almuerzo")
     h_almuerzo_fin = models.TimeField("Hora de fin de almuerzo")
+    extra_diurna = models.IntegerField("Valor hora extra diurna")
+    extra_nocturna = models.IntegerField("Valor hora extra nocturna")
+    extra_dominical = models.IntegerField("Valor hora extra dominical")
+    extra_dominical_nocturna = models.IntegerField("Valor hora extra dominical nocturna")
     creator = CurrentUserField(add_only=True, related_name="created_configuracion")
     last_editor = CurrentUserField(related_name="last_edited_configuracion")
 

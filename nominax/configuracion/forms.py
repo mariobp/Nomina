@@ -12,10 +12,10 @@ class ConfiguracionForm(forms.ModelForm):
 
     @staticmethod
     def get_instance():
-    	instance = models.Configuracion.get_instance()
-    	if instance:
-    		return instance
-    	# end if
-    	raise forms.ValidationError('No se ha creado una configuración válida')
+        instance = models.Configuracion.get_instance()
+        if instance:
+            return instance
+        # end if
+        raise forms.ValidationError('No se ha creado una configuración válida')
     # end def
 # end class
