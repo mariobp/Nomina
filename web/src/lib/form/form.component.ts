@@ -5,12 +5,19 @@ import { BsNotify } from '../../lib/bs.notify';
 
 declare var $: any;
 declare var swal: any;
-
+export interface SelectInput {
+    title: string;
+    value: string;
+}
 export interface RenderInput {
     column: string;
     title: string;
     type: string;
     name: string;
+    isSelect?: boolean;
+    multiple?: boolean;
+    disabled?: boolean;
+    options?: SelectInput[];
     class?: string;
     error?: string;
     noitem?: boolean;
@@ -43,9 +50,17 @@ export class FormComponent implements OnInit {
     }
 
     ngOnInit() {
+<<<<<<< HEAD
         if (!!this._ar.snapshot.data['item'] && Object.keys(this._ar.snapshot.data['item']).length !== 0) {
             this.setItem(this._ar.snapshot.data['item']);
+=======
+
+        if (!!this._ar.snapshot.data['item'] && Object.keys(this._ar.snapshot.data['item']).length !== 0) {
+            this.item = this._ar.snapshot.data['item'];
+            this.form.patchValue(this.item);
+>>>>>>> 39ed1c4e52e134b029d06b4188becfdb54fc1e27
         }
+
         this.form.valueChanges.subscribe(data => this.onValueChanged(data));
     }
 
@@ -70,6 +85,10 @@ export class FormComponent implements OnInit {
 
     onLast(last: boolean) {
         if (last) {
+            if ($('.selectpicker').length !== 0) {
+                $('.selectpicker').selectpicker();
+            }
+
             $('.datetimepicker').datetimepicker({
                 format: 'DD/MM/YYYY',
                 icons: {
