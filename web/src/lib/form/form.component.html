@@ -7,9 +7,13 @@
                         <div *ngIf="isRender(column, input.column, input.noitem)" class="row">
                             <label class="col-lg-3 label-on-left" for="id_{{input.name}}">{{input.title}}:</label>
                             <div class="col-lg-9">
-                                <div class="form-group label-floating is-empty" [ngClass]="{'has-error': !!input.error }">
+                                <div class="form-group label-floating is-empty" [class.has-error]="!!input.error" [class.has-success]="!input.error">
                                     <label class="control-label"></label>
-                                    <input class="form-control {{input.class}}" type="{{input.type}}" formControlName="{{input.name}}" id="id_{{input.name}}" />
+                                    <input *ngIf="!input.isSelect" [disabled]="input.disabled" class="form-control {{input.class}}" [type]="input.type" [formControlName]="input.name" />
+                                    <select *ngIf="input.isSelect" class="selectpicker {{input.class}}" [disabled]="input.disabled" [formControlName]="input.name" data-style="select-with-transition" [multiple]="input.multiple" [title]="input.title" data-size="7" id="id_{{input.name}}">
+                                        <option selected disabled value="-1">{{input.title}}</option>
+                                        <option *ngFor="let option of input.options" [value]="option.value">{{option.title}}</option>
+                                    </select>
                                     <span *ngIf="!!input.error" class="help-block">{{input.error}}</span>
                                 </div>
                             </div>
@@ -22,10 +26,10 @@
         <div class="row">
             <div class="col-lg-6"></div>
             <div class="col-lg-6 text-right">
-                <button *ngIf="!item" class="btn btn-primary" (click)="save(true)" type="button">Guardar y Crear Otro</button>
-                <input *ngIf="!item" class="btn btn-primary" type="submit" value="Guardar" />
+                <button *ngIf="!item" class="btn btn-primary" (click)="save(true)" type="button" [disabled]="!isValid()">Guardar y Crear Otro</button>
+                <input *ngIf="!item" class="btn btn-primary" [disabled]="!isValid()" type="submit" value="Guardar" />
                 <button *ngIf="!!item && deleteable" class="btn btn-warning" (click)="delete()" type="button">Eliminar</button>
-                <input *ngIf="!!item" class="btn btn-primary" type="submit" value="Guardar Cambios" />
+                <input *ngIf="!!item" class="btn btn-primary" type="submit" value="Guardar Cambios" [disabled]="!isValid()" />
             </div>
         </div>
     </form>
@@ -36,4 +40,5 @@
             </svg>
         </div>
     </div>
+    <pre> value: {{form.value | json }}</pre>
 </ex-card>
