@@ -11,6 +11,7 @@ from nominax.decorator import check_login
 import models
 import forms
 from django.utils import timezone
+from django.http import HttpResponse
 
 supra.SupraConf.ACCECC_CONTROL["allow"] = True
 supra.SupraConf.ACCECC_CONTROL["origin"] = ORIGIN
@@ -32,7 +33,9 @@ def marcar_turno(request, pk):
             ultimo.salida = timezone.now()
             ultimo.save()
         # end if
+        return HttpResponse()
     # end if
+    return HttpResponse(status=400)
 # end def
 
 
