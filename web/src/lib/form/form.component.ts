@@ -28,18 +28,39 @@ export class FormComponent implements OnInit {
     @Input('renderinputs') renderinputs: RenderInput[];
     @Input('form') form: FormGroup;
     @Input('service') service: any;
+    @Input('deleteable') public deleteable = true;
 
     private ready: Boolean = false;
     item: any;
-
-    constructor(private _ar: ActivatedRoute) {
-
+    private errorMessages = {
+        email: 'texto para error de email'
     }
+    constructor(private _ar: ActivatedRoute) { }
 
     ngOnInit() {
         if (Object.keys(this._ar.snapshot.data['item']).length !== 0) {
             this.item = this._ar.snapshot.data['item'];
             this.form.patchValue(this.item);
+        }
+        this.form.valueChanges.subscribe(data => this.onValueChanged(data));
+    }
+
+    onValueChanged(data) {
+        if (!this.form) { return; }
+        for (const input of this.renderinputs) {
+            input.error = (() => {
+                const control = this.form.get(input.name);
+                if (control && control.dirty && !control.valid) {
+                    let res = '';
+                    for (const key in control.errors) {
+                        if (!!control.errors[key]) {
+                            res += this.errorMessages[key] || key + ' ';
+                        }
+                    }
+                    return res;
+                }
+                return null;
+            })();
         }
     }
 
@@ -75,7 +96,7 @@ export class FormComponent implements OnInit {
     }
 
     save(back?: boolean) {
-        if (!!this.service) {
+        if (!!this.service && this.form.valid) {
             const body = this.preSave(this.form.value);
             this.ready = true;
             if (!!this.item) {
@@ -124,7 +145,7 @@ export class FormComponent implements OnInit {
     }
 
     delete() {
-        if (!!this.service && !!this.item) {
+        if (!!this.service && !!this.item && this.deleteable) {
             swal({
                 title: 'Está seguro?',
                 text: 'Se eliminará 1 registro.',

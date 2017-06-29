@@ -24,7 +24,7 @@
             <div class="col-lg-6 text-right">
                 <button *ngIf="!item" class="btn btn-primary" (click)="save(true)" type="button">Guardar y Crear Otro</button>
                 <input *ngIf="!item" class="btn btn-primary" type="submit" value="Guardar" />
-                <button *ngIf="!!item" class="btn btn-primary" (click)="delete()" type="button">Eliminar</button>
+                <button *ngIf="!!item && deleteable" class="btn btn-warning" (click)="delete()" type="button">Eliminar</button>
                 <input *ngIf="!!item" class="btn btn-primary" type="submit" value="Guardar Cambios" />
             </div>
         </div>

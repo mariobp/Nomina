@@ -17,7 +17,7 @@
                             <i class="material-icons">create</i>
                         </button>
                     </li>
-                    <li *ngIf="selectedItems.length >= 1">
+                    <li *ngIf="selectedItems.length >= 1 && deleteable">
                         <button class="btn btn-primary btn-just-icon" (click)="onDelete()">
                             <i class="material-icons">delete</i>
                         </button>
