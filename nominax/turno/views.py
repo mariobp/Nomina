@@ -31,7 +31,7 @@ def marcar_turno(request, pk):
             turno.empleado = empleado
             turno.save()
         else:
-            form = forms.TurnoForm({'salida': timezone.now().strftime('%Y-%m-%d %H:%M'), 'empleado': empleado.id, 'entrada': ultimo.entrada..strftime('%Y-%m-%d %H:%M')}, instance = ultimo)
+            form = forms.TurnoForm({'salida': timezone.now().strftime('%Y-%m-%d %H:%M'), 'empleado': empleado.id, 'entrada': ultimo.entrada.strftime('%Y-%m-%d %H:%M')}, instance = ultimo)
             form.save()
         # end if
         return HttpResponse()
