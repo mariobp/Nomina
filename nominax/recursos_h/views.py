@@ -63,7 +63,7 @@ class MasterList(supra.SupraListView):
 
 class CargoSupraList(MasterList):
     model = models.Cargo
-    list_display = ['id', 'nombre']
+    list_display = ['id', 'nombre', 'valor_hora_diurna', 'valor_hora_nocturna', 'valor_hora_festivo']
     search_fields = ['nombre', ]
     paginate_by = 10
 # end def
