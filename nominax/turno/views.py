@@ -78,7 +78,13 @@ class MasterList(supra.SupraListView):
 class TurnoSupraForm(supra.SupraFormView):
     model = models.Turno
     form_class = forms.TurnoForm
-    response_json = False
+
+    def get_form_class(self):
+        if 'pk' in self.http_kwargs:
+            self.form_class = forms.TurnoEdit
+        # end if
+        return self.form_class
+    # end def
 
     @method_decorator(check_login)
     @csrf_exempt
@@ -91,8 +97,24 @@ class TurnoSupraForm(supra.SupraFormView):
 class TurnoSupraList(MasterList):
     model = models.Turno
     list_display = ('id', 'empleado', 'empleado__nombre', 'empleado__apellidos',
-                    'fecha', 'entrada', 'salida', 'extras', 'extra_nocturna', 'extra_diurna',
-                    'extra_dominical', 'aprobado', 'creator', 'last_editor')
+                    'entrada', 'salida', 'horas_extras', 'horas_nocturna', 'horas_diurna',
+                    'horas_dominical', 'aprobado', 'creator', 'last_editor')
     search_fields = ['empleado__nombre', 'empleado__apellidos']
     list_filter = ['empleado', 'aprobado']
+
+    def horas_extras(self, obj, now):
+        return obj.horas_extras()
+    # end def
+
+    def horas_nocturna(self, obj, now):
+        return obj.horas_nocturna()
+    # end def
+
+    def horas_diurna(self, obj, now):
+        return obj.horas_diurna()
+    # end def
+
+    def horas_dominical(self, obj, now):
+        return obj.horas_dominical()
+    # end def
 # end class

@@ -9,6 +9,9 @@ from datetime import date
 
 class Cargo(models.Model):
     nombre = models.CharField(max_length=100)
+    valor_hora_diurna = models.DecimalField(max_digits=10, decimal_places=2)
+    valor_hora_nocturna = models.DecimalField(max_digits=10, decimal_places=2)
+    valor_hora_festivo = models.DecimalField(max_digits=10, decimal_places=2)
     creator = CurrentUserField(add_only=True, related_name="created_cargo")
     last_editor = CurrentUserField(related_name="last_edited_cargo")
     eliminado = models.BooleanField(default=False)

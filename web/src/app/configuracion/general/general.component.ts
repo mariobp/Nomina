@@ -54,7 +54,7 @@ export class EditGeneralComponent implements AfterViewInit {
             { column: 'col1', title: 'Hora de inicio de recargo nocturno', type: 'text', name: 'h_recargo_nocturno_inicio', class: 'timepicker' },
             { column: 'col1', title: 'Hora de finalización de recargo nocturno', type: 'text', name: 'h_recargo_nocturno_fin', class: 'timepicker' },
             { column: 'col1', title: 'Hora de inicio de almuerzo', type: 'text', name: 'h_almuerzo_inicio', class: 'timepicker' },
-            { column: 'col1', title: 'Hora de finalización del almuerzo', type: 'text', name: 'h_almuerzo_fin' },
+            { column: 'col1', title: 'Hora de finalización del almuerzo', type: 'text', name: 'h_almuerzo_fin', class: 'timepicker' },
             { column: 'col2', title: 'Valor hora extra diurna', type: 'number', name: 'extra_diurna' },
             { column: 'col2', title: 'Valor hora extra nocturna', type: 'number', name: 'extra_nocturna' },
             { column: 'col2', title: 'Valor hora extra dominical', type: 'number', name: 'extra_dominical' },
@@ -76,8 +76,10 @@ export class EditGeneralComponent implements AfterViewInit {
         this._form.successful = data => {
 
         }
+        this._form.ready = true;
         this._s.list({}).then(data => data.json()).then(data => {
             this._form.setItem(data.object_list[0]);
+            this._form.ready = false;
         });
     }
 }

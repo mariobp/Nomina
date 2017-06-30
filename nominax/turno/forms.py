@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from django import forms
 from configuracion import forms as conf
 from recursos_h import forms as rec
@@ -8,12 +10,18 @@ from datedelta import datedelta, multi_datedelta, periodic_timedelta
 from datetime import datetime, timedelta
 from django.db import transaction
 
+
 class TurnoForm(forms.ModelForm):
 
     class Meta:
         model = models.Turno
-        exclude = ('aprobado_user', )
+        fields = ['empleado', 'entrada', 'salida', 'aprobado']
     # end class
+
+    @staticmethod
+    def get_turnos(corte, empleado):
+        return models.Turno.objects.filter(empleado=empleado, entrada__gte=corte.fecha_inicio)
+    # end ef
 
     @transaction.atomic
     def post(self, request, *args, **kwargs):
@@ -59,7 +67,7 @@ class TurnoForm(forms.ModelForm):
         models.RangoFecha.objects.filter(nocturna=turno).delete()
         models.RangoFecha.objects.filter(diurna=turno).delete()
         models.RangoFecha.objects.filter(dominical=turno).delete()
-        
+
         if not delta_extra.empty():
             extras = models.RangoFecha.create(delta_extra.start_date, delta_extra.end_date)
             turno.extras.add(extras)
@@ -69,7 +77,7 @@ class TurnoForm(forms.ModelForm):
             nocturna = models.RangoFecha.create(delta_single.start_date, delta_single.end_date)
             turno.nocturna.add(nocturna)
         # end for
-        
+
         for delta_single in delta_diurno.date_deltas:
             diurna = models.RangoFecha.create(delta_single.start_date, delta_single.end_date)
             turno.diurna.add(diurna)
@@ -95,4 +103,13 @@ class TurnoForm(forms.ModelForm):
         self.poner_horas(turno)
         return turno
     # end def
+# end class
+
+
+class TurnoEdit(TurnoForm):
+
+    class Meta:
+        model = models.Turno
+        fields = ['entrada', 'salida', 'aprobado']
+    # end if
 # end class
