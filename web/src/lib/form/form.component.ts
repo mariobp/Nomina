@@ -17,6 +17,7 @@ export interface RenderInput {
     isSelect?: boolean;
     multiple?: boolean;
     disabled?: boolean;
+    step?: string;
     options?: SelectInput[];
     class?: string;
     error?: string;
@@ -37,7 +38,7 @@ export class FormComponent implements OnInit, AfterViewInit {
     @Input('service') service: any;
     @Input('deleteable') public deleteable = true;
 
-    private ready: Boolean = false;
+    ready = false;
     item: any;
     private errorMessages = {
         email: 'texto para error de email'
@@ -97,8 +98,8 @@ export class FormComponent implements OnInit, AfterViewInit {
             }
         });
         $('.timepicker').datetimepicker({
-            format: 'H:mm',    // use this format if you want the 24hours timepicker
-            // format: 'h:mm A',    // use this format if you want the 12hours timpiecker with AM/PM toggle
+            // format: 'H:mm',    // use this format if you want the 24hours timepicker
+            format: 'h:mm A',    // use this format if you want the 12hours timpiecker with AM/PM toggle
             icons: {
                 time: 'fa fa-clock-o',
                 date: 'fa fa-calendar',

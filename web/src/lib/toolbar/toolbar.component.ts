@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer, ViewChild, ElementRef, Directive  } from '@angular/core';
+import { Component, OnInit, Renderer, ViewChild, ElementRef, Directive, Input  } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 // import { AuthService } from '../../services/auth/auth.service';
@@ -18,6 +18,9 @@ export class ToolbarComponent implements OnInit {
     private nativeElement: Node;
     private toggleButton;
     private sidebarVisible: boolean;
+
+
+    @Input('title') private title: string;
 
     @ViewChild('navbar-cmp') button;
 
@@ -63,11 +66,7 @@ export class ToolbarComponent implements OnInit {
         }
     }
 
-    getTitle() {
-        return 'Nomina';
-    }
-
-    getPath() {
-        return this.location.prepareExternalUrl(this.location.path());
-    }
+    // getPath() {
+    //     return this.location.prepareExternalUrl(this.location.path());
+    // }
 }

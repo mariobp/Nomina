@@ -28,8 +28,8 @@ export class EditAdminComponent implements AfterViewInit {
     constructor(private _fb: FormBuilder, private _as: AdminService, private _rt: Router) {
         this.form = this._fb.group({
             username: ['', [Validators.required, Validators.maxLength(150)]],
-            password1: ['', [Validators.required]],
-            password2: ['', [Validators.required]],
+            password1: ['', [/*Validators.required*/]],
+            password2: ['', [/*Validators.required*/]],
             email: ['', [Validators.required, Validators.email, Validators.maxLength(254)]],
             first_name: ['', [Validators.maxLength(30)]],
             last_name: ['', [Validators.maxLength(30)]],
@@ -48,7 +48,7 @@ export class EditAdminComponent implements AfterViewInit {
             { column: 'col1', title: 'Nombre', type: 'text', name: 'first_name' },
             { column: 'col1', title: 'Apellido', type: 'text', name: 'last_name' },
             { column: 'col1', title: 'Identificación', type: 'text', name: 'identificacion' },
-            { column: 'col1', title: 'Fecha de nacimiento', type: 'text', name: 'fecha_nacimiento', class: 'datetimepicker' },
+            { column: 'col1', title: 'Fecha de nacimiento', type: 'text', name: 'fecha_nacimiento', class: 'datepicker' },
             { column: 'col1', title: 'Dirección', type: 'text', name: 'direccion' },
             { column: 'col1', title: 'Celular', type: 'text', name: 'telefono' },
             { column: 'col1', title: 'Telefono', type: 'text', name: 'fijo' }
