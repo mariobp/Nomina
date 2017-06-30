@@ -52,7 +52,6 @@ class TurnoForm(forms.ModelForm):
         delta_festivos = models.DiaFestivo.multi_datedelta(delta)
         delta_dominicales_festivos = (delta_dominicales + delta_festivos).intersect(delta)
 
-
         delta_nocturno = nocturno.intersect(delta)
         delta_diurno = delta.difference(almuerzo).difference(nocturno)
 
@@ -62,31 +61,22 @@ class TurnoForm(forms.ModelForm):
         models.RangoFecha.objects.filter(dominical=turno).delete()
         
         extras = models.RangoFecha.create(delta_extra.start_date, delta_extra.end_date)
-        print 'delta_extras', extras
         turno.extras.add(extras)
 
         for delta_single in delta_nocturno.date_deltas:
             nocturna = models.RangoFecha.create(delta_single.start_date, delta_single.end_date)
-            print 'delta_nocturno: ', nocturna
             turno.nocturna.add(nocturna)
         # end for
         
         for delta_single in delta_diurno.date_deltas:
             diurna = models.RangoFecha.create(delta_single.start_date, delta_single.end_date)
-            print 'delta_diurno: ', diurna
             turno.diurna.add(diurna)
         # end for
 
         for delta_single in delta_dominicales_festivos.date_deltas:
             dominical = models.RangoFecha.create(delta_single.start_date, delta_single.end_date)
-            print 'delta_dominical: ', dominical
             turno.dominical.add(dominical)
         # end for
-
-        #print 'nocturno:', nocturno
-        #print 'delta_extra:', delta_extra
-        #print 'delta_nocturno', delta_nocturno
-        #print 'delta_extra_nocturno', delta_nocturno.intersect(delta_extra)
 
     # end def
 

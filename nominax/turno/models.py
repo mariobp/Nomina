@@ -21,6 +21,10 @@ class RangoFecha(models.Model):
         return rango
     # end def
 
+    def horas(self):
+        return (self.fecha_fin - self.fecha_inicio).total_seconds()/60/60
+    # end def
+
     def __unicode__(self):
         return "[%s - %s]" % (str(self.fecha_inicio), str(self.fecha_fin))
     # end def
@@ -30,7 +34,7 @@ class RangoFecha(models.Model):
 class Turno(models.Model):
     empleado = models.ForeignKey(recursos.Empleado)
     entrada = models.DateTimeField()
-    salida = models.DateTimeField()
+    salida = models.DateTimeField(null=True, blank=True)
     
     extras = models.ManyToManyField(RangoFecha, related_name='extras', blank=True)
     nocturna = models.ManyToManyField(RangoFecha, related_name='nocturna', blank=True)
@@ -43,7 +47,37 @@ class Turno(models.Model):
     last_editor = CurrentUserField(related_name="last_edited_turno")
 
     def horas_extras(self):
-        return self.extras
+        horas = 0
+        for rango in self.extras.all():
+            horas = horas + rango.horas()
+        # end for
+        return horas
+    # end def
+
+    def horas_nocturna(self):
+        horas = 0
+        for rango in self.nocturna.all():
+            horas = horas + rango.horas()
+        # end for
+        return horas
+    # end def
+
+    def horas_diurna(self):
+        horas = 0
+        for rango in self.diurna.all():
+            horas = horas + rango.horas()
+        # end for
+        return horas
+    # end def
+
+    def horas_dominical(self):
+        horas = 0
+        for rango in self.extras.all():
+            horas = horas + rango.horas()
+        # end for
+        return horas
+    # end def
+
 
     def __unicode__(self):
         return u"Turno: %s %s - %s" % (self.empleado.nombre, self.empleado.apellidos, self.entrada.strftime('%Y-%m-%d'))
