@@ -3,9 +3,13 @@ from __future__ import unicode_literals
 from datetime import datetime, date, time, timedelta
 
 class datedelta():
+    start_date = None
+    end_date = None
     def __init__(self, start_date = None, end_date = None):
-        self.start_date = start_date
-        self.end_date = end_date
+        if start_date < end_date:
+            self.start_date = start_date
+            self.end_date = end_date
+        # end if
     # end def
 
     def daterange(self):
