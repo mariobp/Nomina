@@ -24,15 +24,15 @@ supra.SupraConf.body = True
 def marcar_turno(request, pk):
     empleado = recursos_h.Empleado.objects.filter(pk=pk).first()
     if empleado:
-        ultimo = models.Turno.objects.filter(empleado__pk=empleado.pk).order_by('pk').first()
-        if ultimo is None or ultimo.salida is not None:
+        ultimo = models.Turno.objects.filter(empleado__pk=empleado.pk, salida = None).order_by('pk').first()
+        if ultimo is None:
             turno = models.Turno()
             turno.entrada = timezone.now()
             turno.empleado = empleado
             turno.save()
         else:
-            ultimo.salida = timezone.now()
-            ultimo.save()
+            form = forms.TurnoForm({'salida': timezone.now().strftime('%Y-%m-%d %H:%M'), 'empleado': empleado.id, 'entrada': ultimo.entrada.strftime('%Y-%m-%d %H:%M')}, instance = ultimo)
+            form.save()
         # end if
         return HttpResponse()
     # end if
