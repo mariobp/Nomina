@@ -1,7 +1,11 @@
 <div class="wrapper">
-    <ex-sidebar></ex-sidebar>
+    <ex-sidebar>
+        <ex-navbar mobile="true"></ex-navbar>
+    </ex-sidebar>
     <div class="main-panel">
-        <ex-toolbar></ex-toolbar>
+        <ex-toolbar title="Nomina">
+            <ex-navbar right="true"></ex-navbar>
+        </ex-toolbar>
         <div class="main-content">
             <router-outlet></router-outlet>
         </div>

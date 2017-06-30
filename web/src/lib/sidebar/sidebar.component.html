@@ -10,12 +10,11 @@
 
     <div class="sidebar-wrapper">
         <div *ngIf="!!user" class="user">
-            <div class="photo">
-                <img [src]="user.avatar" />
-            </div>
+            <div class="photo avatar" [style.background-image]="user.avatar"></div>
             <div class="info">
                 <a href="javascript:void(0)">
-                    <span>{{user.username}}</span>
+                    <span>{{user.nombre}}</span>
+                    <span>{{user.apellidos}}</span>
                 </a>
             </div>
         </div>

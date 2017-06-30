@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AppMenuMeta } from '../../app/app.routing';
+
 declare var $: any;
+declare var window: any;
 
 @Component({
     selector: 'ex-sidebar',
@@ -14,7 +16,7 @@ export class SidebarComponent implements OnInit {
 
     constructor() {
         this.user = JSON.parse(localStorage.getItem('user'));
-        console.log(this.user);
+        this.user.avatar = `url(${window._server}${this.user.avatar})`;
     }
 
     ngOnInit() {
