@@ -3,13 +3,17 @@ from __future__ import unicode_literals
 
 from django.db import models
 from recursos_h import models as recursos
-# Create your models here.
 
 
 class Corte(models.Model):
     fecha_inicio = models.DateField(auto_now_add=True)
     fecha_fin = models.DateField(blank=True, null=True)
     cerrado = models.BooleanField(default=False)
+
+    @staticmethod
+    def get_instance():
+        return Corte.objects.filter(cerrado=False).order_by('fecha_fin').last()
+    # end def
 # enc class
 
 
@@ -26,6 +30,10 @@ class Nomina(models.Model):
     prestaciones_sociales = models.CharField(max_length=100)
     salario_produccion = models.CharField(max_length=100)
     bonificacion = models.CharField(max_length=100)
+
+    class Meta:
+        unique_together = ('empleado', 'corte')
+    # end class
 
     def __unicode__(self):
         return u"Nomina %s %s - %s" % (self.empleado.nombre, self.empleado.apellidos, self.fecha.strftime('%Y-%m-%d'))

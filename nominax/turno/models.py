@@ -32,13 +32,13 @@ class RangoFecha(models.Model):
 # end class
 
 class Turno(models.Model):
-    empleado = models.ForeignKey(recursos.Empleado)
-    entrada = models.DateTimeField()
-    salida = models.DateTimeField(null=True, blank=True)
+    empleado  = models.ForeignKey(recursos.Empleado)
+    entrada   = models.DateTimeField()
+    salida    = models.DateTimeField(null=True, blank=True)
     
-    extras = models.ManyToManyField(RangoFecha, related_name='extras', blank=True)
-    nocturna = models.ManyToManyField(RangoFecha, related_name='nocturna', blank=True)
-    diurna = models.ManyToManyField(RangoFecha, related_name='diurna', blank=True)
+    extras    = models.ManyToManyField(RangoFecha, related_name='extras', blank=True)
+    nocturna  = models.ManyToManyField(RangoFecha, related_name='nocturna', blank=True)
+    diurna    = models.ManyToManyField(RangoFecha, related_name='diurna', blank=True)
     dominical = models.ManyToManyField(RangoFecha, related_name='dominical', blank=True)
 
     aprobado = models.BooleanField(default=False)

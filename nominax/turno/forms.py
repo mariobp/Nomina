@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from django import forms
 from configuracion import forms as conf
 from recursos_h import forms as rec
@@ -12,8 +14,13 @@ class TurnoForm(forms.ModelForm):
 
     class Meta:
         model = models.Turno
-        exclude = ('aprobado_user', )
+        exclude = ('aprobado_user', 'extras', 'nocturna', 'diurna', 'dominical')
     # end class
+
+    @staticmethod
+    def get_turnos(corte, empleado):
+        return models.Turno.objects.filter(empleado=empleado, entrada__gte=corte.fecha_inicio)
+    # end ef
 
     @transaction.atomic
     def post(self, request, *args, **kwargs):

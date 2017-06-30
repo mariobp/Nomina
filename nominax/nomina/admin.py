@@ -2,5 +2,13 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
+import models
+import forms
 
-# Register your models here.
+class NominaAdmin(admin.ModelAdmin):
+	form = forms.NominaForm
+# end class
+
+admin.site.register(models.Corte)
+admin.site.register(models.Nomina, NominaAdmin)
+
