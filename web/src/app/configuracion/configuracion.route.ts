@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { MenuMeta } from '../app.routing';
 import { CargoComponent, CargoListComponent, EditCargoComponent } from './cargo/cargo.component';
-import { GeneralComponent } from './general/general.component';
+import { GeneralComponent, EditGeneralComponent } from './general/general.component';
 import { TipocontratoComponent, TipoContratoListComponent, EditTipoContratoComponent } from './tipocontrato/tipocontrato.component';
 import { CargoService } from './cargo/cargo.service';
 import { TipoContratoService } from './tipocontrato/tipocontrato.service';
@@ -13,7 +13,9 @@ export const ConfiguracionRoutes: Routes = [
         { path: '', component: CargoListComponent },
         { path: ':id/edit', component: EditCargoComponent, resolve: { item: CargoService} }
       ] },
-      { path: 'general', component: GeneralComponent },
+      { path: 'general', component: GeneralComponent, children:[
+        { path: '', component: EditGeneralComponent }
+      ] },
       { path: 'tipo/contrato', component: TipocontratoComponent, children: [
         { path: '', component: TipoContratoListComponent },
         { path: ':id/edit', component: EditTipoContratoComponent, resolve: { item: TipoContratoService} }

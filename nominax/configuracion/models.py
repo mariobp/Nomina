@@ -17,7 +17,7 @@ class Configuracion(models.Model):
     primer_dia = models.PositiveIntegerField("Primer dia de corte", validators=[MaxValueValidator(31)])
     segundo_dia = models.PositiveIntegerField("Segundo dia de corte", validators=[MaxValueValidator(31)], blank=True, null=True)
     h_recargo_nocturno_inicio = models.TimeField("Hora de inicio de recargo nocturno")
-    h_recargo_nocturno_fin = models.TimeField("Hora de fin de recargo nocturno")
+    h_recargo_nocturno_fin = models.TimeField("Hora de finalización de recargo nocturno")
     h_almuerzo_inicio = models.TimeField("Hora de inicio de almuerzo")
     h_almuerzo_fin = models.TimeField("Hora de fin de almuerzo")
     extra_diurna = models.IntegerField("Valor hora extra diurna")
