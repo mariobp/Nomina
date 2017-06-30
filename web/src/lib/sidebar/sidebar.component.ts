@@ -10,11 +10,15 @@ export class SidebarComponent implements OnInit {
 
     menuInfo: any[];
 
-    constructor() { }
+    user: any;
+
+    constructor() {
+        this.user = JSON.parse(localStorage.getItem('user'));
+        console.log(this.user);
+    }
 
     ngOnInit() {
         $.getScript('../../assets/js/sidebar-moving-tab.js');
-
         this.menuInfo = AppMenuMeta.filter(menuItem => menuItem);
     }
 
