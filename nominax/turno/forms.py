@@ -13,7 +13,7 @@ class TurnoForm(forms.ModelForm):
 
     class Meta:
         model = models.Turno
-        exclude = ('aprobado_user', 'extras', 'nocturna', 'diurna', 'dominical')
+        fields = ['empleado', 'entrada', 'salida', 'aprobado']
     # end class
 
     @transaction.atomic
@@ -96,4 +96,13 @@ class TurnoForm(forms.ModelForm):
         self.poner_horas(turno)
         return turno
     # end def
+# end class
+
+
+class TurnoEdit(TurnoForm):
+
+    class Meta:
+        model = models.Turno
+        fields = ['entrada', 'salida', 'aprobado']
+    # end if
 # end class

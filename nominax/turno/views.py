@@ -79,6 +79,13 @@ class TurnoSupraForm(supra.SupraFormView):
     model = models.Turno
     form_class = forms.TurnoForm
 
+    def get_form_class(self):
+        if 'pk' in self.http_kwargs:
+            self.form_class = forms.TurnoEdit
+        # end if
+        return self.form_class
+    # end def
+
     @method_decorator(check_login)
     @csrf_exempt
     def dispatch(self, request, *args, **kwargs):
