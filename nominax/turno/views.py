@@ -78,7 +78,6 @@ class MasterList(supra.SupraListView):
 class TurnoSupraForm(supra.SupraFormView):
     model = models.Turno
     form_class = forms.TurnoForm
-    response_json = False
 
     @method_decorator(check_login)
     @csrf_exempt
