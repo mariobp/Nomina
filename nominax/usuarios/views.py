@@ -34,7 +34,24 @@ class LoginU(supra.SupraSession):
 @supra.access_control
 def islogin(request):
     if request.user.is_authenticated():
-        return HttpResponse(simplejson.dumps({"session": request.session.session_key, "username": request.user.username}), 200)
+        imagen = None
+        administrador = models.Administrador.objects.filter(id=request.user.id).first()
+        if administrador:
+            if administrador.imagen:
+                imagen = "/media/%s" % administrador.imagen
+            # end if
+            data = {"username": request.user.username, "nombre": request.user.first_name, "apellidos": request.user.last_name, "avatar": imagen}
+        else:
+            asistente = models.Asistente.objects.filter(id=request.user.id).first()
+            if asistente:
+                if asistente.imagen:
+                    imagen = "/media/%s" % asistente.imagen
+                # end if
+                data = {"username": request.user.username, "nombre": request.user.first_name, "apellidos": request.user.last_name, "avatar": imagen}
+            else:
+                data = {"username": request.user.username, "nombre": request.user.first_name, "apellidos": request.user.last_name, "avatar": imagen}
+            # end if
+        return HttpResponse(simplejson.dumps(data), 200)
     # end if
     return HttpResponse([], 400)
 # end if
