@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, AfterContentInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { FormComponent, TableComponent, RenderInput } from '../../../lib/components'
@@ -70,16 +70,22 @@ export class EditGeneralComponent implements AfterViewInit {
             return value;
         }
         this._form.preSave = data => {
-            data.tipo_corte = data.tipo_corte[0];
+            if(Array.isArray(data.tipo_corte)){
+              data.tipo_corte = data.tipo_corte[0];
+            }
             return data;
         };
         this._form.successful = data => {
 
         }
-        this._form.ready = true;
+
+    }
+
+    ngAfterContentInit() {
+        this._form.setReady(true);
         this._s.list({}).then(data => data.json()).then(data => {
             this._form.setItem(data.object_list[0]);
-            this._form.ready = false;
+            this._form.setReady(false);
         });
     }
 }
