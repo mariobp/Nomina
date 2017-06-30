@@ -6,10 +6,11 @@ import { DateValueAccessorModule } from 'angular-date-value-accessor';
 import { LibModule } from '../../lib/lib.module';
 import { CargoComponent, CargoListComponent, EditCargoComponent } from './cargo/cargo.component';
 import { TipocontratoComponent, TipoContratoListComponent, EditTipoContratoComponent } from './tipocontrato/tipocontrato.component';
-import { GeneralComponent } from './general/general.component';
+import { GeneralComponent, EditGeneralComponent } from './general/general.component';
 import { CargoService } from './cargo/cargo.service';
 import { ConfiguracionRoutes } from './configuracion.route';
 import { TipoContratoService } from './tipocontrato/tipocontrato.service';
+import { ConfiguracionService } from './general/general.service';
 
 @NgModule({
     imports: [
@@ -27,10 +28,11 @@ import { TipoContratoService } from './tipocontrato/tipocontrato.service';
       TipocontratoComponent,
       TipoContratoListComponent,
       EditTipoContratoComponent,
-      GeneralComponent
+      GeneralComponent,
+      EditGeneralComponent
     ],
     providers: [
-      CargoService, TipoContratoService
+      CargoService, TipoContratoService, ConfiguracionService
     ]
 })
 export class ConfiguracionModule { }
