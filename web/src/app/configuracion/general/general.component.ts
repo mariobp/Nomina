@@ -38,7 +38,7 @@ export class EditGeneralComponent implements AfterViewInit {
             h_almuerzo_fin: ['', [Validators.required, Validators.min(1)]],
             extra_diurna: ['', [Validators.required, Validators.min(1)]],
             extra_nocturna: ['', [Validators.required, Validators.min(1)]],
-            extra_dominical: ['', [Validators.required, Validators.min(1)]],
+            extra_dominical_diurna: ['', [Validators.required, Validators.min(1)]],
             extra_dominical_nocturna: ['', [Validators.required, Validators.min(1)]],
         });
         this.columns = ['col1', 'col2'];
@@ -57,7 +57,7 @@ export class EditGeneralComponent implements AfterViewInit {
             { column: 'col1', title: 'Hora de finalización del almuerzo', type: 'text', name: 'h_almuerzo_fin', class: 'timepicker' },
             { column: 'col2', title: 'Valor hora extra diurna', type: 'number', name: 'extra_diurna' },
             { column: 'col2', title: 'Valor hora extra nocturna', type: 'number', name: 'extra_nocturna' },
-            { column: 'col2', title: 'Valor hora extra dominical', type: 'number', name: 'extra_dominical' },
+            { column: 'col2', title: 'Valor hora extra dominical diurna', type: 'number', name: 'extra_dominical_diurna' },
             { column: 'col2', title: 'Valor hora extra dominical nocturna', type: 'number', name: 'extra_dominical_nocturna' },
         ];
     }
