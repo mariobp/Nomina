@@ -9,7 +9,7 @@
                             <div class="col-lg-9">
                                 <div class="form-group label-floating is-empty" [class.has-error]="!!input.error" [class.has-success]="!input.error">
                                     <label class="control-label"></label>
-                                    <input *ngIf="!input.isSelect" class="form-control {{input.class}}" [formControlName]="input.name" [type]="input.type" />
+                                    <input *ngIf="!input.isSelect" class="form-control {{input.class}}" [attr.step]="input.step" [formControlName]="input.name" [type]="input.type" />
                                     <select *ngIf="input.isSelect" class="selectpicker" id="id_{{input.name}}" [formControlName]="input.name" [multiple]="input.multiple" [title]="input.title" data-style="select-with-transition" data-size="7">
                                         <option disabled value="-1">{{input.title}}</option>
                                         <option *ngFor="let option of input.options" [value]="option.value">{{option.title}}</option>

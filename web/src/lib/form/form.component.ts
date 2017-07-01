@@ -17,6 +17,7 @@ export interface RenderInput {
     isSelect?: boolean;
     multiple?: boolean;
     disabled?: boolean;
+    step?: string;
     options?: SelectInput[];
     class?: string;
     error?: string;
@@ -101,7 +102,7 @@ export class FormComponent implements OnInit, AfterViewInit {
             }
         });
         $('.timepicker').datetimepicker({
-            //format: 'H:mm',    // use this format if you want the 24hours timepicker
+            // format: 'H:mm',    // use this format if you want the 24hours timepicker
             format: 'h:mm A',    // use this format if you want the 12hours timpiecker with AM/PM toggle
             icons: {
                 time: 'fa fa-clock-o',

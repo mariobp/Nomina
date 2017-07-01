@@ -20,10 +20,16 @@ class Configuracion(models.Model):
     h_recargo_nocturno_fin = models.TimeField("Hora de finalización de recargo nocturno")
     h_almuerzo_inicio = models.TimeField("Hora de inicio de almuerzo")
     h_almuerzo_fin = models.TimeField("Hora de fin de almuerzo")
-    extra_diurna = models.IntegerField("Valor hora extra diurna")
-    extra_nocturna = models.IntegerField("Valor hora extra nocturna")
-    extra_dominical = models.IntegerField("Valor hora extra dominical")
-    extra_dominical_nocturna = models.IntegerField("Valor hora extra dominical nocturna")
+
+    nocturna = models.IntegerField("Valor de recargo nocturno %")
+    dominical = models.IntegerField("Valor de recargo dominical o festivo %")
+    
+    extra_diurna = models.IntegerField("Valor de recargo de hora extra diurna %")
+    extra_nocturna = models.IntegerField("Valor de recargo de hora extra nocturna %")
+
+    extra_dominical_diurna = models.IntegerField("Valor de recargo de hora extra dominical %")
+    extra_dominical_nocturna = models.IntegerField("Valor de recargo de hora extra dominical nocturna %")
+
     creator = CurrentUserField(add_only=True, related_name="created_configuracion")
     last_editor = CurrentUserField(related_name="last_edited_configuracion")
 
@@ -38,12 +44,12 @@ class Configuracion(models.Model):
     # end class
 
     def __unicode__(self):
-        if tipo_corte == 1:
+        if self.tipo_corte == 1:
             tipo = "Quincenal"
         else:
             tipo = "Mensual"
         # end if
-        if segundo_dia:
+        if self.segundo_dia:
             segundo = str(self.segundo_dia)
         else:
             segundo = "Ninguno"
