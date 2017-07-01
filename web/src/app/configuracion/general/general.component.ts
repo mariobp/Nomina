@@ -36,10 +36,10 @@ export class EditGeneralComponent implements AfterViewInit {
             h_recargo_nocturno_fin: ['', Validators.required],
             h_almuerzo_inicio: ['', [Validators.required, Validators.min(1)]],
             h_almuerzo_fin: ['', [Validators.required, Validators.min(1)]],
-            extra_diurna: ['', [Validators.required, Validators.min(1), Validators.max(100)]],
-            extra_nocturna: ['', [Validators.required, Validators.min(1), Validators.max(100)]],
-            extra_dominical: ['', [Validators.required, Validators.min(1), Validators.max(100)]],
-            extra_dominical_nocturna: ['', [Validators.required, Validators.min(1), Validators.max(100)]],
+            extra_diurna: ['', [Validators.required, Validators.min(1)]],
+            extra_nocturna: ['', [Validators.required, Validators.min(1)]],
+            extra_dominical: ['', [Validators.required, Validators.min(1)]],
+            extra_dominical_nocturna: ['', [Validators.required, Validators.min(1)]],
         });
         this.columns = ['col1', 'col2'];
         this.renderinputs = [
