@@ -104,12 +104,3 @@ class TurnoForm(forms.ModelForm):
         return turno
     # end def
 # end class
-
-
-class TurnoEdit(TurnoForm):
-
-    class Meta:
-        model = models.Turno
-        fields = ['entrada', 'salida', 'aprobado']
-    # end if
-# end class
