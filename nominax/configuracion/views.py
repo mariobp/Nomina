@@ -16,7 +16,7 @@ supra.SupraConf.ACCECC_CONTROL["credentials"] = "true"
 supra.SupraConf.ACCECC_CONTROL["headers"] = "origin, content-type, accept"
 supra.SupraConf.ACCECC_CONTROL["methods"] = "POST, GET, PUT, DELETE ,OPTIONS"
 supra.SupraConf.body = True
-supra.SupraConf.time_format = "%H:%M %p"
+# supra.SupraConf.time_format = "%h:%M %p"
 
 
 class ConfiguracionSupraList(supra.SupraListView):
