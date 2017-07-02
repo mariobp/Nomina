@@ -23,6 +23,7 @@ class Configuracion(models.Model):
 
     nocturna = models.IntegerField("Valor de recargo nocturno %")
     dominical = models.IntegerField("Valor de recargo dominical o festivo %")
+    nocturna_dominical = models.IntegerField("Valor de recargo nocturno dominical o festivo %")
     
     extra_diurna = models.IntegerField("Valor de recargo de hora extra diurna %")
     extra_nocturna = models.IntegerField("Valor de recargo de hora extra nocturna %")
