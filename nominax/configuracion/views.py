@@ -16,12 +16,13 @@ supra.SupraConf.ACCECC_CONTROL["credentials"] = "true"
 supra.SupraConf.ACCECC_CONTROL["headers"] = "origin, content-type, accept"
 supra.SupraConf.ACCECC_CONTROL["methods"] = "POST, GET, PUT, DELETE ,OPTIONS"
 supra.SupraConf.body = True
+# supra.SupraConf.time_format = "%h:%M %p"
 
 
 class ConfiguracionSupraList(supra.SupraListView):
     model = models.Configuracion
     list_display = ['id', 'tipo_corte', 'primer_dia', 'segundo_dia', 'h_recargo_nocturno_inicio', 'h_recargo_nocturno_fin',
-                    'h_almuerzo_inicio', 'h_almuerzo_fin', 'extra_diurna', 'extra_nocturna', 'extra_dominical', 'extra_dominical_nocturna']
+                    'h_almuerzo_inicio', 'h_almuerzo_fin', 'extra_diurna', 'extra_nocturna', 'extra_dominical_diurna', 'extra_dominical_nocturna']
 
     @method_decorator(check_login)
     def dispatch(self, request, *args, **kwargs):

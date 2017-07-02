@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, AfterContentInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { FormComponent, TableComponent, RenderInput } from '../../../lib/components'
@@ -36,10 +36,10 @@ export class EditGeneralComponent implements AfterViewInit {
             h_recargo_nocturno_fin: ['', Validators.required],
             h_almuerzo_inicio: ['', [Validators.required, Validators.min(1)]],
             h_almuerzo_fin: ['', [Validators.required, Validators.min(1)]],
-            extra_diurna: ['', [Validators.required, Validators.min(1), Validators.max(100)]],
-            extra_nocturna: ['', [Validators.required, Validators.min(1), Validators.max(100)]],
-            extra_dominical: ['', [Validators.required, Validators.min(1), Validators.max(100)]],
-            extra_dominical_nocturna: ['', [Validators.required, Validators.min(1), Validators.max(100)]],
+            extra_diurna: ['', [Validators.required, Validators.min(1)]],
+            extra_nocturna: ['', [Validators.required, Validators.min(1)]],
+            extra_dominical_diurna: ['', [Validators.required, Validators.min(1)]],
+            extra_dominical_nocturna: ['', [Validators.required, Validators.min(1)]],
         });
         this.columns = ['col1', 'col2'];
         this.renderinputs = [
@@ -57,7 +57,7 @@ export class EditGeneralComponent implements AfterViewInit {
             { column: 'col1', title: 'Hora de finalización del almuerzo', type: 'text', name: 'h_almuerzo_fin', class: 'timepicker' },
             { column: 'col2', title: 'Valor hora extra diurna', type: 'number', name: 'extra_diurna' },
             { column: 'col2', title: 'Valor hora extra nocturna', type: 'number', name: 'extra_nocturna' },
-            { column: 'col2', title: 'Valor hora extra dominical', type: 'number', name: 'extra_dominical' },
+            { column: 'col2', title: 'Valor hora extra dominical diurna', type: 'number', name: 'extra_dominical_diurna' },
             { column: 'col2', title: 'Valor hora extra dominical nocturna', type: 'number', name: 'extra_dominical_nocturna' },
         ];
     }
@@ -70,16 +70,22 @@ export class EditGeneralComponent implements AfterViewInit {
             return value;
         }
         this._form.preSave = data => {
-            data.tipo_corte = data.tipo_corte[0];
+            if(Array.isArray(data.tipo_corte)){
+              data.tipo_corte = data.tipo_corte[0];
+            }
             return data;
         };
         this._form.successful = data => {
 
         }
-        this._form.ready = true;
+
+    }
+
+    ngAfterContentInit() {
+        this._form.setReady(true);
         this._s.list({}).then(data => data.json()).then(data => {
             this._form.setItem(data.object_list[0]);
-            this._form.ready = false;
+            this._form.setReady(false);
         });
     }
 }
