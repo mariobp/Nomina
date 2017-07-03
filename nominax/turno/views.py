@@ -105,7 +105,7 @@ class TurnoSupraForm(supra.SupraFormView):
     def h_dominical(self, obj, now):
         if self.instance:
             return self.instance.horas_dominical()
-        retur None
+        return None
     # end def
 
     @method_decorator(check_login)
