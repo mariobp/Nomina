@@ -85,19 +85,27 @@ class TurnoSupraForm(supra.SupraFormView):
                     'creator', 'last_editor')
 
     def h_extras(self, obj, now):
-        return self.instance.horas_extras()
+        if self.instance:
+            return self.instance.horas_extras()
+        return None
     # end def
 
     def h_nocturna(self, obj, now):
-        return self.instance.horas_nocturna()
+        if self.instance:
+            return self.instance.horas_nocturna()
+        return None
     # end def
 
     def h_diurna(self, obj, now):
-        return self.instance.horas_diurna()
+        if self.instance:
+            return self.instance.horas_diurna()
+        return None
     # end def
 
     def h_dominical(self, obj, now):
-        return self.instance.horas_dominical()
+        if self.instance:
+            return self.instance.horas_dominical()
+        retur None
     # end def
 
     @method_decorator(check_login)
