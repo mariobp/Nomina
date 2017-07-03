@@ -51,8 +51,8 @@ INSTALLED_APPS = [
     'recursos_h',
     'turno',
     'usuarios',
-    'cuser',
-    'supra'
+    #'cuser',
+    #'supra'
 ]
 
 MIDDLEWARE = [
