@@ -79,9 +79,10 @@ class MasterList(supra.SupraListView):
 class TurnoSupraForm(supra.SupraFormView):
     model = models.Turno
     form_class = forms.TurnoForm
-    list_display = ('id', 'empleado',
+    list_display = ('id', 'empleado_id', 'empleado',
                     'entrada', 'salida', 'aprobado',
                     'creator', 'last_editor')
+
     """
     def h_extras(self, obj, now):
         if self.instance:
