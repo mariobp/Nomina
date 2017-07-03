@@ -31,7 +31,7 @@ def marcar_turno(request, pk):
             turno.empleado = empleado
             turno.save()
         else:
-            form = forms.TurnoForm({'salida': timezone.now().strftime('%Y-%m-%d %H:%M'), 'empleado': empleado.id, 'entrada': ultimo.entrada..strftime('%Y-%m-%d %H:%M')}, instance = ultimo)
+            form = forms.TurnoForm({'salida': timezone.now().strftime('%Y-%m-%d %H:%M'), 'empleado': empleado.id, 'entrada': ultimo.entrada.strftime('%Y-%m-%d %H:%M')}, instance = ultimo)
             form.save()
         # end if
         return HttpResponse()
@@ -53,7 +53,7 @@ class MasterList(supra.SupraListView):
     def get_queryset(self):
         queryset = super(MasterList, self).get_queryset()
         if self.request.GET.get('num_page', False):
-            self.paginate_by = self.request.GET.get('length', False)
+            self.paginate_by = self.request.GET.get('num_page', False)
         # end if
         propiedad = self.request.GET.get('sort_property', False)
         orden = self.request.GET.get('sort_direction', False)
@@ -78,7 +78,25 @@ class MasterList(supra.SupraListView):
 class TurnoSupraForm(supra.SupraFormView):
     model = models.Turno
     form_class = forms.TurnoForm
-    response_json = False
+    list_display = ('id', 'empleado',
+                    'entrada', 'salida', 'aprobado', 'creator', 'last_editor')
+    """
+    def h_extras(self, obj, now):
+        return obj.horas_extras()
+    # end def
+
+    def h_nocturna(self, obj, now):
+        return obj.horas_nocturna()
+    # end def
+
+    def h_diurna(self, obj, now):
+        return obj.horas_diurna()
+    # end def
+
+    def h_dominical(self, obj, now):
+        return obj.horas_dominical()
+    # end def
+    """
 
     @method_decorator(check_login)
     @csrf_exempt
@@ -91,8 +109,24 @@ class TurnoSupraForm(supra.SupraFormView):
 class TurnoSupraList(MasterList):
     model = models.Turno
     list_display = ('id', 'empleado', 'empleado__nombre', 'empleado__apellidos',
-                    'fecha', 'entrada', 'salida', 'extras', 'extra_nocturna', 'extra_diurna',
-                    'extra_dominical', 'aprobado', 'creator', 'last_editor')
+                    'entrada', 'salida', 'h_extras', 'h_nocturna', 'h_diurna',
+                    'h_dominical', 'aprobado', 'creator', 'last_editor')
     search_fields = ['empleado__nombre', 'empleado__apellidos']
     list_filter = ['empleado', 'aprobado']
+
+    def h_extras(self, obj, now):
+        return obj.horas_extras()
+    # end def
+
+    def h_nocturna(self, obj, now):
+        return obj.horas_nocturna()
+    # end def
+
+    def h_diurna(self, obj, now):
+        return obj.horas_diurna()
+    # end def
+
+    def h_dominical(self, obj, now):
+        return obj.horas_dominical()
+    # end def
 # end class

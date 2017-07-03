@@ -12,6 +12,7 @@ import { P404Component } from './404/404.component';
 import { TableComponent } from './table/table.component';
 import { BsNotify } from './bs.notify';
 import { FormComponent} from './form/form.component'
+import { NavbarComponent } from './navbar/navbar.component'
 
 const LibComponents = [
     P404Component,
@@ -21,7 +22,8 @@ const LibComponents = [
     SidebarComponent,
     ToolbarComponent,
     TableComponent,
-    FormComponent
+    FormComponent,
+    NavbarComponent
 ];
 
 @NgModule({

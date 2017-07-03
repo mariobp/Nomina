@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, AfterContentChecked } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit } from '@angular/core';
 import { FormGroup} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router'
 import { BsNotify } from '../../lib/bs.notify';
@@ -17,6 +17,7 @@ export interface RenderInput {
     isSelect?: boolean;
     multiple?: boolean;
     disabled?: boolean;
+    step?: string;
     options?: SelectInput[];
     class?: string;
     error?: string;
@@ -27,7 +28,7 @@ export interface RenderInput {
     selector: 'ex-form',
     templateUrl: './form.component.html'
 })
-export class FormComponent implements OnInit {
+export class FormComponent implements OnInit, AfterViewInit {
 
     @Input('title') title: string;
     @Input('icon') icon: string;
@@ -37,16 +38,28 @@ export class FormComponent implements OnInit {
     @Input('service') service: any;
     @Input('deleteable') public deleteable = true;
 
-    private ready: Boolean = false;
+    private _ready: boolean;
     item: any;
     private errorMessages = {
         email: 'texto para error de email'
     }
     constructor(private _ar: ActivatedRoute) { }
 
+    setReady(val: boolean){
+        this._ready = val;
+    }
+
     setItem(item: any) {
+        item = this.prePatchValue(item);
         this.item = item;
         this.form.patchValue(this.item);
+        if ($('.selectpicker').length !== 0) {
+            $('.selectpicker').selectpicker('refresh')
+        }
+    }
+
+    prePatchValue(value) {
+        return value;
     }
 
     ngOnInit() {
@@ -54,6 +67,56 @@ export class FormComponent implements OnInit {
             this.setItem(this._ar.snapshot.data['item']);
         }
         this.form.valueChanges.subscribe(data => this.onValueChanged(data));
+    }
+
+    ngAfterViewInit() {
+        if ($('.selectpicker').length !== 0) {
+            $('.selectpicker').selectpicker();
+        }
+        $('.datetimepicker').datetimepicker({
+            icons: {
+                time: 'fa fa-clock-o',
+                date: 'fa fa-calendar',
+                up: 'fa fa-chevron-up',
+                down: 'fa fa-chevron-down',
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-screenshot',
+                clear: 'fa fa-trash',
+                close: 'fa fa-remove'
+            }
+        });
+        $('.datepicker').datetimepicker({
+            format: 'DD/MM/YYYY',
+            icons: {
+                time: 'fa fa-clock-o',
+                date: 'fa fa-calendar',
+                up: 'fa fa-chevron-up',
+                down: 'fa fa-chevron-down',
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-screenshot',
+                clear: 'fa fa-trash',
+                close: 'fa fa-remove',
+                inline: true
+            }
+        });
+        $('.timepicker').datetimepicker({
+            // format: 'H:mm',    // use this format if you want the 24hours timepicker
+            format: 'h:mm A',    // use this format if you want the 12hours timpiecker with AM/PM toggle
+            icons: {
+                time: 'fa fa-clock-o',
+                date: 'fa fa-calendar',
+                up: 'fa fa-chevron-up',
+                down: 'fa fa-chevron-down',
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-screenshot',
+                clear: 'fa fa-trash',
+                close: 'fa fa-remove',
+                inline: true
+            }
+        });
     }
 
     onValueChanged(data) {
@@ -75,58 +138,6 @@ export class FormComponent implements OnInit {
         }
     }
 
-    onLast(last: boolean) {
-        if (last) {
-            if ($('.selectpicker').length !== 0) {
-                $('.selectpicker').selectpicker();
-            }
-            $('.datetimepicker').datetimepicker({
-                icons: {
-                    time: 'fa fa-clock-o',
-                    date: 'fa fa-calendar',
-                    up: 'fa fa-chevron-up',
-                    down: 'fa fa-chevron-down',
-                    previous: 'fa fa-chevron-left',
-                    next: 'fa fa-chevron-right',
-                    today: 'fa fa-screenshot',
-                    clear: 'fa fa-trash',
-                    close: 'fa fa-remove'
-                }
-            });
-            $('.datepicker').datetimepicker({
-                format: 'MM/DD/YYYY',
-                icons: {
-                    time: 'fa fa-clock-o',
-                    date: 'fa fa-calendar',
-                    up: 'fa fa-chevron-up',
-                    down: 'fa fa-chevron-down',
-                    previous: 'fa fa-chevron-left',
-                    next: 'fa fa-chevron-right',
-                    today: 'fa fa-screenshot',
-                    clear: 'fa fa-trash',
-                    close: 'fa fa-remove',
-                    inline: true
-                }
-            });
-            $('.timepicker').datetimepicker({
-                // format: 'H:mm',    // use this format if you want the 24hours timepicker
-                format: 'h:mm A',    // use this format if you want the 12hours timpiecker with AM/PM toggle
-                icons: {
-                    time: 'fa fa-clock-o',
-                    date: 'fa fa-calendar',
-                    up: 'fa fa-chevron-up',
-                    down: 'fa fa-chevron-down',
-                    previous: 'fa fa-chevron-left',
-                    next: 'fa fa-chevron-right',
-                    today: 'fa fa-screenshot',
-                    clear: 'fa fa-trash',
-                    close: 'fa fa-remove',
-                    inline: true
-                }
-            });
-        }
-    }
-
     isValid(): boolean {
         return this.form.valid;
     }
@@ -142,28 +153,41 @@ export class FormComponent implements OnInit {
     save(back?: boolean) {
         if (!!this.service && this.form.valid) {
             const body = this.preSave(this.form.value);
-            this.ready = true;
+            console.log(body)
+            this._ready = true;
             if (!!this.item) {
                 this.service.edit(this.item.id, body)
                     .then(data => {
-                        this.ready = false;
+                        this._ready = false;
                         this.successful(data);
+                        swal({
+                            title: 'Guardado!',
+                            text: 'Registro se guardo con exito',
+                            type: 'success',
+                            confirmButtonColor: '#213b78',
+                        });
                     })
                     .catch(error => {
-                        this.ready = false;
+                        this._ready = false;
                         this.error(error);
                     });
             } else {
                 this.service.add(body)
                     .then(data => {
                         this.form.reset();
-                        this.ready = false;
+                        this._ready = false;
+                        swal({
+                            title: 'Guardado!',
+                            text: 'Registro se guardo con exito',
+                            type: 'success',
+                            confirmButtonColor: '#213b78',
+                        });
                         if (!back) {
                             this.successful(data);
                         }
                     })
                     .catch(error => {
-                        this.ready = false;
+                        this._ready = false;
                         this._findErros(error.json());
                         this.error(error);
                     });

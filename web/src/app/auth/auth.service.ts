@@ -21,7 +21,7 @@ export class AuthService {
 
     private addUser(user: User) {
         this.user = user;
-        localStorage.setItem('user', JSON.stringify(true));
+        localStorage.setItem('user', JSON.stringify(user));
     }
 
     private removeUser(err?) {
@@ -39,7 +39,9 @@ export class AuthService {
         if (this.user) {
             return this.user;
         } else {
-            this.isLogin();
+            this.isLogin().then(data => {
+                this.addUser(data);
+            });
             const u = JSON.parse(localStorage.getItem('user'));
             if (u) {
                 this.addUser(u);

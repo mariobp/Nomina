@@ -34,7 +34,7 @@ class MasterList(supra.SupraListView):
     def get_queryset(self):
         queryset = super(MasterList, self).get_queryset()
         if self.request.GET.get('num_page', False):
-            self.paginate_by = self.request.GET.get('length', False)
+            self.paginate_by = self.request.GET.get('num_page', False)
         # end if
         propiedad = self.request.GET.get('sort_property', False)
         orden = self.request.GET.get('sort_direction', False)
@@ -63,7 +63,7 @@ class MasterList(supra.SupraListView):
 
 class CargoSupraList(MasterList):
     model = models.Cargo
-    list_display = ['id', 'nombre']
+    list_display = ['id', 'nombre', 'valor_hora_diurna', 'valor_hora_nocturna', 'valor_hora_festivo']
     search_fields = ['nombre', ]
     paginate_by = 10
 # end def

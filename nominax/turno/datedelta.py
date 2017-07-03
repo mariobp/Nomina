@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 from datetime import datetime, date, time, timedelta
 
 class datedelta():
+    start_date = None
+    end_date = None
     def __init__(self, start_date = None, end_date = None):
         self.start_date = start_date
         self.end_date = end_date
@@ -15,6 +17,10 @@ class datedelta():
             yield car_date
             car_date = car_date + timedelta(days=1)
         # end for
+    # end def
+
+    def horas(self):
+        return self.timedelta().total_seconds() /60/60
     # end def
 
     def timedelta(self):
@@ -96,8 +102,16 @@ class multi_datedelta():
         # end for
     # end def
 
-    def break_datedelta(self, date_delta):
-        pass
+    def horas(self):
+        return self.timedelta().total_seconds() /60/60
+    # end def
+
+    def timedelta(self):
+        time = timedelta()
+        for single_dalta in self.date_deltas:
+            time = time + single_dalta.timedelta()
+        # end 
+        return time
     # end def
 
     def difference_single(self, date_delta):
@@ -126,7 +140,7 @@ class multi_datedelta():
         multi_date_deltas = multi_datedelta()
         for single_dalta in self.date_deltas:
             multi_delta = multi_date_delta.intersect_single(single_dalta)
-            if not delta.empty():
+            if not multi_delta.empty():
                 multi_date_deltas = multi_date_deltas + multi_delta
             # end for
         # end for
@@ -168,7 +182,7 @@ class multi_datedelta():
     # end def
 
     def empty(self):
-        return len(self.date_deltas) > 0
+        return len(self.date_deltas) == 0
     # end if
 
     def __add__(self, date_delta):
