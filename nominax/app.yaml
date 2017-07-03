@@ -12,7 +12,7 @@ handlers:
   script: nominax.wsgi.application
 
 runtime_config:
-  python_version: 27
+  python_version: 2
 
 # Google App Engine limits application deployments to 10,000 uploaded files per
 # version. The skip_files section allows us to skip virtual environment files
