@@ -51,7 +51,7 @@ class NominaForm(forms.ModelForm):
     # end def
 
     @staticmethod
-    def get_instance(self, empleado):
+    def get_instance(empleado):
         corte = CorteForms.get_instance()
         instance = models.Nomina.objects.filter(empleado=empleado, corte=corte).first()
         if not instance:
@@ -115,3 +115,14 @@ class NominaForm(forms.ModelForm):
         return nomina
     # end def
 # end class
+
+
+def cuando_apruebe(turno):
+    nomina = NominaForm.get_instance(empleado = turno.empleado)
+    #TODO aggregar campos y guardar formulario
+    nom_form = NominaForm({'empleado': turno.empleado.pk, 'corte': nomina.corte.pk, 'salario_base': nomina.salario_base}, instance = nomina)
+    if nom_form.is_valid():
+    	nom_form.save()
+    # end if
+# end def
+turnos.TurnoForm.cuando_apruebe = staticmethod(cuando_apruebe)

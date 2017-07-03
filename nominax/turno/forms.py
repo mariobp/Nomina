@@ -21,7 +21,12 @@ class TurnoForm(forms.ModelForm):
 
     @staticmethod
     def get_turnos(corte, empleado):
-        return models.Turno.objects.filter(empleado=empleado, entrada__gte=corte.fecha_inicio, salida__isnull=False)
+        return models.Turno.objects.filter(empleado=empleado, entrada__gte=corte.fecha_inicio, salida__isnull=False, aprobado=True)
+    # end def
+
+    @staticmethod
+    def cuando_apruebe(turno):
+        pass
     # end ef
 
     @transaction.atomic
@@ -43,8 +48,8 @@ class TurnoForm(forms.ModelForm):
 
     def clean(self):
         self.configuracion = conf.ConfiguracionForm.get_instance()
-        if self.instance.aprobado:
-            raise forms.ValidationError('El turno ya esta aprobado')
+        # if self.instance.aprobado:
+        #     raise forms.ValidationError('El turno ya esta aprobado')
         # end if
         return self.cleaned_data
     # end def
@@ -111,10 +116,7 @@ class TurnoForm(forms.ModelForm):
             if user:
                 turno.aprobado_user = user
             # end if
-
-            nomina = NominaForm.get_instance(empleado = turno.empleado)
-            #TODO aggregar campos y guardar formulario
-            nom_form = NominaForm({}, instance = nomina)
+            TurnoForm.cuando_apruebe(turno)
         # end if
         turno.save()
         if turno.salida:

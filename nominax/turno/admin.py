@@ -9,7 +9,7 @@ class DiaDominicalAdmin(admin.ModelAdmin):
 	list_display = ['dia', 'proximo', 'anterior']
 
 class TurnoAdmin(admin.ModelAdmin):
-	list_display = ['empleado', 'entrada', 'salida', 'horas_extras', 'horas_nocturna', 'horas_diurna', 'horas_dominical', 'total_horas', 'get_extras_diurnas']
+	list_display = ['empleado', 'entrada', 'salida', 'horas_extras', 'horas_nocturna', 'horas_diurna', 'horas_dominical', 'total_horas',]
 	readonly_fields = ['extras', 'nocturna', 'diurna', 'dominical']
 	list_filter = ['empleado']
 
