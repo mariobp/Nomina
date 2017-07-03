@@ -19,6 +19,7 @@ supra.SupraConf.ACCECC_CONTROL["credentials"] = "true"
 supra.SupraConf.ACCECC_CONTROL["headers"] = "origin, content-type, accept"
 supra.SupraConf.ACCECC_CONTROL["methods"] = "POST, GET, PUT, DELETE, OPTIONS"
 supra.SupraConf.body = True
+supra.SupraListView.datetime_format = '%d/%m/%Y %I:%M %p'
 
 
 def marcar_turno(request, pk):
@@ -79,24 +80,25 @@ class TurnoSupraForm(supra.SupraFormView):
     model = models.Turno
     form_class = forms.TurnoForm
     list_display = ('id', 'empleado',
-                    'entrada', 'salida', 'aprobado', 'creator', 'last_editor')
-    """
+                    'entrada', 'salida', 'aprobado',
+                    'h_extras', 'h_nocturna', 'h_diurna', 'h_dominical',
+                    'creator', 'last_editor')
+
     def h_extras(self, obj, now):
-        return obj.horas_extras()
+        return self.instance.horas_extras()
     # end def
 
     def h_nocturna(self, obj, now):
-        return obj.horas_nocturna()
+        return self.instance.horas_nocturna()
     # end def
 
     def h_diurna(self, obj, now):
-        return obj.horas_diurna()
+        return self.instance.horas_diurna()
     # end def
 
     def h_dominical(self, obj, now):
-        return obj.horas_dominical()
+        return self.instance.horas_dominical()
     # end def
-    """
 
     @method_decorator(check_login)
     @csrf_exempt
