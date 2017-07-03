@@ -1,7 +1,7 @@
 # [START django_app]
 runtime: python
 env: flex
-entrypoint: gunicorn -b :$PORT mysite.wsgi
+entrypoint: gunicorn -b :$PORT nominax.wsgi
 threadsafe: yes
 
 
