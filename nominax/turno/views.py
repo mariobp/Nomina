@@ -79,27 +79,35 @@ class MasterList(supra.SupraListView):
 class TurnoSupraForm(supra.SupraFormView):
     model = models.Turno
     form_class = forms.TurnoForm
-    list_display = ('id', 'empleado',
+    list_display = ('id', 'empleado_id', 'empleado',
                     'entrada', 'salida', 'aprobado',
-                    'h_extras', 'h_nocturna', 'h_diurna', 'h_dominical',
                     'creator', 'last_editor')
 
+    """
     def h_extras(self, obj, now):
-        return self.instance.horas_extras()
+        if self.instance:
+            return self.instance.horas_extras()
+        return None
     # end def
 
     def h_nocturna(self, obj, now):
-        return self.instance.horas_nocturna()
+        if self.instance:
+            return self.instance.horas_nocturna()
+        return None
     # end def
 
     def h_diurna(self, obj, now):
-        return self.instance.horas_diurna()
+        if self.instance:
+            return self.instance.horas_diurna()
+        return None
     # end def
 
     def h_dominical(self, obj, now):
-        return self.instance.horas_dominical()
+        if self.instance:
+            return self.instance.horas_dominical()
+        return None
     # end def
-
+    """
     @method_decorator(check_login)
     @csrf_exempt
     def dispatch(self, request, *args, **kwargs):

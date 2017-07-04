@@ -76,8 +76,8 @@ export class EditGeneralComponent implements AfterViewInit {
             return value;
         }
         this._form.preSave = data => {
-            if(Array.isArray(data.tipo_corte)) {
-              data.tipo_corte = data.tipo_corte[0];
+            if (Array.isArray(data.tipo_corte)) {
+                data.tipo_corte = data.tipo_corte[0];
             }
             return data;
         };
