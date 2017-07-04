@@ -105,7 +105,7 @@ DATABASES = {
 }
 
 
-DATABASES['default']['HOST'] = 'unix_socket=/cloudsql/vertical-airway-172321:us-east1:ingecol-db'
+DATABASES['default']['HOST'] = '/cloudsql/vertical-airway-172321:us-east1:ingecol-db'
 if os.getenv('GAE_INSTANCE'):
     pass
 else:
