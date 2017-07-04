@@ -17,7 +17,7 @@ export const AppRoutes: Routes = [
         path: '', component: BaseComponent, canActivate: [AuthGuard], data: { preload: true }, children: [
             { path: '', loadChildren: './home/home.module#HomeModule' },
             { path: 'usuarios', loadChildren: './usuarios/usuarios.module#UsuariosModule' },
-            { path: 'turno', loadChildren: './turno/turno.module#TurnoModule' },
+            { path: '', loadChildren: './turno/turno.module#TurnoModule' },
             { path: 'obligaciones', loadChildren: './obligaciones/obligaciones.module#ObligacionesModule' },
             { path: 'empleados', loadChildren: './empleados/empleados.module#EmpleadosModule' },
             { path: 'nomina', loadChildren: './nomina/nomina.module#NominaModule' },
@@ -34,7 +34,7 @@ import { ConfiguracionMenuMeta } from './configuracion/configuracion.route';
 export const AppMenuMeta: MenuMeta[] = [
     { title: 'Inico', url: '/dashboard', icon: 'dashboard' },
     { title: 'Usuarios', icon: 'supervisor_account', children: UsuariosMenuMeta },
-    { title: 'Turno', icon: 'assignment_ind', children: null },
+    { title: 'Turno', icon: 'assignment_ind', url: '/turno' },
     { title: 'Obligaciones', icon: 'assignment', children: ObligacionesMenuMeta },
     { title: 'Empleados', icon: 'account_box', children: null },
     { title: 'Nomina', icon: 'monetization_on', children: null },
