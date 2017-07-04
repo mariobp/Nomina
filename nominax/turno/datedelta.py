@@ -48,9 +48,9 @@ class datedelta():
             return datedelta(date_delta.start_date, date_delta.end_date)
         elif date_delta.empty():
             return datedelta(self.start_date, self.end_date)
-        elif self.end_date > date_delta.start_date and date_delta.start_date > self.start_date:
+        elif self.end_date >= date_delta.start_date and date_delta.start_date >= self.start_date:
             return datedelta(date_delta.start_date, self.low_date(self.end_date, date_delta.end_date))
-        elif date_delta.end_date > self.start_date and self.start_date > date_delta.start_date:
+        elif date_delta.end_date >= self.start_date and self.start_date >= date_delta.start_date:
             return datedelta(self.start_date, self.low_date(self.end_date, date_delta.end_date))
         # end if
         return datedelta()
