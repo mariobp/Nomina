@@ -20,18 +20,22 @@ export class TableComponent implements OnInit {
     @Input('columns') public columns: any[] = [{ data: 'id' }];
     @Input('multiselect') public multiselect = false;
     @Input('deleteable') public deleteable = true;
-
+    @Input('order') public order: any[] = [[1, 'asc']];
     private dataTable: any;
     public selectedItems: any[] = [];
 
-    public static renderCheckRow(data, type, full, meta) {
+    public static renderCheckRow(data) {
         return `
         <div class="checkbox">
             <label><input type="checkbox" name="selectedItems" value="${data}"/></label>
         </div>`;
     }
 
-    public static renderAvatar(data, type, full, meta) {
+    public static renderDecimal(data) {
+        return parseFloat(data).toFixed(2);
+    }
+
+    public static renderAvatar(data) {
         if (!data) {
             data = '/assets/img/default-avatar.png';
         } else {
@@ -49,6 +53,7 @@ export class TableComponent implements OnInit {
             serverSide: true,
             pagingType: 'full_numbers',
             responsive: true,
+            order: this.order,
             ajax: (data, callback, settings) => {
                 const op = {
                     page: Math.ceil(data.start / data.length) + 1,
@@ -88,18 +93,19 @@ export class TableComponent implements OnInit {
                     sSortAscending: ': Activar para ordenar la columna de manera ascendente',
                     sSortDescending: ': Activar para ordenar la columna de manera descendente'
                 }
+            },
+            drawCallback: (settings) => {
+                this._selectionInit(table);
             }
         };
         this.dataTable = $(table).DataTable(conf);
-        this._selectionInit(table);
     }
 
     _selectionInit(table) {
         if (this.multiselect) {
             const self = this;
-            $(table).on('click', 'tbody tr', function(event) {
-                self._onSelectedRow(this);
-                event.preventDefault();
+            $(table).find('tbody tr input[type=checkbox][name=selectedItems]').on('change', function(event) {
+                self._onSelectedRow($(this).closest('tr')[0]);
             });
         }
     }
@@ -107,9 +113,7 @@ export class TableComponent implements OnInit {
     _onSelectedRow(tr) {
         const self = this;
         const table = this.table.nativeElement;
-        const check = $(tr).find('input[type=checkbox][name=selectedItems]');
         $(tr).toggleClass('selected');
-        check.prop('checked', !check.is(':checked'));
         this.selectedItems = [];
         $.each($(table).find('tr.selected'), function() {
             self.selectedItems.push(self.dataTable.row(this).data());
@@ -126,9 +130,10 @@ export class TableComponent implements OnInit {
             this.service.list(dataSource)
                 .then(res => res.json())
                 .then(data => {
-                    // console.log(data);
+                    console.log(data);
+                    this.selectedItems = [];
                     this.service.data = data.object_list;
-                    cb({ 'draw': draw, 'recordsTotal': data.count, 'recordsFiltered': data.num_rows, 'data': data.object_list });
+                    cb({ 'draw': draw, 'recordsTotal': data.count, 'recordsFiltered': data.count, 'data': data.object_list });
                 })
                 .catch(err => {
                     // console.log(err);

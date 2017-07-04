@@ -1184,7 +1184,7 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > td.child:before {
 table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child,
 table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child {
   position: relative;
-  padding-left: 30px;
+  padding-left: 30px !important;
   cursor: pointer; }
 table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before,
 table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child:before {

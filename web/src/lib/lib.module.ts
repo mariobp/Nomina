@@ -2,6 +2,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MdAutocompleteModule, MdInputModule } from '@angular/material';
 
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
@@ -31,7 +32,9 @@ const LibComponents = [
         RouterModule,
         CommonModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        MdAutocompleteModule,
+        MdInputModule,
     ],
     declarations: LibComponents,
     exports: LibComponents

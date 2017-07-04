@@ -37,7 +37,7 @@ export class FormComponent implements OnInit, AfterViewInit {
     @Input('form') form: FormGroup;
     @Input('service') service: any;
     @Input('deleteable') public deleteable = true;
-
+    @Input('saveable') public saveable = true;
     ready = false;
     item: any;
     private errorMessages = {
@@ -70,6 +70,7 @@ export class FormComponent implements OnInit, AfterViewInit {
             $('.selectpicker').selectpicker();
         }
         $('.datetimepicker').datetimepicker({
+            format: 'DD/MM/YYYY h:mm A',
             icons: {
                 time: 'fa fa-clock-o',
                 date: 'fa fa-calendar',
@@ -113,6 +114,18 @@ export class FormComponent implements OnInit, AfterViewInit {
                 inline: true
             }
         });
+
+        const self = this;
+
+        $('.datetimepicker').on('dp.change', function(e) {
+            self.form.get($(this).attr('ng-reflect-name')).setValue($(this).datetimepicker({ format: 'DD/MM/YYYY h:mm A' }).val());
+        });
+        $('.datepicker').on('dp.change', function(e) {
+            self.form.get($(this).attr('ng-reflect-name')).setValue($(this).datetimepicker({ format: 'DD/MM/YYYY' }).val());
+        });
+        $('.timepicker').on('dp.change', function(e) {
+            self.form.get($(this).attr('ng-reflect-name')).setValue($(this).datetimepicker({ format: 'h:mm A' }).val());
+        });
     }
 
     onValueChanged(data) {
@@ -147,9 +160,9 @@ export class FormComponent implements OnInit, AfterViewInit {
     }
 
     save(back?: boolean) {
+
         if (!!this.service && this.form.valid) {
             const body = this.preSave(this.form.value);
-            console.log(body)
             this.ready = true;
             if (!!this.item) {
                 this.service.edit(this.item.id, body)

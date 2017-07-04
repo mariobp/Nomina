@@ -116,11 +116,11 @@ export class CrudService extends CrudBase {
     setBaseUrl(val) {
         this.base_url = val;
         super.init({
-            redirect: val,
-            list: `${val}list/`,
-            add: `${val}form/`,
-            edit: `${val}form/$(id)/`,
-            delete: `${val}delete/$(id)/`
+            redirect: this.base_url,
+            list: `${this.base_url}list/`,
+            add: `${this.base_url}form/`,
+            edit: `${this.base_url}form/$(id)/`,
+            delete: `${this.base_url}delete/$(id)/`
         });
     }
 }
