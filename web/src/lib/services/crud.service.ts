@@ -61,24 +61,32 @@ export class CrudBase implements Resolve<any> {
     list(query) {
         if (!!this.conf.list) {
             return this._cl.get(this.conf.list, query, this._cl.json);
+        } else {
+            throw new SyntaxError('No se ha configurado url para listar');
         }
     }
 
     add(body: any) {
         if (!!this.conf.add) {
             return this._cl.post(this.conf.add, body);
+        } else {
+            throw new SyntaxError('No se ha configurado url para agregar');
         }
     }
 
     edit(id: number, body: any) {
         if (!!this.conf.edit) {
             return this._cl.post(this.conf.edit.replace('$(id)', `${id}`), body);
+        } else {
+            throw new SyntaxError('No se ha configurado url para editar')
         }
     }
 
     delete(id: number) {
         if (!!this.conf.delete) {
             return this._cl.delete(this.conf.delete.replace('$(id)', `${id}`));
+        } else {
+            throw new SyntaxError('No se ha configurado url para borrar')
         }
     }
 
