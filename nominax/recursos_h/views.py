@@ -386,7 +386,9 @@ class ContraoSupraList(supra.SupraListView):
 
 class EmpleadoSupraList(supra.SupraListView):
     model = models.Empleado
-    list_display = ['id', 'nombre', 'apellidos', 'cedula', 'cargo', 'cargo__nombre', 'pension', 'eps', 'cesantia', 'cajacompensacion', ('contrato', 'json')]
+    list_display = ['id', 'nombre', 'apellidos', 'cedula', 'cargo',
+                    'cargo__nombre', 'pension', 'eps', 'cesantia',
+                    'cajacompensacion', ('contrato', 'json')]
     search_fields = ['nombre', 'apellidos', 'cedula']
     list_filter = ['cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion']
     search_key = 'q'
@@ -408,8 +410,8 @@ class EmpleadoSupraList(supra.SupraListView):
 
     def get_queryset(self):
         queryset = super(EmpleadoSupraList, self).get_queryset()
-        if self.request.GET.get('length', False):
-            self.paginate_by = self.request.GET.get('length', False)
+        if self.request.GET.get('num_page', False):
+            self.paginate_by = self.request.GET.get('num_page', False)
         # end if
         propiedad = self.request.GET.get('sort_property', False)
         orden = self.request.GET.get('sort_direction', False)
