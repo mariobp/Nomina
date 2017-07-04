@@ -23,6 +23,7 @@ export class EditAdminComponent implements AfterViewInit {
     renderinputs: RenderInput[];
     service = this._as;
 
+
     @ViewChild('f') private _form: FormComponent;
 
     constructor(private _fb: FormBuilder, private _as: AdminService, private _rt: Router) {
@@ -70,6 +71,7 @@ export class ListAdminComponent {
 
     service = this._as;
     multiselect = true;
+    order = [[2, 'asc']]
     columns = [
         {
             className: 'text-center',
