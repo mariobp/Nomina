@@ -5,3 +5,4 @@ from django.contrib import admin
 import models
 
 admin.site.register(models.Cargo)
+admin.site.register(models.Contrato)

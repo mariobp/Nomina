@@ -144,7 +144,8 @@ class TipoContrato(models.Model):
 class Contrato(models.Model):
     empleado = models.ForeignKey(Empleado)
     tipo_contrato = models.ForeignKey(TipoContrato)
-    salario_base = models.CharField("Salario base legal", max_length=100)
+    salario_base = models.FloatField("Salario base legal")
+    subsidio_transporte = models.FloatField("Subsidio de transporte")
 
     fecha_inicio = models.DateField()
     fecha_finalizacion = models.DateField(blank=True, null=True)

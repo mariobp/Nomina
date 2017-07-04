@@ -21,6 +21,9 @@ class Configuracion(models.Model):
     h_almuerzo_inicio = models.TimeField("Hora de inicio de almuerzo")
     h_almuerzo_fin = models.TimeField("Hora de fin de almuerzo")
 
+    descuento_salud = models.IntegerField("Descuento de salud y pensión para empleado %")
+    prestaciones_sociales = models.IntegerField("Pago de salud y pensión del empleador %")
+
     nocturna = models.IntegerField("Valor de recargo nocturno %")
     dominical = models.IntegerField("Valor de recargo dominical o festivo %")
     nocturna_dominical = models.IntegerField("Valor de recargo nocturno dominical o festivo %")
