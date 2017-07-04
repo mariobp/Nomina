@@ -38,5 +38,5 @@ env_variables:
 # Replace project and instance with the values obtained  when configuring your
 # Cloud SQL instance.
 beta_settings:
-    cloud_sql_instances: INSTANCE_CONNECTION_NAME
+    cloud_sql_instances: vertical-airway-172321:us-east1:ingecol-db
 #[END cloudsql_settings]

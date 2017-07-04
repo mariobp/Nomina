@@ -96,7 +96,6 @@ DATABASES = {
         'NAME': 'ingecol',
         'USER': 'postgres',
         'PASSWORD': 'GHyhBHpOl3gfg6ph',
-        'HOST': '/cloudsql/vertical-airway-172321:us-east1:ingecol-db',
         'POST': '5432'
     },
     'default2': {
@@ -104,6 +103,14 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite'),
     }
 }
+
+
+DATABASES['default']['HOST'] = '/cloudsql/vertical-airway-172321:us-east1:ingecol-db'
+if os.getenv('GAE_INSTANCE'):
+    pass
+else:
+    DATABASES['default']['HOST'] = '127.0.0.1'
+
 
 if 'test' in sys.argv:
     DATABASES['default'] = {
