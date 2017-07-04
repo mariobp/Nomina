@@ -23,7 +23,7 @@ class NominaSupraList(supra.SupraListView):
                     'subsidio_trasporte', 'extras', 'extra_nocturna', 'extra_dominical_diurna',
                     'extra_dominical_nocturna', 'dominical_diurna', 'dominical_nocturna', 'nocturna',
                     'diurnas', 'dominical_diurna', 'dominical_nocturna', 'horas_diurna', 'horas_nocturna',
-                    'horas_dominicales ']
+                    'horas_dominicales']
     search_fields = ['empleado__nombre', 'empleado__apellidos', 'empleado__cedula', ]
     list_filter = ['empleado', 'empleado__cargo', 'fecha', 'corte']
     search_key = 'q'
@@ -73,7 +73,7 @@ class NominaSupraList2(supra.SupraListView):
                     'subsidio_trasporte', 'extras', 'extra_nocturna', 'extra_dominical_diurna',
                     'extra_dominical_nocturna', 'dominical_diurna', 'dominical_nocturna', 'nocturna',
                     'diurnas', 'dominical_diurna', 'dominical_nocturna', 'horas_diurna', 'horas_nocturna',
-                    'horas_dominicales ']
+                    'horas_dominicales']
     list_filter = ['empleado', 'empleado__cargo', 'fecha', 'corte']
 
     def empleado_f(self, obj, now):
