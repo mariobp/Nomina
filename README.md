@@ -1,2 +1,0 @@
-# Nomina
-Proyecto de nominas
