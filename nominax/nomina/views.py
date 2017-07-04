@@ -22,7 +22,8 @@ class NominaSupraList(supra.SupraListView):
     list_display = ['id', 'empleado', 'empleado_f', 'corte', 'corte_f', 'fecha', 'salario_base',
                     'subsidio_trasporte', 'extras', 'extra_nocturna', 'extra_dominical_diurna',
                     'extra_dominical_nocturna', 'dominical_diurna', 'dominical_nocturna', 'nocturna',
-                    'prestaciones_sociales', 'salario_produccion', 'bonificacion']
+                    'diurna', 'dominical_diurna', 'dominical_nocturna', 'horas_diurna', 'horas_nocturna',
+                    'horas_dominicales ']
     search_fields = ['empleado__nombre', 'empleado__apellidos', 'empleado__cedula', ]
     list_filter = ['empleado', 'empleado__cargo', 'fecha', 'corte']
     search_key = 'q'
@@ -68,10 +69,11 @@ class NominaSupraList(supra.SupraListView):
 
 class NominaSupraList2(supra.SupraListView):
     model = models.Nomina
-    list_display = ['id', 'empleado_f', 'fecha', 'salario_base',
+    list_display = ['id', 'empleado', 'empleado_f', 'corte', 'fecha', 'salario_base',
                     'subsidio_trasporte', 'extras', 'extra_nocturna', 'extra_dominical_diurna',
                     'extra_dominical_nocturna', 'dominical_diurna', 'dominical_nocturna', 'nocturna',
-                    'prestaciones_sociales', 'salario_produccion', 'bonificacion']
+                    'diurna', 'dominical_diurna', 'dominical_nocturna', 'horas_diurna', 'horas_nocturna',
+                    'horas_dominicales ']
     list_filter = ['empleado', 'empleado__cargo', 'fecha', 'corte']
 
     def empleado_f(self, obj, now):
@@ -83,7 +85,7 @@ class NominaSupraList2(supra.SupraListView):
 class CorteSupraList(supra.SupraListView):
     model = models.Corte
     list_display = ['fecha_inicio', 'fecha_fin', 'cerrado',
-                    'nocturna', 'dominical', 'nocturna_dominical',
+                    'nocturna', 'dominical', 'nocturna_dominical', 'prestaciones_sociales',
                     'extra_diurna', 'extra_nocturna' , 'extra_dominical_diurna',
                     'extra_dominical_nocturna', ('nominas', 'json')]
 
