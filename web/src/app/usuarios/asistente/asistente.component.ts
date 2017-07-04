@@ -78,6 +78,7 @@ export class AsistenteEditComponent implements AfterViewInit {
 export class AsistenteListComponent {
     service = this._as;
     multiselect = true;
+    order = [[2, 'asc']]
     columns = [
         {
             className: 'text-center',
