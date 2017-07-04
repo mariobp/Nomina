@@ -52,7 +52,10 @@ class Nomina(models.Model):
 
 
     def salario_produccion(self):
-        return self.horas_diurna*float(self.empleado.cargo.valor_hora_diurna) + self.horas_nocturna*float(self.empleado.cargo.valor_hora_nocturna) + self.horas_dominicales*float(self.empleado.cargo.valor_hora_festivo)
+        if self.horas_diurna and self.horas_nocturna and self.horas_dominicales:
+            return self.horas_diurna*float(self.empleado.cargo.valor_hora_diurna) + self.horas_nocturna*float(self.empleado.cargo.valor_hora_nocturna) + self.horas_dominicales*float(self.empleado.cargo.valor_hora_festivo)
+        # end if
+        return 0
     # end def
 
     def prestaciones_sociales(self):
@@ -73,18 +76,27 @@ class Nomina(models.Model):
 
 
     def valor_hora(self):
-        return self.salario_base/240
+        if self.salario_base:
+            return self.salario_base/240
+        # end def
+        return 0
     # end def
 
     def salario_legal(self):
-        return self.salario_base + self.subsidio_trasporte + self.recargos()
+        if self.salario_base and self.subsidio_trasporte:
+            return self.salario_base + self.subsidio_trasporte + self.recargos()
+        # end if
+        return 0
     # end def
 
     def neto(self):
-        if self.salario_produccion < self.salario_base:
-            return self.salario_base + self.recargos() + self.subsidio_trasporte
+        if self.salario_base and self.subsidio_trasporte:
+            if self.salario_produccion() < self.salario_base:
+                return self.salario_base + self.recargos() + self.subsidio_trasporte
+            # end if
+            return self.salario_produccion()
         # end if
-        return self.salario_produccion()
+        return 0
     # end def
 
     def total(self):
