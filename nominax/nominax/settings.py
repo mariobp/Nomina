@@ -96,7 +96,6 @@ DATABASES = {
         'NAME': 'ingecol',
         'USER': 'postgres',
         'PASSWORD': 'GHyhBHpOl3gfg6ph',
-        'HOST': '127.0.0.1',
         'POST': '5432'
     },
     'default2': {
@@ -106,11 +105,11 @@ DATABASES = {
 }
 
 
-#DATABASES['default']['HOST'] = '/cloudsql/vertical-airway-172321:us-east1:ingecol-db'
-#if os.getenv('GAE_INSTANCE'):
-#    pass
-#else:
-#    DATABASES['default']['HOST'] = '127.0.0.1'
+DATABASES['default']['HOST'] = '/cloudsql/vertical-airway-172321:us-east1:ingecol-db'
+if os.getenv('GAE_INSTANCE'):
+    pass
+else:
+    DATABASES['default']['HOST'] = '127.0.0.1'
 
 
 if 'test' in sys.argv:
