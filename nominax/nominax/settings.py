@@ -95,8 +95,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'ingecol',
         'USER': 'postgres',
-        'HOST': '127.0.0.1',
-        'PASSWORD': 'GHyhBHpOl3gfg6ph',
+        'HOST': '104.236.33.228',
+        'PASSWORD': 'Exile*74522547',
         'POST': '5432'
     },
     'default2': {
