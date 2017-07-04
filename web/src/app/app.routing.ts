@@ -12,15 +12,15 @@ export interface MenuMeta {
 }
 
 export const AppRoutes: Routes = [
-    { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+    { path: '', redirectTo: 'turno', pathMatch: 'full' },
     {
         path: '', component: BaseComponent, canActivate: [AuthGuard], data: { preload: true }, children: [
-            { path: '', loadChildren: './home/home.module#HomeModule' },
-            { path: 'usuarios', loadChildren: './usuarios/usuarios.module#UsuariosModule' },
+            // { path: '', loadChildren: './home/home.module#HomeModule' },
             { path: '', loadChildren: './turno/turno.module#TurnoModule' },
+            { path: '', loadChildren: './empleados/empleados.module#EmpleadosModule' },
+            { path: '', loadChildren: './nomina/nomina.module#NominaModule' },
+            { path: 'usuarios', loadChildren: './usuarios/usuarios.module#UsuariosModule' },
             { path: 'obligaciones', loadChildren: './obligaciones/obligaciones.module#ObligacionesModule' },
-            { path: 'empleados', loadChildren: './empleados/empleados.module#EmpleadosModule' },
-            { path: 'nomina', loadChildren: './nomina/nomina.module#NominaModule' },
             { path: 'configuracion', loadChildren: './configuracion/configuracion.module#ConfiguracionModule' }
         ]
     },
@@ -32,11 +32,11 @@ import { ObligacionesMenuMeta } from './obligaciones/route';
 import { ConfiguracionMenuMeta } from './configuracion/configuracion.route';
 
 export const AppMenuMeta: MenuMeta[] = [
-    { title: 'Inico', url: '/dashboard', icon: 'dashboard' },
+    // { title: 'Inico', url: '/dashboard', icon: 'dashboard' },
     { title: 'Usuarios', icon: 'supervisor_account', children: UsuariosMenuMeta },
     { title: 'Turno', icon: 'assignment_ind', url: '/turno' },
     { title: 'Obligaciones', icon: 'assignment', children: ObligacionesMenuMeta },
-    { title: 'Empleados', icon: 'account_box', children: null },
-    { title: 'Nomina', icon: 'monetization_on', children: null },
+    { title: 'Empleados', icon: 'account_box', url: '/empleados' },
+    { title: 'Nomina', icon: 'monetization_on', url: '/nomina' },
     { title: 'Configuración', icon: 'settings_applications', children: ConfiguracionMenuMeta }
 ];

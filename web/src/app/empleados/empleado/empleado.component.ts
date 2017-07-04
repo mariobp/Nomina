@@ -2,18 +2,18 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { TableComponent, RenderInput, FormComponent } from '../../../lib/components';
-import { NominaService } from './nomina.service';
+import { EmpleadoService } from './empleado.service';
 
 @Component({
     template: '<router-outlet></router-outlet>',
-    styleUrls: ['./nomina.component.scss']
+    styleUrls: ['./empleado.component.scss']
 })
-export class NominaComponent { }
+export class EmpleadoComponent { }
 
 @Component({
-    templateUrl: './list.nomina.component.html'
+    templateUrl: './list.empleado.component.html'
 })
-export class NominaListComponent {
+export class EmpleadoListComponent {
     service = this._as;
     multiselect = true;
     aggregable = false;
@@ -26,76 +26,46 @@ export class NominaListComponent {
             data: 'id',
             render: TableComponent.renderCheckRow
         },
+        { data: 'nombre' },
+        { data: 'apellidos' },
+        { data: 'cargo__nombre' },
+        { data: 'cedula' },
         {
-            data: 'empleado',
-            render: (data, type, full, meta) => {
-                return `${full.empleado_f.nombre} ${full.empleado_f.apellidos}`;
-            }
-        },
-        { data: 'salario_base' },
-        {
-            data: 'salario_produccion',
+            data: 'eps__nombre',
             orderable: false,
             searchable: false,
         },
         {
-            data: 'salario_legal',
+            data: 'pension__nombre',
             orderable: false,
             searchable: false,
         },
         {
-            data: 'recargos',
+            data: 'cesantia__nombre',
             orderable: false,
             searchable: false,
         },
         {
-            data: 'bonificacion',
+            data: 'cajacompensacion__nombre',
             orderable: false,
             searchable: false,
         },
-        {
-            data: 'subsidio_trasporte',
-            orderable: false,
-            searchable: false,
-        },
-        {
-            data: 'prestaciones_sociales',
-            orderable: false,
-            searchable: false,
-        },
-        {
-            data: 'descuento_salud',
-            orderable: false,
-            searchable: false,
-        },
-        {
-            data: 'neto',
-            orderable: false,
-            searchable: false,
-        },
-        {
-            data: 'total',
-            orderable: false,
-            searchable: false,
-        },
-    ];
-    /*
-        nombre empleado
-        salario base
-    */
 
-    constructor(private _as: NominaService) { }
+
+    ];
+
+    constructor(private _as: EmpleadoService) { }
 }
 ;
 
 @Component({
-    template: `<ex-form #f icon="assignment_ind" title="Nomina"
+    template: `<ex-form #f icon="assignment_ind" title="Empleado"
         [form]="form"
         [service]="service"
         [columns]="columns"
         [renderinputs]="renderinputs"></ex-form>`
 })
-export class NominaEditComponent implements AfterViewInit {
+export class EmpleadoEditComponent implements AfterViewInit {
 
     form: FormGroup;
     columns: string[];
@@ -104,10 +74,10 @@ export class NominaEditComponent implements AfterViewInit {
 
     @ViewChild('f') private _form: FormComponent;
 
-    constructor(private _fb: FormBuilder, private _s: NominaService, private _rt: Router) {
+    constructor(private _fb: FormBuilder, private _s: EmpleadoService, private _rt: Router) {
         this.form = this._fb.group({
             aprobado: [false, [Validators.required]],
-            nomina: [[], [Validators.required]],
+            empleado: [[], [Validators.required]],
             entrada: ['', [Validators.required]],
             salida: ['', [Validators.required]],
             h_diurna: [{ value: 0, disabled: true }],
@@ -117,7 +87,7 @@ export class NominaEditComponent implements AfterViewInit {
         });
         this.columns = ['col1', 'col2'];
         this.renderinputs = [
-            { column: 'col1', title: 'Nomina', type: 'text', name: 'nomina' },
+            { column: 'col1', title: 'Empleado', type: 'text', name: 'empleado' },
             { column: 'col1', title: 'Hora de entrada', type: 'text', name: 'entrada', class: 'datetimepicker' },
             { column: 'col1', title: 'Hora de salida', type: 'text', name: 'salida', class: 'datetimepicker' },
             { column: 'col2', title: 'Horas diurnas', type: 'number', name: 'h_diurna', step: '2' },
