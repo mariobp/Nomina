@@ -18,6 +18,7 @@ export class NominaListComponent {
     multiselect = true;
     aggregable = false;
     editable = false;
+    deleteable = false;
     columns = [
         {
             className: 'text-center',

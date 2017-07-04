@@ -20,7 +20,7 @@ export class ToolbarComponent implements OnInit {
     private sidebarVisible: boolean;
 
 
-    @Input('title') private title: string;
+    @Input('title') public title: string;
 
     @ViewChild('navbar-cmp') button;
 
