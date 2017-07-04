@@ -22,7 +22,7 @@ class NominaSupraList(supra.SupraListView):
     list_display = ['id', 'empleado', 'empleado_f', 'corte', 'corte_f', 'fecha', 'salario_base',
                     'subsidio_trasporte', 'extras', 'extra_nocturna', 'extra_dominical_diurna',
                     'extra_dominical_nocturna', 'dominical_diurna', 'dominical_nocturna', 'nocturna',
-                    'diurna', 'dominical_diurna', 'dominical_nocturna', 'horas_diurna', 'horas_nocturna',
+                    'diurnas', 'dominical_diurna', 'dominical_nocturna', 'horas_diurna', 'horas_nocturna',
                     'horas_dominicales ']
     search_fields = ['empleado__nombre', 'empleado__apellidos', 'empleado__cedula', ]
     list_filter = ['empleado', 'empleado__cargo', 'fecha', 'corte']
@@ -72,7 +72,7 @@ class NominaSupraList2(supra.SupraListView):
     list_display = ['id', 'empleado', 'empleado_f', 'corte', 'fecha', 'salario_base',
                     'subsidio_trasporte', 'extras', 'extra_nocturna', 'extra_dominical_diurna',
                     'extra_dominical_nocturna', 'dominical_diurna', 'dominical_nocturna', 'nocturna',
-                    'diurna', 'dominical_diurna', 'dominical_nocturna', 'horas_diurna', 'horas_nocturna',
+                    'diurnas', 'dominical_diurna', 'dominical_nocturna', 'horas_diurna', 'horas_nocturna',
                     'horas_dominicales ']
     list_filter = ['empleado', 'empleado__cargo', 'fecha', 'corte']
 
