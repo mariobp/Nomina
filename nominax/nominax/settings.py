@@ -96,7 +96,7 @@ DATABASES = {
         'NAME': 'ingecol',
         'USER': 'postgres',
         'PASSWORD': 'GHyhBHpOl3gfg6ph',
-        'HOST': '127.0.0.1',
+        'HOST': '/cloudsql/vertical-airway-172321:us-east1:ingecol-db',
         'POST': '5432'
     },
     'default2': {

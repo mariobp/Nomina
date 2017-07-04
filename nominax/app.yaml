@@ -31,7 +31,7 @@ env_variables:
     # Replace user, password, database, and instance connection name with the values obtained
     # when configuring your Cloud SQL instance.
     SQLALCHEMY_DATABASE_URI: >-
-      mysql+pymysql://postgres:GHyhBHpOl3gfg6ph@/DATABASE?unix_socket=/cloudsql/vertical-airway-172321:us-east1:ingecol-db
+      postgresql+psycopg2://postgres:GHyhBHpOl3gfg6ph@/DATABASE?host=/cloudsql/vertical-airway-172321:us-east1:ingecol-db
 #[END env]
 
 #[START cloudsql_settings]
