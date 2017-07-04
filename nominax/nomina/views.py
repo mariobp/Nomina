@@ -19,7 +19,7 @@ supra.SupraConf.body = True
 
 class NominaSupraList(supra.SupraListView):
     model = models.Nomina
-    list_display = ['id', 'empleado', 'empleado_f', 'corte_f', 'fecha', 'salario_base',
+    list_display = ['id', 'empleado', 'empleado_f', 'corte', 'corte_f', 'fecha', 'salario_base',
                     'subsidio_trasporte', 'extras', 'extra_nocturna', 'extra_dominical_diurna',
                     'extra_dominical_nocturna', 'dominical_diurna', 'dominical_nocturna', 'nocturna',
                     'prestaciones_sociales', 'salario_produccion', 'bonificacion']
