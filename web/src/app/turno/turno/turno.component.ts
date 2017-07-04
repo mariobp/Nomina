@@ -87,7 +87,7 @@ export class TurnoEditComponent implements AfterViewInit {
     renderinputs: RenderInput[];
     service = this._s;
 
-    @ViewChild('f') private _form: FormComponent;
+    @ViewChild('f') public _form: FormComponent;
 
     options: any[] = [];
 

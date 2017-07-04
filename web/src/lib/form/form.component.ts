@@ -38,7 +38,7 @@ export class FormComponent implements OnInit, AfterViewInit {
     @Input('service') service: any;
     @Input('deleteable') public deleteable = true;
     @Input('saveable') public saveable = true;
-    private _ready: boolean;
+    public _ready: boolean;
     item: any;
     private errorMessages = {
         email: 'texto para error de email'

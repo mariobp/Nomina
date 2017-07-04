@@ -19,14 +19,52 @@ supra.SupraConf.body = True
 
 class NominaSupraList(supra.SupraListView):
     model = models.Nomina
-    list_display = ['id', 'empleado_f', 'corte_f', 'fecha', 'salario_base',
+    list_display = ['id', 'empleado', 'empleado_f', 'corte', 'corte_f', 'fecha', 'salario_base',
                     'subsidio_trasporte', 'extras', 'extra_nocturna', 'extra_dominical_diurna',
                     'extra_dominical_nocturna', 'dominical_diurna', 'dominical_nocturna', 'nocturna',
-                    'prestaciones_sociales', 'salario_produccion', 'bonificacion']
+                    'diurnas', 'dominical_diurna', 'dominical_nocturna', 'horas_diurna', 'horas_nocturna',
+                    'horas_dominicales'
+                    , 'salario_produccion', 'prestaciones_sociales', 'descuento_salud', 'bonificacion', 'valor_hora', 'salario_legal', 'neto', 'total', 'recargos']
     search_fields = ['empleado__nombre', 'empleado__apellidos', 'empleado__cedula', ]
     list_filter = ['empleado', 'empleado__cargo', 'fecha', 'corte']
     search_key = 'q'
     paginate_by = 10
+    def salario_produccion(self, obj, dict):
+        return obj.salario_produccion()
+    # end def
+
+    def prestaciones_sociales(self, obj, dict):
+        return obj.prestaciones_sociales()
+    # end def
+
+    def descuento_salud(self, obj, dict):
+        return obj.descuento_salud()
+    # end def
+
+    def bonificacion(self, obj, dict):
+        return obj.bonificacion()
+    # end def
+
+    def valor_hora(self, obj, dict):
+        return obj.valor_hora()
+    # end def
+
+    def salario_legal(self, obj, dict):
+        return obj.salario_legal()
+    # end def
+
+    def neto(self, obj, dict):
+        return obj.neto()
+    # end def
+
+    def total(self, obj, dict):
+        return obj.total()
+    # end def
+
+    def recargos(self, obj, dict):
+        return obj.recargos()
+    # end def
+
 
     def empleado_f(self, obj, now):
         return {"id": obj.empleado.id, "nombre": obj.empleado.nombre, "apellidos": obj.empleado.apellidos, "cedula": obj.empleado.cedula}
@@ -68,10 +106,11 @@ class NominaSupraList(supra.SupraListView):
 
 class NominaSupraList2(supra.SupraListView):
     model = models.Nomina
-    list_display = ['id', 'empleado_f', 'fecha', 'salario_base',
+    list_display = ['id', 'empleado', 'empleado_f', 'corte', 'fecha', 'salario_base',
                     'subsidio_trasporte', 'extras', 'extra_nocturna', 'extra_dominical_diurna',
                     'extra_dominical_nocturna', 'dominical_diurna', 'dominical_nocturna', 'nocturna',
-                    'prestaciones_sociales', 'salario_produccion', 'bonificacion']
+                    'diurnas', 'dominical_diurna', 'dominical_nocturna', 'horas_diurna', 'horas_nocturna',
+                    'horas_dominicales']
     list_filter = ['empleado', 'empleado__cargo', 'fecha', 'corte']
 
     def empleado_f(self, obj, now):
@@ -83,7 +122,7 @@ class NominaSupraList2(supra.SupraListView):
 class CorteSupraList(supra.SupraListView):
     model = models.Corte
     list_display = ['fecha_inicio', 'fecha_fin', 'cerrado',
-                    'nocturna', 'dominical', 'nocturna_dominical',
+                    'nocturna', 'dominical', 'nocturna_dominical', 'prestaciones_sociales',
                     'extra_diurna', 'extra_nocturna' , 'extra_dominical_diurna',
                     'extra_dominical_nocturna', ('nominas', 'json')]
 

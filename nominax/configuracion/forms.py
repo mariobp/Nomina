@@ -18,4 +18,5 @@ class ConfiguracionForm(forms.ModelForm):
         # end if
         raise forms.ValidationError('No se ha creado una configuración válida')
     # end def
+
 # end class

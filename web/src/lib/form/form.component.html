@@ -41,13 +41,13 @@
             </div>
         </div>
     </form>
-    <div class="cargando" *ngIf="ready">
+    <div class="cargando" *ngIf="_ready">
         <div class="loader">
             <svg class="circular" viewBox="25 25 50 50">
                 <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
             </svg>
         </div>
     </div>
-    <!-- <pre> value: {{ form.valid }}</pre> -->
+    <pre> value: {{ form.valid }}</pre>
     <pre> value: {{ form.value | json }}</pre>
 </ex-card>

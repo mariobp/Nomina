@@ -11,7 +11,7 @@ __pycache__/
 env/
 build/
 develop-eggs/
-dist/
+#dist/
 downloads/
 eggs/
 .eggs/
@@ -103,7 +103,7 @@ ENV/
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
-**/dist
+#**/dist
 **/tmp
 **/out-tsc
 
@@ -142,3 +142,4 @@ ENV/
 # System Files
 .DS_Store
 Thumbs.db
+.vscode

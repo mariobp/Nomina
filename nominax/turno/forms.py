@@ -26,7 +26,24 @@ class TurnoForm(forms.ModelForm):
 
     @staticmethod
     def cuando_apruebe(turno):
-        pass
+        print 'no implementado'
+    # end def
+
+    @staticmethod
+    def update_form(turno, data):
+        class EditForm(TurnoForm):
+            class Meta:
+                model = models.Turno
+                fields = ['empleado']
+        # end class
+        data['empleado'] = turno.empleado.pk
+        form = EditForm(data, instance=turno)
+        if form.is_valid():
+            form.save()
+            return form
+        # end if
+        print form.errors
+        return form
     # end ef
 
     @transaction.atomic
@@ -76,7 +93,7 @@ class TurnoForm(forms.ModelForm):
         delta_extra = datedelta(fecha_extra_inicio, fecha_extra_fin)
         delta_dominicales = models.DiaDominical.multi_datedelta(delta)
         delta_festivos = models.DiaFestivo.multi_datedelta(delta)
-        delta_dominicales_festivos = (delta_dominicales + delta_festivos).intersect(delta)
+        delta_dominicales_festivos = (delta_dominicales + delta_festivos).intersect(delta).difference(almuerzo)
 
         delta_nocturno = nocturno.intersect(delta)
         delta_diurno = delta.difference(almuerzo).difference(nocturno)
@@ -116,9 +133,12 @@ class TurnoForm(forms.ModelForm):
             if user:
                 turno.aprobado_user = user
             # end if
-            TurnoForm.cuando_apruebe(turno)
         # end if
         turno.save()
+        if turno.aprobado:
+            print 'turno aprobado'
+            TurnoForm.cuando_apruebe(turno)
+        # end if
         if turno.salida:
             self.poner_horas(turno)
         # end if

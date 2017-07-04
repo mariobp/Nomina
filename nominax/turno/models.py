@@ -55,7 +55,6 @@ class Turno(models.Model):
     def get_extras_nocturnas(self):
         delta_extras = self.get_delta_extras()
         delta_nocturna = self.get_delta_nocturna()
-        
         return delta_extras.intersect(delta_nocturna).horas()
     # end def
 

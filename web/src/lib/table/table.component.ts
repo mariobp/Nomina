@@ -20,6 +20,8 @@ export class TableComponent implements OnInit {
     @Input('columns') public columns: any[] = [{ data: 'id' }];
     @Input('multiselect') public multiselect = false;
     @Input('deleteable') public deleteable = true;
+    @Input('aggregable') public aggregable = true;
+    @Input('editable') public editable = true;
     @Input('order') public order: any[] = [[1, 'asc']];
     private dataTable: any;
     public selectedItems: any[] = [];
@@ -107,6 +109,16 @@ export class TableComponent implements OnInit {
             $(table).find('tbody tr input[type=checkbox][name=selectedItems]').on('change', function(event) {
                 self._onSelectedRow($(this).closest('tr')[0]);
             });
+            $('#selectAll').on('change', function(event) {
+                const check = this.checked;
+                $.each($(table).find('tbody tr input[type=checkbox][name=selectedItems]'), function(id, val) {
+                    const tr = $(val).closest('tr')[0];
+                    if (check !== val.checked) {
+                        $(val).prop({ checked: check });
+                        self._onSelectedRow(tr);
+                    }
+                });
+            });
         }
     }
 
@@ -119,6 +131,7 @@ export class TableComponent implements OnInit {
             self.selectedItems.push(self.dataTable.row(this).data());
         });
     }
+
 
     preAjax(data) {
         return data;

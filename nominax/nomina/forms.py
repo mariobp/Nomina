@@ -17,19 +17,20 @@ class CorteForms(forms.ModelForm):
     @staticmethod
     def get_instance():
         instance = models.Corte.get_instance()
+        config = conf.ConfiguracionForm.get_instance()
         if not instance:
             instance = models.Corte()
-            config = conf.get_instance()
-            instance.nocturna = conf.nocturna
-            instance.dominical = conf.dominical
-            instance.nocturna_dominical = conf.nocturna_dominical
-            instance.extra_diurna = conf.extra_diurna
-            instance.extra_nocturna = conf.extra_nocturna
-            instance.extra_dominical_diurna = conf.extra_dominical_diurna
-            instance.extra_dominical_nocturna = conf.extra_dominical_nocturna
-
-            instance.save()
         # end if
+        instance.nocturna = config.nocturna
+        instance.dominical = config.dominical
+        instance.nocturna_dominical = config.nocturna_dominical
+        instance.descuento_salud = config.descuento_salud
+        instance.extra_diurna = config.extra_diurna
+        instance.extra_nocturna = config.extra_nocturna
+        instance.extra_dominical_diurna = config.extra_dominical_diurna
+        instance.extra_dominical_nocturna = config.extra_dominical_nocturna
+
+        instance.save()
         return instance
     # end def
 # end class
@@ -39,6 +40,17 @@ class NominaForm(forms.ModelForm):
         model = models.Nomina
         exclude = ()
     # end class
+
+    def __init__(self, *args, **kwargs):
+    	super(NominaForm, self).__init__(*args, **kwargs)
+    	self.fields['diurnas'].help_text = "%sx%d= $%s" % (str(self.instance.valor_hora()), self.instance.diurnas or 0, self.instance.calcular_hora_diurna(), ) 
+    	self.fields['nocturna'].help_text = "%sx%dx%d%%= $%s" % (str(self.instance.valor_hora()), self.instance.nocturna or 0, self.instance.corte.nocturna, self.instance.calcular_hora_nocturna(), ) 
+    	self.fields['extras'].help_text = "%sx%dx%d%%= $%s" % (str(self.instance.valor_hora()), self.instance.extras or 0, self.instance.corte.extra_diurna, self.instance.calcular_hora_extra_diurna(), ) 
+    	self.fields['extra_nocturna'].help_text = "%sx%dx%d%%= $%s" % (str(self.instance.valor_hora()), self.instance.extra_nocturna or 0, self.instance.corte.extra_nocturna, self.instance.calcular_hora_extra_nocturna(), ) 
+    	self.fields['dominical_diurna'].help_text = "%sx%dx%d%%= $%s" % (str(self.instance.valor_hora()), self.instance.dominical_diurna or 0, self.instance.corte.dominical, self.instance.calcular_hora_dominical_diurna(), ) 
+    	self.fields['dominical_nocturna'].help_text = "%sx%dx%d%%= $%s" % (str(self.instance.valor_hora()), self.instance.dominical_nocturna or 0, self.instance.corte.nocturna_dominical, self.instance.calcular_hora_dominical_nocturna(), ) 
+    	self.fields['extra_dominical_diurna'].help_text = "%sx%dx%d%%= $%s" % (str(self.instance.valor_hora()), self.instance.extra_dominical_diurna or 0, self.instance.corte.extra_dominical_diurna, self.instance.calcular_hora_dominical_extra_diurna(), ) 
+    	self.fields['extra_dominical_nocturna'].help_text = "%sx%dx%d%%= $%s" % (str(self.instance.valor_hora()), self.instance.extra_dominical_nocturna or 0, self.instance.corte.extra_dominical_nocturna, self.instance.calcular_hora_dominical_extra_nocturna(), ) 
 
     def clean(self):
         self.configuracion = conf.ConfiguracionForm.get_instance()
@@ -81,7 +93,7 @@ class NominaForm(forms.ModelForm):
         horas_dominicales_diurnas_extra = 0
         horas_dominicales_nocturnas_extra = 0
 
-
+        print 'calcular_nomina', len(self.turnos)
         for turno in self.turnos:
             horas_diurna = horas_diurna + turno.horas_diurna()
             horas_nocturna = horas_nocturna + turno.horas_nocturna()
@@ -99,13 +111,26 @@ class NominaForm(forms.ModelForm):
             horas_dominicales_nocturnas_extra = horas_dominicales_nocturnas_extra + turno.get_dominicales_nocturnas_extra()
         # end def
 
+        nomina.subsidio_trasporte = self.contrato.subsidio_transporte
         nomina.extras = horas_extras_diurnas - horas_dominicales_diurnas_extra
         nomina.extra_nocturna = horas_extras_nocturnas - horas_dominicales_nocturnas_extra
         nomina.extra_dominical_diurna = horas_dominicales_diurnas_extra
         nomina.extra_dominical_nocturna = horas_dominicales_nocturnas_extra
         nomina.dominical_diurna = horas_dominicales_diurnas - horas_dominicales_diurnas_extra
-        nomina.dominical_nocturna = horas_dominicales_nocturnas - horas_dominicales_nocturnas_extra
+        nomina.dominical_nocturna = horas_dominicales_nocturnas - horas_dominicales_nocturnas_extra 
         nomina.nocturna = horas_nocturna - horas_dominicales_nocturnas - nomina.extra_nocturna
+
+        nomina.horas_diurna = horas_diurna
+        nomina.horas_nocturna = horas_nocturna
+        nomina.horas_dominicales = horas_dominicales_diurnas + horas_dominicales_nocturnas
+
+        print 'extras', nomina.extras
+        print 'extra_nocturna', nomina.extra_nocturna
+        print 'extra_dominical_diurna', nomina.extra_dominical_diurna
+        print 'extra_dominical_nocturna', nomina.extra_dominical_nocturna
+        print 'dominical_diurna', nomina.dominical_diurna
+        print 'dominical_nocturna', nomina.dominical_nocturna
+        print 'nocturna', nomina.nocturna
     # end def
 
     def save(self, commit=True):
@@ -123,6 +148,8 @@ def cuando_apruebe(turno):
     nom_form = NominaForm({'empleado': turno.empleado.pk, 'corte': nomina.corte.pk, 'salario_base': nomina.salario_base}, instance = nomina)
     if nom_form.is_valid():
     	nom_form.save()
+    else:
+    	print nom_form.errors
     # end if
 # end def
 turnos.TurnoForm.cuando_apruebe = staticmethod(cuando_apruebe)
