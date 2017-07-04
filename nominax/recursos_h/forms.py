@@ -24,7 +24,7 @@ class CargoForm(forms.ModelForm):
 
     class Meta:
         model = models.Cargo
-        fields = ['nombre', ]
+        fields = ['nombre', 'valor_hora_diurna', 'valor_hora_nocturna', 'valor_hora_festivo']
     # end class
 # end class
 
@@ -139,7 +139,7 @@ class EmpleadoForm(forms.ModelForm):
         super(EmpleadoForm, self).__init__(*args, **kwargs)
         self.fields['fecha_nacimiento'].input_formats = (
             '%Y/%m/%d', '%d/%m/%Y', '%m/%d/%Y')
-        self.fields['fecha_nacimiento'].format = "m/d/y"
+        self.fields['fecha_nacimiento'].format = "d/m/y"
     # end def
 # end class
 
@@ -164,9 +164,9 @@ class ContratoForm(forms.ModelForm):
         super(ContratoForm, self).__init__(*args, **kwargs)
         self.fields['fecha_inicio'].input_formats = (
             '%Y/%m/%d', '%d/%m/%Y', '%m/%d/%Y')
-        self.fields['fecha_inicio'].format = "m/d/y"
+        self.fields['fecha_inicio'].format = "d/m/y"
         self.fields['fecha_finalizacion'].input_formats = (
             '%Y/%m/%d', '%d/%m/%Y', '%m/%d/%Y')
-        self.fields['fecha_finalizacion'].format = "m/d/y"
+        self.fields['fecha_finalizacion'].format = "d/m/y"
     # end def
 # end class

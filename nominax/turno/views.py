@@ -17,8 +17,9 @@ supra.SupraConf.ACCECC_CONTROL["allow"] = True
 supra.SupraConf.ACCECC_CONTROL["origin"] = ORIGIN
 supra.SupraConf.ACCECC_CONTROL["credentials"] = "true"
 supra.SupraConf.ACCECC_CONTROL["headers"] = "origin, content-type, accept"
-supra.SupraConf.ACCECC_CONTROL["methods"] = "POST, GET, PUT, DELETE ,OPTIONS"
+supra.SupraConf.ACCECC_CONTROL["methods"] = "POST, GET, PUT, DELETE, OPTIONS"
 supra.SupraConf.body = True
+supra.SupraListView.datetime_format = '%d/%m/%Y %I:%M %p'
 
 
 def marcar_turno(request, pk):
@@ -53,7 +54,7 @@ class MasterList(supra.SupraListView):
     def get_queryset(self):
         queryset = super(MasterList, self).get_queryset()
         if self.request.GET.get('num_page', False):
-            self.paginate_by = self.request.GET.get('length', False)
+            self.paginate_by = self.request.GET.get('num_page', False)
         # end if
         propiedad = self.request.GET.get('sort_property', False)
         orden = self.request.GET.get('sort_direction', False)
@@ -78,14 +79,35 @@ class MasterList(supra.SupraListView):
 class TurnoSupraForm(supra.SupraFormView):
     model = models.Turno
     form_class = forms.TurnoForm
+    list_display = ('id', 'empleado_id', 'empleado',
+                    'entrada', 'salida', 'aprobado',
+                    'creator', 'last_editor')
 
-    def get_form_class(self):
-        if 'pk' in self.http_kwargs:
-            self.form_class = forms.TurnoEdit
-        # end if
-        return self.form_class
+    """
+    def h_extras(self, obj, now):
+        if self.instance:
+            return self.instance.horas_extras()
+        return None
     # end def
 
+    def h_nocturna(self, obj, now):
+        if self.instance:
+            return self.instance.horas_nocturna()
+        return None
+    # end def
+
+    def h_diurna(self, obj, now):
+        if self.instance:
+            return self.instance.horas_diurna()
+        return None
+    # end def
+
+    def h_dominical(self, obj, now):
+        if self.instance:
+            return self.instance.horas_dominical()
+        return None
+    # end def
+    """
     @method_decorator(check_login)
     @csrf_exempt
     def dispatch(self, request, *args, **kwargs):
@@ -97,24 +119,24 @@ class TurnoSupraForm(supra.SupraFormView):
 class TurnoSupraList(MasterList):
     model = models.Turno
     list_display = ('id', 'empleado', 'empleado__nombre', 'empleado__apellidos',
-                    'entrada', 'salida', 'horas_extras', 'horas_nocturna', 'horas_diurna',
-                    'horas_dominical', 'aprobado', 'creator', 'last_editor')
+                    'entrada', 'salida', 'h_extras', 'h_nocturna', 'h_diurna',
+                    'h_dominical', 'aprobado', 'creator', 'last_editor')
     search_fields = ['empleado__nombre', 'empleado__apellidos']
     list_filter = ['empleado', 'aprobado']
 
-    def horas_extras(self, obj, now):
+    def h_extras(self, obj, now):
         return obj.horas_extras()
     # end def
 
-    def horas_nocturna(self, obj, now):
+    def h_nocturna(self, obj, now):
         return obj.horas_nocturna()
     # end def
 
-    def horas_diurna(self, obj, now):
+    def h_diurna(self, obj, now):
         return obj.horas_diurna()
     # end def
 
-    def horas_dominical(self, obj, now):
+    def h_dominical(self, obj, now):
         return obj.horas_dominical()
     # end def
 # end class

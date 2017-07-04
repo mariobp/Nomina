@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django import forms
 from configuracion import forms as conf
 from recursos_h import forms as rec
+#from nomina.forms import NominaForm
 import models
 from cuser.middleware import CuserMiddleware
 from datedelta import datedelta, multi_datedelta, periodic_timedelta
@@ -20,7 +21,12 @@ class TurnoForm(forms.ModelForm):
 
     @staticmethod
     def get_turnos(corte, empleado):
-        return models.Turno.objects.filter(empleado=empleado, entrada__gte=corte.fecha_inicio)
+        return models.Turno.objects.filter(empleado=empleado, entrada__gte=corte.fecha_inicio, salida__isnull=False, aprobado=True)
+    # end def
+
+    @staticmethod
+    def cuando_apruebe(turno):
+        pass
     # end ef
 
     @transaction.atomic
@@ -28,11 +34,22 @@ class TurnoForm(forms.ModelForm):
         return super(TurnoForm, self).post(request, *args, **kwargs)
     # end def
 
+    def clean_salida(self):
+        if self.cleaned_data['salida'] and self.cleaned_data['salida'] < self.cleaned_data['entrada']:
+            raise forms.ValidationError('La salida no puede ir antes que la entrada')
+        # end if
+        return self.cleaned_data['salida']
+    # end def
+
+    def clean_empleado(self):
+        self.contrato = rec.ContratoForm.get_instance(self.cleaned_data['empleado'])
+        return self.cleaned_data['empleado']
+    # end def
+
     def clean(self):
         self.configuracion = conf.ConfiguracionForm.get_instance()
-        self.contrato = rec.ContratoForm.get_instance(self.cleaned_data['empleado'])
-        if self.instance.aprobado:
-            raise forms.ValidationError('El turno ya esta aprobado')
+        # if self.instance.aprobado:
+        #     raise forms.ValidationError('El turno ya esta aprobado')
         # end if
         return self.cleaned_data
     # end def
@@ -54,8 +71,9 @@ class TurnoForm(forms.ModelForm):
 
         nocturno = periodic_timedelta(h_recargo_nocturno_inicio, h_recargo_nocturno_fin)
         delta = datedelta(fecha_hora_entrada, fecha_hora_salida)
-        delta_extra = datedelta(fecha_extra_inicio, fecha_extra_fin)
         almuerzo = periodic_timedelta(h_almuerzo_inicio, h_almuerzo_fin)
+        fecha_extra_inicio = fecha_extra_inicio + almuerzo.intersect(delta).timedelta()
+        delta_extra = datedelta(fecha_extra_inicio, fecha_extra_fin)
         delta_dominicales = models.DiaDominical.multi_datedelta(delta)
         delta_festivos = models.DiaFestivo.multi_datedelta(delta)
         delta_dominicales_festivos = (delta_dominicales + delta_festivos).intersect(delta)
@@ -98,18 +116,12 @@ class TurnoForm(forms.ModelForm):
             if user:
                 turno.aprobado_user = user
             # end if
+            TurnoForm.cuando_apruebe(turno)
         # end if
         turno.save()
-        self.poner_horas(turno)
+        if turno.salida:
+            self.poner_horas(turno)
+        # end if
         return turno
     # end def
-# end class
-
-
-class TurnoEdit(TurnoForm):
-
-    class Meta:
-        model = models.Turno
-        fields = ['entrada', 'salida', 'aprobado']
-    # end if
 # end class

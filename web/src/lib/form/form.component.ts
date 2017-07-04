@@ -38,12 +38,16 @@ export class FormComponent implements OnInit, AfterViewInit {
     @Input('service') service: any;
     @Input('deleteable') public deleteable = true;
     @Input('saveable') public saveable = true;
-    ready = false;
+    private _ready: boolean;
     item: any;
     private errorMessages = {
         email: 'texto para error de email'
     }
     constructor(private _ar: ActivatedRoute) { }
+
+    setReady(val: boolean) {
+        this._ready = val;
+    }
 
     setItem(item: any) {
         item = this.prePatchValue(item);
@@ -163,11 +167,12 @@ export class FormComponent implements OnInit, AfterViewInit {
 
         if (!!this.service && this.form.valid) {
             const body = this.preSave(this.form.value);
-            this.ready = true;
+            console.log(body)
+            this._ready = true;
             if (!!this.item) {
                 this.service.edit(this.item.id, body)
                     .then(data => {
-                        this.ready = false;
+                        this._ready = false;
                         this.successful(data);
                         swal({
                             title: 'Guardado!',
@@ -177,14 +182,14 @@ export class FormComponent implements OnInit, AfterViewInit {
                         });
                     })
                     .catch(error => {
-                        this.ready = false;
+                        this._ready = false;
                         this.error(error);
                     });
             } else {
                 this.service.add(body)
                     .then(data => {
                         this.form.reset();
-                        this.ready = false;
+                        this._ready = false;
                         swal({
                             title: 'Guardado!',
                             text: 'Registro se guardo con exito',
@@ -196,7 +201,7 @@ export class FormComponent implements OnInit, AfterViewInit {
                         }
                     })
                     .catch(error => {
-                        this.ready = false;
+                        this._ready = false;
                         this._findErros(error.json());
                         this.error(error);
                     });
