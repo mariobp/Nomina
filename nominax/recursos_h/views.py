@@ -387,8 +387,9 @@ class ContraoSupraList(supra.SupraListView):
 class EmpleadoSupraList(supra.SupraListView):
     model = models.Empleado
     list_display = ['id', 'nombre', 'apellidos', 'cedula', 'cargo',
-                    'cargo__nombre', 'pension', 'eps', 'cesantia',
-                    'cajacompensacion', ('contrato', 'json')]
+                    'cargo__nombre', 'pension', 'pension__nombre',
+                    'eps', 'eps__nombre', 'cesantia', 'cesantia__nombre',
+                    'cajacompensacion', 'cajacompensacion__nombre', ('contrato', 'json')]
     search_fields = ['nombre', 'apellidos', 'cedula']
     list_filter = ['cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion']
     search_key = 'q'
