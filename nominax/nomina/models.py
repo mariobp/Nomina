@@ -83,17 +83,14 @@ class Nomina(models.Model):
     # end def
 
     def salario_legal(self):
-        return self.salario_base or None + self.subsidio_trasporte or None + self.recargos()
+        return self.salario_base or 0 + self.subsidio_trasporte or 0 + self.recargos()
     # end def
 
     def neto(self):
-        if self.salario_base and self.subsidio_trasporte:
-            if self.salario_produccion() < self.salario_base:
-                return self.salario_base + self.recargos() + self.subsidio_trasporte
-            # end if
-            return self.salario_produccion()
+        if self.salario_produccion() < self.salario_base or 0:
+            return self.salario_base or 0 + self.recargos() + self.subsidio_trasporte or 0
         # end if
-        return 0
+        return self.salario_produccion()
     # end def
 
     def total(self):
