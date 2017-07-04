@@ -31,7 +31,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
         }
 
         // Retain the attempted URL for redirection
-        this._as.redirectUrl = url || '/dashboard';
+        this._as.redirectUrl = url || '/turno';
         this.router.navigate(['/login']);
         return false;
     }

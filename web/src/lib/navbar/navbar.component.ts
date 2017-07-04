@@ -6,8 +6,8 @@ import { AuthService } from '../../app/auth/auth.service';
 })
 export class NavbarComponent {
 
-    @Input('right') private right = false;
-    @Input('mobile') private mobile = false;
+    @Input('right') public right = false;
+    @Input('mobile') public mobile = false;
 
-    constructor(private _as: AuthService) { }
+    constructor(public _as: AuthService) { }
 }
