@@ -390,6 +390,7 @@ class EmpleadoSupraList(supra.SupraListView):
     search_fields = ['nombre', 'apellidos', 'cedula']
     list_filter = ['cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion']
     search_key = 'q'
+    paginate_by = 10
 
     def contrato(self, obj, now):
         class request():
