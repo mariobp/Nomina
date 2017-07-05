@@ -384,7 +384,7 @@ class ContraoSupraList(supra.SupraListView):
                     'empleado__apellidos', 'fecha_inicio', 'fecha_finalizacion',
                     'descanso_turno', 'inicio_descanso', 'duracion_descanso',
                     'horas_trabajo', 'horas_trabajo_semanal', 'horas_trabajo_corte')
-    list_filter = ['empleado']
+    list_filter = ['empleado', 'tipo_contrato']
     paginate_by = 10
 
     @method_decorator(check_login)
@@ -448,6 +448,18 @@ class EmpleadoSupraList(supra.SupraListView):
 # end class
 
 
+class ContratoForm(supra.SupraFormView):
+    model = models.Contrato
+    form_class = forms.ContratoForm
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(ContratoForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
+
+
 class ContratoInline(supra.SupraInlineFormView):
     model = models.Contrato
     base_model = models.Empleado
@@ -459,7 +471,6 @@ class ContratoInline(supra.SupraInlineFormView):
 class EmpleadoSupraForm(supra.SupraFormView):
     model = models.Empleado
     form_class = forms.EmpleadoForm
-    inlines = [ContratoInline]
 
     @method_decorator(check_login)
     @csrf_exempt
