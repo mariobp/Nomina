@@ -17,7 +17,7 @@ export class EmpleadoListComponent {
     service = this._as;
     multiselect = true;
     aggregable = false;
-    editable = false;
+    editable = true;
     columns = [
         {
             className: 'text-center',
@@ -76,24 +76,17 @@ export class EmpleadoEditComponent implements AfterViewInit {
 
     constructor(private _fb: FormBuilder, private _s: EmpleadoService, private _rt: Router) {
         this.form = this._fb.group({
-            aprobado: [false, [Validators.required]],
-            empleado: [[], [Validators.required]],
-            entrada: ['', [Validators.required]],
-            salida: ['', [Validators.required]],
-            h_diurna: [{ value: 0, disabled: true }],
-            h_dominical: [{ value: 0, disabled: true }],
-            h_extras: [{ value: 0, disabled: true }],
-            h_nocturna: [{ value: 0, disabled: true }],
+            nombre: ['', [Validators.required]],
+            apellidos: ['', [Validators.required]],
+            cedula: ['', [Validators.required, Validators.min(0)]],
+            fecha_nacimiento: ['', [Validators.required]],
         });
-        this.columns = ['col1', 'col2'];
+        this.columns = ['col1',];
         this.renderinputs = [
-            { column: 'col1', title: 'Empleado', type: 'text', name: 'empleado' },
-            { column: 'col1', title: 'Hora de entrada', type: 'text', name: 'entrada', class: 'datetimepicker' },
-            { column: 'col1', title: 'Hora de salida', type: 'text', name: 'salida', class: 'datetimepicker' },
-            { column: 'col2', title: 'Horas diurnas', type: 'number', name: 'h_diurna', step: '2' },
-            { column: 'col2', title: 'Horas nocturnas', type: 'number', name: 'h_nocturna', step: '2' },
-            { column: 'col2', title: 'Horas extras', type: 'number', name: 'h_extras', step: '2' },
-            { column: 'col2', title: 'Horas dominicales', type: 'number', name: 'h_dominical', step: '2' },
+            { column: 'col1', title: 'Nombre', type: 'text', name: 'nombre' },
+            { column: 'col1', title: 'Apellidos', type: 'text', name: 'apellidos', },
+            { column: 'col1', title: 'Cedela', type: 'number', name: 'cedula' },
+            { column: 'col2', title: 'Fecha nacimiento', type: 'number', name: 'fecha_nacimiento',  class: 'datepicker' },
         ];
     }
 
