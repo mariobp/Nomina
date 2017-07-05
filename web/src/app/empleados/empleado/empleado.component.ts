@@ -86,7 +86,7 @@ export class EmpleadoEditComponent implements AfterViewInit {
             { column: 'col1', title: 'Nombre', type: 'text', name: 'nombre' },
             { column: 'col1', title: 'Apellidos', type: 'text', name: 'apellidos', },
             { column: 'col1', title: 'Cedela', type: 'number', name: 'cedula' },
-            { column: 'col2', title: 'Fecha nacimiento', type: 'number', name: 'fecha_nacimiento',  class: 'datepicker' },
+            { column: 'col1', title: 'Fecha nacimiento', type: 'text', name: 'fecha_nacimiento',  class: 'datepicker' },
         ];
     }
 
