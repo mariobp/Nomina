@@ -35,3 +35,6 @@ if settings.DEBUG:
 
     urlpatterns += static(settings.WEB_URL,
                           document_root=settings.WEB_ROOT)
+
+    urlpatterns += static(settings.ASSETS_URL,
+                          document_root=settings.ASSETS_ROOT)

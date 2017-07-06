@@ -190,3 +190,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 WEB_URL = '/web/'
 WEB_ROOT = os.path.join(BASE_DIR, "web")
+
+ASSETS_URL = '/assets/'
+ASSETS_ROOT = os.path.join(BASE_DIR, "web/assets")
