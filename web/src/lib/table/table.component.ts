@@ -23,6 +23,7 @@ export class TableComponent implements OnInit {
     @Input('aggregable') public aggregable = true;
     @Input('editable') public editable = true;
     @Input('order') public order: any[] = [[1, 'asc']];
+    @Input('redirect') public redirect = '0/edit';
     private dataTable: any;
     public selectedItems: any[] = [];
 

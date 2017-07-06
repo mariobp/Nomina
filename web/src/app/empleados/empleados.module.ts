@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MdAutocompleteModule, MdInputModule } from '@angular/material';
 import { LibModule } from '../../lib/lib.module';
 
-import { ContratoComponent } from './contrato/contrato.component';
+import { ContratoComponent, EditContratoComponent, ContratoListComponent } from './contrato/contrato.component';
 import { FiniquitoComponent } from './finiquito/finiquito.component';
 import { EmpleadoComponent, EmpleadoEditComponent, EmpleadoListComponent } from './empleado/empleado.component';
 
@@ -14,6 +14,7 @@ import { CompensacionService } from '../obligaciones/compensacion/compensacion.s
 import { CesantiasService } from '../obligaciones/cesantias/cesantias.service';
 import { PensionService } from '../obligaciones/pension/pension.service';
 import { EpsService } from '../obligaciones/eps/eps.service';
+import { ContratoService } from './contrato/contrato.service';
 
 import { EmpleadoRoutes } from './route';
 
@@ -29,6 +30,8 @@ import { EmpleadoRoutes } from './route';
     ],
     declarations: [
         ContratoComponent,
+        EditContratoComponent,
+        ContratoListComponent,
         FiniquitoComponent,
         EmpleadoComponent,
         EmpleadoListComponent,
@@ -39,7 +42,8 @@ import { EmpleadoRoutes } from './route';
         CompensacionService,
         CesantiasService,
         PensionService,
-        EpsService
+        EpsService,
+        ContratoService
     ]
 })
 export class EmpleadosModule { }

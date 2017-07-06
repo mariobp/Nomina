@@ -4,8 +4,9 @@ import { CallService, CrudService } from '../../../lib/services';
 
 
 @Injectable()
-export class CesantiasService extends CrudService{
+export class CesantiasService extends CrudService {
     constructor(protected _cl: CallService, protected _rt: Router) {
       super(_cl, _rt, 'recursos/cesantia/');
+      super.setRedirectUrl('/obligaciones/cesantias');
     }
 }

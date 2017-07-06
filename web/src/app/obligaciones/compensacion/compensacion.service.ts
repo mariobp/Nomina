@@ -7,5 +7,6 @@ export class CompensacionService extends CrudService {
 
     constructor(protected _cl: CallService, protected _rt: Router) {
       super(_cl, _rt, 'recursos/caja/');
+      super.setRedirectUrl('/obligaciones/compensacion');
     }
 }

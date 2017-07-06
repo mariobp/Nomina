@@ -7,5 +7,6 @@ export class PensionService extends CrudService {
 
     constructor(protected _cl: CallService, protected _rt: Router) {
       super(_cl, _rt, 'recursos/pension/');
+      super.setRedirectUrl('/obligaciones/pension');
     }
 }

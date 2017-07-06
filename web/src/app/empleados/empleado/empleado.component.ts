@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { TableComponent, RenderInput, FormComponent } from '../../../lib/components';
@@ -72,13 +72,14 @@ export class EmpleadoEditComponent implements AfterViewInit {
     renderinputs: RenderInput[];
     service = this._s;
     cajacompensacions = [];
-
+    deleteable = false;
+    @Input('empleado') empleado: number;
     @ViewChild('f') private _form: FormComponent;
 
     constructor(private _fb: FormBuilder, private _s: EmpleadoService, private _rt: Router, private _cs: CompensacionService) {
         this.form = this._fb.group({
-            nombre: ['', [Validators.required]],
-            apellidos: ['', [Validators.required]],
+            nombre: ['', Validators.required],
+            apellidos: ['', Validators.required],
             cedula: ['', [Validators.required, Validators.min(0)]],
             fecha_nacimiento: ['', [Validators.required]],
             cargo: [0, []],
@@ -96,5 +97,9 @@ export class EmpleadoEditComponent implements AfterViewInit {
         ];
     }
 
-    ngAfterViewInit() { }
+    ngAfterViewInit() {
+        this._form.successful = data => {
+            this._rt.navigate(['empleado']);
+        }
+    }
 }
