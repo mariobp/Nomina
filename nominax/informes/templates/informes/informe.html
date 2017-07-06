@@ -140,6 +140,18 @@
 								<td>BASE LIQUIDACIÓN</td>
 								<td class="number"><span>$</span>1.326.500,53</td>
 							</tr>
+							<tr>
+								<td style="border: none;">&nbsp;</td>
+							</tr>
+							<tr>
+								<td style="border: none;">&nbsp;</td>
+							</tr>
+							<tr>
+								<td style="border:none; border-top: solid 2px black;" class="center">EMPLEADO</td>
+							</tr>
+							<tr>
+								<td style="border:none;" class="center">EMPLEADO</td>
+							</tr>
 						</tbody>
 					</table>
 				</td>
@@ -243,6 +255,18 @@
 								<td>&nbsp;</td>
 								<td class="number"><span>$</span>1.573.879,96</td>
 							</tr>
+							<tr>
+								<td style="border: none;">&nbsp;</td>
+							</tr>
+							<tr>
+								<td style="border: none;">&nbsp;</td>
+							</tr>
+							<tr>
+								<td style="border: none;">&nbsp;</td>
+							</tr>
+							<tr>
+								<td style="border:none; border-top: solid 2px black;" class="center" colspan="3">INGECOL</td>
+							</tr>
 						</tbody>
 					</table>
 				</td>
@@ -257,6 +281,7 @@
 	{% endfor %}
 	</tr>
 	{% for row in dataset %}
+		{{ row.0 }}
 		<tr>
 			{% for col in row %}
 				<td>{{col}}</td>

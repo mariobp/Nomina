@@ -18,12 +18,7 @@ class NominaResource(resources.ModelResource):
 	#ventas = fields.Field(column_name="Ventas", attribute="ventas")
 	class Meta:
 		model = Nomina
-		fields = ['empleado__nombre']
+		fields = ['empleado__nombre', 'empleado__apellidos']
 	# end class
-
-	#def export(self, queryset=None, *args, **kwargs):
-	#	queryset = queryset.annotate(ventas=Count('buypresentation__buypoduct__sell__count')).order_by('-ventas')
-	#	return super(ProductResource, self).export(queryset, *args, **kwargs)
-	# end def
 #end class
 reports.register_export(Nomina, NominaResource)
