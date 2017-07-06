@@ -21,4 +21,6 @@ class NominaResource(resources.ModelResource):
 		fields = ['empleado__nombre', 'empleado__apellidos']
 	# end class
 #end class
+
+
 reports.register_export(Nomina, NominaResource)

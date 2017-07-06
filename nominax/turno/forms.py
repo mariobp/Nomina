@@ -150,7 +150,7 @@ class TurnoForm(forms.ModelForm):
         turno.save()
         if turno.aprobado:
             print 'turno aprobado'
-            # TurnoForm.cuando_apruebe(turno)
+            TurnoForm.cuando_apruebe(turno)
         # end if
         if turno.salida:
             self.poner_horas(turno)
