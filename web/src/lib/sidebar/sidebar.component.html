@@ -10,6 +10,7 @@
 
     <div class="sidebar-wrapper">
         <div *ngIf="!!user" class="user">
+            <!-- {{user | json}} -->
             <div class="photo avatar" [style.background-image]="user.avatar"></div>
             <div class="info">
                 <a href="javascript:void(0)">

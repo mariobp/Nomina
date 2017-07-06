@@ -99,14 +99,15 @@ export class TableComponent implements OnInit {
                 }
             },
             drawCallback: (settings) => {
+                this.drawCallback();
                 this._selectionInit(table);
             }
         };
         if (this.enable) {
-          this.dataTable = $(table).DataTable(conf);
+            this.dataTable = $(table).DataTable(conf);
         }
     }
-
+    drawCallback() { }
     _selectionInit(table) {
         if (this.multiselect) {
             const self = this;
