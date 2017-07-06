@@ -8,9 +8,17 @@ import { LibModule } from '../../lib/lib.module';
 import { ContratoComponent, EditContratoComponent, ContratoListComponent } from './contrato/contrato.component';
 import { FiniquitoComponent } from './finiquito/finiquito.component';
 import { EmpleadoComponent, EmpleadoEditComponent, EmpleadoListComponent } from './empleado/empleado.component';
+
 import { EmpleadoService } from './empleado/empleado.service';
+import { CompensacionService } from '../obligaciones/compensacion/compensacion.service';
+import { CesantiasService } from '../obligaciones/cesantias/cesantias.service';
+import { PensionService } from '../obligaciones/pension/pension.service';
+import { EpsService } from '../obligaciones/eps/eps.service';
 import { ContratoService } from './contrato/contrato.service';
+import { CargoService } from '../configuracion/cargo/cargo.service';
+
 import { EmpleadoRoutes } from './route';
+
 @NgModule({
     imports: [
         LibModule,
@@ -31,7 +39,13 @@ import { EmpleadoRoutes } from './route';
         EmpleadoEditComponent
     ],
     providers: [
-        EmpleadoService, ContratoService
+        EmpleadoService,
+        CompensacionService,
+        CesantiasService,
+        PensionService,
+        EpsService,
+        CargoService,
+        ContratoService
     ]
 })
 export class EmpleadosModule { }

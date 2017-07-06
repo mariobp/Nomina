@@ -1,0 +1,74 @@
+<ex-form #f icon="assignment_ind" title="Empleado" [form]="form" [service]="service" [columns]="columns" [renderinputs]="renderinputs">
+    <div bottom-form class="row">
+        <div class="col-lg-6">
+            <div class="form-horizontal">
+                <div class="row">
+                    <label class="col-lg-3 label-on-left" for="id_cajacompensacion">Caja de Compensación:</label>
+                    <div class="col-lg-9">
+                        <div class="form-group label-floating is-empty">
+                            <label class="control-label"></label>
+                            <ex-autocomplete name="cajacompensacion" [form]="form" [service]="_cs" [item]="_form.item" [itemVal]="itemCaja"></ex-autocomplete>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class=" col-lg-6">
+            <div class="form-horizontal">
+                <div class="row">
+                    <label class="col-lg-3 label-on-left" for="id_cajacompensacion">Cesantias:</label>
+                    <div class="col-lg-9">
+                        <div class="form-group label-floating is-empty">
+                            <label class="control-label"></label>
+                            <ex-autocomplete name="cesantia" [form]="form" [service]="_ces" [item]="_form.item" [itemVal]="itemCesantia"></ex-autocomplete>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div bottom-form class="row">
+        <div class="col-lg-6">
+            <div class="form-horizontal">
+                <div class="row">
+                    <label class="col-lg-3 label-on-left" for="id_cajacompensacion">Eps:</label>
+                    <div class="col-lg-9">
+                        <div class="form-group label-floating is-empty">
+                            <label class="control-label"></label>
+                            <ex-autocomplete name="eps" [form]="form" [service]="_es" [item]="_form.item" [itemVal]="itemEps"></ex-autocomplete>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-horizontal">
+                <div class="row">
+                    <label class="col-lg-3 label-on-left" for="id_cajacompensacion">Pensión:</label>
+                    <div class="col-lg-9">
+                        <div class="form-group label-floating is-empty">
+                            <label class="control-label"></label>
+                            <ex-autocomplete name="pension" [form]="form" [service]="_ps" [item]="_form.item" [itemVal]="itemPension"></ex-autocomplete>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div bottom-form class="row">
+        <div class="col-lg-6">
+            <div class="form-horizontal">
+                <div class="row">
+                    <label class="col-lg-3 label-on-left" for="id_cajacompensacion">Cargo:</label>
+                    <div class="col-lg-9">
+                        <div class="form-group label-floating is-empty">
+                            <label class="control-label"></label>
+                            <ex-autocomplete name="cargo" [form]="form" [service]="_cas" [item]="_form.item" [itemVal]="itemCargo"></ex-autocomplete>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ex-form>
+<router-outlet></router-outlet>

@@ -59,7 +59,7 @@ export class AuthService {
             .then(res => res.json())
             .then(data => {
                 this.addUser(data);
-                this._rt.navigate([this.redirectUrl || '/dashboard']);
+                this._rt.navigate([this.redirectUrl || '/turno']);
             })
             .catch(err => console.log('error', err));
     }
