@@ -24,6 +24,7 @@ export class TableComponent implements OnInit {
     @Input('editable') public editable = true;
     @Input('order') public order: any[] = [[1, 'asc']];
     @Input('redirect') public redirect = '0/edit';
+    @Input('enable') public enable = true;
     private dataTable: any;
     public selectedItems: any[] = [];
 
@@ -101,7 +102,9 @@ export class TableComponent implements OnInit {
                 this._selectionInit(table);
             }
         };
-        this.dataTable = $(table).DataTable(conf);
+        if (this.enable) {
+          this.dataTable = $(table).DataTable(conf);
+        }
     }
 
     _selectionInit(table) {
