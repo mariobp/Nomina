@@ -14,6 +14,7 @@ from plugins.pdf.format import PDF
 from django.contrib.admin import site as admin_site
 from django.conf.urls import url
 from django.views.decorators.csrf import csrf_exempt
+from supra.views import access_control
 
 
 class PdfExportMixin(ExportMixin):
@@ -27,7 +28,7 @@ class PdfExportMixin(ExportMixin):
         print "ok"
         my_urls = [
             url(r'^export/free/$',
-                self.admin_site.admin_view(csrf_exempt(self.export_action)),
+                self.admin_site.admin_view(csrf_exempt(access_control(self.export_action))),
                 name='%s_%s_export' % self.get_model_info()),
         ]
         return my_urls + urls
