@@ -64,7 +64,7 @@ class Nomina(models.Model):
     # end def
 
     def descuento_salud(self):
-        return (self.salario_legal() - self.subsidio_trasporte)*self.corte.descuento_salud/100
+        return (self.salario_legal() - (self.subsidio_trasporte or 0))*self.corte.descuento_salud/100
     # end def
 
     def bonificacion(self):
