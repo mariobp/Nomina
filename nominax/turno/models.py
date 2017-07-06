@@ -192,7 +192,7 @@ class DiaFestivo(models.Model):
         date_deltas = []
         for dia in dias:
             single_date = date(date_delta.start_date.year, dia.mes, dia.dia)
-            delta = datedelta.for_dates(single_date, datedelta.START_TIME, datedelta.END_TIME)
+            delta = datedelta.for_days(single_date, datedelta.START_TIME, datedelta.END_TIME)
             date_deltas.append(delta)
         # end for
         return multi_datedelta(date_deltas)
