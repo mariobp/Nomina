@@ -140,7 +140,7 @@ export class TurnoEditComponent implements AfterViewInit {
             if (!this._form.item) {
                 this._rt.navigate(['/turno']);
             } else {
-                console.log(data.json());
+                // console.log(data.json());
                 this._form.setItem(data.json());
             }
         }
