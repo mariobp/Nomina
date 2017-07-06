@@ -23,7 +23,7 @@ export class CallService {
 
     getUrl(url?: string, cprotocol?: string): string {
         const proto = cprotocol || this.protocol;
-        return `${proto}://${this.host}:${this.port}` + (!!url ? `/${url}` : '');
+        return `${proto}://${this.host}` + (!!this.port && this.port !== '80' ? `:${this.port}` : '') + (!!url ? `/${url}` : '');
     }
 
     getOptions(headersList: any, par?: any): RequestOptions {

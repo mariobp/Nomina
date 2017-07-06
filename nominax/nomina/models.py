@@ -3,10 +3,13 @@ from __future__ import unicode_literals
 
 from django.db import models
 from recursos_h import models as recursos
+from datetime import date, timedelta
+from turno.datedelta import datedelta, multi_datedelta
+from turno import models as turno
 
 
 class Corte(models.Model):
-    fecha_inicio = models.DateField(auto_now_add=True)
+    fecha_inicio = models.DateField()
     fecha_fin = models.DateField(blank=True, null=True)
     cerrado = models.BooleanField(default=False)
 
@@ -22,15 +25,18 @@ class Corte(models.Model):
     extra_dominical_diurna = models.IntegerField("Valor de recargo de hora extra dominical %")
     extra_dominical_nocturna = models.IntegerField("Valor de recargo de hora extra dominical nocturna %")
 
+    def __unicode__(self):
+        return "%s-%s" % (str(self.fecha_inicio), str(self.fecha_fin))
 
     @staticmethod
     def get_instance():
         return Corte.objects.filter(cerrado=False).order_by('fecha_inicio').last()
     # end def
-# enc class
-
+# end class
 
 class Nomina(models.Model):
+    inicio_mes = models.DateField(blank=True, null=True)
+
     empleado = models.ForeignKey(recursos.Empleado)
     corte = models.ForeignKey(Corte)
     fecha = models.DateField(auto_now_add=True)
@@ -39,31 +45,28 @@ class Nomina(models.Model):
 
     diurnas = models.FloatField("Hora diurna", blank=True, null=True)
     nocturna = models.FloatField("Hora nocturna", blank=True, null=True)
-    extras = models.FloatField("Hora extra diurna", blank=True, null=True)
-    extra_nocturna = models.FloatField("Hora extra nocturna", blank=True, null=True)
     dominical_diurna = models.FloatField("Hora dominical diurna", blank=True, null=True)
     dominical_nocturna = models.FloatField("Hora dominical nocturna", blank=True, null=True)
+    
+    extras = models.FloatField("Hora extra diurna", blank=True, null=True)
+    extra_nocturna = models.FloatField("Hora extra nocturna", blank=True, null=True)
     extra_dominical_diurna = models.FloatField("Hora extra dominical diurna", blank=True, null=True)
     extra_dominical_nocturna = models.FloatField("Hora extra dominical nocturna", blank=True, null=True)
 
-    horas_diurna = models.FloatField(max_length=100, blank=True, null=True)
-    horas_nocturna = models.FloatField(max_length=100, blank=True, null=True)
-    horas_dominicales = models.FloatField(max_length=100, blank=True, null=True)
-
-
     def salario_produccion(self):
-        if self.horas_diurna and self.horas_nocturna and self.horas_dominicales:
+        if False and self.horas_diurna and self.horas_nocturna and self.horas_dominicales:
             return self.horas_diurna*float(self.empleado.cargo.valor_hora_diurna) + self.horas_nocturna*float(self.empleado.cargo.valor_hora_nocturna) + self.horas_dominicales*float(self.empleado.cargo.valor_hora_festivo)
         # end if
         return 0
     # end def
+
 
     def prestaciones_sociales(self):
         return self.salario_legal()*self.corte.prestaciones_sociales/100
     # end def
 
     def descuento_salud(self):
-        return self.salario_legal()*self.corte.descuento_salud/100
+        return (self.salario_legal() - (self.subsidio_trasporte or 0))*self.corte.descuento_salud/100
     # end def
 
     def bonificacion(self):
@@ -74,7 +77,6 @@ class Nomina(models.Model):
         return bonificacion
     # end def
 
-
     def valor_hora(self):
         if self.salario_base:
             return self.salario_base/240
@@ -83,12 +85,12 @@ class Nomina(models.Model):
     # end def
 
     def salario_legal(self):
-        return self.salario_base or 0 + self.subsidio_trasporte or 0 + self.recargos()
+        return (self.salario_base or 0) + (self.subsidio_trasporte or 0) + self.recargos()
     # end def
 
     def neto(self):
         if self.salario_produccion() < self.salario_base or 0:
-            return self.salario_base or 0 + self.recargos() + self.subsidio_trasporte or 0
+            return (self.salario_base or 0) + self.recargos() + (self.subsidio_trasporte or 0)
         # end if
         return self.salario_produccion()
     # end def
@@ -180,4 +182,5 @@ class Nomina(models.Model):
     def __unicode__(self):
         return u"Nomina %s %s - %s" % (self.empleado.nombre, self.empleado.apellidos, self.fecha.strftime('%Y-%m-%d'))
     # end def
+
 # end class
