@@ -23,9 +23,12 @@ class CorteForms(forms.ModelForm):
         if not instance:
             instance = models.Corte()
             ultimo_corte = models.Corte.objects.all().order_by('fecha_inicio').last()
+            print 'ultimo_corte:', ultimo_corte
             if ultimo_corte:
             	instance.fecha_inicio = ultimo_corte.fecha_fin
             # end if
+            print instance
+
         # end if
         instance.prestaciones_sociales = config.prestaciones_sociales
         instance.nocturna = config.nocturna
@@ -37,7 +40,9 @@ class CorteForms(forms.ModelForm):
         instance.extra_dominical_diurna = config.extra_dominical_diurna
         instance.extra_dominical_nocturna = config.extra_dominical_nocturna
 
+        print instance
         instance.save()
+        print instance
         return instance
     # end def
 # end class
@@ -49,6 +54,9 @@ class NominaForm(forms.ModelForm):
     # end class
 
     def clean(self):
+    	if not self.cleaned_data['inicio_mes']:
+    	    self.cleaned_data['inicio_mes'] = (self.cleaned_data['corte'].fecha_inicio).replace(day=1)
+    	# end if
     	self.month = turnos.TurnoForm.month(self.cleaned_data['empleado'], self.cleaned_data['inicio_mes'].year, self.cleaned_data['inicio_mes'].month)
         self.configuracion = conf.ConfiguracionForm.get_instance()
         self.contrato = rec.ContratoForm.get_instance(self.cleaned_data['empleado'])
@@ -62,6 +70,7 @@ class NominaForm(forms.ModelForm):
     @staticmethod
     def get_instance(empleado):
         corte = CorteForms.get_instance()
+        print 'corte', corte
         instance = models.Nomina.objects.filter(empleado=empleado, corte=corte).first()
         if not instance:
             contrato = rec.ContratoForm.get_instance(empleado)
@@ -151,9 +160,6 @@ class NominaForm(forms.ModelForm):
 
     def save(self, commit=True):
         nomina = super(NominaForm, self).save(commit)
-        if not nomina.inicio_mes:
-            nomina.inicio_mes = (nomina.corte.fecha_inicio).replace(day=1)
-        # end if
         self.calcular_nomina(nomina)
         nomina.save()
         return nomina

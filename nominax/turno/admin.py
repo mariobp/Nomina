@@ -16,8 +16,8 @@ class TurnoAdmin(admin.ModelAdmin):
 	def get_queryset(self, *args, **kwargs):
 		queryset = super(TurnoAdmin, self).get_queryset(*args, **kwargs)
 		queryset.update(aprobado=True)
-		# for turno in queryset:
-		#  	forms.TurnoForm.update_form(turno, {})
+		for turno in queryset:
+		 	forms.TurnoForm.update_form(turno, {})
 		return queryset
 	# end def
 

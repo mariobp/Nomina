@@ -12,6 +12,8 @@ class NominaAdmin(admin.ModelAdmin):
 	list_filter = ['id']
 # end class
 
-admin.site.register(models.Corte)
+class CorteAdmin(admin.ModelAdmin):
+	readonly_fields = ['fecha_inicio', 'fecha_fin']
+admin.site.register(models.Corte, CorteAdmin)
 admin.site.register(models.Nomina, NominaAdmin)
 

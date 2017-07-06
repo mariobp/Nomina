@@ -191,8 +191,8 @@ class DiaFestivo(models.Model):
         dias = DiaFestivo.objects.filter(dia__gte=date_delta.start_date.day, dia__lte=date_delta.end_date.day, mes__gte=date_delta.start_date.month, mes__lte=date_delta.end_date.month)
         date_deltas = []
         for dia in dias:
-            single_date = date(date_delta.start_date.year, dia.dia, dia.mes)
-            delta = datedelta.for_date(single_date, datedelta.START_TIME, datedelta.END_TIME)
+            single_date = date(date_delta.start_date.year, dia.mes, dia.dia)
+            delta = datedelta.for_dates(single_date, datedelta.START_TIME, datedelta.END_TIME)
             date_deltas.append(delta)
         # end for
         return multi_datedelta(date_deltas)

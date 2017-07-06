@@ -9,7 +9,7 @@ from turno import models as turno
 
 
 class Corte(models.Model):
-    fecha_inicio = models.DateField(auto_now_add=True)
+    fecha_inicio = models.DateField()
     fecha_fin = models.DateField(blank=True, null=True)
     cerrado = models.BooleanField(default=False)
 
@@ -25,6 +25,8 @@ class Corte(models.Model):
     extra_dominical_diurna = models.IntegerField("Valor de recargo de hora extra dominical %")
     extra_dominical_nocturna = models.IntegerField("Valor de recargo de hora extra dominical nocturna %")
 
+    def __unicode__(self):
+        return "%s-%s" % (str(self.fecha_inicio), str(self.fecha_fin))
 
     @staticmethod
     def get_instance():
