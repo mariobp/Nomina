@@ -99,7 +99,7 @@ export class EmpleadoEditComponent implements AfterViewInit {
 
     ngAfterViewInit() {
         this._form.successful = data => {
-            this._rt.navigate(['empleado']);
+            this._rt.navigate(['empleados']);
         }
     }
 }
