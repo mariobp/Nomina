@@ -5,9 +5,20 @@ from datetime import datetime, date, time, timedelta
 class datedelta():
     start_date = None
     end_date = None
+    START_TIME = time(0, 0, 0)
+    END_TIME = "___end_time___"
+
     def __init__(self, start_date = None, end_date = None):
         self.start_date = start_date
         self.end_date = end_date
+    # end def
+
+    def move_to_hour(self, hours):
+        start_date = self.start_date + timedelta(hours=hours)
+        if start_date <= self.end_date:
+            return datedelta(start_date, self.end_date)
+        # end if
+        return datedelta()
     # end def
 
     def daterange(self):
@@ -31,12 +42,25 @@ class datedelta():
     # end def
 
     def empty(self):
-        return not (self.start_date and self.end_date)
+        return not (self.start_date and self.end_date) or self.start_date == self.end_date 
+    # end def
+
+    @staticmethod
+    def for_dates(start_date, end_date):
+        start_date = datetime.combine(start_date, datedelta.START_TIME)
+        end_date = datetime.combine(end_date, datedelta.START_TIME)
+        return datedelta(start_date, end_date)
     # end def
 
     @staticmethod
     def for_day(single_date, start_date, end_date):
-        return datedelta(datetime.combine(single_date, start_date), datetime.combine(single_date, end_date))
+        start_date = datetime.combine(single_date, start_date)
+        if end_date == datedelta.END_TIME:
+            end_date = datedelta.START_TIME
+            single_date = single_date + timedelta(days=1)
+        # end if
+        end_date = datetime.combine(single_date, end_date)
+        return datedelta(start_date, end_date)
     # end def
 
     def low_date(self, date1, date2):
@@ -48,9 +72,9 @@ class datedelta():
             return datedelta(date_delta.start_date, date_delta.end_date)
         elif date_delta.empty():
             return datedelta(self.start_date, self.end_date)
-        elif self.end_date >= date_delta.start_date and date_delta.start_date >= self.start_date:
+        elif self.end_date > date_delta.start_date and self.start_date <= date_delta .start_date:
             return datedelta(date_delta.start_date, self.low_date(self.end_date, date_delta.end_date))
-        elif date_delta.end_date >= self.start_date and self.start_date >= date_delta.start_date:
+        elif date_delta.end_date > self.start_date and self.start_date >= date_delta.start_date:
             return datedelta(self.start_date, self.low_date(self.end_date, date_delta.end_date))
         # end if
         return datedelta()
@@ -102,6 +126,24 @@ class multi_datedelta():
         # end for
     # end def
 
+    def move_to_hour(self, hour):
+        date_deltas = []
+        for single_dalta in self.date_deltas:
+            if not len(date_deltas):
+                delta = single_dalta.move_to_hour(hour)
+                print delta, hour
+            else:
+                delta = single_dalta
+            # end if
+            if not delta.empty():
+                date_deltas.append(delta)
+            else:
+                hour = hour - single_dalta.horas()
+            # end if
+        # end for
+        return multi_datedelta(date_deltas)
+    # end def
+
     def horas(self):
         return self.timedelta().total_seconds() /60/60
     # end def
@@ -110,7 +152,7 @@ class multi_datedelta():
         time = timedelta()
         for single_dalta in self.date_deltas:
             time = time + single_dalta.timedelta()
-        # end 
+        # end for
         return time
     # end def
 
@@ -156,9 +198,13 @@ class multi_datedelta():
     # end def
     
     def difference_periodic(self, periodic_time_delta):
-        multi_date_deltas = multi_datedelta(self.date_deltas)
-        multi_date_deltas = periodic_time_delta.invert().intersect(multi_date_deltas)
-        return multi_date_deltas
+        print periodic_time_delta.empty()
+        if not periodic_time_delta.empty():
+            multi_date_deltas = multi_datedelta(self.date_deltas)
+            multi_date_deltas = periodic_time_delta.invert().intersect(multi_date_deltas)
+            return multi_date_deltas
+        # end if
+        return multi_datedelta(self.date_deltas)
     # end def
 
     def intersect(self, date_delta):
@@ -210,14 +256,18 @@ class periodic_timedelta():
         self.end_time   = end_time
     # end def
 
+    def empty(self):
+        return not (self.start_time and self.end_time) or self.start_time == self.end_time
+    # end if 
+
     def invert(self):
         return periodic_timedelta(self.end_time, self.start_time)
     # end def
 
     def intersec_by_day(self, single_date, date_delta):
         if self.start_time > self.end_time:
-            delta1 = datedelta.for_day(single_date, time(0, 0, 0), self.end_time)
-            delta2 = datedelta.for_day(single_date, self.start_time, time(23, 59, 59))
+            delta1 = datedelta.for_day(single_date, datedelta.START_TIME, self.end_time)
+            delta2 = datedelta.for_day(single_date, self.start_time, datedelta.END_TIME)
             delta = multi_datedelta([delta1, delta2])
         else:
             delta = multi_datedelta([datedelta.for_day(single_date, self.start_time, self.end_time)])

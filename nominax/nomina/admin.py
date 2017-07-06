@@ -11,6 +11,7 @@ class NominaAdmin(admin.ModelAdmin):
 	readonly_fields = ['valor_hora', 'recargos', 'salario_legal', 'salario_produccion', 'prestaciones_sociales', 'descuento_salud', 'bonificacion', 'neto', 'total']
 	list_filter = ['id']
 # end class
+
 admin.site.register(models.Corte)
 admin.site.register(models.Nomina, NominaAdmin)
 

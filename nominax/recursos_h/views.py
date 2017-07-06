@@ -384,7 +384,7 @@ class ContraoSupraList(supra.SupraListView):
                     'empleado__apellidos', 'fecha_inicio', 'fecha_finalizacion',
                     'descanso_turno', 'inicio_descanso', 'duracion_descanso',
                     'horas_trabajo', 'horas_trabajo_semanal', 'horas_trabajo_corte')
-    list_filter = ['empleado', 'tipo_contrato']
+    list_filter = ['empleado', 'tipo_contrato', 'id']
     paginate_by = 10
 
     @method_decorator(check_login)
@@ -419,7 +419,7 @@ class EmpleadoSupraList(supra.SupraListView):
                     'eps', 'eps__nombre', 'cesantia', 'cesantia__nombre',
                     'cajacompensacion', 'cajacompensacion__nombre']
     search_fields = ['nombre', 'apellidos', 'cedula']
-    list_filter = ['cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion']
+    list_filter = ['cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion', 'id']
     search_key = 'q'
     paginate_by = 10
 

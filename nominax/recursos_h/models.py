@@ -145,7 +145,7 @@ class Contrato(models.Model):
     empleado = models.ForeignKey(Empleado)
     tipo_contrato = models.ForeignKey(TipoContrato)
     salario_base = models.FloatField("Salario base legal")
-    subsidio_transporte = models.FloatField("Subsidio de transporte")
+    subsidio_transporte = models.FloatField("Subsidio de transporte", default=0)
 
     fecha_inicio = models.DateField()
     fecha_finalizacion = models.DateField(blank=True, null=True)
@@ -155,7 +155,7 @@ class Contrato(models.Model):
     duracion_descanso = models.IntegerField("Duración de descanso en minutos", blank=True, null=True)
     horas_trabajo = models.IntegerField("Horas de trabajo diarias", default=8)
     horas_trabajo_semanal = models.IntegerField("Horas de trabajo semanal", default=40)
-    horas_trabajo_corte = models.IntegerField("Horas de trabajo por corte", default=160)
+    horas_trabajo_corte = models.IntegerField("Horas de trabajo mes", default=160)
 
     creator = CurrentUserField(add_only=True, related_name="created_contrato")
     last_editor = CurrentUserField(related_name="last_edited_contrato")

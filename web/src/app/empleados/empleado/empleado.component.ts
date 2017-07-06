@@ -24,6 +24,7 @@ export class EmpleadoListComponent {
     multiselect = true;
     aggregable = true;
     editable = true;
+    deteteable = false
     columns = [
         {
             className: 'text-center',
@@ -105,8 +106,8 @@ export class EmpleadoEditComponent implements AfterViewInit {
             this._rt.navigate(['empleados']);
         }
         this._form.successful = data => {
-            console.log(data);
-            this._rt.navigate([`empleados/${data.id}/edit/`]);
+              const item = data.json();
+              this._rt.navigate([`empleados/${item.id}/edit`]);
         }
     }
 
