@@ -14,8 +14,10 @@ import { TableComponent } from './table/table.component';
 import { BsNotify } from './bs.notify';
 import { FormComponent} from './form/form.component'
 import { NavbarComponent } from './navbar/navbar.component'
+import { AutoComponent } from './auto/auto.component';
 
 const LibComponents = [
+    AutoComponent,
     P404Component,
     BaseComponent,
     CardComponent,
@@ -24,7 +26,7 @@ const LibComponents = [
     ToolbarComponent,
     TableComponent,
     FormComponent,
-    NavbarComponent
+    NavbarComponent,
 ];
 
 @NgModule({

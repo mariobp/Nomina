@@ -379,30 +379,49 @@ class TipoContratoSupraFormDelete(supra.SupraDeleteView):
 
 class ContraoSupraList(supra.SupraListView):
     model = models.Contrato
-    list_display = ('id', 'fecha_inicio', 'salario_base', 'tipo_contrato', 'tipo_contrato__nombre', 'descanso_turno', 'inicio_descanso', 'duracion_descanso', 'fecha_finalizacion')
-    list_filter = ['empleado']
+    list_display = ('id', 'salario_base', 'tipo_contrato', 'subsidio_transporte',
+                    'tipo_contrato__nombre', 'empleado', 'empleado__nombre',
+                    'empleado__apellidos', 'fecha_inicio', 'fecha_finalizacion',
+                    'descanso_turno', 'inicio_descanso', 'duracion_descanso',
+                    'horas_trabajo', 'horas_trabajo_semanal', 'horas_trabajo_corte')
+    list_filter = ['empleado', 'tipo_contrato', 'id']
+    paginate_by = 10
+
+    @method_decorator(check_login)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ContraoSupraList, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def get_queryset(self):
+        queryset = super(ContraoSupraList, self).get_queryset()
+        if self.request.GET.get('num_page', False):
+            self.paginate_by = self.request.GET.get('num_page', False)
+        # end if
+        propiedad = self.request.GET.get('sort_property', False)
+        orden = self.request.GET.get('sort_direction', False)
+        # end if
+        if propiedad and orden:
+            if orden == "asc":
+                queryset = queryset.order_by(propiedad)
+            elif orden == "desc":
+                propiedad = "-" + propiedad
+                queryset = queryset.order_by(propiedad)
+        # end if
+        return queryset
+    # end def
 # end class
 
 
 class EmpleadoSupraList(supra.SupraListView):
     model = models.Empleado
-    list_display = ['id', 'nombre', 'apellidos', 'cedula', 'cargo',
+    list_display = ['id', 'nombre', 'apellidos', 'cedula', 'cargo', 'fecha_nacimiento',
                     'cargo__nombre', 'pension', 'pension__nombre',
                     'eps', 'eps__nombre', 'cesantia', 'cesantia__nombre',
-                    'cajacompensacion', 'cajacompensacion__nombre', ('contrato', 'json')]
+                    'cajacompensacion', 'cajacompensacion__nombre']
     search_fields = ['nombre', 'apellidos', 'cedula']
-    list_filter = ['cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion']
+    list_filter = ['cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion', 'id']
     search_key = 'q'
     paginate_by = 10
-
-    def contrato(self, obj, now):
-        class request():
-            method = "GET"
-            GET = {'empleado': obj.pk}
-        # end class
-        lista = ContraoSupraList(dict_only=True).dispatch(request=request())
-        return json.dumps(lista)
-    # end def
 
     @method_decorator(check_login)
     def dispatch(self, request, *args, **kwargs):
@@ -429,6 +448,18 @@ class EmpleadoSupraList(supra.SupraListView):
 # end class
 
 
+class ContratoForm(supra.SupraFormView):
+    model = models.Contrato
+    form_class = forms.ContratoForm
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(ContratoForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
+
+
 class ContratoInline(supra.SupraInlineFormView):
     model = models.Contrato
     base_model = models.Empleado
@@ -440,7 +471,6 @@ class ContratoInline(supra.SupraInlineFormView):
 class EmpleadoSupraForm(supra.SupraFormView):
     model = models.Empleado
     form_class = forms.EmpleadoForm
-    inlines = [ContratoInline]
 
     @method_decorator(check_login)
     @csrf_exempt

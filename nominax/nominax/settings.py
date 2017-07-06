@@ -47,13 +47,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'informes',
     'configuracion',
     'nomina',
     'recursos_h',
     'turno',
     'usuarios',
     'cuser',
-    'supra'
+    'supra',
+    'import_export',
 ]
 
 MIDDLEWARE = [
@@ -64,6 +66,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'cuser.middleware.CuserMiddleware',
 ]
 
 ROOT_URLCONF = 'nominax.urls'

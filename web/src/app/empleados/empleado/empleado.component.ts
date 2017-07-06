@@ -1,8 +1,14 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { TableComponent, RenderInput, FormComponent } from '../../../lib/components';
+
 import { EmpleadoService } from './empleado.service';
+import { CompensacionService } from '../../obligaciones/compensacion/compensacion.service';
+import { CesantiasService } from '../../obligaciones/cesantias/cesantias.service';
+import { PensionService } from '../../obligaciones/pension/pension.service';
+import { EpsService } from '../../obligaciones/eps/eps.service';
+import { CargoService } from '../../configuracion/cargo/cargo.service';
 
 @Component({
     template: '<router-outlet></router-outlet>',
@@ -16,8 +22,9 @@ export class EmpleadoComponent { }
 export class EmpleadoListComponent {
     service = this._as;
     multiselect = true;
-    aggregable = false;
-    editable = false;
+    aggregable = true;
+    editable = true;
+    deteteable = false
     columns = [
         {
             className: 'text-center',
@@ -56,14 +63,9 @@ export class EmpleadoListComponent {
 
     constructor(private _as: EmpleadoService) { }
 }
-;
 
 @Component({
-    template: `<ex-form #f icon="assignment_ind" title="Empleado"
-        [form]="form"
-        [service]="service"
-        [columns]="columns"
-        [renderinputs]="renderinputs"></ex-form>`
+    templateUrl: './edit.empleado.component.html'
 })
 export class EmpleadoEditComponent implements AfterViewInit {
 
@@ -71,31 +73,47 @@ export class EmpleadoEditComponent implements AfterViewInit {
     columns: string[];
     renderinputs: RenderInput[];
     service = this._s;
-
+    cajacompensacions = [];
+    deleteable = false;
+    @Input('empleado') empleado: number;
     @ViewChild('f') private _form: FormComponent;
 
-    constructor(private _fb: FormBuilder, private _s: EmpleadoService, private _rt: Router) {
+    constructor(private _fb: FormBuilder, private _s: EmpleadoService, private _rt: Router,
+        private _cs: CompensacionService, private _ces: CesantiasService, private _es: EpsService, private _ps: PensionService,
+        private _cas: CargoService) {
         this.form = this._fb.group({
-            aprobado: [false, [Validators.required]],
-            empleado: [[], [Validators.required]],
-            entrada: ['', [Validators.required]],
-            salida: ['', [Validators.required]],
-            h_diurna: [{ value: 0, disabled: true }],
-            h_dominical: [{ value: 0, disabled: true }],
-            h_extras: [{ value: 0, disabled: true }],
-            h_nocturna: [{ value: 0, disabled: true }],
+            nombre: ['', Validators.required],
+            apellidos: ['', Validators.required],
+            cedula: ['', [Validators.required, Validators.min(0)]],
+            fecha_nacimiento: ['', [Validators.required]],
+            cargo: [0, [Validators.required, Validators.pattern(/\d/)]],
+            cajacompensacion: [0, [Validators.required, Validators.pattern(/\d/)]],
+            cesantia: [0, [Validators.required, Validators.pattern(/\d/)]],
+            eps: [0, [Validators.required, Validators.pattern(/\d/)]],
+            pension: [0, [Validators.required, Validators.pattern(/\d/)]]
         });
         this.columns = ['col1', 'col2'];
         this.renderinputs = [
-            { column: 'col1', title: 'Empleado', type: 'text', name: 'empleado' },
-            { column: 'col1', title: 'Hora de entrada', type: 'text', name: 'entrada', class: 'datetimepicker' },
-            { column: 'col1', title: 'Hora de salida', type: 'text', name: 'salida', class: 'datetimepicker' },
-            { column: 'col2', title: 'Horas diurnas', type: 'number', name: 'h_diurna', step: '2' },
-            { column: 'col2', title: 'Horas nocturnas', type: 'number', name: 'h_nocturna', step: '2' },
-            { column: 'col2', title: 'Horas extras', type: 'number', name: 'h_extras', step: '2' },
-            { column: 'col2', title: 'Horas dominicales', type: 'number', name: 'h_dominical', step: '2' },
+            { column: 'col1', title: 'Nombre', type: 'text', name: 'nombre' },
+            { column: 'col1', title: 'Apellidos', type: 'text', name: 'apellidos', },
+            { column: 'col2', title: 'Cedula', type: 'number', name: 'cedula' },
+            { column: 'col2', title: 'Fecha nacimiento', type: 'text', name: 'fecha_nacimiento', class: 'datepicker' },
         ];
     }
 
-    ngAfterViewInit() { }
+    ngAfterViewInit() {
+        this._form.back = () => {
+            this._rt.navigate(['empleados']);
+        }
+        this._form.successful = data => {
+              const item = data.json();
+              this._rt.navigate([`empleados/${item.id}/edit`]);
+        }
+    }
+
+    itemCaja = item => item.cajacompensacion__nombre;
+    itemCargo = item => item.cargo__nombre;
+    itemCesantia = item => item.cesantia__nombre;
+    itemEps = item => item.eps__nombre;
+    itemPension = item => item.pension__nombre;
 }

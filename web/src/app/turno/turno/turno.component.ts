@@ -65,11 +65,6 @@ export class TurnoListComponent {
             searchable: false,
             className: 'text-center',
             render: TableComponent.renderDecimal
-        },
-        {
-            data: 'aprobado',
-            searchable: false,
-            className: 'text-center'
         }
     ];
 
