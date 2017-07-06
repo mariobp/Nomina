@@ -38,6 +38,7 @@ export class FormComponent implements OnInit, AfterViewInit {
     @Input('service') service: any;
     @Input('deleteable') public deleteable = true;
     @Input('saveable') public saveable = true;
+    @Input('otro') public otro = true;
     public _ready: boolean;
     item: any;
     private errorMessages = {
@@ -51,8 +52,10 @@ export class FormComponent implements OnInit, AfterViewInit {
 
     setItem(item: any) {
         item = this.prePatchValue(item);
-        this.item = item;
-        this.form.patchValue(this.item);
+        if (item) {
+            this.item = item;
+            this.form.patchValue(this.item);
+        }
         if ($('.selectpicker').length !== 0) {
             $('.selectpicker').selectpicker('refresh')
         }
@@ -167,7 +170,7 @@ export class FormComponent implements OnInit, AfterViewInit {
 
         if (!!this.service && this.form.valid) {
             const body = this.preSave(this.form.value);
-            console.log(body)
+            // console.log(body)
             this._ready = true;
             if (!!this.item) {
                 this.service.edit(this.item.id, body)

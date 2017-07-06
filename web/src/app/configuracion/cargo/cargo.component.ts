@@ -37,7 +37,7 @@ export class CargoListComponent {
       constructor(private _as: CargoService) { }
 
       onChange($event) {
-          console.log($event);
+        //   console.log($event);
       }
 }
 

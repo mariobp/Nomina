@@ -250,7 +250,7 @@ var AppMenuMeta = [
 /***/ "../../../../../src/app/auth/auth.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"wrapper wrapper-full-page\">\n    <nav class=\"navbar navbar-primary navbar-transparent navbar-fixed-top\">\n        <div class=\"container\">\n            <div class=\"navbar-header\">\n                <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\"#menu-example\">\n                    <span class=\"sr-only\">Toggle navigation</span>\n                    <span class=\"icon-bar\"></span>\n                    <span class=\"icon-bar\"></span>\n                    <span class=\"icon-bar\"></span>\n                </button>\n                <a class=\"navbar-brand\">Ingecol</a>\n            </div>\n            <div #collapse class=\"collapse navbar-collapse\" id=\"menu-example\">\n                <ul class=\"nav navbar-nav navbar-right\">\n                    <!-- <li routerLinkActive=\"active\">\n                        <a [routerLink]=\"['/registro']\"><i class=\"material-icons\">person_add</i> Registro</a>\n                    </li> -->\n                    <li routerLinkActive=\"active\">\n                        <a [routerLink]=\"['/login']\"><i class=\"material-icons\">fingerprint</i> Login</a>\n                    </li>\n                    <!-- <li routerLinkActive=\"active\">\n                        <a [routerLink]=\"['/lock']\"><i class=\"material-icons\">lock_open</i> Lock</a>\n                    </li> -->\n                </ul>\n            </div>\n        </div>\n    </nav>\n    <div class=\"full-page login-page\" filter-color=\"black\" data-image=\"../../../assets/img/lock.jpeg\">\n        <!--   you can change the color of the filter page using: data-color=\"blue | purple | green | orange | red | rose \" -->\n        <div class=\"content\">\n            <router-outlet></router-outlet>\n        </div>\n        <footer class=\"footer\">\n            <div class=\"container\">\n                <!-- <nav class=\"pull-left\">\n                    <ul>\n                        <li>\n                            <a href=\"#\">\n                                Home\n                            </a>\n                        </li>\n                        <li>\n                            <a href=\"#\">\n                                Company\n                            </a>\n                        </li>\n                        <li>\n                            <a href=\"#\">\n                                Portfolio\n                            </a>\n                        </li>\n                        <li>\n                            <a href=\"#\">\n                                Blog\n                            </a>\n                        </li>\n                    </ul>\n                </nav> -->\n                <p class=\"copyright pull-right\">\n                    &copy; {{test | date: 'yyyy'}} Power by\n                    <a href=\"http://exile.com.co/\">Exile</a>, Evolución costante\n                </p>\n            </div>\n        </footer>\n    </div>\n</div>\n"
+module.exports = "<div class=\"wrapper wrapper-full-page\">\n    <nav class=\"navbar navbar-primary navbar-transparent navbar-fixed-top\">\n        <div class=\"container\">\n            <div class=\"navbar-header\">\n                <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\"#menu-example\">\n                    <span class=\"sr-only\">Toggle navigation</span>\n                    <span class=\"icon-bar\"></span>\n                    <span class=\"icon-bar\"></span>\n                    <span class=\"icon-bar\"></span>\n                </button>\n                <a class=\"navbar-brand\">Ingecol</a>\n            </div>\n            <div #collapse class=\"collapse navbar-collapse\" id=\"menu-example\">\n                <ul class=\"nav navbar-nav navbar-right\">\n                    <!-- <li routerLinkActive=\"active\">\n                        <a [routerLink]=\"['/registro']\"><i class=\"material-icons\">person_add</i> Registro</a>\n                    </li> -->\n                    <li routerLinkActive=\"active\">\n                        <a [routerLink]=\"['/login']\"><i class=\"material-icons\">fingerprint</i> Login</a>\n                    </li>\n                    <!-- <li routerLinkActive=\"active\">\n                        <a [routerLink]=\"['/lock']\"><i class=\"material-icons\">lock_open</i> Lock</a>\n                    </li> -->\n                </ul>\n            </div>\n        </div>\n    </nav>\n    <div class=\"full-page login-page\" filter-color=\"black\" data-image=\"../../../assets/img/lock.jpeg\">\n        <!--   you can change the color of the filter page using: data-color=\"blue | purple | green | orange | red | rose \" -->\n        <div class=\"content\">\n            <router-outlet></router-outlet>\n        </div>\n        <footer class=\"footer\">\n            <div class=\"container\">\n                <!-- <nav class=\"pull-left\">\n                    <ul>\n                        <li>\n                            <a href=\"#\">\n                                Home\n                            </a>\n                        </li>\n                        <li>\n                            <a href=\"#\">\n                                Company\n                            </a>\n                        </li>\n                        <li>\n                            <a href=\"#\">\n                                Portfolio\n                            </a>\n                        </li>\n                        <li>\n                            <a href=\"#\">\n                                Blog\n                            </a>\n                        </li>\n                    </ul>\n                </nav> -->\n                <p class=\"copyright pull-right\">\n                    &copy; {{test | date: 'yyyy'}} Powered by\n                    <a href=\"http://exile.com.co/\">Exile</a>, Evolución costante\n                </p>\n            </div>\n        </footer>\n    </div>\n</div>\n"
 
 /***/ }),
 
@@ -768,7 +768,7 @@ var CargoListComponent = (function () {
         ];
     }
     CargoListComponent.prototype.onChange = function ($event) {
-        console.log($event);
+        //   console.log($event);
     };
     return CargoListComponent;
 }());
@@ -969,6 +969,7 @@ var EditGeneralComponent = (function () {
         this._s = _s;
         this._rt = _rt;
         this.service = this._s;
+        this.otro = false;
         this.deleteable = false;
         this.form = this._fb.group({
             tipo_corte: [[], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
@@ -1014,9 +1015,13 @@ var EditGeneralComponent = (function () {
         ];
     }
     EditGeneralComponent.prototype.ngAfterViewInit = function () {
+        var _this = this;
         this._form.prePatchValue = function (value) {
-            if (!Array.isArray(value.tipo_corte)) {
-                value.tipo_corte = [value.tipo_corte];
+            // console.log(value);
+            if (value) {
+                if (!Array.isArray(value.tipo_corte)) {
+                    value.tipo_corte = [value.tipo_corte];
+                }
             }
             return value;
         };
@@ -1027,6 +1032,7 @@ var EditGeneralComponent = (function () {
             return data;
         };
         this._form.successful = function (data) {
+            _this._rt.navigate(['configuracion/general']);
         };
     };
     EditGeneralComponent.prototype.ngAfterContentInit = function () {
@@ -1045,7 +1051,7 @@ __decorate([
 ], EditGeneralComponent.prototype, "_form", void 0);
 EditGeneralComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        template: "<ex-form #f icon=\"settings\" title=\"Configuraci\u00F3n general\"\n        [form]=\"form\"\n        [service]=\"service\"\n        [columns]=\"columns\"\n        [renderinputs]=\"renderinputs\"\n        [deleteable]=\"deleteable\"></ex-form>"
+        template: "<ex-form #f icon=\"settings\" title=\"Configuraci\u00F3n general\"\n        [form]=\"form\"\n        [service]=\"service\"\n        [columns]=\"columns\"\n        [renderinputs]=\"renderinputs\"\n        [deleteable]=\"deleteable\"\n        [otro]=\"otro\"></ex-form>"
     }),
     __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__general_service__["a" /* ConfiguracionService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__general_service__["a" /* ConfiguracionService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _d || Object])
 ], EditGeneralComponent);
@@ -1548,7 +1554,7 @@ var CompensacionListComponent = (function () {
         ];
     }
     CompensacionListComponent.prototype.onChange = function ($event) {
-        console.log($event);
+        //   console.log($event);
     };
     return CompensacionListComponent;
 }());
@@ -1718,7 +1724,7 @@ var EpsListComponent = (function () {
         ];
     }
     EpsListComponent.prototype.onChange = function ($event) {
-        console.log($event);
+        // console.log($event);
     };
     return EpsListComponent;
 }());
@@ -1895,7 +1901,7 @@ var PensionListComponent = (function () {
         ];
     }
     PensionListComponent.prototype.onChange = function ($event) {
-        console.log($event);
+        // console.log($event);
     };
     return PensionListComponent;
 }());
@@ -2815,7 +2821,7 @@ CardComponent = __decorate([
 /***/ "../../../../../src/lib/form/form.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ex-card [icon]=\"icon\" [title]=\"title\">\n    <form class=\"form-horizontal\" novalidate (submit)=\"save()\" [formGroup]=\"form\">\n        <ng-content select=\"[top-form]\"></ng-content>\n        <div class=\"row\">\n            <div *ngFor=\"let column of columns\" class=\"col-lg-{{12/columns.length}}\">\n                <div class=\"form-horizontal\">\n                    <div *ngFor=\"let input of renderinputs\">\n                        <div *ngIf=\"isRender(column, input.column, input.noitem)\" class=\"row\">\n                            <label class=\"col-lg-3 label-on-left\" for=\"id_{{input.name}}\">{{input.title}}:</label>\n                            <div class=\"col-lg-9\">\n                                <div class=\"form-group label-floating is-empty\" [class.has-error]=\"!!input.error\" [class.has-success]=\"!input.error\">\n                                    <label class=\"control-label\"></label>\n                                    <input *ngIf=\"!input.isSelect && input.type !== 'checkbox'\" class=\"form-control {{input.class}}\" [attr.step]=\"input.step\" [formControlName]=\"input.name\" [type]=\"input.type\" />\n                                    <select *ngIf=\"input.isSelect\" class=\"selectpicker\" id=\"id_{{input.name}}\" [formControlName]=\"input.name\" [multiple]=\"input.multiple\" [title]=\"input.title\" data-style=\"select-with-transition\" data-size=\"7\">\n                                        <option disabled value=\"-1\">{{input.title}}</option>\n                                        <option *ngFor=\"let option of input.options\" [value]=\"option.value\">{{option.title}}</option>\n                                    </select>\n                                    <md-checkbox *ngIf=\"input.type === 'checkbox'\" [formControlName]=\"input.name\"></md-checkbox>\n                                    <span *ngIf=\"!!input.error\" class=\"help-block\">{{input.error}}</span>\n                                    <!-- <pre *ngIf=\"!!form.get(input.name).errors\">{{form.get(input.name).errors | json }}</pre> -->\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <ng-content select=\"[bottom-form]\"></ng-content>\n        <div class=\"row\">\n            <div class=\"col-lg-6\">\n                <ng-content select=\"[custom-button]\"></ng-content>\n            </div>\n            <div class=\"col-lg-6 text-right\">\n                <button *ngIf=\"!item && saveable\" class=\"btn btn-primary\" (click)=\"save(true)\" type=\"button\" [disabled]=\"!form.valid\">Guardar y Crear Otro</button>\n                <input *ngIf=\"!item && saveable\" class=\"btn btn-primary\" [disabled]=\"!form.valid\" type=\"submit\" value=\"Guardar\" />\n                <button *ngIf=\"!!item && deleteable\" class=\"btn btn-warning\" (click)=\"delete()\" type=\"button\">Eliminar</button>\n                <input *ngIf=\"!!item && saveable\" class=\"btn btn-primary\" type=\"submit\" value=\"Guardar Cambios\" [disabled]=\"!form.valid\" />\n                <button class=\"btn btn-primary\" (click)=\"back()\" type=\"button\">Regresar</button>\n            </div>\n        </div>\n    </form>\n    <div class=\"cargando\" *ngIf=\"_ready\">\n        <div class=\"loader\">\n            <svg class=\"circular\" viewBox=\"25 25 50 50\">\n                <circle class=\"path\" cx=\"50\" cy=\"50\" r=\"20\" fill=\"none\" stroke-width=\"2\" stroke-miterlimit=\"10\"/>\n            </svg>\n        </div>\n    </div>\n    <!-- <pre> value: {{ form.valid }}</pre> -->\n    <pre> value: {{ form.value | json }}</pre>\n</ex-card>\n"
+module.exports = "<ex-card [icon]=\"icon\" [title]=\"title\">\n    <form class=\"form-horizontal\" novalidate (submit)=\"save()\" [formGroup]=\"form\">\n        <ng-content select=\"[top-form]\"></ng-content>\n        <div class=\"row\">\n            <div *ngFor=\"let column of columns\" class=\"col-lg-{{12/columns.length}}\">\n                <div class=\"form-horizontal\">\n                    <div *ngFor=\"let input of renderinputs\">\n                        <div *ngIf=\"isRender(column, input.column, input.noitem)\" class=\"row\">\n                            <label class=\"col-lg-3 label-on-left\" for=\"id_{{input.name}}\">{{input.title}}:</label>\n                            <div class=\"col-lg-9\">\n                                <div class=\"form-group label-floating is-empty\" [class.has-error]=\"!!input.error\" [class.has-success]=\"!input.error\">\n                                    <label class=\"control-label\"></label>\n                                    <input *ngIf=\"!input.isSelect && input.type !== 'checkbox'\" class=\"form-control {{input.class}}\" [attr.step]=\"input.step\" [formControlName]=\"input.name\" [type]=\"input.type\" />\n                                    <select *ngIf=\"input.isSelect\" class=\"selectpicker\" id=\"id_{{input.name}}\" [formControlName]=\"input.name\" [multiple]=\"input.multiple\" [title]=\"input.title\" data-style=\"select-with-transition\" data-size=\"7\">\n                                        <option disabled value=\"-1\">{{input.title}}</option>\n                                        <option *ngFor=\"let option of input.options\" [value]=\"option.value\">{{option.title}}</option>\n                                    </select>\n                                    <md-checkbox *ngIf=\"input.type === 'checkbox'\" [formControlName]=\"input.name\"></md-checkbox>\n                                    <span *ngIf=\"!!input.error\" class=\"help-block\">{{input.error}}</span>\n                                    <!-- <pre *ngIf=\"!!form.get(input.name).errors\">{{form.get(input.name).errors | json }}</pre> -->\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <ng-content select=\"[bottom-form]\"></ng-content>\n        <div class=\"row\">\n            <div class=\"col-lg-6\">\n                <ng-content select=\"[custom-button]\"></ng-content>\n            </div>\n            <div class=\"col-lg-6 text-right\">\n                <button *ngIf=\"!item && saveable && otro\" class=\"btn btn-primary\" (click)=\"save(true)\" type=\"button\" [disabled]=\"!form.valid\">Guardar y Crear Otro</button>\n                <input *ngIf=\"!item && saveable\" class=\"btn btn-primary\" [disabled]=\"!form.valid\" type=\"submit\" value=\"Guardar\" />\n                <button *ngIf=\"!!item && deleteable\" class=\"btn btn-warning\" (click)=\"delete()\" type=\"button\">Eliminar</button>\n                <input *ngIf=\"!!item && saveable\" class=\"btn btn-primary\" type=\"submit\" value=\"Guardar Cambios\" [disabled]=\"!form.valid\" />\n                <button class=\"btn btn-primary\" (click)=\"back()\" type=\"button\">Regresar</button>\n            </div>\n        </div>\n    </form>\n    <div class=\"cargando\" *ngIf=\"_ready\">\n        <div class=\"loader\">\n            <svg class=\"circular\" viewBox=\"25 25 50 50\">\n                <circle class=\"path\" cx=\"50\" cy=\"50\" r=\"20\" fill=\"none\" stroke-width=\"2\" stroke-miterlimit=\"10\"/>\n            </svg>\n        </div>\n    </div>\n    <!-- <pre> value: {{ form.valid }}</pre> -->\n    <!-- <pre> value: {{ form.value | json }}</pre> -->\n</ex-card>\n"
 
 /***/ }),
 
@@ -2846,6 +2852,7 @@ var FormComponent = (function () {
         this._ar = _ar;
         this.deleteable = true;
         this.saveable = true;
+        this.otro = true;
         this.errorMessages = {
             email: 'texto para error de email'
         };
@@ -2855,8 +2862,10 @@ var FormComponent = (function () {
     };
     FormComponent.prototype.setItem = function (item) {
         item = this.prePatchValue(item);
-        this.item = item;
-        this.form.patchValue(this.item);
+        if (item) {
+            this.item = item;
+            this.form.patchValue(this.item);
+        }
         if ($('.selectpicker').length !== 0) {
             $('.selectpicker').selectpicker('refresh');
         }
@@ -2971,7 +2980,7 @@ var FormComponent = (function () {
         var _this = this;
         if (!!this.service && this.form.valid) {
             var body = this.preSave(this.form.value);
-            console.log(body);
+            // console.log(body)
             this._ready = true;
             if (!!this.item) {
                 this.service.edit(this.item.id, body)
@@ -3108,6 +3117,10 @@ __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])('saveable'),
     __metadata("design:type", Object)
 ], FormComponent.prototype, "saveable", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])('otro'),
+    __metadata("design:type", Object)
+], FormComponent.prototype, "otro", void 0);
 FormComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'ex-form',
@@ -3498,7 +3511,7 @@ var CrudBase = (function () {
         var _this = this;
         var id = route.params['id'];
         if (isNaN(+id)) {
-            console.log("Item id was not a number: " + id);
+            // console.log(`Item id was not a number: ${id}`);
             this.router.navigate([this.conf.redirect || '/']);
             return null;
         }
@@ -3756,7 +3769,7 @@ var TableComponent = (function () {
             this.service.list(dataSource)
                 .then(function (res) { return res.json(); })
                 .then(function (data) {
-                console.log(data);
+                // console.log(data);
                 _this.selectedItems = [];
                 _this.service.data = data.object_list;
                 cb({ 'draw': draw, 'recordsTotal': data.count, 'recordsFiltered': data.count, 'data': data.object_list });

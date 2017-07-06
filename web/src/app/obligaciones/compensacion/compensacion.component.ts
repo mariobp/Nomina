@@ -69,6 +69,6 @@ export class CompensacionListComponent {
       constructor(private _as: CompensacionService) { }
 
       onChange($event) {
-          console.log($event);
+        //   console.log($event);
       }
 }
