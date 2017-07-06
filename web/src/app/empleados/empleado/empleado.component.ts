@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { TableComponent, RenderInput, FormComponent } from '../../../lib/components';
@@ -16,7 +16,7 @@ export class EmpleadoComponent { }
 export class EmpleadoListComponent {
     service = this._as;
     multiselect = true;
-    aggregable = false;
+    aggregable = true;
     editable = true;
     columns = [
         {
@@ -55,15 +55,16 @@ export class EmpleadoListComponent {
     ];
 
     constructor(private _as: EmpleadoService) { }
-}
-;
+};
 
 @Component({
     template: `<ex-form #f icon="assignment_ind" title="Empleado"
         [form]="form"
         [service]="service"
         [columns]="columns"
-        [renderinputs]="renderinputs"></ex-form>`
+        [renderinputs]="renderinputs"
+        [deleteable]="deleteable"></ex-form>
+        <router-outlet></router-outlet>`
 })
 export class EmpleadoEditComponent implements AfterViewInit {
 
@@ -71,17 +72,18 @@ export class EmpleadoEditComponent implements AfterViewInit {
     columns: string[];
     renderinputs: RenderInput[];
     service = this._s;
-
+    deleteable = false;
+    @Input('empleado') empleado: number;
     @ViewChild('f') private _form: FormComponent;
 
     constructor(private _fb: FormBuilder, private _s: EmpleadoService, private _rt: Router) {
         this.form = this._fb.group({
-            nombre: ['', [Validators.required]],
-            apellidos: ['', [Validators.required]],
+            nombre: ['', Validators.required],
+            apellidos: ['', Validators.required],
             cedula: ['', [Validators.required, Validators.min(0)]],
-            fecha_nacimiento: ['', [Validators.required]],
+            fecha_nacimiento: ['', Validators.required],
         });
-        this.columns = ['col1',];
+        this.columns = ['col1', ];
         this.renderinputs = [
             { column: 'col1', title: 'Nombre', type: 'text', name: 'nombre' },
             { column: 'col1', title: 'Apellidos', type: 'text', name: 'apellidos', },
@@ -90,5 +92,9 @@ export class EmpleadoEditComponent implements AfterViewInit {
         ];
     }
 
-    ngAfterViewInit() { }
+    ngAfterViewInit() {
+      this._form.successful = data => {
+          this._rt.navigate(['empleado']);
+      }
+    }
 }

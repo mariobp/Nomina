@@ -7,6 +7,7 @@ export class EmpleadoService extends CrudService {
 
     constructor(protected _cl: CallService, protected _rt: Router) {
         super(_cl, _rt, 'recursos/empleado/');
+        super.setRedirectUrl('/empleados');
     }
 
 }

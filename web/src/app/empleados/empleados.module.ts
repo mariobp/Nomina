@@ -5,10 +5,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MdAutocompleteModule, MdInputModule } from '@angular/material';
 import { LibModule } from '../../lib/lib.module';
 
-import { ContratoComponent } from './contrato/contrato.component';
+import { ContratoComponent, EditContratoComponent, ContratoListComponent } from './contrato/contrato.component';
 import { FiniquitoComponent } from './finiquito/finiquito.component';
 import { EmpleadoComponent, EmpleadoEditComponent, EmpleadoListComponent } from './empleado/empleado.component';
 import { EmpleadoService } from './empleado/empleado.service';
+import { ContratoService } from './contrato/contrato.service';
 import { EmpleadoRoutes } from './route';
 @NgModule({
     imports: [
@@ -22,13 +23,15 @@ import { EmpleadoRoutes } from './route';
     ],
     declarations: [
         ContratoComponent,
+        EditContratoComponent,
+        ContratoListComponent,
         FiniquitoComponent,
         EmpleadoComponent,
         EmpleadoListComponent,
         EmpleadoEditComponent
     ],
     providers: [
-        EmpleadoService
+        EmpleadoService, ContratoService
     ]
 })
 export class EmpleadosModule { }
