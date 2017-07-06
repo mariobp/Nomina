@@ -262,6 +262,9 @@ export class FormComponent implements OnInit, AfterViewInit {
 
     successful(data) { }
 
+    back() {
+        this.successful(null);
+    }
     error(error) {
         BsNotify.error('Ha ocurrido un error al intentar gurdar los datos')
     }
