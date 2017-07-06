@@ -9,7 +9,7 @@ from turno import models as turno
 
 
 class Corte(models.Model):
-    fecha_inicio = models.DateField()
+    fecha_inicio = models.DateField(auto_now_add=True)
     fecha_fin = models.DateField(blank=True, null=True)
     cerrado = models.BooleanField(default=False)
 
