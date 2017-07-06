@@ -20,10 +20,10 @@ export class LoginComponent implements OnInit {
             username: ['', Validators.required],
             password: ['', Validators.required]
         });
-        this.form.patchValue({
-            username: 'asistente1',
-            password: 'admin123456'
-        });
+        // this.form.patchValue({
+        //     username: 'asistente1',
+        //     password: 'admin123456'
+        // });
     }
 
     isValid(): boolean {

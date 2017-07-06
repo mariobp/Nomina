@@ -18,7 +18,7 @@ export class GeneralComponent { }
         [renderinputs]="renderinputs"
         [deleteable]="deleteable"></ex-form>`
 })
-export class EditGeneralComponent implements AfterViewInit {
+export class EditGeneralComponent implements AfterViewInit, AfterContentInit {
 
     form: FormGroup;
     columns: string[];
