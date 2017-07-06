@@ -355,7 +355,7 @@ var TurnoEditComponent = (function () {
                 _this._rt.navigate(['/turno']);
             }
             else {
-                console.log(data.json());
+                // console.log(data.json());
                 _this._form.setItem(data.json());
             }
         };
