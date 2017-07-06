@@ -16,7 +16,7 @@ import { PensionService } from '../obligaciones/pension/pension.service';
 import { EpsService } from '../obligaciones/eps/eps.service';
 import { ContratoService } from './contrato/contrato.service';
 import { CargoService } from '../configuracion/cargo/cargo.service';
-
+import { TipoContratoService } from '../configuracion/tipocontrato/tipocontrato.service';
 import { EmpleadoRoutes } from './route';
 
 @NgModule({
@@ -45,7 +45,8 @@ import { EmpleadoRoutes } from './route';
         PensionService,
         EpsService,
         CargoService,
-        ContratoService
+        ContratoService,
+        TipoContratoService
     ]
 })
 export class EmpleadosModule { }

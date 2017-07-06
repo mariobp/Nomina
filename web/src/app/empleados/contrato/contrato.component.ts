@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { RenderInput, FormComponent, TableComponent } from '../../../lib/components';
 import { ContratoService } from './contrato.service';
-
+import { TipoContratoService } from '../../configuracion/tipocontrato/tipocontrato.service';
 @Component({
   template: '<router-outlet></router-outlet>',
   styleUrls: ['./contrato.component.scss']
@@ -85,11 +85,7 @@ export class ContratoListComponent implements OnInit {
 }
 
 @Component({
-    template: `<ex-form #f icon="description" title="Contrato"
-        [form]="form"
-        [service]="service"
-        [columns]="columns"
-        [renderinputs]="renderinputs"></ex-form>`
+    templateUrl: './edit.contrato.component.html'
 })
 export class EditContratoComponent implements OnInit {
 
@@ -101,10 +97,11 @@ export class EditContratoComponent implements OnInit {
 
     @ViewChild('f') private _form: FormComponent;
 
-    constructor(private _fb: FormBuilder, private _s: ContratoService, private _rt: Router, private _r: ActivatedRoute) {
+    constructor(private _fb: FormBuilder, private _s: ContratoService,
+      private _tc: TipoContratoService, private _rt: Router, private _r: ActivatedRoute) {
         this.form = this._fb.group({
           empleado: [0],
-          tipo_contrato: [0],
+          tipo_contrato: [0, [Validators.required, Validators.pattern(/\d/)]],
           fecha_inicio: ['', Validators.required],
           salario_base: ['', [Validators.required, Validators.min(0)]],
           descanso_turno: [''],
@@ -136,4 +133,6 @@ export class EditContratoComponent implements OnInit {
             this._rt.navigate([`empleados/${this.empleado.id}/edit`]);
       }
     }
+
+    itemTipo = item => item.tipo_contrato__nombre;
 }
