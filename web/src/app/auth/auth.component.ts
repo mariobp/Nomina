@@ -8,7 +8,7 @@ declare var $: any;
 })
 export class AuthComponent implements OnInit {
 
-    private test: Date = new Date();
+    public test: Date = new Date();
 
     constructor(private _router: Router) {
         this._router.events.subscribe(this.ckeckRouterEvents);

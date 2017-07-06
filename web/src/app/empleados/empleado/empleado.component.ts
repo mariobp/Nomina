@@ -24,7 +24,7 @@ export class EmpleadoListComponent {
     multiselect = true;
     aggregable = true;
     editable = true;
-    deteteable = false
+    deleteable = false
     columns = [
         {
             className: 'text-center',
@@ -76,11 +76,11 @@ export class EmpleadoEditComponent implements AfterViewInit {
     cajacompensacions = [];
     deleteable = false;
     @Input('empleado') empleado: number;
-    @ViewChild('f') private _form: FormComponent;
+    @ViewChild('f') public _form: FormComponent;
 
     constructor(private _fb: FormBuilder, private _s: EmpleadoService, private _rt: Router,
-        private _cs: CompensacionService, private _ces: CesantiasService, private _es: EpsService, private _ps: PensionService,
-        private _cas: CargoService) {
+        public _cs: CompensacionService, public _ces: CesantiasService, public _es: EpsService, public _ps: PensionService,
+        public _cas: CargoService) {
         this.form = this._fb.group({
             nombre: ['', Validators.required],
             apellidos: ['', Validators.required],
@@ -106,8 +106,8 @@ export class EmpleadoEditComponent implements AfterViewInit {
             this._rt.navigate(['empleados']);
         }
         this._form.successful = data => {
-              const item = data.json();
-              this._rt.navigate([`empleados/${item.id}/edit`]);
+            const item = data.json();
+            this._rt.navigate([`empleados/${item.id}/edit`]);
         }
     }
 
