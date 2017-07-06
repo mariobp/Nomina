@@ -31,7 +31,7 @@
                 <ng-content select="[custom-button]"></ng-content>
             </div>
             <div class="col-lg-6 text-right">
-                <button *ngIf="!item && saveable" class="btn btn-primary" (click)="save(true)" type="button" [disabled]="!form.valid">Guardar y Crear Otro</button>
+                <button *ngIf="!item && saveable && otro" class="btn btn-primary" (click)="save(true)" type="button" [disabled]="!form.valid">Guardar y Crear Otro</button>
                 <input *ngIf="!item && saveable" class="btn btn-primary" [disabled]="!form.valid" type="submit" value="Guardar" />
                 <button *ngIf="!!item && deleteable" class="btn btn-warning" (click)="delete()" type="button">Eliminar</button>
                 <input *ngIf="!!item && saveable" class="btn btn-primary" type="submit" value="Guardar Cambios" [disabled]="!form.valid" />

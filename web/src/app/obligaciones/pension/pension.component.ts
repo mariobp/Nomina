@@ -69,7 +69,7 @@ export class PensionListComponent {
     constructor(private _as: PensionService) { }
 
     onChange($event) {
-        console.log($event);
+        // console.log($event);
     }
 
 }

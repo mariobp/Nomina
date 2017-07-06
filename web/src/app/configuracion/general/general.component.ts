@@ -16,14 +16,16 @@ export class GeneralComponent { }
         [service]="service"
         [columns]="columns"
         [renderinputs]="renderinputs"
-        [deleteable]="deleteable"></ex-form>`
+        [deleteable]="deleteable"
+        [otro]="otro"></ex-form>`
 })
-export class EditGeneralComponent implements AfterViewInit {
+export class EditGeneralComponent implements AfterViewInit, AfterContentInit {
 
     form: FormGroup;
     columns: string[];
     renderinputs: RenderInput[];
     service = this._s;
+    otro = false;
     deleteable = false;
     @ViewChild('f') private _form: FormComponent;
 
@@ -74,8 +76,11 @@ export class EditGeneralComponent implements AfterViewInit {
 
     ngAfterViewInit() {
         this._form.prePatchValue = value => {
-            if (!Array.isArray(value.tipo_corte)) {
-                value.tipo_corte = [value.tipo_corte];
+            // console.log(value);
+            if (value) {
+                if (!Array.isArray(value.tipo_corte)) {
+                    value.tipo_corte = [value.tipo_corte];
+                }
             }
             return value;
         }
@@ -86,7 +91,7 @@ export class EditGeneralComponent implements AfterViewInit {
             return data;
         };
         this._form.successful = data => {
-
+            this._rt.navigate(['configuracion/general']);
         }
 
     }
