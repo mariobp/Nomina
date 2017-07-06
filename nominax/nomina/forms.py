@@ -22,7 +22,12 @@ class CorteForms(forms.ModelForm):
         config = conf.ConfiguracionForm.get_instance()
         if not instance:
             instance = models.Corte()
+            ultimo_corte = models.Corte.objects.all().order_by('fecha_inicio').last()
+            if ultimo_corte:
+            	instance.fecha_inicio = ultimo_corte.fecha_fin
+            # end if
         # end if
+        instance.prestaciones_sociales = config.prestaciones_sociales
         instance.nocturna = config.nocturna
         instance.dominical = config.dominical
         instance.nocturna_dominical = config.nocturna_dominical
@@ -49,7 +54,7 @@ class NominaForm(forms.ModelForm):
         self.contrato = rec.ContratoForm.get_instance(self.cleaned_data['empleado'])
         self.turnos = turnos.TurnoForm.get_turnos(self.cleaned_data['corte'], self.cleaned_data['empleado'])
         if not self.turnos.count():
-            raise forms.ValidationError('No hay turnos paraeste empleado')
+            raise forms.ValidationError('No hay turnos para este empleado')
         # end if
         return self.cleaned_data
     # end def
@@ -147,7 +152,7 @@ class NominaForm(forms.ModelForm):
     def save(self, commit=True):
         nomina = super(NominaForm, self).save(commit)
         if not nomina.inicio_mes:
-        	nomina.inicio_mes = (date.today()).replace(day=1)
+            nomina.inicio_mes = (nomina.corte.fecha_inicio).replace(day=1)
         # end if
         self.calcular_nomina(nomina)
         nomina.save()
@@ -159,7 +164,7 @@ class NominaForm(forms.ModelForm):
 def cuando_apruebe(turno):
     nomina = NominaForm.get_instance(empleado = turno.empleado)
     #TODO aggregar campos y guardar formulario
-    nom_form = NominaForm({'empleado': turno.empleado.pk, 'corte': nomina.corte.pk, 'salario_base': nomina.salario_base}, instance = nomina)
+    nom_form = NominaForm({'empleado': turno.empleado.pk, 'corte': nomina.corte.pk, 'salario_base': nomina.salario_base, 'inicio_mes': (nomina.corte.fecha_inicio).replace(day=1)}, instance = nomina)
     if nom_form.is_valid():
     	nom_form.save()
     else:

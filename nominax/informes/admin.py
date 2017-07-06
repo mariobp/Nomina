@@ -42,4 +42,6 @@ class NominaResource(resources.ModelResource):
 		fields = ['empleado__pension__nombre','empleado__eps__nombre','empleado__nombre', 'empleado__apellidos', 'corte__fecha_fin', 'empleado__cargo__nombre', 'salario_base', 'subsidio_trasporte', 'extras', 'dominical_diurna', 'extra_dominical_diurna', 'nocturna', 'extra_nocturna', 'dominical_nocturna', 'extra_dominical_nocturna', 'recargos', 'salario_legal']
 	# end class
 #end class
+
+
 reports.register_export(Nomina, NominaResource)

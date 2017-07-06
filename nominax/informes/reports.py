@@ -12,7 +12,8 @@ from import_export.admin import ExportMixin, ImportExportModelAdmin
 from import_export import resources, fields
 from plugins.pdf.format import PDF
 from django.contrib.admin import site as admin_site
-
+from django.conf.urls import url
+from django.views.decorators.csrf import csrf_exempt
 
 
 class PdfExportMixin(ExportMixin):
@@ -20,6 +21,16 @@ class PdfExportMixin(ExportMixin):
     def get_export_formats(self,):
         formats = super(PdfExportMixin, self).get_export_formats()
         return [PDF, base_formats.CSV, base_formats.XLSX]
+    # end def
+    def get_urls(self):
+        urls = super(PdfExportMixin, self).get_urls()
+        print "ok"
+        my_urls = [
+            url(r'^export/$',
+                csrf_exempt(self.admin_site.admin_view(self.export_action)),
+                name='%s_%s_export' % self.get_model_info()),
+        ]
+        return my_urls + urls
     # end def
 # end class
 
