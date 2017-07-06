@@ -20,6 +20,8 @@ export class ContratoListComponent implements OnInit {
 
     private empleado: any;
     multiselect = true;
+    visibility = true;
+    aggregable = true;
     icon = 'description';
     title = 'Contrato';
     service = this._cs;
@@ -64,18 +66,22 @@ export class ContratoListComponent implements OnInit {
         if (!!this._r.snapshot.data['item'] && Object.keys(this._r.snapshot.data['item']).length !== 0) {
             this.empleado = this._r.snapshot.data['item'];
             this.title = `Contratos de ${this.empleado.nombre} ${this.empleado.apellidos}`;
+        } else {
+          this.aggregable = false;
+          this.visibility = false;
         }
 
     }
 
     ngOnInit() {
-      this.table.preAjax = data => {
-        if (this.empleado) {
-          data['empleado'] = this.empleado.id;
+        this.table.preAjax = data => {
+          if (this.empleado) {
+            data['empleado'] = this.empleado.id;
+          }
+          return data;
         }
-        return data;
       }
-    }
+
 }
 
 @Component({
@@ -116,21 +122,17 @@ export class EditContratoComponent implements OnInit {
 
         if (!!this._r.parent.snapshot.data['item'] && Object.keys(this._r.parent.snapshot.data['item']).length !== 0) {
             this.empleado = this._r.parent.snapshot.data['item'];
-            console.log(this.empleado);
         }
     }
 
     ngOnInit() {
         this._form.preSave = data => {
           if (data.empleado === 0) {
-              console.log("empleado es 0");
               data.empleado = this.empleado.id;
           }
-          console.log(data)
           return data;
         }
         this._form.successful = data => {
-            console.log(`empleados/${this.empleado.id}/edit`);
             this._rt.navigate([`empleados/${this.empleado.id}/edit`]);
       }
     }
