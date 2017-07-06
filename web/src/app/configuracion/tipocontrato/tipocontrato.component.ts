@@ -7,7 +7,7 @@ import { TipoContratoService } from './tipocontrato.service';
 @Component({
     template: '<router-outlet></router-outlet>'
 })
-export class TipocontratoComponent {}
+export class TipocontratoComponent { }
 
 @Component({
     templateUrl: './list.tipocontrato.component.html'
@@ -51,22 +51,36 @@ export class EditTipoContratoComponent implements AfterViewInit {
 
     @ViewChild('f') private _form: FormComponent;
 
-    constructor(private _fb: FormBuilder, private _s: TipoContratoService , private _rt: Router) {
+    constructor(private _fb: FormBuilder, private _s: TipoContratoService, private _rt: Router) {
         this.form = this._fb.group({
-          nombre: ['', Validators.required],
-          modalidad: [[], Validators.required]
+            nombre: ['', Validators.required],
+            modalidad: [[], Validators.required]
         });
-        this.columns = [ 'col1' ];
+        this.columns = ['col1'];
         this.renderinputs = [
-          { column: 'col1', title: 'Nombre', type: 'text', name: 'nombre'},
-          { column: 'col1', title: 'Modalidad', type: null, name: 'modalidad', isSelect:true, options:[
-            { title: 'Por hora', value: 1},
-            { title: 'Salario fijo', value: 2}
-          ]}
+            { column: 'col1', title: 'Nombre', type: 'text', name: 'nombre' },
+            {
+                column: 'col1', title: 'Modalidad', type: null, name: 'modalidad', isSelect: true, options: [
+                    { title: 'Por hora', value: 1 },
+                    { title: 'Salario fijo', value: 2 }
+                ]
+            }
         ];
     }
 
     ngAfterViewInit() {
+        this._form.prePatchValue = value => {
+            if (!Array.isArray(value.modalidad)) {
+                value.modalidad = [value.modalidad];
+            }
+            return value;
+        }
+        this._form.preSave = data => {
+            if (Array.isArray(data.modalidad)) {
+                data.modalidad = data.modalidad[0];
+            }
+            return data;
+        };
         this._form.successful = data => {
             this._rt.navigate(['configuracion/tipo/contrato']);
         }
