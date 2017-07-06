@@ -18,3 +18,4 @@ xlrd==1.0.0
 xlwt==1.2.0
 gunicorn==19.7.1
 html5lib==1.0b8
+xhtml2pdf
