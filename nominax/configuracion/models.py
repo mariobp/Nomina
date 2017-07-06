@@ -5,8 +5,6 @@ from django.db import models
 from django.core.validators import MaxValueValidator
 from django.contrib.auth.models import User
 from cuser.fields import CurrentUserField
-# Create your models here.
-
 
 class Configuracion(models.Model):
     opciones = (
@@ -16,6 +14,7 @@ class Configuracion(models.Model):
     tipo_corte = models.IntegerField(choices=opciones)
     primer_dia = models.PositiveIntegerField("Primer dia de corte", validators=[MaxValueValidator(31)])
     segundo_dia = models.PositiveIntegerField("Segundo dia de corte", validators=[MaxValueValidator(31)], blank=True, null=True)
+    
     h_recargo_nocturno_inicio = models.TimeField("Hora de inicio de recargo nocturno")
     h_recargo_nocturno_fin = models.TimeField("Hora de finalización de recargo nocturno")
     h_almuerzo_inicio = models.TimeField("Hora de inicio de almuerzo")

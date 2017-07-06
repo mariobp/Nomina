@@ -7,6 +7,8 @@ from configuracion import forms as conf
 from recursos_h import forms as rec
 import models
 import decimal
+from datetime import date, timedelta
+from turno.datedelta import datedelta, multi_datedelta
 
 class CorteForms(forms.ModelForm):
     class Meta:
@@ -41,18 +43,8 @@ class NominaForm(forms.ModelForm):
         exclude = ()
     # end class
 
-    def __init__(self, *args, **kwargs):
-    	super(NominaForm, self).__init__(*args, **kwargs)
-    	self.fields['diurnas'].help_text = "%sx%d= $%s" % (str(self.instance.valor_hora()), self.instance.diurnas or 0, self.instance.calcular_hora_diurna(), ) 
-    	self.fields['nocturna'].help_text = "%sx%dx%d%%= $%s" % (str(self.instance.valor_hora()), self.instance.nocturna or 0, self.instance.corte.nocturna, self.instance.calcular_hora_nocturna(), ) 
-    	self.fields['extras'].help_text = "%sx%dx%d%%= $%s" % (str(self.instance.valor_hora()), self.instance.extras or 0, self.instance.corte.extra_diurna, self.instance.calcular_hora_extra_diurna(), ) 
-    	self.fields['extra_nocturna'].help_text = "%sx%dx%d%%= $%s" % (str(self.instance.valor_hora()), self.instance.extra_nocturna or 0, self.instance.corte.extra_nocturna, self.instance.calcular_hora_extra_nocturna(), ) 
-    	self.fields['dominical_diurna'].help_text = "%sx%dx%d%%= $%s" % (str(self.instance.valor_hora()), self.instance.dominical_diurna or 0, self.instance.corte.dominical, self.instance.calcular_hora_dominical_diurna(), ) 
-    	self.fields['dominical_nocturna'].help_text = "%sx%dx%d%%= $%s" % (str(self.instance.valor_hora()), self.instance.dominical_nocturna or 0, self.instance.corte.nocturna_dominical, self.instance.calcular_hora_dominical_nocturna(), ) 
-    	self.fields['extra_dominical_diurna'].help_text = "%sx%dx%d%%= $%s" % (str(self.instance.valor_hora()), self.instance.extra_dominical_diurna or 0, self.instance.corte.extra_dominical_diurna, self.instance.calcular_hora_dominical_extra_diurna(), ) 
-    	self.fields['extra_dominical_nocturna'].help_text = "%sx%dx%d%%= $%s" % (str(self.instance.valor_hora()), self.instance.extra_dominical_nocturna or 0, self.instance.corte.extra_dominical_nocturna, self.instance.calcular_hora_dominical_extra_nocturna(), ) 
-
     def clean(self):
+    	self.month = turnos.TurnoForm.month(self.cleaned_data['empleado'], self.cleaned_data['inicio_mes'].year, self.cleaned_data['inicio_mes'].month)
         self.configuracion = conf.ConfiguracionForm.get_instance()
         self.contrato = rec.ContratoForm.get_instance(self.cleaned_data['empleado'])
         self.turnos = turnos.TurnoForm.get_turnos(self.cleaned_data['corte'], self.cleaned_data['empleado'])
@@ -77,64 +69,86 @@ class NominaForm(forms.ModelForm):
         return instance
     # end def
 
+    def posibles_horas_extras(self):
+        
+        date_deltas = []
+        for turn in self.month:
+            date_deltas.append(datedelta(turn.entrada, turn.salida))
+        # end for
+        multi = multi_datedelta(date_deltas)
+        multi2 = multi.move_to_hour(self.contrato.horas_trabajo_corte)
+        return multi2
+    # end def
+
     def calcular_nomina(self, nomina):
-        horas_diurna = 0
-        horas_nocturna = 0
-
-        horas_extras = 0
-        horas_dominicales = 0
-
-        horas_extras_diurnas = 0
-        horas_extras_nocturnas = 0
-
-        horas_dominicales_diurnas = 0
-        horas_dominicales_nocturnas = 0
-
-        horas_dominicales_diurnas_extra = 0
-        horas_dominicales_nocturnas_extra = 0
 
         print 'calcular_nomina', len(self.turnos)
+
+        today = nomina.corte.fecha_fin or date.today()
+        delta = datedelta.for_dates(nomina.inicio_mes, today + timedelta(days=1))
+        weeks = delta.timedelta().days / 7
+        rango_extra = None
+        if weeks >= 3:
+            rango_extra = self.posibles_horas_extras()
+        # end if
+        deltas_diurno = multi_datedelta()
+        deltas_nocturno = multi_datedelta()
+        deltas_dominical_diurno = multi_datedelta()
+        deltas_dominical_nocturno = multi_datedelta()
+        
         for turno in self.turnos:
-            horas_diurna = horas_diurna + turno.horas_diurna()
-            horas_nocturna = horas_nocturna + turno.horas_nocturna()
-    
-            horas_extras = horas_extras + turno.horas_extras()
-            horas_dominicales = horas_dominicales + turno.horas_dominical()
-    
-            horas_extras_diurnas = horas_extras_diurnas + turno.get_extras_diurnas()
-            horas_extras_nocturnas = horas_extras_nocturnas + turno.get_extras_nocturnas()
-    
-            horas_dominicales_diurnas = horas_dominicales_diurnas + turno.get_dominicales_diurnas()
-            horas_dominicales_nocturnas = horas_dominicales_nocturnas + turno.get_dominicales_nocturnas()
-    
-            horas_dominicales_diurnas_extra = horas_dominicales_diurnas_extra + turno.get_dominicales_diurnas_extra()
-            horas_dominicales_nocturnas_extra = horas_dominicales_nocturnas_extra + turno.get_dominicales_nocturnas_extra()
+            deltas_diurno = deltas_diurno + turno.get_delta_diurna().difference(turno.get_delta_dominical())
+            deltas_nocturno = deltas_nocturno + turno.get_delta_nocturna().difference(turno.get_delta_dominical())
+            deltas_dominical_diurno = deltas_dominical_diurno + turno.get_delta_dominical().intersect(turno.get_delta_diurna())
+            deltas_dominical_nocturno = deltas_dominical_nocturno + turno.get_delta_dominical().intersect(turno.get_delta_nocturna())
+            
+            print 'total: ', deltas_diurno.horas() + deltas_nocturno.horas() + deltas_dominical_diurno.horas() + deltas_dominical_nocturno.horas()
+            print turno.entrada, turno.salida
+            print deltas_diurno.horas()
+            print deltas_nocturno.horas()
+            print deltas_dominical_diurno.horas()
+            print deltas_dominical_nocturno.horas()
         # end def
-
+        
+        
         nomina.subsidio_trasporte = self.contrato.subsidio_transporte
-        nomina.extras = horas_extras_diurnas - horas_dominicales_diurnas_extra
-        nomina.extra_nocturna = horas_extras_nocturnas - horas_dominicales_nocturnas_extra
-        nomina.extra_dominical_diurna = horas_dominicales_diurnas_extra
-        nomina.extra_dominical_nocturna = horas_dominicales_nocturnas_extra
-        nomina.dominical_diurna = horas_dominicales_diurnas - horas_dominicales_diurnas_extra
-        nomina.dominical_nocturna = horas_dominicales_nocturnas - horas_dominicales_nocturnas_extra 
-        nomina.nocturna = horas_nocturna - horas_dominicales_nocturnas - nomina.extra_nocturna
 
-        nomina.horas_diurna = horas_diurna
-        nomina.horas_nocturna = horas_nocturna
-        nomina.horas_dominicales = horas_dominicales_diurnas + horas_dominicales_nocturnas
+        nomina.hora_diurna = deltas_diurno.horas()
+        print 'hora_diurna:', deltas_diurno.horas()
+        nomina.horas_nocturna = deltas_nocturno.horas()
+        nomina.horas_dominicales = deltas_dominical_diurno.horas() + deltas_dominical_nocturno.horas()
 
-        print 'extras', nomina.extras
-        print 'extra_nocturna', nomina.extra_nocturna
-        print 'extra_dominical_diurna', nomina.extra_dominical_diurna
-        print 'extra_dominical_nocturna', nomina.extra_dominical_nocturna
-        print 'dominical_diurna', nomina.dominical_diurna
-        print 'dominical_nocturna', nomina.dominical_nocturna
-        print 'nocturna', nomina.nocturna
+        if rango_extra:
+            deltas_diurno_extra = deltas_diurno.intersect(rango_extra)
+            deltas_nocturno_extra = deltas_nocturno.intersect(rango_extra)
+            deltas_dominical_diurno_extra = deltas_dominical_diurno.intersect(rango_extra)
+            deltas_dominical_nocturno_extra = deltas_dominical_nocturno.intersect(rango_extra)
+
+            deltas_diurno = deltas_diurno.difference(deltas_diurno_extra)
+            deltas_nocturno = deltas_nocturno.difference(deltas_nocturno_extra)
+            deltas_dominical_diurno = deltas_dominical_diurno.difference(deltas_dominical_diurno_extra)
+            deltas_dominical_nocturno = deltas_dominical_nocturno.difference(deltas_dominical_nocturno_extra)
+
+            nomina.extras = deltas_diurno_extra.horas()
+            nomina.extra_nocturna = deltas_nocturno_extra.horas()
+            nomina.extra_dominical_diurna = deltas_dominical_diurno_extra.horas()
+            nomina.extra_dominical_nocturna = deltas_dominical_nocturno_extra.horas()
+
+        # end if
+
+        nomina.dominical_diurna = deltas_dominical_diurno.horas()
+        nomina.dominical_nocturna = deltas_dominical_nocturno.horas()
+        nomina.nocturna = deltas_nocturno.horas()
+        nomina.diurnas = deltas_diurno.horas()
+
+
     # end def
 
     def save(self, commit=True):
         nomina = super(NominaForm, self).save(commit)
+        if not nomina.inicio_mes:
+        	nomina.inicio_mes = (date.today()).replace(day=1)
+        # end if
         self.calcular_nomina(nomina)
         nomina.save()
         return nomina

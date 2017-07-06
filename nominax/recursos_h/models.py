@@ -155,7 +155,7 @@ class Contrato(models.Model):
     duracion_descanso = models.IntegerField("Duración de descanso en minutos", blank=True, null=True)
     horas_trabajo = models.IntegerField("Horas de trabajo diarias", default=8)
     horas_trabajo_semanal = models.IntegerField("Horas de trabajo semanal", default=40)
-    horas_trabajo_corte = models.IntegerField("Horas de trabajo por corte", default=160)
+    horas_trabajo_corte = models.IntegerField("Horas de trabajo mes", default=160)
 
     creator = CurrentUserField(add_only=True, related_name="created_contrato")
     last_editor = CurrentUserField(related_name="last_edited_contrato")
