@@ -15,6 +15,7 @@ import { CesantiasService } from '../obligaciones/cesantias/cesantias.service';
 import { PensionService } from '../obligaciones/pension/pension.service';
 import { EpsService } from '../obligaciones/eps/eps.service';
 import { ContratoService } from './contrato/contrato.service';
+import { CargoService } from '../configuracion/cargo/cargo.service';
 
 import { EmpleadoRoutes } from './route';
 
@@ -43,6 +44,7 @@ import { EmpleadoRoutes } from './route';
         CesantiasService,
         PensionService,
         EpsService,
+        CargoService,
         ContratoService
     ]
 })

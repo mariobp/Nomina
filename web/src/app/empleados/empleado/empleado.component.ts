@@ -8,6 +8,7 @@ import { CompensacionService } from '../../obligaciones/compensacion/compensacio
 import { CesantiasService } from '../../obligaciones/cesantias/cesantias.service';
 import { PensionService } from '../../obligaciones/pension/pension.service';
 import { EpsService } from '../../obligaciones/eps/eps.service';
+import { CargoService } from '../../configuracion/cargo/cargo.service';
 
 @Component({
     template: '<router-outlet></router-outlet>',
@@ -76,24 +77,26 @@ export class EmpleadoEditComponent implements AfterViewInit {
     @Input('empleado') empleado: number;
     @ViewChild('f') private _form: FormComponent;
 
-    constructor(private _fb: FormBuilder, private _s: EmpleadoService, private _rt: Router, private _cs: CompensacionService) {
+    constructor(private _fb: FormBuilder, private _s: EmpleadoService, private _rt: Router,
+        private _cs: CompensacionService, private _ces: CesantiasService, private _es: EpsService, private _ps: PensionService,
+        private _cas: CargoService) {
         this.form = this._fb.group({
             nombre: ['', Validators.required],
             apellidos: ['', Validators.required],
             cedula: ['', [Validators.required, Validators.min(0)]],
             fecha_nacimiento: ['', [Validators.required]],
-            cargo: [0, []],
-            cajacompensacion: [0, []],
-            cesantia: [0, []],
-            eps: [0, []],
-            pension: [0, []]
+            cargo: [0, [Validators.required, Validators.pattern(/\d/)]],
+            cajacompensacion: [0, [Validators.required, Validators.pattern(/\d/)]],
+            cesantia: [0, [Validators.required, Validators.pattern(/\d/)]],
+            eps: [0, [Validators.required, Validators.pattern(/\d/)]],
+            pension: [0, [Validators.required, Validators.pattern(/\d/)]]
         });
-        this.columns = ['col1'];
+        this.columns = ['col1', 'col2'];
         this.renderinputs = [
             { column: 'col1', title: 'Nombre', type: 'text', name: 'nombre' },
             { column: 'col1', title: 'Apellidos', type: 'text', name: 'apellidos', },
-            { column: 'col1', title: 'Cedela', type: 'number', name: 'cedula' },
-            { column: 'col1', title: 'Fecha nacimiento', type: 'text', name: 'fecha_nacimiento', class: 'datepicker' },
+            { column: 'col2', title: 'Cedula', type: 'number', name: 'cedula' },
+            { column: 'col2', title: 'Fecha nacimiento', type: 'text', name: 'fecha_nacimiento', class: 'datepicker' },
         ];
     }
 
@@ -106,4 +109,10 @@ export class EmpleadoEditComponent implements AfterViewInit {
             this._rt.navigate([`empleados/${data.id}/edit/`]);
         }
     }
+
+    itemCaja = item => item.cajacompensacion__nombre;
+    itemCargo = item => item.cargo__nombre;
+    itemCesantia = item => item.cesantia__nombre;
+    itemEps = item => item.eps__nombre;
+    itemPension = item => item.pension__nombre;
 }
