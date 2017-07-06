@@ -97,7 +97,7 @@ WSGI_APPLICATION = 'nominax.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'nomina',
+        'NAME': 'ingecol',
         'USER': 'postgres',
         'PASSWORD': 'Exile*74522547',
         'HOST': '104.236.33.228',
