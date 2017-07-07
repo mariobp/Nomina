@@ -18,8 +18,17 @@ class NominaResource(resources.ModelResource):
 	#ventas = fields.Field(column_name="Ventas", attribute="ventas")
 	recargos = fields.Field()
 	neto = fields.Field()
-	total = fields.Field()
+	total = fields.Field(column_name="Valor de Pago o de la recarga")
 	salario_legal = fields.Field()
+
+	identificacion_tipo = fields.Field(column_name="Tipo de Identificacion")
+	identificacion = fields.Field(column_name="Numero de Identificacion", attribute="empleado__cedula")
+	nombre = fields.Field(column_name="Nombre", attribute="empleado__nombre")
+	apellidos = fields.Field(column_name="Apellido", attribute="empleado__apellidos")
+	banco_codigo = fields.Field(column_name="Codigo del Banco", attribute="empleado__cuenta__banco__codigo")
+	tipo_producto = fields.Field(column_name="Tipo de Producto o servicio")
+	numero = fields.Field(column_name="Numero del producto o servicio", attribute="empleado__cuenta__numero")
+
 
 	def dehydrate_salario_legal(self, nomina):
 		return nomina.salario_legal()
@@ -39,9 +48,11 @@ class NominaResource(resources.ModelResource):
 
 	class Meta:
 		model = Nomina
-		fields = ['empleado__pension__nombre','empleado__eps__nombre','empleado__nombre', 'empleado__apellidos', 'corte__fecha_fin', 'empleado__cargo__nombre', 'salario_base', 'subsidio_trasporte', 'extras', 'dominical_diurna', 'extra_dominical_diurna', 'nocturna', 'extra_nocturna', 'dominical_nocturna', 'extra_dominical_nocturna', 'recargos', 'salario_legal']
+		#fields = ['empleado__pension__nombre','empleado__eps__nombre','empleado__nombre', 'empleado__apellidos', 'corte__fecha_fin', 'empleado__cargo__nombre', 'salario_base', 'subsidio_trasporte', 'extras', 'dominical_diurna', 'extra_dominical_diurna', 'nocturna', 'extra_nocturna', 'dominical_nocturna', 'extra_dominical_nocturna', 'recargos', 'salario_legal']
+		fields = ['identificacion_tipo', 'identificacion', 'nombre', 'apellidos', 'banco_codigo', 'tipo_producto', 'numero', 'valor']
 	# end class
 #end class
+
 
 
 reports.register_export(Nomina, NominaResource)
