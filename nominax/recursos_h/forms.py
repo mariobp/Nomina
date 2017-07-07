@@ -24,7 +24,7 @@ class CargoForm(forms.ModelForm):
 
     class Meta:
         model = models.Cargo
-        fields = ['nombre', 'valor_hora_diurna', 'valor_hora_nocturna', 'valor_hora_festivo']
+        fields = ['nombre', 'unidades_produccion']
     # end class
 # end class
 
@@ -169,4 +169,21 @@ class ContratoForm(forms.ModelForm):
             '%Y/%m/%d', '%d/%m/%Y', '%m/%d/%Y')
         self.fields['fecha_finalizacion'].format = "d/m/y"
     # end def
+# end class
+
+class UnidadProduccionForm(forms.ModelForm):
+
+    class Meta:
+        model = models.UnidadProduccion
+        fields = ['nombre', ]
+    # end class
+# end class
+
+
+class UnidadProduccionFormEdit(MasterEdit):
+
+    class Meta:
+        model = models.UnidadProduccion
+        exclude = ('eliminado_por', )
+    # end class
 # end class

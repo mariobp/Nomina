@@ -56,6 +56,50 @@ class MasterList(supra.SupraListView):
 # end class
 
 
+class UnidadProduccionSupraList(MasterList):
+    list_display = ['id', 'nombre']
+    search_fields = ['nombre']
+    model = models.UnidadProduccion
+# end class
+
+class UnidadProduccionSupraForm(supra.SupraFormView):
+    model = models.UnidadProduccion
+    form_class = forms.UnidadProduccionForm
+
+    def get_form_class(self):
+        if 'pk' in self.http_kwargs:
+            self.form_class = forms.UnidadProduccionFormEdit
+        # end if
+        return self.form_class
+    # end class
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(UnidadProduccionSupraForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
+
+class UnidadProduccionSupraFormDelete(supra.SupraDeleteView):
+    model = models.UnidadProduccion
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(UnidadProduccionSupraFormDelete, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.eliminado = True
+        user = CuserMiddleware.get_user()
+        self.object.eliminado_por = user
+        self.object.save()
+        return HttpResponse(status=200)
+    # end def
+# end class
+
+
 """
     Cargos
 """
