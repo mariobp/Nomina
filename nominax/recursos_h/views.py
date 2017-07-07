@@ -59,6 +59,7 @@ class MasterList(supra.SupraListView):
 class UnidadProduccionSupraList(MasterList):
     list_display = ['id', 'nombre']
     search_fields = ['nombre']
+    model = models.UnidadProduccion
 # end class
 
 class UnidadProduccionSupraForm(supra.SupraFormView):
