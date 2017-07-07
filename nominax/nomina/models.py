@@ -6,6 +6,7 @@ from recursos_h import models as recursos
 from datetime import date, timedelta
 from turno.datedelta import datedelta, multi_datedelta
 from turno import models as turno
+from django.db.models import Q, Sum, Count, F, ExpressionWrapper
 
 
 class Corte(models.Model):
@@ -18,6 +19,7 @@ class Corte(models.Model):
     nocturna_dominical = models.IntegerField("Valor de recargo nocturno dominical o festivo %")
     descuento_salud = models.IntegerField("Descuento de salud y pensión para empleado %")
     prestaciones_sociales = models.IntegerField("Pago de salud y pensión del empleador %")
+    tarifario = models.ManyToManyField(recursos.Tarifario)
 
     extra_diurna = models.IntegerField("Valor de recargo de hora extra diurna %")
     extra_nocturna = models.IntegerField("Valor de recargo de hora extra nocturna %")
@@ -54,12 +56,27 @@ class Nomina(models.Model):
     extra_dominical_nocturna = models.FloatField("Hora extra dominical nocturna", blank=True, null=True)
 
     def salario_produccion(self):
-        if False and self.horas_diurna and self.horas_nocturna and self.horas_dominicales:
-            return self.horas_diurna*float(self.empleado.cargo.valor_hora_diurna) + self.horas_nocturna*float(self.empleado.cargo.valor_hora_nocturna) + self.horas_dominicales*float(self.empleado.cargo.valor_hora_festivo)
+        tarifas = self.corte.tarifario.values_list('id', flat=True)
+        print tarifas
+        produccion = turno.Produccion.objects.filter(fecha__gte=self.corte.fecha_inicio, empleados=self.empleado, unidad__tarifario__in=tarifas)
+        if self.corte.fecha_fin:
+            produccion = produccion.filter(fecha__lt=self.corte.fecha_fin)
         # end if
-        return 0
+        print 'produccion', produccion #
+        try:
+            produccion = produccion.annotate(total=ExpressionWrapper(
+                        Sum('cantidad')/Count('empleados')*F('unidad__tarifario__precio'), 
+                        output_field=models.DateTimeField()
+                    )
+            )
+        except Exception as e:
+            print e
+        total = 0
+        for pro in produccion:
+            total = total + pro.total
+        # end if
+        return total
     # end def
-
 
     def prestaciones_sociales(self):
         return self.salario_legal()*self.corte.prestaciones_sociales/100

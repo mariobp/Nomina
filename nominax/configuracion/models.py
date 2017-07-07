@@ -5,6 +5,7 @@ from django.db import models
 from django.core.validators import MaxValueValidator
 from django.contrib.auth.models import User
 from cuser.fields import CurrentUserField
+from recursos_h import models as recursos
 
 class Configuracion(models.Model):
     opciones = (
@@ -19,6 +20,8 @@ class Configuracion(models.Model):
     h_recargo_nocturno_fin = models.TimeField("Hora de finalización de recargo nocturno")
     h_almuerzo_inicio = models.TimeField("Hora de inicio de almuerzo")
     h_almuerzo_fin = models.TimeField("Hora de fin de almuerzo")
+
+    tarifario = models.ManyToManyField(recursos.Tarifario)
 
     descuento_salud = models.IntegerField("Descuento de salud y pensión para empleado %")
     prestaciones_sociales = models.IntegerField("Pago de salud y pensión del empleador %")

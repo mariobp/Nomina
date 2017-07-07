@@ -249,3 +249,16 @@ class DiaDominical(models.Model):
     # end def
 
 # end class
+
+class Produccion(models.Model):
+    fecha = models.DateTimeField(auto_now_add=True)
+    unidad = models.ForeignKey(recursos.UnidadProduccion)
+    cantidad = models.IntegerField()
+    empleados = models.ManyToManyField(recursos.Empleado)
+
+    creator = CurrentUserField(add_only=True, related_name="created_produccion")
+    last_editor = CurrentUserField(related_name="last_edited_produccion")
+    eliminado = models.BooleanField(default=False)
+    eliminado_por = models.ForeignKey(User, related_name="eliminado_por_produccion", blank=True, null=True)
+
+# end class

@@ -24,7 +24,7 @@ class CargoForm(forms.ModelForm):
 
     class Meta:
         model = models.Cargo
-        fields = ['nombre', 'valor_hora_diurna', 'valor_hora_nocturna', 'valor_hora_festivo']
+        fields = ['nombre', 'unidades_produccion']
     # end class
 # end class
 

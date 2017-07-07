@@ -24,4 +24,5 @@ class TurnoAdmin(admin.ModelAdmin):
 	form = forms.TurnoForm
 admin.site.register(models.Turno, TurnoAdmin)
 admin.site.register(models.DiaFestivo)
+admin.site.register(models.Produccion)
 admin.site.register(models.DiaDominical, DiaDominicalAdmin)

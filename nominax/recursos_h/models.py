@@ -6,12 +6,16 @@ from cuser.fields import CurrentUserField
 from django.contrib.auth.models import User
 from datetime import date
 
+class UnidadProduccion(models.Model):
+    nombre = models.CharField(max_length=100)
+    def __unicode__(self):
+        return u"%s" % (self.nombre)
+    # end def
+# end class
 
 class Cargo(models.Model):
     nombre = models.CharField(max_length=100)
-    valor_hora_diurna = models.DecimalField(max_digits=10, decimal_places=2)
-    valor_hora_nocturna = models.DecimalField(max_digits=10, decimal_places=2)
-    valor_hora_festivo = models.DecimalField(max_digits=10, decimal_places=2)
+    unidades_produccion = models.ManyToManyField(UnidadProduccion)
     creator = CurrentUserField(add_only=True, related_name="created_cargo")
     last_editor = CurrentUserField(related_name="last_edited_cargo")
     eliminado = models.BooleanField(default=False)
@@ -22,6 +26,14 @@ class Cargo(models.Model):
     # end def
 # end class
 
+class Tarifario(models.Model):
+    unidad = models.ForeignKey(UnidadProduccion)
+    cargo = models.ForeignKey(Cargo)
+    precio = models.FloatField()
+    def __unicode__(self):
+        return u"para el %s el(la) %s es a: $%s" % (str(self.cargo), str(self.unidad), str(self.precio))
+    # end def
+# end def
 
 class Pension(models.Model):
     nombre = models.CharField(max_length=100)
@@ -121,7 +133,8 @@ class Empleado(models.Model):
 class TipoContrato(models.Model):
     opciones = (
         (1, 'Por hora'),
-        (2, 'Salario fijo')
+        (2, 'Salario fijo'),
+        (3, 'Producción')
     )
     nombre = models.CharField(max_length=100)
     modalidad = models.IntegerField(choices=opciones)
