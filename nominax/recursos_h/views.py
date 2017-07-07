@@ -64,6 +64,14 @@ class UnidadProduccionSupraList(MasterList):
 
 class UnidadProduccionSupraForm(supra.SupraFormView):
     model = models.UnidadProduccion
+    form_class = forms.UnidadProduccionForm
+
+    def get_form_class(self):
+        if 'pk' in self.http_kwargs:
+            self.form_class = forms.UnidadProduccionFormEdit
+        # end if
+        return self.form_class
+    # end class
 
     @method_decorator(check_login)
     @csrf_exempt
