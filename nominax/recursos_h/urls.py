@@ -38,6 +38,16 @@ urlpatterns += [
         views.EpsSupraFormDelete.as_view(), name="eps_delete"),
 ]
 
+"""
+    UnidadProduccion urls
+"""
+urlpatterns += [
+    url(r'^unidad/produccion/form/$', views.UnidadProduccionSupraForm.as_view(), name="unidad_produccion"),
+    url(r'^unidad/produccion/list/$', views.UnidadProduccionSupraList.as_view(), name="unidad_produccion_list"),
+    url(r'^unidad/produccion/form/(?P<pk>\d+)/$', views.UnidadProduccionSupraForm.as_view(), name="unidad_produccion_edit"),
+    url(r'^unidad/produccion/delete/(?P<pk>\d+)/$', views.UnidadProduccionSupraFormDelete.as_view(), name="unidad_produccion_delete"),
+]
+
 
 """
     CajaCompensacion

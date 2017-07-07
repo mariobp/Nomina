@@ -8,6 +8,10 @@ from datetime import date
 
 class UnidadProduccion(models.Model):
     nombre = models.CharField(max_length=100)
+    creator = CurrentUserField(add_only=True, related_name="created_unidad")
+    last_editor = CurrentUserField(related_name="last_edited_unidad")
+    eliminado = models.BooleanField(default=False)
+    eliminado_por = models.ForeignKey(User, related_name="eliminado_por_unidad", blank=True, null=True)
     def __unicode__(self):
         return u"%s" % (self.nombre)
     # end def
