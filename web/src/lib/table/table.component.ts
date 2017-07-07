@@ -148,7 +148,7 @@ export class TableComponent implements OnInit {
             this.service.list(dataSource)
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data);
+                    // console.log(data);
                     this.selectedItems = [];
                     this.service.data = data.object_list;
                     cb({ 'draw': draw, 'recordsTotal': data.count, 'recordsFiltered': data.count, 'data': data.object_list });

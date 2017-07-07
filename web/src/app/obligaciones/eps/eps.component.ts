@@ -69,7 +69,7 @@ export class EpsListComponent {
     constructor(private _as: EpsService) { }
 
     onChange($event) {
-        console.log($event);
+        // console.log($event);
     }
 
 }

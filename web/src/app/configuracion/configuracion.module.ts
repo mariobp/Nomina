@@ -11,6 +11,7 @@ import { CargoService } from './cargo/cargo.service';
 import { ConfiguracionRoutes } from './configuracion.route';
 import { TipoContratoService } from './tipocontrato/tipocontrato.service';
 import { ConfiguracionService } from './general/general.service';
+import { TarifarioComponent } from './tarifario/tarifario.component';
 
 @NgModule({
     imports: [
@@ -29,7 +30,8 @@ import { ConfiguracionService } from './general/general.service';
       TipoContratoListComponent,
       EditTipoContratoComponent,
       GeneralComponent,
-      EditGeneralComponent
+      EditGeneralComponent,
+      TarifarioComponent
     ],
     providers: [
       CargoService, TipoContratoService, ConfiguracionService

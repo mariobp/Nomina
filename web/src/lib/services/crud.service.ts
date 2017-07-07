@@ -93,7 +93,7 @@ export class CrudBase implements Resolve<any> {
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const id = route.params['id'];
         if (isNaN(+id)) {
-            console.log(`Item id was not a number: ${id}`);
+            // console.log(`Item id was not a number: ${id}`);
             this.router.navigate([this.conf.redirect || '/']);
             return null;
         }
