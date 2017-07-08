@@ -29,9 +29,7 @@ class TarifarioForm(forms.ModelForm):
             remplazar = models.Tarifario.objects.filter(remplazado_por = None, unidad=tarifa.unidad, cargo=tarifa.cargo).last()
         # end if
         tarifa.save()
-        print "OKOK"
         if not tarifa.remplazado_por:
-            print remplazar
             remplazar.remplazado_por = tarifa
             remplazar.save()
         # end if
