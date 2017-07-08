@@ -149,6 +149,7 @@ class Empleado(models.Model):
     eps = models.ForeignKey(Eps)
     cesantia = models.ForeignKey(Cesantia)
     cajacompensacion = models.ForeignKey(CajaCompensacion)
+    email = models.CharField(max_length=200)
     creator = CurrentUserField(add_only=True, related_name="created_empleado")
     last_editor = CurrentUserField(related_name="last_edited_empleado")
 
