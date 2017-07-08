@@ -12,6 +12,8 @@ import { ConfiguracionRoutes } from './configuracion.route';
 import { TipoContratoService } from './tipocontrato/tipocontrato.service';
 import { ConfiguracionService } from './general/general.service';
 import { TarifarioComponent } from './tarifario/tarifario.component';
+import { UnidadproduccionComponent, UnidadProduccionListComponent, EditUnidadProduccionComponent } from './unidadproduccion/unidadproduccion.component';
+import { UnidadProduccionService } from './unidadproduccion/unidadproduccion.service';
 
 @NgModule({
     imports: [
@@ -23,18 +25,21 @@ import { TarifarioComponent } from './tarifario/tarifario.component';
         RouterModule.forChild(ConfiguracionRoutes)
     ],
     declarations: [
-      CargoComponent,
-      CargoListComponent,
-      EditCargoComponent,
-      TipocontratoComponent,
-      TipoContratoListComponent,
-      EditTipoContratoComponent,
-      GeneralComponent,
-      EditGeneralComponent,
-      TarifarioComponent
+        CargoComponent,
+        CargoListComponent,
+        EditCargoComponent,
+        TipocontratoComponent,
+        TipoContratoListComponent,
+        EditTipoContratoComponent,
+        GeneralComponent,
+        EditGeneralComponent,
+        TarifarioComponent,
+        UnidadproduccionComponent,
+        UnidadProduccionListComponent,
+        EditUnidadProduccionComponent
     ],
     providers: [
-      CargoService, TipoContratoService, ConfiguracionService
+        CargoService, TipoContratoService, ConfiguracionService, UnidadProduccionService
     ]
 })
 export class ConfiguracionModule { }

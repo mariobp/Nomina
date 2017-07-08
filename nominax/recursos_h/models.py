@@ -34,6 +34,12 @@ class Tarifario(models.Model):
     unidad = models.ForeignKey(UnidadProduccion)
     cargo = models.ForeignKey(Cargo)
     precio = models.FloatField()
+    remplazado_por = models.ForeignKey('Tarifario', blank=True, null=True)
+
+    creator = CurrentUserField(add_only=True, related_name="created_tarifario")
+    last_editor = CurrentUserField(related_name="last_edited_tarifario")
+    eliminado = models.BooleanField(default=False)
+    eliminado_por = models.ForeignKey(User, related_name="eliminado_por_tarifario", blank=True, null=True)
     def __unicode__(self):
         return u"para el %s el(la) %s es a: $%s" % (str(self.cargo), str(self.unidad), str(self.precio))
     # end def

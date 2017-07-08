@@ -9,9 +9,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from nominax.decorator import check_login
 from cuser.middleware import CuserMiddleware
+from django.db.models import Q, Sum, Count, F, ExpressionWrapper
 import models
 import forms
 import json
+
 # Create your views here.
 supra.SupraConf.ACCECC_CONTROL["allow"] = True
 supra.SupraConf.ACCECC_CONTROL["origin"] = ORIGIN
@@ -87,6 +89,47 @@ class UnidadProduccionSupraFormDelete(supra.SupraDeleteView):
     @csrf_exempt
     def dispatch(self, request, *args, **kwargs):
         return super(UnidadProduccionSupraFormDelete, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.eliminado = True
+        user = CuserMiddleware.get_user()
+        self.object.eliminado_por = user
+        self.object.save()
+        return HttpResponse(status=200)
+    # end def
+# end class
+
+class TarifarioSupraList(supra.SupraListView):
+    model = models.Tarifario
+    list_display = ['id', 'cargo', 'unidad', 'precio']
+    search_fields = ['cargo', 'unidad', 'precio']
+    def get_queryset(self):
+        queryset = super(TarifarioSupraList, self).get_queryset()
+        queryset = queryset.filter(remplazado_por = None)
+        return queryset
+    # end def
+# end class
+
+class TarifarioSupraForm(supra.SupraFormView):
+    model = models.Tarifario
+    form_class = forms.TarifarioForm
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(TarifarioSupraForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
+
+class TarifarioSupraFormDelete(supra.SupraDeleteView):
+    model = models.Tarifario
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(TarifarioSupraFormDelete, self).dispatch(request, *args, **kwargs)
     # end def
 
     def delete(self, request, *args, **kwargs):

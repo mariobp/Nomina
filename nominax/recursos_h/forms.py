@@ -20,6 +20,29 @@ class MasterEdit(forms.ModelForm):
 # end class
 
 
+class TarifarioForm(forms.ModelForm):
+
+    def save(self, commit=False):
+        tarifa = super(TarifarioForm, self).save(commit)
+        
+        if not tarifa.remplazado_por:
+            remplazar = models.Tarifario.objects.filter(remplazado_por = None, unidad=tarifa.unidad, cargo=tarifa.cargo).last()
+        # end if
+        tarifa.save()
+        if not tarifa.remplazado_por:
+            remplazar.remplazado_por = tarifa
+            remplazar.save()
+        # end if
+        return tarifa
+    # end def
+
+    class Meta:
+        model = models.Tarifario
+        exclude = []
+    # end class
+# end class
+
+
 class CargoForm(forms.ModelForm):
 
     class Meta:
