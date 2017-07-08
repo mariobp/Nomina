@@ -120,6 +120,24 @@ class CajaCompensacion(models.Model):
     # end def
 # end class
 
+class Banco(models.Model):
+    nombre = models.CharField(max_length=100)
+    codigo = models.CharField(max_length=100, blank=True, null=True)
+    creator = CurrentUserField(add_only=True, related_name="created_banco")
+    last_editor = CurrentUserField(related_name="last_edited_banco")
+    eliminado = models.BooleanField(default=False)
+    eliminado_por = models.ForeignKey(User, related_name="eliminado_por_banco", blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Banco"
+        verbose_name_plural = "Bancos"
+    # end class
+
+    def __unicode__(self):
+        return u"%s" % (self.nombre)
+    # end def
+# end class
+
 
 class Empleado(models.Model):
     nombre = models.CharField(max_length=100)
@@ -139,6 +157,26 @@ class Empleado(models.Model):
     # end def
 # end class
 
+
+class Cuenta(models.Model):
+    numero = models.CharField(max_length=100)
+    banco = models.ForeignKey(Banco)
+    empleado = models.OneToOneField(Empleado)
+    creator = CurrentUserField(add_only=True, related_name="created_cuenta")
+    last_editor = CurrentUserField(related_name="last_edited_cuenta")
+    eliminado = models.BooleanField(default=False)
+    eliminado_por = models.ForeignKey(User, related_name="eliminado_por_cuenta", blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Cuenta"
+        verbose_name_plural = "Cuentas"
+        unique_together = ('banco', 'numero')
+    # end class
+
+    def __unicode__(self):
+        return u"%s %s %s" % (self.empleado, self.banco, self.numero)
+    # end def
+# end class
 
 class TipoContrato(models.Model):
     opciones = (
