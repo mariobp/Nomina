@@ -103,8 +103,15 @@ class UnidadProduccionSupraFormDelete(supra.SupraDeleteView):
 
 class TarifarioSupraList(supra.SupraListView):
     model = models.Tarifario
-    list_display = ['id', 'cargo', 'unidad', 'precio']
-    search_fields = ['cargo', 'unidad', 'precio']
+    list_display = ['id', 'cargo', 'unidad', 'precio', 'cargo__nombre', 'unidad__nombre']
+    search_fields = ['cargo__nombre', 'unidad__nombre', 'precio']
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(TarifarioSupraList, self).dispatch(request, *args, **kwargs)
+    # end def
+
     def get_queryset(self):
         queryset = super(TarifarioSupraList, self).get_queryset()
         queryset = queryset.filter(remplazado_por = None)

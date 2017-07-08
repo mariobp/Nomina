@@ -24,12 +24,11 @@ class TarifarioForm(forms.ModelForm):
 
     def save(self, commit=False):
         tarifa = super(TarifarioForm, self).save(commit)
-        
+
         if not tarifa.remplazado_por:
             remplazar = models.Tarifario.objects.filter(remplazado_por = None, unidad=tarifa.unidad, cargo=tarifa.cargo).last()
         # end if
         tarifa.save()
-        print "OKOK"
         if not tarifa.remplazado_por:
             print remplazar
             remplazar.remplazado_por = tarifa
@@ -40,7 +39,7 @@ class TarifarioForm(forms.ModelForm):
 
     class Meta:
         model = models.Tarifario
-        exclude = []
+        exclude = ['remplazado_por']
     # end class
 # end class
 
