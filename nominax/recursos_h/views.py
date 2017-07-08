@@ -405,6 +405,56 @@ class CesantiaSupraFormDelete(supra.SupraDeleteView):
     # end def
 # end class
 
+"""
+    Bancos
+"""
+
+
+class BancoSupraList(MasterList):
+    model = models.Banco
+    list_display = ['id', 'nombre', 'codigo']
+    search_fields = ['nombre', 'codigo']
+# end class
+
+
+class BancoSupraForm(supra.SupraFormView):
+    model = models.Banco
+    form_class = forms.BancoForm
+
+    def get_form_class(self):
+        if 'pk' in self.http_kwargs:
+            self.form_class = forms.BancoFormEdit
+        # end if
+        return self.form_class
+    # end class
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(BancoSupraForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
+
+
+class BancoSupraFormDelete(supra.SupraDeleteView):
+    model = models.Banco
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(BancoSupraFormDelete, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.eliminado = True
+        user = CuserMiddleware.get_user()
+        self.object.eliminado_por = user
+        self.object.save()
+        return HttpResponse(status=200)
+    # end def
+# end class
+
 
 """
     Tipo contratro
@@ -506,14 +556,46 @@ class ContraoSupraList(supra.SupraListView):
 # end class
 
 
+class CuentaSupraList(supra.SupraListView):
+    model = models.Cuenta
+    list_display = ('id', 'empleado', 'empleado__nombre',
+                    'empleado__apellidos', 'numero', 'banco', 'banco__nombre', 'banco__codigo')
+    list_filter = ['empleado', 'numero', 'id']
+    paginate_by = 10
+
+    @method_decorator(check_login)
+    def dispatch(self, request, *args, **kwargs):
+        return super(CuentaSupraList, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def get_queryset(self):
+        queryset = super(CuentaSupraList, self).get_queryset()
+        if self.request.GET.get('num_page', False):
+            self.paginate_by = self.request.GET.get('num_page', False)
+        # end if
+        propiedad = self.request.GET.get('sort_property', False)
+        orden = self.request.GET.get('sort_direction', False)
+        # end if
+        if propiedad and orden:
+            if orden == "asc":
+                queryset = queryset.order_by(propiedad)
+            elif orden == "desc":
+                propiedad = "-" + propiedad
+                queryset = queryset.order_by(propiedad)
+        # end if
+        return queryset
+    # end def
+# end class
+
+
 class EmpleadoSupraList(supra.SupraListView):
     model = models.Empleado
     list_display = ['id', 'nombre', 'apellidos', 'cedula', 'cargo', 'fecha_nacimiento',
                     'cargo__nombre', 'pension', 'pension__nombre',
                     'eps', 'eps__nombre', 'cesantia', 'cesantia__nombre',
-                    'cajacompensacion', 'cajacompensacion__nombre']
+                    'cajacompensacion', 'cajacompensacion__nombre', 'cargo__tarifario__unidad']
     search_fields = ['nombre', 'apellidos', 'cedula']
-    list_filter = ['cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion', 'id']
+    list_filter = ['cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion', 'id', 'cargo__tarifario__unidad']
     search_key = 'q'
     paginate_by = 10
 
@@ -558,6 +640,25 @@ class ContratoInline(supra.SupraInlineFormView):
     model = models.Contrato
     base_model = models.Empleado
     form_class = forms.ContratoForm
+    extra = 1
+# end class
+
+class CuentaForm(supra.SupraFormView):
+    model = models.Cuenta
+    form_class = forms.CuentaForm
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(CuentaForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
+
+
+class CuentaInline(supra.SupraInlineFormView):
+    model = models.Cuenta
+    base_model = models.Empleado
+    form_class = forms.CuentaForm
     extra = 1
 # end class
 

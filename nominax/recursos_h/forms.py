@@ -30,7 +30,6 @@ class TarifarioForm(forms.ModelForm):
         # end if
         tarifa.save()
         if not tarifa.remplazado_por:
-            print remplazar
             remplazar.remplazado_por = tarifa
             remplazar.save()
         # end if
@@ -151,6 +150,39 @@ class TipoContratoFormEdit(MasterEdit):
     # end class
 # end class
 
+class BancoForm(forms.ModelForm):
+
+    class Meta:
+        model = models.Banco
+        fields = ['nombre', 'codigo']
+    # end class
+# end class
+
+
+class BancoFormEdit(MasterEdit):
+
+    class Meta:
+        model = models.Banco
+        exclude = ('eliminado_por', )
+    # end class
+# end class
+
+class CuentaForm(forms.ModelForm):
+
+    class Meta:
+        model = models.Cuenta
+        fields = ['numero', 'banco', 'empleado']
+    # end class
+# end class
+
+
+class CuentaFormEdit(MasterEdit):
+
+    class Meta:
+        model = models.Cuenta
+        exclude = ('eliminado_por', )
+    # end class
+# end class
 
 class EmpleadoForm(forms.ModelForm):
 

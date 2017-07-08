@@ -140,3 +140,40 @@ class TurnoSupraList(MasterList):
         return obj.horas_dominical()
     # end def
 # end class
+
+
+
+class ProduccionSupraList(supra.SupraListView):
+    model = models.Produccion
+    list_display = ['fecha', 'unidad', 'cantidad']
+    search_fields = ['fecha', 'unidad', 'cantidad']
+# end class
+
+class ProduccionSupraForm(supra.SupraFormView):
+    model = models.Produccion
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(ProduccionSupraForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
+
+class ProduccionSupraFormDelete(supra.SupraDeleteView):
+    model = models.Produccion
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(ProduccionSupraFormDelete, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.eliminado = True
+        user = CuserMiddleware.get_user()
+        self.object.eliminado_por = user
+        self.object.save()
+        return HttpResponse(status=200)
+    # end def
+# end class
