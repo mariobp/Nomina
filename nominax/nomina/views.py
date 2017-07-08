@@ -8,7 +8,14 @@ from django.utils.decorators import method_decorator
 from nominax.decorator import check_login
 import models
 import json
-# Create your views here.
+
+from django.core import mail 
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.header import Header
+import urllib
+import urllib2
+
 supra.SupraConf.ACCECC_CONTROL["allow"] = True
 supra.SupraConf.ACCECC_CONTROL["origin"] = ORIGIN
 supra.SupraConf.ACCECC_CONTROL["credentials"] = "true"
@@ -16,6 +23,37 @@ supra.SupraConf.ACCECC_CONTROL["headers"] = "origin, content-type, accept"
 supra.SupraConf.ACCECC_CONTROL["methods"] = "POST, GET, PUT, DELETE ,OPTIONS"
 supra.SupraConf.body = True
 
+
+
+class SendMailSupraList(supra.SupraListView):
+    model = models.Nomina
+    subject = "ejemplo"
+    sender = "exile"
+    attach_name = "FINIQUITO.pdf"
+    html = "hola!"
+    url = "http://192.168.43.195:8000/admin/nomina/nomina/export/free/"
+    def get_queryset(self):
+        queryset = super(SendMailSupraList, self).get_queryset()
+        ids = self.request.GET.getlist('ids')
+        queryset = queryset.filter(id__in=ids)
+        for nom in queryset:
+            print nom.empleado.email
+            if nom.empleado.email:
+                values = { 'file_format': 0, }
+                data = urllib.urlencode(values)
+                req = urllib2.Request(self.url + "?id=" + str(nom.id), data)
+                response = urllib2.urlopen(req)
+                result = response.read()
+
+                msg = mail.EmailMultiAlternatives(self.subject, ".", self.sender, [nom.empleado.email])
+                msg.attach_alternative(self.html, "text/html")
+                msg.attach(self.attach_name, result, "application/pdf")
+                msg.send()
+            # end if
+        # end for
+        return queryset
+    # end def
+# end class
 
 class NominaSupraList(supra.SupraListView):
     model = models.Nomina
