@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormComponent, TableComponent, RenderInput } from '../../../lib/components'
+import { TarifarioService } from './tarifario.service';
+
 
 @Component({
-  selector: 'app-tarifario',
-  templateUrl: './tarifario.component.html',
-  styleUrls: ['./tarifario.component.scss']
+    template: '<router-outlet></router-outlet>'
+
 })
-export class TarifarioComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-}
+export class TarifarioComponent { }
