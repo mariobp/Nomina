@@ -50,15 +50,23 @@ urlpatterns += [
 
 
 """
+    Tarifario
+"""
+urlpatterns += [
+    url(r'^tarifario/form/$', views.TarifarioSupraForm.as_view(), name="tarifario"),
+    url(r'^tarifario/list/$', views.TarifarioSupraList.as_view(), name="tarifario_list"),
+    url(r'^tarifario/form/(?P<pk>\d+)/$', views.TarifarioSupraForm.as_view(), name="tarifario_edit"),
+    url(r'^tarifario/delete/(?P<pk>\d+)/$', views.TarifarioSupraFormDelete.as_view(), name="tarifario_delete"),
+]
+
+"""
     CajaCompensacion
 """
 urlpatterns += [
     url(r'^caja/form/$', views.CajaSupraForm.as_view(), name="caja"),
     url(r'^caja/list/$', views.CajaSupraList.as_view(), name="caja_list"),
-    url(r'^caja/form/(?P<pk>\d+)/$',
-        views.CajaSupraForm.as_view(), name="caja_edit"),
-    url(r'^caja/delete/(?P<pk>\d+)/$',
-        views.CajaSupraFormDelete.as_view(), name="caja_delete"),
+    url(r'^caja/form/(?P<pk>\d+)/$', views.CajaSupraForm.as_view(), name="caja_edit"),
+    url(r'^caja/delete/(?P<pk>\d+)/$', views.CajaSupraFormDelete.as_view(), name="caja_delete"),
 ]
 
 
