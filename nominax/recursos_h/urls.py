@@ -39,6 +39,18 @@ urlpatterns += [
 ]
 
 """
+    Banco urls
+"""
+urlpatterns += [
+    url(r'^banco/form/$', views.BancoSupraForm.as_view(), name="banco"),
+    url(r'^banco/list/$', views.BancoSupraList.as_view(), name="banco_list"),
+    url(r'^banco/form/(?P<pk>\d+)/$',
+        views.BancoSupraForm.as_view(), name="banco_edit"),
+    url(r'^banco/delete/(?P<pk>\d+)/$',
+        views.BancoSupraFormDelete.as_view(), name="banco_delete"),
+]
+
+"""
     UnidadProduccion urls
 """
 urlpatterns += [
@@ -96,8 +108,10 @@ urlpatterns += [
 urlpatterns += [
     url(r'^empleado/form/$', views.EmpleadoSupraForm.as_view(), name="empleado"),
     url(r'^contrato/form/$', views.ContratoForm.as_view(), name="contrato"),
+    url(r'^cuenta/form/$', views.CuentaForm.as_view(), name="cuenta"),
     url(r'^empleado/list/$', views.EmpleadoSupraList.as_view(), name="empleado_list"),
     url(r'^contrato/list/$', views.ContraoSupraList.as_view(), name="contrato_list"),
+    url(r'^cuenta/list/$', views.CuentaSupraList.as_view(), name="cuenta_list"),
     url(r'^empleado/form/(?P<pk>\d+)/$',
         views.EmpleadoSupraForm.as_view(), name="empleado_edit"),
     url(r'^contrato/form/(?P<pk>\d+)/$',

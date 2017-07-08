@@ -16,10 +16,10 @@ from django.db.models import Count
 
 class NominaResource(resources.ModelResource):
 	#ventas = fields.Field(column_name="Ventas", attribute="ventas")
-	recargos = fields.Field()
-	neto = fields.Field()
-	total = fields.Field(column_name="Valor de Pago o de la recarga")
-	salario_legal = fields.Field()
+	#recargos = fields.Field()
+	#neto = fields.Field()
+	
+	#salario_legal = fields.Field()
 
 	identificacion_tipo = fields.Field(column_name="Tipo de Identificacion")
 	identificacion = fields.Field(column_name="Numero de Identificacion", attribute="empleado__cedula")
@@ -28,7 +28,15 @@ class NominaResource(resources.ModelResource):
 	banco_codigo = fields.Field(column_name="Codigo del Banco", attribute="empleado__cuenta__banco__codigo")
 	tipo_producto = fields.Field(column_name="Tipo de Producto o servicio")
 	numero = fields.Field(column_name="Numero del producto o servicio", attribute="empleado__cuenta__numero")
+	total = fields.Field(column_name="Valor de Pago o de la recarga")
 
+	def dehydrate_identificacion_tipo(self, nomina):
+		return '2'
+	#end def
+
+	def dehydrate_tipo_producto(self, nomina):
+		return 'CA'
+	#end def	
 
 	def dehydrate_salario_legal(self, nomina):
 		return nomina.salario_legal()
@@ -49,7 +57,8 @@ class NominaResource(resources.ModelResource):
 	class Meta:
 		model = Nomina
 		#fields = ['empleado__pension__nombre','empleado__eps__nombre','empleado__nombre', 'empleado__apellidos', 'corte__fecha_fin', 'empleado__cargo__nombre', 'salario_base', 'subsidio_trasporte', 'extras', 'dominical_diurna', 'extra_dominical_diurna', 'nocturna', 'extra_nocturna', 'dominical_nocturna', 'extra_dominical_nocturna', 'recargos', 'salario_legal']
-		fields = ['identificacion_tipo', 'identificacion', 'nombre', 'apellidos', 'banco_codigo', 'tipo_producto', 'numero', 'valor']
+		fields = ['identificacion_tipo', 'identificacion', 'nombre', 'apellidos', 'banco_codigo', 'tipo_producto', 'numero', 'total']
+		export_order = ['identificacion_tipo', 'identificacion', 'nombre', 'apellidos', 'banco_codigo', 'tipo_producto', 'numero', 'total']
 	# end class
 #end class
 
