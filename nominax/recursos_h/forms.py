@@ -195,3 +195,20 @@ class ContratoForm(forms.ModelForm):
         self.fields['fecha_finalizacion'].format = "d/m/y"
     # end def
 # end class
+
+class UnidadProduccionForm(forms.ModelForm):
+
+    class Meta:
+        model = models.UnidadProduccion
+        fields = ['nombre', ]
+    # end class
+# end class
+
+
+class UnidadProduccionFormEdit(MasterEdit):
+
+    class Meta:
+        model = models.UnidadProduccion
+        exclude = ('eliminado_por', )
+    # end class
+# end class
