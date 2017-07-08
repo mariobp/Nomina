@@ -6,6 +6,8 @@ import { TipocontratoComponent, TipoContratoListComponent, EditTipoContratoCompo
 import { TarifarioComponent } from './tarifario/tarifario.component';
 import { CargoService } from './cargo/cargo.service';
 import { TipoContratoService } from './tipocontrato/tipocontrato.service';
+import { UnidadproduccionComponent, EditUnidadProduccionComponent, UnidadProduccionListComponent} from './unidadproduccion/unidadproduccion.component';
+import { UnidadProduccionService } from './unidadproduccion/unidadproduccion.service';
 
 export const ConfiguracionRoutes: Routes = [
     {
@@ -28,6 +30,12 @@ export const ConfiguracionRoutes: Routes = [
                 ]
             },
             {
+                path: 'unidad/produccion', component: UnidadproduccionComponent, children: [
+                    { path: '', component: UnidadProduccionListComponent },
+                    { path: ':id/edit', component: EditUnidadProduccionComponent, resolve: { item: UnidadProduccionService } }
+                ]
+            },
+            {
                 path: 'tarifario', component: TarifarioComponent
             }
         ]
@@ -38,5 +46,6 @@ export const ConfiguracionMenuMeta: MenuMeta[] = [
     { title: 'Cargos', url: '/configuracion/cargos', icon: 'extension' },
     { title: 'Tipos de Contrato', url: '/configuracion/tipo/contrato', icon: 'extension' },
     { title: 'Configuración General', url: '/configuracion/general', icon: 'extension' },
+    { title: 'Unidad de producción', url: '/configuracion/unidad/produccion', icon: 'extension' },
     { title: 'Tarifario', url: '/configuracion/tarifario', icon: 'extension' }
 ]

@@ -12,8 +12,8 @@ declare var $: any;
 export class AppComponent implements OnInit {
     title = 'angular'
     constructor(private _cs: CallService) {
-        // this._cs.conf('104.236.33.228', '8010');
-        this._cs.conf('isabela.com.co', '80');
+        this._cs.conf('104.236.33.228', '8010');
+        // this._cs.conf('isabela.com.co', '80');
     }
     ngOnInit() {
         $.material.init();
