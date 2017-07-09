@@ -103,8 +103,15 @@ class UnidadProduccionSupraFormDelete(supra.SupraDeleteView):
 
 class TarifarioSupraList(supra.SupraListView):
     model = models.Tarifario
-    list_display = ['id', 'cargo', 'unidad', 'precio']
-    search_fields = ['cargo', 'unidad', 'precio']
+    list_display = ['id', 'cargo', 'unidad', 'precio', 'cargo__nombre', 'unidad__nombre']
+    search_fields = ['cargo__nombre', 'unidad__nombre', 'precio']
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(TarifarioSupraList, self).dispatch(request, *args, **kwargs)
+    # end def
+
     def get_queryset(self):
         queryset = super(TarifarioSupraList, self).get_queryset()
         queryset = queryset.filter(remplazado_por = None)
@@ -150,9 +157,16 @@ class TarifarioSupraFormDelete(supra.SupraDeleteView):
 
 class CargoSupraList(MasterList):
     model = models.Cargo
-    list_display = ['id', 'nombre', 'valor_hora_diurna', 'valor_hora_nocturna', 'valor_hora_festivo']
+    list_display = ['id', 'nombre', 'unidades_produccion']
     search_fields = ['nombre', ]
     paginate_by = 10
+
+    def unidades_produccion(self, obj, now):
+        lista = []
+        for u in obj.unidades_produccion.all():
+            lista.append(u.id)
+        return lista
+    # end def
 # end def
 
 
@@ -586,9 +600,9 @@ class EmpleadoSupraList(supra.SupraListView):
     list_display = ['id', 'nombre', 'apellidos', 'cedula', 'cargo', 'fecha_nacimiento',
                     'cargo__nombre', 'pension', 'pension__nombre',
                     'eps', 'eps__nombre', 'cesantia', 'cesantia__nombre',
-                    'cajacompensacion', 'cajacompensacion__nombre']
+                    'cajacompensacion', 'cajacompensacion__nombre', 'cargo__tarifario__unidad']
     search_fields = ['nombre', 'apellidos', 'cedula']
-    list_filter = ['cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion', 'id']
+    list_filter = ['cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion', 'id', 'cargo__tarifario__unidad']
     search_key = 'q'
     paginate_by = 10
 

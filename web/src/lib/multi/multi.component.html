@@ -1,0 +1,5 @@
+<div [formGroup]="form">
+    <md-select style="width:100%" [placeholder]="placeholder" [formControlName]="name" name="name" [multiple]="true">
+        <md-option *ngFor="let option of options" [value]="option.id">{{render(option)}}</md-option>
+    </md-select>
+</div>

@@ -43,6 +43,22 @@ export class CrudBase implements Resolve<any> {
         this.conf.list = val;
     }
 
+    get addUrl() {
+        return this.conf.add;
+    }
+    get editUrl() {
+        return this.conf.edit;
+    }
+    get redirectUrl() {
+        return this.conf.redirect;
+    }
+    get deleteUrl() {
+        return this.conf.delete;
+    }
+    get listUrl() {
+        return this.conf.list;
+    }
+
     getById(id) {
         if (id === 0) {
             return Promise.resolve({})

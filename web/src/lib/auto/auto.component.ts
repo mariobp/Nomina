@@ -4,13 +4,6 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 @Component({
     selector: 'ex-autocomplete',
     templateUrl: './auto.component.html',
-    providers: [
-        {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => AutoComponent),
-            multi: true
-        }
-    ]
 })
 export class AutoComponent {
     @Input() service: any;
