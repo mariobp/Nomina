@@ -157,9 +157,16 @@ class TarifarioSupraFormDelete(supra.SupraDeleteView):
 
 class CargoSupraList(MasterList):
     model = models.Cargo
-    list_display = ['id', 'nombre', 'valor_hora_diurna', 'valor_hora_nocturna', 'valor_hora_festivo']
+    list_display = ['id', 'nombre', 'unidades_produccion']
     search_fields = ['nombre', ]
     paginate_by = 10
+
+    def unidades_produccion(self, obj, now):
+        lista = []
+        for u in obj.unidades_produccion.all():
+            lista.append(u.id)
+        return lista
+    # end def
 # end def
 
 
