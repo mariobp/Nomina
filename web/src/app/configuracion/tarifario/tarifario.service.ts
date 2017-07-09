@@ -7,7 +7,7 @@ export class TarifarioService extends CrudService {
 
     constructor(protected _cl: CallService, protected _rt: Router) {
         super(_cl, _rt, 'recursos/tarifario/');
-        super.setEditUrl(super.addUrl);
+        this.setEditUrl(this.addUrl);
     }
 
 }
