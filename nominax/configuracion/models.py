@@ -12,10 +12,12 @@ class Configuracion(models.Model):
         (0, "Quincenal"),
         (1, "Mensual")
     )
+
     tipo_corte = models.IntegerField(choices=opciones)
     primer_dia = models.PositiveIntegerField("Primer dia de corte", validators=[MaxValueValidator(31)])
     segundo_dia = models.PositiveIntegerField("Segundo dia de corte", validators=[MaxValueValidator(31)], blank=True, null=True)
     
+    nit = models.CharField(max_length=100)
     h_recargo_nocturno_inicio = models.TimeField("Hora de inicio de recargo nocturno")
     h_recargo_nocturno_fin = models.TimeField("Hora de finalización de recargo nocturno")
     h_almuerzo_inicio = models.TimeField("Hora de inicio de almuerzo")

@@ -124,4 +124,6 @@ urlpatterns += [
         views.EmpleadoSupraForm.as_view(), name="empleado_edit"),
     url(r'^contrato/form/(?P<pk>\d+)/$',
         views.ContratoForm.as_view(), name="contrato_edit"),
+    url(r'^cuenta/form/(?P<pk>\d+)/$',
+        views.CuentaForm.as_view(), name="cuenta_edit"),
 ]
