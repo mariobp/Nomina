@@ -13,11 +13,19 @@ class Configuracion(models.Model):
         (1, "Mensual")
     )
 
+    tipo_cuenta_choices = (
+        ('S', "Ahorros"),
+        ('D', 'Corriente')
+    )
+
     tipo_corte = models.IntegerField(choices=opciones)
     primer_dia = models.PositiveIntegerField("Primer dia de corte", validators=[MaxValueValidator(31)])
     segundo_dia = models.PositiveIntegerField("Segundo dia de corte", validators=[MaxValueValidator(31)], blank=True, null=True)
     
     nit = models.CharField(max_length=100)
+    numero_cuenta = models.CharField(max_length=100)
+    tipo_cuenta = models.CharField(max_length=2, choices=tipo_cuenta_choices)
+
     h_recargo_nocturno_inicio = models.TimeField("Hora de inicio de recargo nocturno")
     h_recargo_nocturno_fin = models.TimeField("Hora de finalización de recargo nocturno")
     h_almuerzo_inicio = models.TimeField("Hora de inicio de almuerzo")

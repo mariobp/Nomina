@@ -25,8 +25,15 @@ class ConfiguracionSupraList(supra.SupraListView):
                     'h_recargo_nocturno_fin', 'descuento_salud', 'h_almuerzo_inicio',
                     'h_almuerzo_fin', 'extra_diurna', 'extra_nocturna', 'extra_dominical_diurna',
                     'extra_dominical_nocturna', 'prestaciones_sociales', 'nocturna', 'dominical',
-                    'nocturna_dominical']
+                    'nocturna_dominical', 'nit', 'numero_cuenta', 'tipo_cuenta', 'tarifario']
     time_format = "%H:%M"
+
+    def tarifario(self, obj, now):
+        lista = []
+        for u in obj.tarifario.all():
+            lista.append(u.id)
+        return lista
+    # end def
 
     @method_decorator(check_login)
     def dispatch(self, request, *args, **kwargs):
