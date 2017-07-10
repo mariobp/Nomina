@@ -37,10 +37,13 @@ def render_bancolombia(dataset):
 
 	for nomina in list(dataset):
 		cedula = nomina[1].ljust(15, ' ')
-		
 		nombre = (nomina[2] + ' ' +  nomina[3]).ljust(30, ' ')
+		banco = ('10' + nomina[4]).rjust(9, '0')
+		cuenta = nomina[6].rjust(17, '0')
+		tipo_transaccion = '37'
+		valor = str(int(round(nomina[7]))).rjust(15, '0') + '00'
 
-		export_text += '\n' + tipo_registro + cedula + nombre
+		export_text += '\n' + tipo_registro + cedula + nombre + banco + cuenta + ' ' + tipo_transaccion + valor + fecha_transaccion
 	#end for
 
 	return HttpResponse(export_text, content_type='text/plain')

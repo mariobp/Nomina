@@ -146,8 +146,7 @@ class NominaSupraList2(supra.SupraListView):
     list_display = ['id', 'empleado', 'empleado_f', 'corte', 'fecha', 'salario_base',
                     'subsidio_trasporte', 'extras', 'extra_nocturna', 'extra_dominical_diurna',
                     'extra_dominical_nocturna', 'dominical_diurna', 'dominical_nocturna', 'nocturna',
-                    'diurnas', 'dominical_diurna', 'dominical_nocturna', 'horas_diurna', 'horas_nocturna',
-                    'horas_dominicales']
+                    'diurnas', 'dominical_diurna', 'dominical_nocturna']
     list_filter = ['empleado', 'empleado__cargo', 'fecha', 'corte']
 
     def empleado_f(self, obj, now):
@@ -158,10 +157,11 @@ class NominaSupraList2(supra.SupraListView):
 
 class CorteSupraList(supra.SupraListView):
     model = models.Corte
-    list_display = ['fecha_inicio', 'fecha_fin', 'cerrado',
+    list_display = ['id', 'fecha_inicio', 'fecha_fin', 'cerrado',
                     'nocturna', 'dominical', 'nocturna_dominical', 'prestaciones_sociales',
                     'extra_diurna', 'extra_nocturna' , 'extra_dominical_diurna',
                     'extra_dominical_nocturna', ('nominas', 'json')]
+    list_filter = ['id']
 
     def nominas(self, obj, now):
         class request():
