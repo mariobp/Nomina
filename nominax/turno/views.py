@@ -53,8 +53,10 @@ class MasterList(supra.SupraListView):
 
     def get_queryset(self):
         queryset = super(MasterList, self).get_queryset()
-        if self.request.GET.get('num_page', False):
+        if self.request.GET.get('num_page', False) and int(self.request.GET.get('num_page')) is not 0:
             self.paginate_by = self.request.GET.get('num_page', False)
+        elif int(self.request.GET.get('num_page')) is 0:
+            self.paginate_by = None
         # end if
         propiedad = self.request.GET.get('sort_property', False)
         orden = self.request.GET.get('sort_direction', False)
