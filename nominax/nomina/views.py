@@ -37,7 +37,6 @@ class SendMailSupraList(supra.SupraListView):
         ids = self.request.GET.getlist('ids')
         queryset = queryset.filter(id__in=ids)
         for nom in queryset:
-            print nom.empleado.email
             if nom.empleado.email:
                 values = { 'file_format': 0, }
                 data = urllib.urlencode(values)

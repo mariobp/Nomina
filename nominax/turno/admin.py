@@ -22,7 +22,11 @@ class TurnoAdmin(admin.ModelAdmin):
 	# end def
 
 	form = forms.TurnoForm
+# end class
+
+class ProduccionAdmin(admin.ModelAdmin):
+	list_display=['fecha', 'unidad', 'cantidad', ]
 admin.site.register(models.Turno, TurnoAdmin)
 admin.site.register(models.DiaFestivo)
-admin.site.register(models.Produccion)
+admin.site.register(models.Produccion, ProduccionAdmin)
 admin.site.register(models.DiaDominical, DiaDominicalAdmin)
