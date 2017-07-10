@@ -38,7 +38,7 @@ class TarifarioForm(forms.ModelForm):
 
     class Meta:
         model = models.Tarifario
-        exclude = ['remplazado_por']
+        exclude = ['remplazado_por', 'eliminado_por']
     # end class
 # end class
 
