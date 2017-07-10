@@ -598,7 +598,7 @@ class EmpleadoSupraList(supra.SupraListView):
     list_display = ['id', 'nombre', 'apellidos', 'cedula', 'cargo', 'fecha_nacimiento',
                     'cargo__nombre', 'pension', 'pension__nombre',
                     'eps', 'eps__nombre', 'cesantia', 'cesantia__nombre',
-                    'cajacompensacion', 'cajacompensacion__nombre', 'cargo__tarifario__unidad']
+                    'cajacompensacion', 'cajacompensacion__nombre']
     search_fields = ['nombre', 'apellidos', 'cedula']
     list_filter = ['cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion', 'id', 'cargo__tarifario__unidad']
     search_key = 'q'

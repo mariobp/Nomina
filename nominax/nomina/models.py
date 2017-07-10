@@ -87,7 +87,11 @@ class Nomina(models.Model):
     # end def
 
     def descuento_salud(self):
-        return (self.salario_legal() - (self.subsidio_transporte or 0))*self.corte.descuento_salud/100
+        try:
+            return (self.salario_legal() - self.contrato.subsidio_transporte)*self.corte.descuento_salud/100
+        except Exception as e:
+            print e
+        return 0
     # end def
 
     def bonificacion(self):
@@ -106,20 +110,20 @@ class Nomina(models.Model):
     # end def
 
     def salario_legal(self):
-        return (self.contrato.salario_base) + (self.contrato.subsidio_transporte ) #+ self.recargos()
+        return (self.contrato.salario_base) + (self.contrato.subsidio_transporte ) + Decimal(self.recargos())
     # end def
 
     def adelanto(self):
-        if self.contrato.tipo_contrato.modalidad == dict(recursos.TipoContrato.opciones)['Producción']:
+        if self.contrato.tipo_contrato.modalidad == recursos.TipoContrato.PRODUCCION:
             return self.salario_produccion_adelanto()
         # end if
         return 0
     # end def
 
     def neto(self):
-        if dict(recursos.TipoContrato.opciones)[self.contrato.tipo_contrato.modalidad] == 'Salario fijo':
+        if self.contrato.tipo_contrato.modalidad == recursos.TipoContrato.SALARIO_FIJO:
             return self.salario_legal()
-        elif  dict(recursos.TipoContrato.opciones)[self.contrato.tipo_contrato.modalidad] == 'Producción':
+        elif self.contrato.tipo_contrato.modalidad == recursos.TipoContrato.PRODUCCION:
             if self.salario_produccion_adelanto() + self.salario_produccion_nomina() < (self.contrato.salario_base or 0):
                 return self.salario_legal() - self.salario_produccion_adelanto()
             # end if

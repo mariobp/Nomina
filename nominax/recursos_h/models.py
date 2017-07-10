@@ -180,10 +180,14 @@ class Cuenta(models.Model):
 # end class
 
 class TipoContrato(models.Model):
+    POR_HORA = 1
+    SALARIO_FIJO = 2
+    PRODUCCION = 3
+    
     opciones = (
-        (1, 'Por hora'),
-        (2, 'Salario fijo'),
-        (3, 'Producción')
+        (POR_HORA, 'Por hora'),
+        (SALARIO_FIJO, 'Salario fijo'),
+        (PRODUCCION, 'Producción')
     )
     nombre = models.CharField(max_length=100)
     modalidad = models.IntegerField(choices=opciones)
