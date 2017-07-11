@@ -66,8 +66,8 @@ class NominaForm(forms.ModelForm):
     	if not self.cleaned_data['inicio_mes']:
     	    self.cleaned_data['inicio_mes'] = (self.cleaned_data['corte'].fecha_inicio).replace(day=1)
     	# end if
-    	self.month = turnos.TurnoForm.month(self.cleaned_data['empleado'], self.cleaned_data['inicio_mes'].year, self.cleaned_data['inicio_mes'].month)
-        self.turnos = turnos.TurnoForm.get_turnos(self.cleaned_data['corte'], self.cleaned_data['empleado'])
+    	self.month = turnos.TurnoForm.month(self.cleaned_data['contrato'].empleado, self.cleaned_data['inicio_mes'].year, self.cleaned_data['inicio_mes'].month)
+        self.turnos = turnos.TurnoForm.get_turnos(self.cleaned_data['corte'], self.cleaned_data['contrato'].empleado)
         if not self.turnos.count():
             raise forms.ValidationError('No hay turnos para este empleado')
         # end if
@@ -81,7 +81,6 @@ class NominaForm(forms.ModelForm):
         if not instance:
             contrato = rec.ContratoForm.get_instance(empleado)
             instance = models.Nomina()
-            instance.empleado = empleado
             instance.corte = corte
             instance.salario_base = contrato.salario_base
             instance.save()
