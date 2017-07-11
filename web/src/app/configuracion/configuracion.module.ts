@@ -15,6 +15,8 @@ import { TarifarioComponent, TarifarioListComponent, EditTarifarioComponent } fr
 import { UnidadproduccionComponent, UnidadProduccionListComponent, EditUnidadProduccionComponent } from './unidadproduccion/unidadproduccion.component';
 import { UnidadProduccionService } from './unidadproduccion/unidadproduccion.service';
 import { TarifarioService } from './tarifario/tarifario.service';
+import { BancoComponent, EditBancoComponent, BancoListComponent } from './banco/banco.component';
+import { BancoService } from './banco/banco.service';
 
 @NgModule({
     imports: [
@@ -39,10 +41,18 @@ import { TarifarioService } from './tarifario/tarifario.service';
         EditTarifarioComponent,
         UnidadproduccionComponent,
         UnidadProduccionListComponent,
-        EditUnidadProduccionComponent
+        EditUnidadProduccionComponent,
+        BancoComponent,
+        EditBancoComponent,
+        BancoListComponent
     ],
     providers: [
-        CargoService, TipoContratoService, ConfiguracionService, UnidadProduccionService, TarifarioService
+        CargoService,
+        TipoContratoService,
+        ConfiguracionService,
+        UnidadProduccionService,
+        TarifarioService,
+        BancoService
     ]
 })
 export class ConfiguracionModule { }

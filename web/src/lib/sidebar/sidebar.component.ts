@@ -15,15 +15,22 @@ export class SidebarComponent implements OnInit {
     user: any;
 
     constructor() {
-        this.user = JSON.parse(localStorage.getItem('user'));
-        if (!!this.user.avatar) {
-            this.user.avatar = `url(${window._server}${this.user.avatar})`;
-        }
-        if (!!this.user.first_name) {
-            this.user.nombre = this.user.first_name;
-        }
-        if (!!this.user.last_name) {
-            this.user.apellidos = this.user.last_name;
+        if (localStorage.hasOwnProperty('user') && localStorage.user !== 'undefined') {
+            this.user = JSON.parse(localStorage.getItem('user'));
+            if (!!this.user.avatar) {
+                this.user.avatar = `url(${window._server}${this.user.avatar})`;
+            } else {
+                this.user['avatar'] = 'url(/assets/img/default-avatar.png)';
+            }
+            if (!!this.user.first_name) {
+                this.user['nombre'] = this.user.first_name;
+            }
+            if (!!this.user.last_name) {
+                this.user['apellidos'] = this.user.last_name;
+            }
+        } else {
+            this.user['nombre'] = 'Usuario';
+            this.user['avatar'] = 'url(/assets/img/default-avatar.png)';
         }
     }
 
