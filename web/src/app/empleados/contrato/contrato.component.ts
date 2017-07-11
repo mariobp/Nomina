@@ -104,6 +104,7 @@ export class EditContratoComponent implements OnInit {
             tipo_contrato: [0, [Validators.required, Validators.pattern(/\d/)]],
             fecha_inicio: ['', Validators.required],
             salario_base: ['', [Validators.required, Validators.min(0)]],
+            subsidio_transporte: ['', [Validators.required, Validators.min(0)]],
             descanso_turno: [''],
             inicio_descanso: ['', Validators.min(0)],
             fecha_finalizacion: ['']
@@ -112,6 +113,7 @@ export class EditContratoComponent implements OnInit {
         this.renderinputs = [
             { column: 'col1', title: 'Fecha inicio', type: 'text', name: 'fecha_inicio', class: 'datepicker' },
             { column: 'col1', title: 'Salario base legal', type: 'number', name: 'salario_base' },
+            { column: 'col1', title: 'Subsidio de transporte', type: 'number', name: 'subsidio_transporte' },
             { column: 'col1', title: 'Descanso entre turnos', type: 'checkbox', name: 'descanso_turno' },
             { column: 'col1', title: 'Hora de inicio de descanso', type: 'number', name: 'inicio_descanso' },
             { column: 'col1', title: 'Fecha finalización', type: 'text', name: 'fecha_finalizacion' }

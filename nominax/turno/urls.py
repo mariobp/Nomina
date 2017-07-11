@@ -11,3 +11,9 @@ urlpatterns += [
     url(r'^turno/form/(?P<pk>\d+)/$',
         views.TurnoSupraForm.as_view(), name="turno_edit"),
 ]
+
+urlpatterns += [
+    url(r'^produccion/form/$', views.ProduccionSupraForm.as_view(), name="produccion"),
+    url(r'^produccion/list/$', views.ProduccionSupraList.as_view(), name="produccion_list"),
+    url(r'^produccion/form/(?P<pk>\d+)/$', views.ProduccionSupraForm.as_view(), name="produccion_edit"),
+]

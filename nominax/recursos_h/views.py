@@ -9,9 +9,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from nominax.decorator import check_login
 from cuser.middleware import CuserMiddleware
+from django.db.models import Q, Sum, Count, F, ExpressionWrapper
 import models
 import forms
 import json
+
 # Create your views here.
 supra.SupraConf.ACCECC_CONTROL["allow"] = True
 supra.SupraConf.ACCECC_CONTROL["origin"] = ORIGIN
@@ -34,7 +36,11 @@ class MasterList(supra.SupraListView):
     def get_queryset(self):
         queryset = super(MasterList, self).get_queryset()
         if self.request.GET.get('num_page', False):
-            self.paginate_by = self.request.GET.get('num_page', False)
+            if int(self.request.GET.get('num_page')) is 0:
+                self.paginate_by = None
+            else:
+                self.paginate_by = self.request.GET.get('num_page', False)
+            # end if
         # end if
         propiedad = self.request.GET.get('sort_property', False)
         orden = self.request.GET.get('sort_direction', False)
@@ -56,6 +62,92 @@ class MasterList(supra.SupraListView):
 # end class
 
 
+class UnidadProduccionSupraList(MasterList):
+    list_display = ['id', 'nombre']
+    search_fields = ['nombre']
+    model = models.UnidadProduccion
+# end class
+
+class UnidadProduccionSupraForm(supra.SupraFormView):
+    model = models.UnidadProduccion
+    form_class = forms.UnidadProduccionForm
+
+    def get_form_class(self):
+        if 'pk' in self.http_kwargs:
+            self.form_class = forms.UnidadProduccionFormEdit
+        # end if
+        return self.form_class
+    # end class
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(UnidadProduccionSupraForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
+
+class UnidadProduccionSupraFormDelete(supra.SupraDeleteView):
+    model = models.UnidadProduccion
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(UnidadProduccionSupraFormDelete, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.eliminado = True
+        user = CuserMiddleware.get_user()
+        self.object.eliminado_por = user
+        self.object.save()
+        return HttpResponse(status=200)
+    # end def
+# end class
+
+class TarifarioSupraList(MasterList):
+    model = models.Tarifario
+    list_display = ['id', 'cargo', 'unidad', 'precio', 'cargo__nombre', 'unidad__nombre']
+    search_fields = ['cargo__nombre', 'unidad__nombre', 'precio']
+
+    def get_queryset(self):
+        queryset = super(TarifarioSupraList, self).get_queryset()
+        queryset = queryset.filter(remplazado_por = None)
+        return queryset
+    # end def
+# end class
+
+class TarifarioSupraForm(supra.SupraFormView):
+    model = models.Tarifario
+    form_class = forms.TarifarioForm
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(TarifarioSupraForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
+
+class TarifarioSupraFormDelete(supra.SupraDeleteView):
+    model = models.Tarifario
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(TarifarioSupraFormDelete, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.eliminado = True
+        user = CuserMiddleware.get_user()
+        self.object.eliminado_por = user
+        self.object.save()
+        return HttpResponse(status=200)
+    # end def
+# end class
+
+
 """
     Cargos
 """
@@ -63,9 +155,16 @@ class MasterList(supra.SupraListView):
 
 class CargoSupraList(MasterList):
     model = models.Cargo
-    list_display = ['id', 'nombre', 'valor_hora_diurna', 'valor_hora_nocturna', 'valor_hora_festivo']
+    list_display = ['id', 'nombre', 'unidades_produccion']
     search_fields = ['nombre', ]
     paginate_by = 10
+
+    def unidades_produccion(self, obj, now):
+        lista = []
+        for u in obj.unidades_produccion.all():
+            lista.append(u.id)
+        return lista
+    # end def
 # end def
 
 
@@ -311,6 +410,56 @@ class CesantiaSupraFormDelete(supra.SupraDeleteView):
     # end def
 # end class
 
+"""
+    Bancos
+"""
+
+
+class BancoSupraList(MasterList):
+    model = models.Banco
+    list_display = ['id', 'nombre', 'codigo']
+    search_fields = ['nombre', 'codigo']
+# end class
+
+
+class BancoSupraForm(supra.SupraFormView):
+    model = models.Banco
+    form_class = forms.BancoForm
+
+    def get_form_class(self):
+        if 'pk' in self.http_kwargs:
+            self.form_class = forms.BancoFormEdit
+        # end if
+        return self.form_class
+    # end class
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(BancoSupraForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
+
+
+class BancoSupraFormDelete(supra.SupraDeleteView):
+    model = models.Banco
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(BancoSupraFormDelete, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.eliminado = True
+        user = CuserMiddleware.get_user()
+        self.object.eliminado_por = user
+        self.object.save()
+        return HttpResponse(status=200)
+    # end def
+# end class
+
 
 """
     Tipo contratro
@@ -325,8 +474,10 @@ class TipoContratoSupraList(MasterList):
     def modalidad_nombre(self, obj, now):
         if obj.modalidad == 1:
             nombre = "Por hora"
-        else:
+        elif obj.modalidad == 2:
             nombre = "Salario fijo"
+        elif obj.modalidad == 3:
+            nombre = "Por producción"
         # end if
         return u'%s' % nombre
     # end def
@@ -412,6 +563,38 @@ class ContraoSupraList(supra.SupraListView):
 # end class
 
 
+class CuentaSupraList(supra.SupraListView):
+    model = models.Cuenta
+    list_display = ('id', 'empleado', 'empleado__nombre',
+                    'empleado__apellidos', 'numero', 'banco', 'banco__nombre', 'banco__codigo')
+    list_filter = ['empleado', 'numero', 'id']
+    paginate_by = 10
+
+    @method_decorator(check_login)
+    def dispatch(self, request, *args, **kwargs):
+        return super(CuentaSupraList, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def get_queryset(self):
+        queryset = super(CuentaSupraList, self).get_queryset()
+        if self.request.GET.get('num_page', False):
+            self.paginate_by = self.request.GET.get('num_page', False)
+        # end if
+        propiedad = self.request.GET.get('sort_property', False)
+        orden = self.request.GET.get('sort_direction', False)
+        # end if
+        if propiedad and orden:
+            if orden == "asc":
+                queryset = queryset.order_by(propiedad)
+            elif orden == "desc":
+                propiedad = "-" + propiedad
+                queryset = queryset.order_by(propiedad)
+        # end if
+        return queryset
+    # end def
+# end class
+
+
 class EmpleadoSupraList(supra.SupraListView):
     model = models.Empleado
     list_display = ['id', 'nombre', 'apellidos', 'cedula', 'cargo', 'fecha_nacimiento',
@@ -419,7 +602,7 @@ class EmpleadoSupraList(supra.SupraListView):
                     'eps', 'eps__nombre', 'cesantia', 'cesantia__nombre',
                     'cajacompensacion', 'cajacompensacion__nombre']
     search_fields = ['nombre', 'apellidos', 'cedula']
-    list_filter = ['cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion', 'id']
+    list_filter = ['cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion', 'id', 'cargo__tarifario__unidad']
     search_key = 'q'
     paginate_by = 10
 
@@ -464,6 +647,25 @@ class ContratoInline(supra.SupraInlineFormView):
     model = models.Contrato
     base_model = models.Empleado
     form_class = forms.ContratoForm
+    extra = 1
+# end class
+
+class CuentaForm(supra.SupraFormView):
+    model = models.Cuenta
+    form_class = forms.CuentaForm
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(CuentaForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
+
+
+class CuentaInline(supra.SupraInlineFormView):
+    model = models.Cuenta
+    base_model = models.Empleado
+    form_class = forms.CuentaForm
     extra = 1
 # end class
 

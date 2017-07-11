@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { TableComponent, RenderInput, FormComponent } from '../../../lib/components';
@@ -75,7 +75,7 @@ export class TurnoListComponent {
 @Component({
     templateUrl: './edit.turno.component.html'
 })
-export class TurnoEditComponent implements AfterViewInit {
+export class TurnoEditComponent implements OnInit {
 
     form: FormGroup;
     columns: string[];
@@ -126,7 +126,7 @@ export class TurnoEditComponent implements AfterViewInit {
             this._form.save();
         }, () => { });
     }
-    ngAfterViewInit() {
+    ngOnInit() {
         this._form.prePatchValue = data => {
             this._form.deleteable = !data.aprobado;
             this._form.saveable = !data.aprobado;

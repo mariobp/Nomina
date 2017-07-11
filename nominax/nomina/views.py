@@ -8,7 +8,14 @@ from django.utils.decorators import method_decorator
 from nominax.decorator import check_login
 import models
 import json
-# Create your views here.
+
+from django.core import mail 
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.header import Header
+import urllib
+import urllib2
+
 supra.SupraConf.ACCECC_CONTROL["allow"] = True
 supra.SupraConf.ACCECC_CONTROL["origin"] = ORIGIN
 supra.SupraConf.ACCECC_CONTROL["credentials"] = "true"
@@ -17,10 +24,40 @@ supra.SupraConf.ACCECC_CONTROL["methods"] = "POST, GET, PUT, DELETE ,OPTIONS"
 supra.SupraConf.body = True
 
 
+
+class SendMailSupraList(supra.SupraListView):
+    model = models.Nomina
+    subject = "ejemplo"
+    sender = "exile"
+    attach_name = "FINIQUITO.pdf"
+    html = "hola!"
+    url = "http://192.168.43.195:8000/admin/nomina/nomina/export/free/"
+    def get_queryset(self):
+        queryset = super(SendMailSupraList, self).get_queryset()
+        ids = self.request.GET.getlist('ids')
+        queryset = queryset.filter(id__in=ids)
+        for nom in queryset:
+            if nom.empleado.email:
+                values = { 'file_format': 0, }
+                data = urllib.urlencode(values)
+                req = urllib2.Request(self.url + "?id=" + str(nom.id), data)
+                response = urllib2.urlopen(req)
+                result = response.read()
+
+                msg = mail.EmailMultiAlternatives(self.subject, ".", self.sender, [nom.empleado.email])
+                msg.attach_alternative(self.html, "text/html")
+                msg.attach(self.attach_name, result, "application/pdf")
+                msg.send()
+            # end if
+        # end for
+        return queryset
+    # end def
+# end class
+
 class NominaSupraList(supra.SupraListView):
     model = models.Nomina
-    list_display = ['id', 'empleado', 'empleado_f', 'corte', 'corte_f', 'fecha', 'salario_base',
-                    'subsidio_trasporte', 'extras', 'extra_nocturna', 'extra_dominical_diurna',
+    list_display = ['id', 'contrato__empleado', 'empleado_f', 'corte', 'corte_f', 'fecha', 'contrato__salario_base',
+                    'contrato__subsidio_transporte', 'extras', 'extra_nocturna', 'extra_dominical_diurna',
                     'extra_dominical_nocturna', 'dominical_diurna', 'dominical_nocturna', 'nocturna',
                     'diurnas', 'dominical_diurna', 'dominical_nocturna',
                     'salario_produccion', 'prestaciones_sociales', 'descuento_salud', 'bonificacion', 'valor_hora', 'salario_legal', 'neto', 'total', 'recargos']
@@ -28,8 +65,9 @@ class NominaSupraList(supra.SupraListView):
     list_filter = ['empleado', 'empleado__cargo', 'fecha', 'corte']
     search_key = 'q'
     paginate_by = 10
+
     def salario_produccion(self, obj, dict):
-        return obj.salario_produccion()
+        return obj.salario_produccion_nomina()
     # end def
 
     def prestaciones_sociales(self, obj, dict):
@@ -66,7 +104,7 @@ class NominaSupraList(supra.SupraListView):
 
 
     def empleado_f(self, obj, now):
-        return {"id": obj.empleado.id, "nombre": obj.empleado.nombre, "apellidos": obj.empleado.apellidos, "cedula": obj.empleado.cedula}
+        return {"id": obj.contrato.empleado.id, "nombre": obj.contrato.empleado.nombre, "apellidos": obj.contrato.empleado.apellidos, "cedula": obj.contrato.empleado.cedula}
     # end class
 
     def corte_f(self, obj, now):
@@ -105,11 +143,10 @@ class NominaSupraList(supra.SupraListView):
 
 class NominaSupraList2(supra.SupraListView):
     model = models.Nomina
-    list_display = ['id', 'empleado', 'empleado_f', 'corte', 'fecha', 'salario_base',
-                    'subsidio_trasporte', 'extras', 'extra_nocturna', 'extra_dominical_diurna',
+    list_display = ['id', 'empleado', 'empleado_f', 'corte', 'fecha', 'contrato__salario_base',
+                    'contrato__subsidio_transporte', 'extras', 'extra_nocturna', 'extra_dominical_diurna',
                     'extra_dominical_nocturna', 'dominical_diurna', 'dominical_nocturna', 'nocturna',
-                    'diurnas', 'dominical_diurna', 'dominical_nocturna', 'horas_diurna', 'horas_nocturna',
-                    'horas_dominicales']
+                    'diurnas', 'dominical_diurna', 'dominical_nocturna']
     list_filter = ['empleado', 'empleado__cargo', 'fecha', 'corte']
 
     def empleado_f(self, obj, now):
@@ -120,10 +157,11 @@ class NominaSupraList2(supra.SupraListView):
 
 class CorteSupraList(supra.SupraListView):
     model = models.Corte
-    list_display = ['fecha_inicio', 'fecha_fin', 'cerrado',
+    list_display = ['id', 'fecha_inicio', 'fecha_fin', 'cerrado',
                     'nocturna', 'dominical', 'nocturna_dominical', 'prestaciones_sociales',
                     'extra_diurna', 'extra_nocturna' , 'extra_dominical_diurna',
                     'extra_dominical_nocturna', ('nominas', 'json')]
+    list_filter = ['id']
 
     def nominas(self, obj, now):
         class request():

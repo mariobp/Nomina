@@ -1,8 +1,9 @@
-import { Component, ViewChild, AfterViewInit, AfterContentInit } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { FormComponent, TableComponent, RenderInput } from '../../../lib/components'
 import { ConfiguracionService } from './general.service';
+import { TarifarioService } from '../tarifario/tarifario.service';
 
 @Component({
     template: '<router-outlet></router-outlet>'
@@ -11,15 +12,9 @@ export class GeneralComponent { }
 
 
 @Component({
-    template: `<ex-form #f icon="settings" title="Configuración general"
-        [form]="form"
-        [service]="service"
-        [columns]="columns"
-        [renderinputs]="renderinputs"
-        [deleteable]="deleteable"
-        [otro]="otro"></ex-form>`
+    templateUrl: './form.configuracion.component.html'
 })
-export class EditGeneralComponent implements AfterViewInit, AfterContentInit {
+export class EditGeneralComponent implements OnInit {
 
     form: FormGroup;
     columns: string[];
@@ -27,9 +22,11 @@ export class EditGeneralComponent implements AfterViewInit, AfterContentInit {
     service = this._s;
     otro = false;
     deleteable = false;
+    nombre = item => `Para el(la) ${item.cargo__nombre} el ${item.unidad__nombre} es a: ${item.precio}`;
     @ViewChild('f') private _form: FormComponent;
+    @ViewChild('multi') private _multi: any;
 
-    constructor(private _fb: FormBuilder, private _s: ConfiguracionService, private _rt: Router) {
+    constructor(private _fb: FormBuilder, private _s: ConfiguracionService, private _t: TarifarioService, private _rt: Router) {
         this.form = this._fb.group({
             tipo_corte: [[], Validators.required],
             primer_dia: ['', [Validators.required, Validators.min(1), Validators.max(31)]],
@@ -47,6 +44,10 @@ export class EditGeneralComponent implements AfterViewInit, AfterContentInit {
             extra_dominical_nocturna: ['', [Validators.required, Validators.min(0)]],
             descuento_salud: ['', [Validators.required, Validators.min(0)]],
             prestaciones_sociales: ['', [Validators.required, Validators.min(0)]],
+            nit: ['', Validators.required],
+            numero_cuenta: ['', Validators.required],
+            tipo_cuenta: [[], Validators.required],
+            tarifario: [[], Validators.required]
         });
         this.columns = ['col1', 'col2'];
         this.renderinputs = [
@@ -62,6 +63,14 @@ export class EditGeneralComponent implements AfterViewInit, AfterContentInit {
             { column: 'col1', title: 'Hora de finalización de recargo nocturno', type: 'text', name: 'h_recargo_nocturno_fin', class: 'timepicker' },
             { column: 'col1', title: 'Hora de inicio de almuerzo', type: 'text', name: 'h_almuerzo_inicio', class: 'timepicker' },
             { column: 'col1', title: 'Hora de finalización del almuerzo', type: 'text', name: 'h_almuerzo_fin', class: 'timepicker' },
+            { column: 'col1', title: 'Nit', type: 'text', name: 'nit' },
+            { column: 'col1', title: 'Numero de cuenta', type: 'number', name: 'numero_cuenta' },
+            {
+                column: 'col1', title: 'Tipo de cuenta', type: 'null', name: 'tipo_cuenta', isSelect: true, options: [
+                    { title: 'Ahorros', value: 'S' },
+                    { title: 'Corriente', value: 'D' }
+                ]
+            },
             { column: 'col2', title: 'Valor recargo nocturno %', type: 'number', name: 'nocturna' },
             { column: 'col2', title: 'Valor recargo dominical %', type: 'number', name: 'dominical' },
             { column: 'col2', title: 'Valor recargo nocturno dominical %', type: 'number', name: 'nocturna_dominical' },
@@ -74,33 +83,17 @@ export class EditGeneralComponent implements AfterViewInit, AfterContentInit {
         ];
     }
 
-    ngAfterViewInit() {
-        this._form.prePatchValue = value => {
-            // console.log(value);
-            if (value) {
-                if (!Array.isArray(value.tipo_corte)) {
-                    value.tipo_corte = [value.tipo_corte];
-                }
-            }
-            return value;
-        }
-        this._form.preSave = data => {
-            if (Array.isArray(data.tipo_corte)) {
-                data.tipo_corte = data.tipo_corte[0];
-            }
-            return data;
-        };
+
+
+    ngOnInit() {
+        this._form.setReady(true);
+        Promise.all([this._s.list({}), this._multi.complete]).then(data => {
+            const datos = data[0].json();
+            this._form.setItem(datos.object_list[0]);
+            this._form.setReady(false);
+        });
         this._form.successful = data => {
             this._rt.navigate(['configuracion/general']);
         }
-
-    }
-
-    ngAfterContentInit() {
-        this._form.setReady(true);
-        this._s.list({}).then(data => data.json()).then(data => {
-            this._form.setItem(data.object_list[0]);
-            this._form.setReady(false);
-        });
     }
 }

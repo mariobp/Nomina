@@ -55,10 +55,9 @@ export class FormComponent implements OnInit, AfterViewInit {
         if (item) {
             this.item = item;
             this.form.patchValue(this.item);
+
         }
-        if ($('.selectpicker').length !== 0) {
-            $('.selectpicker').selectpicker('refresh')
-        }
+
     }
 
     prePatchValue(value) {
@@ -73,9 +72,6 @@ export class FormComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        if ($('.selectpicker').length !== 0) {
-            $('.selectpicker').selectpicker();
-        }
         $('.datetimepicker').datetimepicker({
             format: 'DD/MM/YYYY h:mm A',
             icons: {

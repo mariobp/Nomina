@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { TableComponent, RenderInput, FormComponent } from '../../../lib/components';
@@ -67,7 +67,7 @@ export class EmpleadoListComponent {
 @Component({
     templateUrl: './edit.empleado.component.html'
 })
-export class EmpleadoEditComponent implements AfterViewInit {
+export class EmpleadoEditComponent implements OnInit {
 
     form: FormGroup;
     columns: string[];
@@ -101,7 +101,7 @@ export class EmpleadoEditComponent implements AfterViewInit {
         ];
     }
 
-    ngAfterViewInit() {
+    ngOnInit() {
         this._form.back = () => {
             this._rt.navigate(['empleados']);
         }

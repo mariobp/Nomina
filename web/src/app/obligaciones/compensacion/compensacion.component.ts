@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { FormComponent, TableComponent, RenderInput } from '../../../lib/components'
@@ -7,7 +7,7 @@ import { CompensacionService } from './compensacion.service';
 @Component({
     template: '<router-outlet></router-outlet>'
 })
-export class CompensacionComponent {}
+export class CompensacionComponent { }
 
 @Component({
     template: `<ex-form #f icon="wc" title="Caja de Compensación"
@@ -16,7 +16,7 @@ export class CompensacionComponent {}
         [columns]="columns"
         [renderinputs]="renderinputs"></ex-form>`
 })
-export class EditCompensacionComponent implements AfterViewInit {
+export class EditCompensacionComponent implements OnInit {
 
     form: FormGroup;
     columns: string[];
@@ -30,17 +30,17 @@ export class EditCompensacionComponent implements AfterViewInit {
             nombre: ['', [Validators.required, Validators.maxLength(30)]],
             codigo: ['', [Validators.required, Validators.maxLength(30)]]
         });
-        this.columns = ['col1', ];
+        this.columns = ['col1',];
         this.renderinputs = [
             { column: 'col1', title: 'Nombre', type: 'text', name: 'nombre' },
             { column: 'col1', title: 'Código', type: 'text', name: 'codigo' },
         ];
     }
 
-    ngAfterViewInit() {
-      this._form.successful = data => {
-          this._rt.navigate(['obligaciones/compensacion']);
-      }
+    ngOnInit() {
+        this._form.successful = data => {
+            this._rt.navigate(['obligaciones/compensacion']);
+        }
     }
 }
 @Component({
@@ -48,27 +48,27 @@ export class EditCompensacionComponent implements AfterViewInit {
 })
 export class CompensacionListComponent {
 
-      @ViewChild('table') private table: TableComponent;
+    @ViewChild('table') private table: TableComponent;
 
-      icon = 'wc';
-      title = 'Caja de compensación familiar';
-      service = this._as;
-      multiselect = true;
-      columns = [
-          {
-              className: 'text-center',
-              orderable: false,
-              searchable: false,
-              data: 'id',
-              render: TableComponent.renderCheckRow
-          },
-          { data: 'nombre' },
-          { data: 'codigo' },
-      ]
+    icon = 'wc';
+    title = 'Caja de compensación familiar';
+    service = this._as;
+    multiselect = true;
+    columns = [
+        {
+            className: 'text-center',
+            orderable: false,
+            searchable: false,
+            data: 'id',
+            render: TableComponent.renderCheckRow
+        },
+        { data: 'nombre' },
+        { data: 'codigo' },
+    ]
 
-      constructor(private _as: CompensacionService) { }
+    constructor(private _as: CompensacionService) { }
 
-      onChange($event) {
+    onChange($event) {
         //   console.log($event);
-      }
+    }
 }

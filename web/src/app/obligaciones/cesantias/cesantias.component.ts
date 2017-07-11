@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { FormComponent, TableComponent, RenderInput } from '../../../lib/components'
@@ -16,7 +16,7 @@ export class CesantiasComponent { }
         [columns]="columns"
         [renderinputs]="renderinputs"></ex-form>`
 })
-export class EditCesantiasComponent implements AfterViewInit {
+export class EditCesantiasComponent implements OnInit {
     form: FormGroup;
     columns: string[];
     renderinputs: RenderInput[];
@@ -25,18 +25,18 @@ export class EditCesantiasComponent implements AfterViewInit {
     @ViewChild('f') private _form: FormComponent;
 
     constructor(private _fb: FormBuilder, private _cs: CesantiasService, private _rt: Router) {
-      this.form = this._fb.group({
-          nombre: ['', [Validators.required, Validators.maxLength(30)]],
-          codigo: ['', [Validators.required, Validators.maxLength(30)]]
-      });
-      this.columns = ['col1', ];
-      this.renderinputs = [
-          { column: 'col1', title: 'Nombre', type: 'text', name: 'nombre' },
-          { column: 'col1', title: 'Código', type: 'text', name: 'codigo' },
-      ];
+        this.form = this._fb.group({
+            nombre: ['', [Validators.required, Validators.maxLength(30)]],
+            codigo: ['', [Validators.required, Validators.maxLength(30)]]
+        });
+        this.columns = ['col1',];
+        this.renderinputs = [
+            { column: 'col1', title: 'Nombre', type: 'text', name: 'nombre' },
+            { column: 'col1', title: 'Código', type: 'text', name: 'codigo' },
+        ];
     }
 
-    ngAfterViewInit() {
+    ngOnInit() {
         this._form.successful = data => {
             this._rt.navigate(['obligaciones/cesantias']);
         }

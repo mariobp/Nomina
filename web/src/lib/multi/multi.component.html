@@ -1,0 +1,12 @@
+<div [formGroup]="form">
+    <md-select style="width:100%" [placeholder]="placeholder" [formControlName]="name" name="name" [multiple]="true">
+        <md-option *ngFor="let option of options" [value]="option.id">{{render(option)}}</md-option>
+    </md-select>
+</div>
+<div class="cargando" *ngIf="_ready">
+    <div class="loader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+        </svg>
+    </div>
+</div>

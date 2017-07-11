@@ -20,11 +20,34 @@ class MasterEdit(forms.ModelForm):
 # end class
 
 
+class TarifarioForm(forms.ModelForm):
+
+    def save(self, commit=False):
+        tarifa = super(TarifarioForm, self).save(commit)
+
+        if not tarifa.remplazado_por:
+            remplazar = models.Tarifario.objects.filter(remplazado_por = None, unidad=tarifa.unidad, cargo=tarifa.cargo).last()
+        # end if
+        tarifa.save()
+        if not tarifa.remplazado_por:
+            remplazar.remplazado_por = tarifa
+            remplazar.save()
+        # end if
+        return tarifa
+    # end def
+
+    class Meta:
+        model = models.Tarifario
+        exclude = ['remplazado_por', 'eliminado_por']
+    # end class
+# end class
+
+
 class CargoForm(forms.ModelForm):
 
     class Meta:
         model = models.Cargo
-        fields = ['nombre', 'valor_hora_diurna', 'valor_hora_nocturna', 'valor_hora_festivo']
+        fields = ['nombre', 'unidades_produccion']
     # end class
 # end class
 
@@ -127,6 +150,39 @@ class TipoContratoFormEdit(MasterEdit):
     # end class
 # end class
 
+class BancoForm(forms.ModelForm):
+
+    class Meta:
+        model = models.Banco
+        fields = ['nombre', 'codigo']
+    # end class
+# end class
+
+
+class BancoFormEdit(MasterEdit):
+
+    class Meta:
+        model = models.Banco
+        exclude = ('eliminado_por', )
+    # end class
+# end class
+
+class CuentaForm(forms.ModelForm):
+
+    class Meta:
+        model = models.Cuenta
+        fields = ['numero', 'banco', 'empleado']
+    # end class
+# end class
+
+
+class CuentaFormEdit(MasterEdit):
+
+    class Meta:
+        model = models.Cuenta
+        exclude = ('eliminado_por', )
+    # end class
+# end class
 
 class EmpleadoForm(forms.ModelForm):
 
@@ -169,4 +225,21 @@ class ContratoForm(forms.ModelForm):
             '%Y/%m/%d', '%d/%m/%Y', '%m/%d/%Y')
         self.fields['fecha_finalizacion'].format = "d/m/y"
     # end def
+# end class
+
+class UnidadProduccionForm(forms.ModelForm):
+
+    class Meta:
+        model = models.UnidadProduccion
+        fields = ['nombre', ]
+    # end class
+# end class
+
+
+class UnidadProduccionFormEdit(MasterEdit):
+
+    class Meta:
+        model = models.UnidadProduccion
+        exclude = ('eliminado_por', )
+    # end class
 # end class

@@ -6,12 +6,20 @@ from cuser.fields import CurrentUserField
 from django.contrib.auth.models import User
 from datetime import date
 
+class UnidadProduccion(models.Model):
+    nombre = models.CharField(max_length=100)
+    creator = CurrentUserField(add_only=True, related_name="created_unidad")
+    last_editor = CurrentUserField(related_name="last_edited_unidad")
+    eliminado = models.BooleanField(default=False)
+    eliminado_por = models.ForeignKey(User, related_name="eliminado_por_unidad", blank=True, null=True)
+    def __unicode__(self):
+        return u"%s" % (self.nombre)
+    # end def
+# end class
 
 class Cargo(models.Model):
     nombre = models.CharField(max_length=100)
-    valor_hora_diurna = models.DecimalField(max_digits=10, decimal_places=2)
-    valor_hora_nocturna = models.DecimalField(max_digits=10, decimal_places=2)
-    valor_hora_festivo = models.DecimalField(max_digits=10, decimal_places=2)
+    unidades_produccion = models.ManyToManyField(UnidadProduccion)
     creator = CurrentUserField(add_only=True, related_name="created_cargo")
     last_editor = CurrentUserField(related_name="last_edited_cargo")
     eliminado = models.BooleanField(default=False)
@@ -22,6 +30,20 @@ class Cargo(models.Model):
     # end def
 # end class
 
+class Tarifario(models.Model):
+    unidad = models.ForeignKey(UnidadProduccion)
+    cargo = models.ForeignKey(Cargo)
+    precio = models.DecimalField(max_digits=10, decimal_places=2, )
+    remplazado_por = models.ForeignKey('Tarifario', blank=True, null=True)
+
+    creator = CurrentUserField(add_only=True, related_name="created_tarifario")
+    last_editor = CurrentUserField(related_name="last_edited_tarifario")
+    eliminado = models.BooleanField(default=False)
+    eliminado_por = models.ForeignKey(User, related_name="eliminado_por_tarifario", blank=True, null=True)
+    def __unicode__(self):
+        return u"para el %s el(la) %s es a: $%s" % (str(self.cargo), str(self.unidad), str(self.precio))
+    # end def
+# end def
 
 class Pension(models.Model):
     nombre = models.CharField(max_length=100)
@@ -98,6 +120,24 @@ class CajaCompensacion(models.Model):
     # end def
 # end class
 
+class Banco(models.Model):
+    nombre = models.CharField(max_length=100)
+    codigo = models.CharField(max_length=100, blank=True, null=True)
+    creator = CurrentUserField(add_only=True, related_name="created_banco")
+    last_editor = CurrentUserField(related_name="last_edited_banco")
+    eliminado = models.BooleanField(default=False)
+    eliminado_por = models.ForeignKey(User, related_name="eliminado_por_banco", blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Banco"
+        verbose_name_plural = "Bancos"
+    # end class
+
+    def __unicode__(self):
+        return u"%s" % (self.nombre)
+    # end def
+# end class
+
 
 class Empleado(models.Model):
     nombre = models.CharField(max_length=100)
@@ -109,6 +149,7 @@ class Empleado(models.Model):
     eps = models.ForeignKey(Eps)
     cesantia = models.ForeignKey(Cesantia)
     cajacompensacion = models.ForeignKey(CajaCompensacion)
+    email = models.CharField(max_length=200)
     creator = CurrentUserField(add_only=True, related_name="created_empleado")
     last_editor = CurrentUserField(related_name="last_edited_empleado")
 
@@ -118,10 +159,35 @@ class Empleado(models.Model):
 # end class
 
 
+class Cuenta(models.Model):
+    numero = models.CharField(max_length=100)
+    banco = models.ForeignKey(Banco)
+    empleado = models.OneToOneField(Empleado)
+    creator = CurrentUserField(add_only=True, related_name="created_cuenta")
+    last_editor = CurrentUserField(related_name="last_edited_cuenta")
+    eliminado = models.BooleanField(default=False)
+    eliminado_por = models.ForeignKey(User, related_name="eliminado_por_cuenta", blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Cuenta"
+        verbose_name_plural = "Cuentas"
+        unique_together = ('banco', 'numero')
+    # end class
+
+    def __unicode__(self):
+        return u"%s %s %s" % (self.empleado, self.banco, self.numero)
+    # end def
+# end class
+
 class TipoContrato(models.Model):
+    POR_HORA = 1
+    SALARIO_FIJO = 2
+    PRODUCCION = 3
+    
     opciones = (
-        (1, 'Por hora'),
-        (2, 'Salario fijo')
+        (POR_HORA, 'Por hora'),
+        (SALARIO_FIJO, 'Salario fijo'),
+        (PRODUCCION, 'Producción')
     )
     nombre = models.CharField(max_length=100)
     modalidad = models.IntegerField(choices=opciones)
@@ -144,8 +210,8 @@ class TipoContrato(models.Model):
 class Contrato(models.Model):
     empleado = models.ForeignKey(Empleado)
     tipo_contrato = models.ForeignKey(TipoContrato)
-    salario_base = models.FloatField("Salario base legal")
-    subsidio_transporte = models.FloatField("Subsidio de transporte", default=0)
+    salario_base = models.DecimalField("Salario base legal", max_digits=10, decimal_places=2, )
+    subsidio_transporte = models.DecimalField("Subsidio de transporte", max_digits=10, decimal_places=2, default=0)
 
     fecha_inicio = models.DateField()
     fecha_finalizacion = models.DateField(blank=True, null=True)

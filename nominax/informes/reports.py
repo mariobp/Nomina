@@ -11,6 +11,7 @@ from import_export.formats import base_formats
 from import_export.admin import ExportMixin, ImportExportModelAdmin
 from import_export import resources, fields
 from plugins.pdf.format import PDF
+from plugins.bancolombia.format import Bancolombia
 from django.contrib.admin import site as admin_site
 from django.conf.urls import url
 from django.views.decorators.csrf import csrf_exempt
@@ -21,14 +22,13 @@ class PdfExportMixin(ExportMixin):
 
     def get_export_formats(self,):
         formats = super(PdfExportMixin, self).get_export_formats()
-        return [PDF, base_formats.CSV, base_formats.XLSX]
+        return [PDF, Bancolombia, base_formats.CSV, base_formats.XLSX]
     # end def
     def get_urls(self):
         urls = super(PdfExportMixin, self).get_urls()
-        print "ok"
         my_urls = [
             url(r'^export/free/$',
-                self.admin_site.admin_view(csrf_exempt(access_control(self.export_action))),
+                csrf_exempt(access_control(self.export_action)),
                 name='%s_%s_export' % self.get_model_info()),
         ]
         return my_urls + urls

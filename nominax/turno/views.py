@@ -54,7 +54,11 @@ class MasterList(supra.SupraListView):
     def get_queryset(self):
         queryset = super(MasterList, self).get_queryset()
         if self.request.GET.get('num_page', False):
-            self.paginate_by = self.request.GET.get('num_page', False)
+            if int(self.request.GET.get('num_page')) is 0:
+                self.paginate_by = None
+            else:
+                self.paginate_by = self.request.GET.get('num_page', False)
+            # end if
         # end if
         propiedad = self.request.GET.get('sort_property', False)
         orden = self.request.GET.get('sort_direction', False)
@@ -138,5 +142,42 @@ class TurnoSupraList(MasterList):
 
     def h_dominical(self, obj, now):
         return obj.horas_dominical()
+    # end def
+# end class
+
+
+
+class ProduccionSupraList(supra.SupraListView):
+    model = models.Produccion
+    list_display = ['fecha', 'unidad', 'cantidad']
+    search_fields = ['fecha', 'unidad', 'cantidad']
+# end class
+
+class ProduccionSupraForm(supra.SupraFormView):
+    model = models.Produccion
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(ProduccionSupraForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
+
+class ProduccionSupraFormDelete(supra.SupraDeleteView):
+    model = models.Produccion
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(ProduccionSupraFormDelete, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.eliminado = True
+        user = CuserMiddleware.get_user()
+        self.object.eliminado_por = user
+        self.object.save()
+        return HttpResponse(status=200)
     # end def
 # end class

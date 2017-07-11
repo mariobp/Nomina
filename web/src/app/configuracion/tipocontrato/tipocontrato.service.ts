@@ -8,5 +8,4 @@ export class TipoContratoService extends CrudService {
         super(_cl, _rt, 'recursos/tipo/contrato/');
         super.setRedirectUrl('/configuracion/tipo/contrato');
     }
-
 }

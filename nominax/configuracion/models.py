@@ -5,20 +5,33 @@ from django.db import models
 from django.core.validators import MaxValueValidator
 from django.contrib.auth.models import User
 from cuser.fields import CurrentUserField
+from recursos_h import models as recursos
 
 class Configuracion(models.Model):
     opciones = (
         (0, "Quincenal"),
         (1, "Mensual")
     )
+
+    tipo_cuenta_choices = (
+        ('S', "Ahorros"),
+        ('D', 'Corriente')
+    )
+
     tipo_corte = models.IntegerField(choices=opciones)
     primer_dia = models.PositiveIntegerField("Primer dia de corte", validators=[MaxValueValidator(31)])
     segundo_dia = models.PositiveIntegerField("Segundo dia de corte", validators=[MaxValueValidator(31)], blank=True, null=True)
     
+    nit = models.CharField(max_length=100)
+    numero_cuenta = models.CharField(max_length=100)
+    tipo_cuenta = models.CharField(max_length=2, choices=tipo_cuenta_choices)
+
     h_recargo_nocturno_inicio = models.TimeField("Hora de inicio de recargo nocturno")
     h_recargo_nocturno_fin = models.TimeField("Hora de finalización de recargo nocturno")
     h_almuerzo_inicio = models.TimeField("Hora de inicio de almuerzo")
     h_almuerzo_fin = models.TimeField("Hora de fin de almuerzo")
+
+    tarifario = models.ManyToManyField(recursos.Tarifario)
 
     descuento_salud = models.IntegerField("Descuento de salud y pensión para empleado %")
     prestaciones_sociales = models.IntegerField("Pago de salud y pensión del empleador %")
