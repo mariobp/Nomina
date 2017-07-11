@@ -7,6 +7,7 @@ export class AdminService extends CrudService {
 
     constructor(protected _cl: CallService, protected _rt: Router) {
         super(_cl, _rt, 'usuarios/administrador/');
+        this.setRedirectUrl('usuarios/admin/')
     }
 
 }

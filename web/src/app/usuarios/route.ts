@@ -9,15 +9,15 @@ export const UsuariosRoutes: Routes = [
     {
         path: '', children: [
             {
-                path: 'admin', component: AdminComponent, children: [
+                path: 'admin', component: AdminComponent, data: { miga: 'Administrador' }, children: [
                     { path: '', component: ListAdminComponent },
-                    { path: ':id/edit', component: EditAdminComponent, resolve: { item: AdminService } }
+                    { path: ':id/edit', component: EditAdminComponent, data: { miga: 'Editar' }, resolve: { item: AdminService } }
                 ]
             },
             {
-                path: 'asistente', component: AsistenteComponent, children: [
+                path: 'asistente', component: AsistenteComponent, data: { miga: 'Asistente' }, children: [
                     { path: '', component: AsistenteListComponent },
-                    { path: ':id/edit', component: AsistenteEditComponent, resolve: { item: AsistenteService } }
+                    { path: ':id/edit', component: AsistenteEditComponent, data: { miga: 'Editar' }, resolve: { item: AsistenteService } }
                 ]
             },
         ]

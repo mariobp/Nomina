@@ -20,7 +20,7 @@ export const AppRoutes: Routes = [
             { path: '', loadChildren: './empleados/empleados.module#EmpleadosModule' },
             { path: '', loadChildren: './nomina/nomina.module#NominaModule' },
             { path: 'usuarios', loadChildren: './usuarios/usuarios.module#UsuariosModule' },
-            { path: 'obligaciones', loadChildren: './obligaciones/obligaciones.module#ObligacionesModule' },
+            { path: 'obligaciones', loadChildren: './obligaciones/obligaciones.module#ObligacionesModule', },
             { path: 'configuracion', loadChildren: './configuracion/configuracion.module#ConfiguracionModule' }
         ]
     },
