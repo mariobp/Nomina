@@ -22,12 +22,12 @@ class NominaResource(resources.ModelResource):
 	#salario_legal = fields.Field()
 
 	identificacion_tipo = fields.Field(column_name="Tipo de Identificacion")
-	identificacion = fields.Field(column_name="Numero de Identificacion", attribute="empleado__cedula")
-	nombre = fields.Field(column_name="Nombre", attribute="empleado__nombre")
-	apellidos = fields.Field(column_name="Apellido", attribute="empleado__apellidos")
-	banco_codigo = fields.Field(column_name="Codigo del Banco", attribute="empleado__cuenta__banco__codigo")
+	identificacion = fields.Field(column_name="Numero de Identificacion", attribute="contrato__empleado__cedula")
+	nombre = fields.Field(column_name="Nombre", attribute="contrato__empleado__nombre")
+	apellidos = fields.Field(column_name="Apellido", attribute="contrato__empleado__apellidos")
+	banco_codigo = fields.Field(column_name="Codigo del Banco", attribute="contrato__empleado__cuenta__banco__codigo")
 	tipo_producto = fields.Field(column_name="Tipo de Producto o servicio")
-	numero = fields.Field(column_name="Numero del producto o servicio", attribute="empleado__cuenta__numero")
+	numero = fields.Field(column_name="Numero del producto o servicio", attribute="contrato__empleado__cuenta__numero")
 	total = fields.Field(column_name="Valor de Pago o de la recarga")
 
 	def dehydrate_identificacion_tipo(self, nomina):
@@ -95,8 +95,8 @@ class NominaFResource(resources.ModelResource):
 
 	class Meta:
 		model = Nomina
-		fields = ['empleado__pension__nombre','empleado__eps__nombre','empleado__nombre', 'empleado__apellidos', 'corte__fecha_fin', 'empleado__cargo__nombre', 'salario_base', 'contrato__subsidio_transporte', 'extras', 'dominical_diurna', 'extra_dominical_diurna', 'nocturna', 'extra_nocturna', 'dominical_nocturna', 'extra_dominical_nocturna', 'recargos', 'salario_legal', 'empleado__cuenta__banco__nombre', 'empleado__cuenta__numero', 'total']
-		export_order = ['empleado__nombre', 'empleado__apellidos', 'empleado__pension__nombre','empleado__eps__nombre', 'corte__fecha_fin', 'empleado__cargo__nombre', 'salario_base', 'contrato__subsidio_transporte', 'extras', 'dominical_diurna', 'extra_dominical_diurna', 'nocturna', 'extra_nocturna', 'dominical_nocturna', 'extra_dominical_nocturna', 'recargos', 'salario_legal', 'empleado__cuenta__banco__nombre', 'empleado__cuenta__numero', 'total']
+		fields = ['contrato__empleado__pension__nombre','contrato__empleado__eps__nombre','contrato__empleado__nombre', 'contrato__empleado__apellidos', 'corte__fecha_fin', 'contrato__empleado__cargo__nombre', 'salario_base', 'contrato__subsidio_transporte', 'extras', 'dominical_diurna', 'extra_dominical_diurna', 'nocturna', 'extra_nocturna', 'dominical_nocturna', 'extra_dominical_nocturna', 'recargos', 'salario_legal', 'contrato__empleado__cuenta__banco__nombre', 'contrato__empleado__cuenta__numero', 'total']
+		export_order = ['contrato__empleado__nombre', 'contrato__empleado__apellidos', 'contrato__empleado__pension__nombre','contrato__empleado__eps__nombre', 'corte__fecha_fin', 'contrato__empleado__cargo__nombre', 'salario_base', 'contrato__subsidio_transporte', 'extras', 'dominical_diurna', 'extra_dominical_diurna', 'nocturna', 'extra_nocturna', 'dominical_nocturna', 'extra_dominical_nocturna', 'recargos', 'salario_legal', 'contrato__empleado__cuenta__banco__nombre', 'contrato__empleado__cuenta__numero', 'total']
 	# end class
 #end class
 
