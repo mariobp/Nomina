@@ -23,8 +23,6 @@ supra.SupraConf.ACCECC_CONTROL["headers"] = "origin, content-type, accept"
 supra.SupraConf.ACCECC_CONTROL["methods"] = "POST, GET, PUT, DELETE ,OPTIONS"
 supra.SupraConf.body = True
 
-
-
 class SendMailSupraList(supra.SupraListView):
     model = models.Nomina
     subject = "ejemplo"
