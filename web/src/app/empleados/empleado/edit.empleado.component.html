@@ -3,6 +3,36 @@
         <div class="col-lg-6">
             <div class="form-horizontal">
                 <div class="row">
+                    <label class="col-lg-3 label-on-left" for="id_numero">Número de cuenta:</label>
+                    <div class="col-lg-9">
+                        <div [formGroup]="form" class="form-group label-floating is-empty" [class.has-error]="form.get('numero').status == 'INVALID'" [class.has-success]="form.get('numero').status == 'VALID'">
+                            <label class="control-label"></label>
+                            <input class="form-control" min="0" formControlName="numero" type="number" required>
+                            <span class="material-input"></span>
+                            <span *ngIf="form.get('numero').status == 'INVALID'" class="help-block">Este campo es requeridos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-horizontal">
+                <div class="row">
+                    <label class="col-lg-3 label-on-left" for="id_cajacompensacion">Banco:</label>
+                    <div class="col-lg-9">
+                        <div class="form-group label-floating is-empty">
+                            <label class="control-label"></label>
+                            <ex-autocomplete name="banco" [form]="form" [service]="_b" [item]="_form.item" [itemVal]="itemBanco"></ex-autocomplete>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div bottom-form class="row">
+        <div class="col-lg-6">
+            <div class="form-horizontal">
+                <div class="row">
                     <label class="col-lg-3 label-on-left" for="id_cajacompensacion">Caja de Compensación:</label>
                     <div class="col-lg-9">
                         <div class="form-group label-floating is-empty">

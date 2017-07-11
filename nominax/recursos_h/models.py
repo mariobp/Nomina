@@ -154,7 +154,7 @@ class Empleado(models.Model):
     last_editor = CurrentUserField(related_name="last_edited_empleado")
 
     #cuenta de empleado
-    numero = models.CharField(max_length=100)
+    numero = models.CharField("Numero de cuenta", max_length=100)
     banco = models.ForeignKey(Banco)
 
 
@@ -167,7 +167,7 @@ class TipoContrato(models.Model):
     POR_HORA = 1
     SALARIO_FIJO = 2
     PRODUCCION = 3
-    
+
     opciones = (
         (POR_HORA, 'Por hora'),
         (SALARIO_FIJO, 'Salario fijo'),

@@ -18,6 +18,7 @@ import { ContratoService } from './contrato/contrato.service';
 import { CargoService } from '../configuracion/cargo/cargo.service';
 import { TipoContratoService } from '../configuracion/tipocontrato/tipocontrato.service';
 import { EmpleadoRoutes } from './route';
+import { BancoService } from '../configuracion/banco/banco.service';
 
 @NgModule({
     imports: [
@@ -46,7 +47,8 @@ import { EmpleadoRoutes } from './route';
         EpsService,
         CargoService,
         ContratoService,
-        TipoContratoService
+        TipoContratoService,
+        BancoService
     ]
 })
 export class EmpleadosModule { }

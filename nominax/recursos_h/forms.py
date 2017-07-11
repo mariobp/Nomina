@@ -171,7 +171,7 @@ class EmpleadoForm(forms.ModelForm):
 
     class Meta:
         model = models.Empleado
-        fields = ['nombre', 'apellidos', 'cedula', 'fecha_nacimiento', 'cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion']
+        fields = ['nombre', 'apellidos', 'cedula', 'fecha_nacimiento', 'cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion', 'banco', 'numero']
     # end class
 
     def __init__(self, *args, **kwargs):

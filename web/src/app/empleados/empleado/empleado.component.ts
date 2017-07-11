@@ -9,6 +9,7 @@ import { CesantiasService } from '../../obligaciones/cesantias/cesantias.service
 import { PensionService } from '../../obligaciones/pension/pension.service';
 import { EpsService } from '../../obligaciones/eps/eps.service';
 import { CargoService } from '../../configuracion/cargo/cargo.service';
+import { BancoService } from '../../configuracion/banco/banco.service';
 
 @Component({
     template: '<router-outlet></router-outlet>',
@@ -80,7 +81,7 @@ export class EmpleadoEditComponent implements OnInit {
 
     constructor(private _fb: FormBuilder, private _s: EmpleadoService, private _rt: Router,
         public _cs: CompensacionService, public _ces: CesantiasService, public _es: EpsService, public _ps: PensionService,
-        public _cas: CargoService) {
+        public _cas: CargoService, public _b: BancoService) {
         this.form = this._fb.group({
             nombre: ['', Validators.required],
             apellidos: ['', Validators.required],
@@ -90,7 +91,10 @@ export class EmpleadoEditComponent implements OnInit {
             cajacompensacion: [0, [Validators.required, Validators.pattern(/\d/)]],
             cesantia: [0, [Validators.required, Validators.pattern(/\d/)]],
             eps: [0, [Validators.required, Validators.pattern(/\d/)]],
-            pension: [0, [Validators.required, Validators.pattern(/\d/)]]
+            pension: [0, [Validators.required, Validators.pattern(/\d/)]],
+            banco: [0, [Validators.required, Validators.pattern(/\d/)]],
+            numero: ['', [Validators.required, Validators.min(0)]],
+
         });
         this.columns = ['col1', 'col2'];
         this.renderinputs = [
@@ -116,4 +120,5 @@ export class EmpleadoEditComponent implements OnInit {
     itemCesantia = item => item.cesantia__nombre;
     itemEps = item => item.eps__nombre;
     itemPension = item => item.pension__nombre;
+    itemBanco = item => item.banco__nombre;
 }
