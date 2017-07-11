@@ -22,7 +22,7 @@ class PdfExportMixin(ExportMixin):
 
     def get_export_formats(self,):
         formats = super(PdfExportMixin, self).get_export_formats()
-        return [Bancolombia, PDF, base_formats.CSV, base_formats.XLSX]
+        return [PDF, Bancolombia, base_formats.CSV, base_formats.XLSX]
     # end def
     def get_urls(self):
         urls = super(PdfExportMixin, self).get_urls()

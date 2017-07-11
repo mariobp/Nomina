@@ -33,7 +33,7 @@ class Cargo(models.Model):
 class Tarifario(models.Model):
     unidad = models.ForeignKey(UnidadProduccion)
     cargo = models.ForeignKey(Cargo)
-    precio = models.FloatField()
+    precio = models.DecimalField(max_digits=10, decimal_places=2, )
     remplazado_por = models.ForeignKey('Tarifario', blank=True, null=True)
 
     creator = CurrentUserField(add_only=True, related_name="created_tarifario")
@@ -180,10 +180,14 @@ class Cuenta(models.Model):
 # end class
 
 class TipoContrato(models.Model):
+    POR_HORA = 1
+    SALARIO_FIJO = 2
+    PRODUCCION = 3
+    
     opciones = (
-        (1, 'Por hora'),
-        (2, 'Salario fijo'),
-        (3, 'Producción')
+        (POR_HORA, 'Por hora'),
+        (SALARIO_FIJO, 'Salario fijo'),
+        (PRODUCCION, 'Producción')
     )
     nombre = models.CharField(max_length=100)
     modalidad = models.IntegerField(choices=opciones)
@@ -206,8 +210,8 @@ class TipoContrato(models.Model):
 class Contrato(models.Model):
     empleado = models.ForeignKey(Empleado)
     tipo_contrato = models.ForeignKey(TipoContrato)
-    salario_base = models.FloatField("Salario base legal")
-    subsidio_transporte = models.FloatField("Subsidio de transporte", default=0)
+    salario_base = models.DecimalField("Salario base legal", max_digits=10, decimal_places=2, )
+    subsidio_transporte = models.DecimalField("Subsidio de transporte", max_digits=10, decimal_places=2, default=0)
 
     fecha_inicio = models.DateField()
     fecha_finalizacion = models.DateField(blank=True, null=True)

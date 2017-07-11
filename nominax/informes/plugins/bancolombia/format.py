@@ -18,7 +18,7 @@ def render_bancolombia(dataset):
 	tipo_registro = '6'
 
 	for nomina in list(dataset):
-		sumatoria_creditos += nomina[7]
+		sumatoria_creditos += int(round(nomina[7]))
 	#end for
 	sumatoria_creditos = str(sumatoria_creditos)
 	sumatoria_creditos = sumatoria_creditos.rjust(15, '0') + '00'
@@ -42,8 +42,15 @@ def render_bancolombia(dataset):
 		cuenta = nomina[6].rjust(17, '0')
 		tipo_transaccion = '37'
 		valor = str(int(round(nomina[7]))).rjust(15, '0') + '00'
+		referencia = ''.ljust(21, ' ')
+		tipo_documento = ' '
+		of_entr = ''.ljust(5, '0')
+		fax = ''.ljust(15, ' ')
+		email = ''.ljust(80, ' ')
+		id = ''.ljust(15, ' ')
+		filler_row = ''.ljust(27, ' ')
 
-		export_text += '\n' + tipo_registro + cedula + nombre + banco + cuenta + ' ' + tipo_transaccion + valor + fecha_transaccion
+		export_text += '\n' + tipo_registro + cedula + nombre + banco + cuenta + ' ' + tipo_transaccion + valor + fecha_transaccion + referencia + tipo_documento + of_entr + fax + email + id + filler_row
 	#end for
 
 	return HttpResponse(export_text, content_type='text/plain')
