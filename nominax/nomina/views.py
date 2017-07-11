@@ -160,17 +160,8 @@ class CorteSupraList(supra.SupraListView):
     list_display = ['id', 'fecha_inicio', 'fecha_fin', 'cerrado',
                     'nocturna', 'dominical', 'nocturna_dominical', 'prestaciones_sociales',
                     'extra_diurna', 'extra_nocturna' , 'extra_dominical_diurna',
-                    'extra_dominical_nocturna', ('nominas', 'json')]
+                    'extra_dominical_nocturna']
     list_filter = ['id']
-
-    def nominas(self, obj, now):
-        class request():
-            method = "GET"
-            GET = {'corte': obj.pk}
-        # end class
-        lista = NominaSupraList2(dict_only=True).dispatch(request=request())
-        return json.dumps(lista)
-    # end def
 
     @method_decorator(check_login)
     def dispatch(self, request, *args, **kwargs):
