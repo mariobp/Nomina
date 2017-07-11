@@ -477,7 +477,7 @@ class TipoContratoSupraList(MasterList):
         elif obj.modalidad == 2:
             nombre = "Salario fijo"
         elif obj.modalidad == 3:
-            nombre "Por producción"
+            nombre = "Por producción"
         # end if
         return u'%s' % nombre
     # end def
