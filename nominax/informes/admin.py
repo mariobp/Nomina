@@ -56,9 +56,47 @@ class NominaResource(resources.ModelResource):
 
 	class Meta:
 		model = Nomina
-		#fields = ['empleado__pension__nombre','empleado__eps__nombre','empleado__nombre', 'empleado__apellidos', 'corte__fecha_fin', 'empleado__cargo__nombre', 'salario_base', 'subsidio_trasporte', 'extras', 'dominical_diurna', 'extra_dominical_diurna', 'nocturna', 'extra_nocturna', 'dominical_nocturna', 'extra_dominical_nocturna', 'recargos', 'salario_legal']
 		fields = ['identificacion_tipo', 'identificacion', 'nombre', 'apellidos', 'banco_codigo', 'tipo_producto', 'numero', 'total']
 		export_order = ['identificacion_tipo', 'identificacion', 'nombre', 'apellidos', 'banco_codigo', 'tipo_producto', 'numero', 'total']
+	# end class
+#end class
+
+class NominaFResource(resources.ModelResource):
+	#ventas = fields.Field(column_name="Ventas", attribute="ventas")
+	recargos = fields.Field()
+	neto = fields.Field()
+	salario_legal = fields.Field()
+
+	total = fields.Field(column_name="Valor de Pago o de la recarga")
+
+	def dehydrate_identificacion_tipo(self, nomina):
+		return '2'
+	#end def
+
+	def dehydrate_tipo_producto(self, nomina):
+		return 'CA'
+	#end def	
+
+	def dehydrate_salario_legal(self, nomina):
+		return nomina.salario_legal()
+	#end def
+
+	def dehydrate_recargos(self, nomina):
+		return nomina.recargos()
+	#end def
+
+	def dehydrate_neto(self, nomina):
+		return nomina.neto()
+	#end def
+
+	def dehydrate_total(self, nomina):
+		return nomina.total()
+	#end def
+
+	class Meta:
+		model = Nomina
+		fields = ['empleado__pension__nombre','empleado__eps__nombre','empleado__nombre', 'empleado__apellidos', 'corte__fecha_fin', 'empleado__cargo__nombre', 'salario_base', 'contrato__subsidio_transporte', 'extras', 'dominical_diurna', 'extra_dominical_diurna', 'nocturna', 'extra_nocturna', 'dominical_nocturna', 'extra_dominical_nocturna', 'recargos', 'salario_legal', 'empleado__cuenta__banco__nombre', 'empleado__cuenta__numero', 'total']
+		export_order = ['empleado__nombre', 'empleado__apellidos', 'empleado__pension__nombre','empleado__eps__nombre', 'corte__fecha_fin', 'empleado__cargo__nombre', 'salario_base', 'contrato__subsidio_transporte', 'extras', 'dominical_diurna', 'extra_dominical_diurna', 'nocturna', 'extra_nocturna', 'dominical_nocturna', 'extra_dominical_nocturna', 'recargos', 'salario_legal', 'empleado__cuenta__banco__nombre', 'empleado__cuenta__numero', 'total']
 	# end class
 #end class
 
