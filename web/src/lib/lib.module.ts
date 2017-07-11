@@ -16,6 +16,7 @@ import { FormComponent} from './form/form.component'
 import { NavbarComponent } from './navbar/navbar.component'
 import { AutoComponent } from './auto/auto.component';
 import { MultiComponent } from './multi/multi.component';
+import { MigaComponent } from './miga/miga.component';
 
 const LibComponents = [
     AutoComponent,
@@ -28,7 +29,8 @@ const LibComponents = [
     TableComponent,
     FormComponent,
     NavbarComponent,
-    MultiComponent
+    MultiComponent,
+    MigaComponent
 ];
 
 @NgModule({

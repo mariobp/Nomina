@@ -42,8 +42,8 @@ export class AuthService {
             this.isLogin().then(data => {
                 this.addUser(data);
             });
-            const u = JSON.parse(localStorage.getItem('user'));
-            if (u) {
+            if (localStorage.hasOwnProperty('user') && localStorage.user !== 'undefined') {
+                const u = JSON.parse(localStorage.getItem('user'));
                 this.addUser(u);
                 return u;
             }
