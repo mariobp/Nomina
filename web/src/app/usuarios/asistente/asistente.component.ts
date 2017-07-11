@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { TableComponent, RenderInput, FormComponent } from '../../../lib/components';
@@ -18,7 +18,7 @@ export class AsistenteComponent { }
         [columns]="columns"
         [renderinputs]="renderinputs"></ex-form>`
 })
-export class AsistenteEditComponent implements AfterViewInit {
+export class AsistenteEditComponent implements OnInit {
 
     form: FormGroup;
     columns: string[];
@@ -65,7 +65,7 @@ export class AsistenteEditComponent implements AfterViewInit {
         ]
     }
 
-    ngAfterViewInit() {
+    ngOnInit() {
         this._form.successful = data => {
             this._rt.navigate(['usuarios/asistente']);
         }

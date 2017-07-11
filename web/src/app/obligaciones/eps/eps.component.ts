@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { FormComponent, TableComponent, RenderInput } from '../../../lib/components'
@@ -16,7 +16,7 @@ export class EpsComponent {}
         [columns]="columns"
         [renderinputs]="renderinputs"></ex-form>`
 })
-export class EditEpsComponent implements AfterViewInit {
+export class EditEpsComponent implements OnInit {
 
     form: FormGroup;
     columns: string[];
@@ -37,7 +37,7 @@ export class EditEpsComponent implements AfterViewInit {
         ];
     }
 
-    ngAfterViewInit() {
+    ngOnInit() {
         this._form.successful = data => {
             this._rt.navigate(['obligaciones/eps']);
         }

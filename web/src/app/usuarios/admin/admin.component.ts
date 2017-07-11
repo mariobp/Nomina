@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FormComponent, TableComponent, RenderInput } from '../../../lib/components'
@@ -16,7 +16,7 @@ export class AdminComponent { }
         [columns]="columns"
         [renderinputs]="renderinputs"></ex-form>`
 })
-export class EditAdminComponent implements AfterViewInit {
+export class EditAdminComponent implements OnInit {
 
     form: FormGroup;
     columns: string[];
@@ -57,7 +57,7 @@ export class EditAdminComponent implements AfterViewInit {
 
     }
 
-    ngAfterViewInit() {
+    ngOnInit() {
         this._form.successful = data => {
             this._rt.navigate(['usuarios/admin']);
         }
