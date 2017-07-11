@@ -4,9 +4,9 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 import { RenderInput, FormComponent, TableComponent } from '../../../lib/components';
 import { ContratoService } from './contrato.service';
 import { TipoContratoService } from '../../configuracion/tipocontrato/tipocontrato.service';
+
 @Component({
     template: '<router-outlet></router-outlet>',
-    styleUrls: ['./contrato.component.scss']
 })
 export class ContratoComponent {
 }
@@ -116,7 +116,7 @@ export class EditContratoComponent implements OnInit {
             { column: 'col1', title: 'Subsidio de transporte', type: 'number', name: 'subsidio_transporte' },
             { column: 'col1', title: 'Descanso entre turnos', type: 'checkbox', name: 'descanso_turno' },
             { column: 'col1', title: 'Hora de inicio de descanso', type: 'number', name: 'inicio_descanso' },
-            { column: 'col1', title: 'Fecha finalización', type: 'text', name: 'fecha_finalizacion' }
+            { column: 'col1', title: 'Fecha finalización', type: 'text', name: 'fecha_finalizacion', class: 'datepicker' }
         ];
 
         if (!!this._r.parent.snapshot.data['item'] && Object.keys(this._r.parent.snapshot.data['item']).length !== 0) {

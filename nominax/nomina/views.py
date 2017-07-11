@@ -59,8 +59,8 @@ class NominaSupraList(supra.SupraListView):
                     'extra_dominical_nocturna', 'dominical_diurna', 'dominical_nocturna', 'nocturna',
                     'diurnas', 'dominical_diurna', 'dominical_nocturna',
                     'salario_produccion', 'prestaciones_sociales', 'descuento_salud', 'bonificacion', 'valor_hora', 'salario_legal', 'neto', 'total', 'recargos']
-    search_fields = ['empleado__nombre', 'empleado__apellidos', 'empleado__cedula', ]
-    list_filter = ['empleado', 'empleado__cargo', 'fecha', 'corte']
+    search_fields = ['contrato__empleado__nombre', 'contrato__empleado__apellidos', 'contrato__empleado__cedula', ]
+    list_filter = ['contrato__empleado', 'contrato__empleado__cargo', 'fecha', 'corte']
     search_key = 'q'
     paginate_by = 10
 
@@ -158,17 +158,8 @@ class CorteSupraList(supra.SupraListView):
     list_display = ['id', 'fecha_inicio', 'fecha_fin', 'cerrado',
                     'nocturna', 'dominical', 'nocturna_dominical', 'prestaciones_sociales',
                     'extra_diurna', 'extra_nocturna' , 'extra_dominical_diurna',
-                    'extra_dominical_nocturna', ('nominas', 'json')]
+                    'extra_dominical_nocturna']
     list_filter = ['id']
-
-    def nominas(self, obj, now):
-        class request():
-            method = "GET"
-            GET = {'corte': obj.pk}
-        # end class
-        lista = NominaSupraList2(dict_only=True).dispatch(request=request())
-        return json.dumps(lista)
-    # end def
 
     @method_decorator(check_login)
     def dispatch(self, request, *args, **kwargs):

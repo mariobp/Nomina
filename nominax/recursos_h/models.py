@@ -153,29 +153,13 @@ class Empleado(models.Model):
     creator = CurrentUserField(add_only=True, related_name="created_empleado")
     last_editor = CurrentUserField(related_name="last_edited_empleado")
 
+    #cuenta de empleado
+    numero = models.CharField("Numero de cuenta", max_length=100)
+    banco = models.ForeignKey(Banco)
+
+
     def __unicode__(self):
         return u"%s %s" % (self.nombre, self.apellidos)
-    # end def
-# end class
-
-
-class Cuenta(models.Model):
-    numero = models.CharField(max_length=100)
-    banco = models.ForeignKey(Banco)
-    empleado = models.OneToOneField(Empleado)
-    creator = CurrentUserField(add_only=True, related_name="created_cuenta")
-    last_editor = CurrentUserField(related_name="last_edited_cuenta")
-    eliminado = models.BooleanField(default=False)
-    eliminado_por = models.ForeignKey(User, related_name="eliminado_por_cuenta", blank=True, null=True)
-
-    class Meta:
-        verbose_name = "Cuenta"
-        verbose_name_plural = "Cuentas"
-        unique_together = ('banco', 'numero')
-    # end class
-
-    def __unicode__(self):
-        return u"%s %s %s" % (self.empleado, self.banco, self.numero)
     # end def
 # end class
 
@@ -183,7 +167,7 @@ class TipoContrato(models.Model):
     POR_HORA = 1
     SALARIO_FIJO = 2
     PRODUCCION = 3
-    
+
     opciones = (
         (POR_HORA, 'Por hora'),
         (SALARIO_FIJO, 'Salario fijo'),

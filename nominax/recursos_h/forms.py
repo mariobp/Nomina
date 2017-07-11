@@ -171,28 +171,11 @@ class BancoFormEdit(MasterEdit):
     # end class
 # end class
 
-class CuentaForm(forms.ModelForm):
-
-    class Meta:
-        model = models.Cuenta
-        fields = ['numero', 'banco', 'empleado']
-    # end class
-# end class
-
-
-class CuentaFormEdit(MasterEdit):
-
-    class Meta:
-        model = models.Cuenta
-        exclude = ('eliminado_por', )
-    # end class
-# end class
-
 class EmpleadoForm(forms.ModelForm):
 
     class Meta:
         model = models.Empleado
-        fields = ['nombre', 'apellidos', 'cedula', 'fecha_nacimiento', 'cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion']
+        fields = ['nombre', 'apellidos', 'cedula', 'fecha_nacimiento', 'cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion', 'banco', 'numero']
     # end class
 
     def __init__(self, *args, **kwargs):
