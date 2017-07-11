@@ -56,8 +56,8 @@ class SendMailSupraList(supra.SupraListView):
 
 class NominaSupraList(supra.SupraListView):
     model = models.Nomina
-    list_display = ['id', 'empleado', 'empleado_f', 'corte', 'corte_f', 'fecha', 'salario_base',
-                    'subsidio_trasporte', 'extras', 'extra_nocturna', 'extra_dominical_diurna',
+    list_display = ['id', 'contrato__empleado', 'empleado_f', 'corte', 'corte_f', 'fecha', 'contrato__salario_base',
+                    'contrato__subsidio_transporte', 'extras', 'extra_nocturna', 'extra_dominical_diurna',
                     'extra_dominical_nocturna', 'dominical_diurna', 'dominical_nocturna', 'nocturna',
                     'diurnas', 'dominical_diurna', 'dominical_nocturna',
                     'salario_produccion', 'prestaciones_sociales', 'descuento_salud', 'bonificacion', 'valor_hora', 'salario_legal', 'neto', 'total', 'recargos']
@@ -65,8 +65,9 @@ class NominaSupraList(supra.SupraListView):
     list_filter = ['empleado', 'empleado__cargo', 'fecha', 'corte']
     search_key = 'q'
     paginate_by = 10
+
     def salario_produccion(self, obj, dict):
-        return obj.salario_produccion()
+        return obj.salario_produccion_nomina()
     # end def
 
     def prestaciones_sociales(self, obj, dict):
@@ -103,7 +104,7 @@ class NominaSupraList(supra.SupraListView):
 
 
     def empleado_f(self, obj, now):
-        return {"id": obj.empleado.id, "nombre": obj.empleado.nombre, "apellidos": obj.empleado.apellidos, "cedula": obj.empleado.cedula}
+        return {"id": obj.contrato.empleado.id, "nombre": obj.contrato.empleado.nombre, "apellidos": obj.contrato.empleado.apellidos, "cedula": obj.contrato.empleado.cedula}
     # end class
 
     def corte_f(self, obj, now):
@@ -142,8 +143,8 @@ class NominaSupraList(supra.SupraListView):
 
 class NominaSupraList2(supra.SupraListView):
     model = models.Nomina
-    list_display = ['id', 'empleado', 'empleado_f', 'corte', 'fecha', 'salario_base',
-                    'subsidio_trasporte', 'extras', 'extra_nocturna', 'extra_dominical_diurna',
+    list_display = ['id', 'empleado', 'empleado_f', 'corte', 'fecha', 'contrato__salario_base',
+                    'contrato__subsidio_transporte', 'extras', 'extra_nocturna', 'extra_dominical_diurna',
                     'extra_dominical_nocturna', 'dominical_diurna', 'dominical_nocturna', 'nocturna',
                     'diurnas', 'dominical_diurna', 'dominical_nocturna']
     list_filter = ['empleado', 'empleado__cargo', 'fecha', 'corte']
