@@ -38,6 +38,8 @@ export class EmpleadoListComponent {
         { data: 'apellidos' },
         { data: 'cargo__nombre' },
         { data: 'cedula' },
+        { data: 'banco__nombre' },
+        { data: 'numero' },
         {
             data: 'eps__nombre',
             orderable: false,

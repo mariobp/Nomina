@@ -570,7 +570,7 @@ class EmpleadoSupraList(supra.SupraListView):
                     'eps', 'eps__nombre', 'cesantia', 'cesantia__nombre',
                     'cajacompensacion', 'cajacompensacion__nombre', 'banco',
                     'banco__nombre', 'numero']
-    search_fields = ['nombre', 'apellidos', 'cedula']
+    search_fields = ['nombre', 'apellidos', 'cedula', 'numero']
     list_filter = ['cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion', 'id', 'cargo__tarifario__unidad']
     search_key = 'q'
     paginate_by = 10
