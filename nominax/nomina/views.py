@@ -61,8 +61,8 @@ class NominaSupraList(supra.SupraListView):
                     'extra_dominical_nocturna', 'dominical_diurna', 'dominical_nocturna', 'nocturna',
                     'diurnas', 'dominical_diurna', 'dominical_nocturna',
                     'salario_produccion', 'prestaciones_sociales', 'descuento_salud', 'bonificacion', 'valor_hora', 'salario_legal', 'neto', 'total', 'recargos']
-    search_fields = ['empleado__nombre', 'empleado__apellidos', 'empleado__cedula', ]
-    list_filter = ['empleado', 'empleado__cargo', 'fecha', 'corte']
+    search_fields = ['contrato__empleado__nombre', 'contrato__empleado__apellidos', 'contrato__empleado__cedula', ]
+    list_filter = ['contrato__empleado', 'contrato__empleado__cargo', 'fecha', 'corte']
     search_key = 'q'
     paginate_by = 10
 
