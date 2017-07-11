@@ -5,10 +5,12 @@ import { GeneralComponent, EditGeneralComponent } from './general/general.compon
 import { TipocontratoComponent, TipoContratoListComponent, EditTipoContratoComponent } from './tipocontrato/tipocontrato.component';
 import { TarifarioComponent, TarifarioListComponent, EditTarifarioComponent } from './tarifario/tarifario.component';
 import { UnidadproduccionComponent, EditUnidadProduccionComponent, UnidadProduccionListComponent} from './unidadproduccion/unidadproduccion.component';
+import { BancoComponent, BancoListComponent, EditBancoComponent } from './banco/banco.component';
 import { CargoService } from './cargo/cargo.service';
 import { TipoContratoService } from './tipocontrato/tipocontrato.service';
 import { UnidadProduccionService } from './unidadproduccion/unidadproduccion.service';
 import { TarifarioService } from './tarifario/tarifario.service';
+import { BancoService } from './banco/banco.service';
 
 export const ConfiguracionRoutes: Routes = [
     {
@@ -42,12 +44,21 @@ export const ConfiguracionRoutes: Routes = [
                     { path: ':id/edit', component: EditTarifarioComponent, resolve: { item: TarifarioService } }
 
                 ]
+            },
+
+            {
+                path: 'banco', component: BancoComponent, children: [
+                    { path: '', component: BancoListComponent },
+                    { path: ':id/edit', component: EditBancoComponent, resolve: { item: BancoService } }
+
+                ]
             }
         ]
     }
 ]
 
 export const ConfiguracionMenuMeta: MenuMeta[] = [
+    { title: 'Banco', url: '/configuracion/banco', icon: 'extension' },
     { title: 'Cargos', url: '/configuracion/cargos', icon: 'extension' },
     { title: 'Tipos de Contrato', url: '/configuracion/tipo/contrato', icon: 'extension' },
     { title: 'Unidad de producción', url: '/configuracion/unidad/produccion', icon: 'extension' },
