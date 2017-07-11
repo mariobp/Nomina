@@ -180,13 +180,7 @@ class TurnoSupraList(MasterList):
     # end def
 # end class
 
-<<<<<<< HEAD
-class ProduccionSupraList(supra.SupraListView):
-=======
-
-
 class ProduccionSupraList(MasterList2):
->>>>>>> 3b489fa6a7a23853f7e9376e40f3c5809a873276
     model = models.Produccion
     list_display = ['id', 'fecha', 'unidad', 'cantidad', 'unidad__nombre', 'empleados']
     search_fields = ['fecha', 'unidad', 'cantidad']
