@@ -79,6 +79,44 @@ class MasterList(supra.SupraListView):
     # end def
 # end class
 
+class MasterList2(supra.SupraListView):
+    search_key = 'q'
+    list_filter = ["id"]
+    paginate_by = 10
+
+    @method_decorator(check_login)
+    def dispatch(self, request, *args, **kwargs):
+        return super(MasterList2, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def get_queryset(self):
+        queryset = super(MasterList2, self).get_queryset()
+        if self.request.GET.get('num_page', False):
+            if int(self.request.GET.get('num_page')) is 0:
+                self.paginate_by = None
+            else:
+                self.paginate_by = self.request.GET.get('num_page', False)
+            # end if
+        # end if
+        propiedad = self.request.GET.get('sort_property', False)
+        orden = self.request.GET.get('sort_direction', False)
+        eliminado = self.request.GET.get('eliminado', False)
+        if eliminado == '1':
+            queryset = queryset.filter(eliminado=True)
+        else:
+            queryset = queryset.filter(eliminado=False)
+        # end if
+        if propiedad and orden:
+            if orden == "asc":
+                queryset = queryset.order_by(propiedad)
+            elif orden == "desc":
+                propiedad = "-" + propiedad
+                queryset = queryset.order_by(propiedad)
+        # end if
+        return queryset
+    # end def
+# end class
+
 
 class TurnoSupraForm(supra.SupraFormView):
     model = models.Turno
@@ -147,14 +185,22 @@ class TurnoSupraList(MasterList):
 
 
 
-class ProduccionSupraList(supra.SupraListView):
+class ProduccionSupraList(MasterList2):
     model = models.Produccion
-    list_display = ['fecha', 'unidad', 'cantidad']
+    list_display = ['id', 'fecha', 'unidad', 'cantidad', 'unidad__nombre', 'empleados']
     search_fields = ['fecha', 'unidad', 'cantidad']
+
+    def empleados(self, obj, now):
+        lista = []
+        for u in obj.empleados.all():
+            lista.append(u.id)
+        return lista
+    # end def
 # end class
 
 class ProduccionSupraForm(supra.SupraFormView):
     model = models.Produccion
+    form_class = forms.ProduccionForm
 
     @method_decorator(check_login)
     @csrf_exempt
