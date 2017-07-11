@@ -152,7 +152,7 @@ export class NominaListComponent implements OnInit {
         [columns]="columns"
         [renderinputs]="renderinputs"></ex-form>`
 })
-export class NominaEditComponent implements AfterViewInit {
+export class NominaEditComponent implements OnInit {
 
     form: FormGroup;
     columns: string[];
@@ -184,5 +184,5 @@ export class NominaEditComponent implements AfterViewInit {
         ];
     }
 
-    ngAfterViewInit() { }
+    ngOnInit() { }
 }

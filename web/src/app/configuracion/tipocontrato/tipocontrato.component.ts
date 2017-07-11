@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { FormComponent, TableComponent, RenderInput } from '../../../lib/components'
@@ -42,7 +42,7 @@ export class TipoContratoListComponent {
         [columns]="columns"
         [renderinputs]="renderinputs"></ex-form>`
 })
-export class EditTipoContratoComponent implements AfterViewInit {
+export class EditTipoContratoComponent implements OnInit {
 
     form: FormGroup;
     columns: string[];
@@ -62,25 +62,14 @@ export class EditTipoContratoComponent implements AfterViewInit {
             {
                 column: 'col1', title: 'Modalidad', type: null, name: 'modalidad', isSelect: true, options: [
                     { title: 'Por hora', value: 1 },
-                    { title: 'Salario fijo', value: 2 }
+                    { title: 'Salario fijo', value: 2 },
+                    { title: 'Por producción', value: 3 }
                 ]
             }
         ];
     }
 
-    ngAfterViewInit() {
-        this._form.prePatchValue = value => {
-            if (!Array.isArray(value.modalidad)) {
-                value.modalidad = [value.modalidad];
-            }
-            return value;
-        }
-        this._form.preSave = data => {
-            if (Array.isArray(data.modalidad)) {
-                data.modalidad = data.modalidad[0];
-            }
-            return data;
-        };
+    ngOnInit() {
         this._form.successful = data => {
             this._rt.navigate(['configuracion/tipo/contrato']);
         }

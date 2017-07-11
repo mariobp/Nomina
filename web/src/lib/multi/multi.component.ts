@@ -11,25 +11,23 @@ export class MultiComponent implements OnInit {
     @Input() name: string;
     @Input() placeholder: string;
     @Input() render = item => item.id;
-
     options = [];
-
-
+    complete: Promise<any>;
     constructor() {
 
     }
 
     ngOnInit() {
-        this.service.list({})
+        this.service.list({ num_page: 0 })
             .then(data => data.json())
             .then(data => {
-                this.options = data.object_list
+                this.options = data.object_list;
+                this.complete = Promise.resolve();
             }).catch(error => console.log(error));
 
-
         if (!!this.item && this.item[this.name]) {
-            console.log(this.item);
             this.form[this.name] = this.item[this.name];
         }
     }
+
 }

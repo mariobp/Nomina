@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { FormComponent, TableComponent, RenderInput } from '../../../lib/components'
@@ -42,7 +42,7 @@ export class CargoListComponent {
 @Component({
     templateUrl: './form.cargo.component.html'
 })
-export class EditCargoComponent implements AfterViewInit {
+export class EditCargoComponent implements OnInit {
 
     form: FormGroup;
     columns: string[];
@@ -52,6 +52,7 @@ export class EditCargoComponent implements AfterViewInit {
     nombre = item => item.nombre;
 
     @ViewChild('f') private _form: FormComponent;
+    @ViewChild('multi') private _multi: any;
 
     constructor(private _fb: FormBuilder, private _s: CargoService, private _u: UnidadProduccionService, private _rt: Router) {
         this.form = this._fb.group({
@@ -66,8 +67,11 @@ export class EditCargoComponent implements AfterViewInit {
 
     }
 
-    ngAfterViewInit() {
-
+    ngOnInit() {
+        this._form.setReady(true);
+        Promise.all([this._multi.complete]).then(data => {
+            this._form.setReady(false);
+        });
         this._form.successful = data => {
             this._rt.navigate(['configuracion/cargos']);
         }

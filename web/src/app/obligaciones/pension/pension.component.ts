@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { FormComponent, TableComponent, RenderInput } from '../../../lib/components'
@@ -7,7 +7,7 @@ import { PensionService } from './pension.service';
 @Component({
     template: '<router-outlet></router-outlet>'
 })
-export class PensionComponent {}
+export class PensionComponent { }
 
 @Component({
     template: `<ex-form #f icon="local_atm" title="Pensión"
@@ -16,7 +16,7 @@ export class PensionComponent {}
         [columns]="columns"
         [renderinputs]="renderinputs"></ex-form>`
 })
-export class EditPensionComponent implements AfterViewInit {
+export class EditPensionComponent implements OnInit {
 
     form: FormGroup;
     columns: string[];
@@ -30,21 +30,21 @@ export class EditPensionComponent implements AfterViewInit {
             nombre: ['', [Validators.required, Validators.maxLength(30)]],
             codigo: ['', [Validators.required, Validators.maxLength(30)]]
         });
-        this.columns = ['col1', ];
+        this.columns = ['col1',];
         this.renderinputs = [
             { column: 'col1', title: 'Nombre', type: 'text', name: 'nombre' },
             { column: 'col1', title: 'Código', type: 'text', name: 'codigo' },
         ];
     }
 
-    ngAfterViewInit() {
-      this._form.successful = data => {
-          this._rt.navigate(['obligaciones/pension']);
-      }
+    ngOnInit() {
+        this._form.successful = data => {
+            this._rt.navigate(['obligaciones/pension']);
+        }
     }
 }
 @Component({
-  templateUrl: './list.pension.component.html'
+    templateUrl: './list.pension.component.html'
 })
 export class PensionListComponent {
 

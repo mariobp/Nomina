@@ -11,9 +11,10 @@ import { CargoService } from './cargo/cargo.service';
 import { ConfiguracionRoutes } from './configuracion.route';
 import { TipoContratoService } from './tipocontrato/tipocontrato.service';
 import { ConfiguracionService } from './general/general.service';
-import { TarifarioComponent } from './tarifario/tarifario.component';
+import { TarifarioComponent, TarifarioListComponent, EditTarifarioComponent } from './tarifario/tarifario.component';
 import { UnidadproduccionComponent, UnidadProduccionListComponent, EditUnidadProduccionComponent } from './unidadproduccion/unidadproduccion.component';
 import { UnidadProduccionService } from './unidadproduccion/unidadproduccion.service';
+import { TarifarioService } from './tarifario/tarifario.service';
 
 @NgModule({
     imports: [
@@ -34,12 +35,14 @@ import { UnidadProduccionService } from './unidadproduccion/unidadproduccion.ser
         GeneralComponent,
         EditGeneralComponent,
         TarifarioComponent,
+        TarifarioListComponent,
+        EditTarifarioComponent,
         UnidadproduccionComponent,
         UnidadProduccionListComponent,
         EditUnidadProduccionComponent
     ],
     providers: [
-        CargoService, TipoContratoService, ConfiguracionService, UnidadProduccionService
+        CargoService, TipoContratoService, ConfiguracionService, UnidadProduccionService, TarifarioService
     ]
 })
 export class ConfiguracionModule { }
