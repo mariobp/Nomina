@@ -41,7 +41,6 @@ class Corte(models.Model):
 class Nomina(models.Model):
     inicio_mes = models.DateField(blank=True, null=True)
 
-    empleado = models.ForeignKey(recursos.Empleado)
     contrato = models.ForeignKey(recursos.Contrato, blank=True)
     corte = models.ForeignKey(Corte)
     fecha = models.DateField(auto_now_add=True)
@@ -58,7 +57,7 @@ class Nomina(models.Model):
 
     def salario_produccion(self, fecha_inicio, fecha_fin):
         tarifas = self.corte.tarifario.values_list('id', flat=True)
-        produccion = turno.Produccion.objects.filter(fecha__gte=fecha_inicio, empleados=self.empleado, unidad__tarifario__in=tarifas)
+        produccion = turno.Produccion.objects.filter(fecha__gte=fecha_inicio, empleados=self.contrato.empleado, unidad__tarifario__in=tarifas)
         if fecha_fin:
             produccion = produccion.filter(fecha__lt=fecha_fin)
         # end if
@@ -87,7 +86,11 @@ class Nomina(models.Model):
     # end def
 
     def descuento_salud(self):
-        return (self.salario_legal() - (self.subsidio_transporte or 0))*self.corte.descuento_salud/100
+        try:
+            return (self.salario_legal() - self.contrato.subsidio_transporte)*self.corte.descuento_salud/100
+        except Exception as e:
+            print e
+        return 0
     # end def
 
     def bonificacion(self):
@@ -106,25 +109,27 @@ class Nomina(models.Model):
     # end def
 
     def salario_legal(self):
-        return (self.contrato.salario_base) + (self.contrato.subsidio_transporte ) #+ self.recargos()
+        return (self.contrato.salario_base) + (self.contrato.subsidio_transporte ) + Decimal(self.recargos())
     # end def
 
     def adelanto(self):
-        if self.contrato.tipo_contrato.modalidad == dict(recursos.TipoContrato.opciones)['Producción']:
+        print self.contrato.tipo_contrato.modalidad
+        if self.contrato.tipo_contrato.modalidad == recursos.TipoContrato.PRODUCCION:
             return self.salario_produccion_adelanto()
         # end if
         return 0
     # end def
 
     def neto(self):
-        if dict(recursos.TipoContrato.opciones)[self.contrato.tipo_contrato.modalidad] == 'Salario fijo':
+        if self.contrato.tipo_contrato.modalidad == recursos.TipoContrato.SALARIO_FIJO:
             return self.salario_legal()
-        elif  dict(recursos.TipoContrato.opciones)[self.contrato.tipo_contrato.modalidad] == 'Producción':
+        elif self.contrato.tipo_contrato.modalidad == recursos.TipoContrato.PRODUCCION:
             if self.salario_produccion_adelanto() + self.salario_produccion_nomina() < (self.contrato.salario_base or 0):
                 return self.salario_legal() - self.salario_produccion_adelanto()
             # end if
             return self.salario_produccion_nomina()
         # end if
+        return 0
     # end def
 
     def total(self):
@@ -207,12 +212,8 @@ class Nomina(models.Model):
         return 0
     # end def
 
-    class Meta:
-        unique_together = ('empleado', 'corte')
-    # end class
-
     def __unicode__(self):
-        return u"Nomina %s %s - %s" % (self.empleado.nombre, self.empleado.apellidos, self.fecha.strftime('%Y-%m-%d'))
+        return u"Nomina %s %s - %s" % (self.contrato.empleado.nombre, self.contrato.empleado.apellidos, self.fecha.strftime('%Y-%m-%d'))
     # end def
 
 # end class
