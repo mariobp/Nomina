@@ -1,6 +1,8 @@
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { CallService } from './call.service';
 
+declare var $: any;
+
 export interface CrudConf {
     redirect?: string;
     list?: string;
@@ -128,6 +130,26 @@ export class CrudBase implements Resolve<any> {
                 this.router.navigate([this.conf.redirect || '/']);
                 return null;
             });
+    }
+
+    down(aurl: string, id: string, formt: number, getName: any) {
+        const url = `${this._cl.getUrl(aurl)}${id}`;
+        $.ajax({
+            url: url,
+            method: 'POST',
+            data: { file_format: formt },
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function(data) {
+                const blob = new Blob([data]);
+                const link = document.createElement('a');
+                const date = new Date();
+                link.href = window.URL.createObjectURL(blob);
+                link.download = getName();
+                link.click();
+            }
+        });
     }
 }
 
