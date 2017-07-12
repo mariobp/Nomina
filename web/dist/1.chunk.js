@@ -1,23 +1,5 @@
 webpackJsonp([1],{
 
-/***/ "../../../../../src/app/empleados/contrato/contrato.component.scss":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
 /***/ "../../../../../src/app/empleados/contrato/contrato.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -54,7 +36,6 @@ var ContratoComponent = (function () {
 ContratoComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         template: '<router-outlet></router-outlet>',
-        styles: [__webpack_require__("../../../../../src/app/empleados/contrato/contrato.component.scss")]
     })
 ], ContratoComponent);
 
@@ -151,7 +132,7 @@ var EditContratoComponent = (function () {
             fecha_inicio: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
             salario_base: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].min(0)]],
             subsidio_transporte: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].min(0)]],
-            descanso_turno: [''],
+            descanso_turno: [false],
             inicio_descanso: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].min(0)],
             fecha_finalizacion: ['']
         });
@@ -162,7 +143,7 @@ var EditContratoComponent = (function () {
             { column: 'col1', title: 'Subsidio de transporte', type: 'number', name: 'subsidio_transporte' },
             { column: 'col1', title: 'Descanso entre turnos', type: 'checkbox', name: 'descanso_turno' },
             { column: 'col1', title: 'Hora de inicio de descanso', type: 'number', name: 'inicio_descanso' },
-            { column: 'col1', title: 'Fecha finalización', type: 'text', name: 'fecha_finalizacion' }
+            { column: 'col1', title: 'Fecha finalización', type: 'text', name: 'fecha_finalizacion', class: 'datepicker' }
         ];
         if (!!this._r.parent.snapshot.data['item'] && Object.keys(this._r.parent.snapshot.data['item']).length !== 0) {
             this.empleado = this._r.parent.snapshot.data['item'];
@@ -266,7 +247,7 @@ module.exports = "<ex-table #table [hidden]=\"!visibility\" [enable]=\"visibilit
 /***/ "../../../../../src/app/empleados/empleado/edit.empleado.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ex-form #f icon=\"assignment_ind\" title=\"Empleado\" [deleteable]=\"deleteable\" [form]=\"form\" [service]=\"service\" [columns]=\"columns\" [renderinputs]=\"renderinputs\">\n    <div bottom-form class=\"row\">\n        <div class=\"col-lg-6\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_cajacompensacion\">Caja de Compensación:</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <label class=\"control-label\"></label>\n                            <ex-autocomplete name=\"cajacompensacion\" [form]=\"form\" [service]=\"_cs\" [item]=\"_form.item\" [itemVal]=\"itemCaja\"></ex-autocomplete>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class=\" col-lg-6\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_cajacompensacion\">Cesantias:</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <label class=\"control-label\"></label>\n                            <ex-autocomplete name=\"cesantia\" [form]=\"form\" [service]=\"_ces\" [item]=\"_form.item\" [itemVal]=\"itemCesantia\"></ex-autocomplete>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div bottom-form class=\"row\">\n        <div class=\"col-lg-6\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_cajacompensacion\">Eps:</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <label class=\"control-label\"></label>\n                            <ex-autocomplete name=\"eps\" [form]=\"form\" [service]=\"_es\" [item]=\"_form.item\" [itemVal]=\"itemEps\"></ex-autocomplete>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class=\"col-lg-6\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_cajacompensacion\">Pensión:</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <label class=\"control-label\"></label>\n                            <ex-autocomplete name=\"pension\" [form]=\"form\" [service]=\"_ps\" [item]=\"_form.item\" [itemVal]=\"itemPension\"></ex-autocomplete>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div bottom-form class=\"row\">\n        <div class=\"col-lg-6\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_cajacompensacion\">Cargo:</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <label class=\"control-label\"></label>\n                            <ex-autocomplete name=\"cargo\" [form]=\"form\" [service]=\"_cas\" [item]=\"_form.item\" [itemVal]=\"itemCargo\"></ex-autocomplete>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</ex-form>\n<router-outlet></router-outlet>\n"
+module.exports = "<ex-form #f icon=\"assignment_ind\" title=\"Empleado\" [deleteable]=\"deleteable\" [form]=\"form\" [service]=\"service\" [columns]=\"columns\" [renderinputs]=\"renderinputs\">\n    <div bottom-form class=\"row\">\n        <div class=\"col-lg-6\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_cajacompensacion\">Banco:</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <label class=\"control-label\"></label>\n                            <ex-autocomplete name=\"banco\" [form]=\"form\" [service]=\"_b\" [item]=\"_form.item\" [itemVal]=\"itemBanco\"></ex-autocomplete>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class=\"col-lg-6\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_numero\">Número de cuenta:</label>\n                    <div class=\"col-lg-9\">\n                        <div [formGroup]=\"form\" class=\"form-group label-floating is-empty\" [class.has-error]=\"form.get('numero').status == 'INVALID'\" [class.has-success]=\"form.get('numero').status == 'VALID'\">\n                            <label class=\"control-label\"></label>\n                            <input class=\"form-control\" min=\"0\" formControlName=\"numero\" type=\"number\" required>\n                            <span class=\"material-input\"></span>\n                            <span *ngIf=\"form.get('numero').status == 'INVALID'\" class=\"help-block\">Este campo es requeridos</span>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div bottom-form class=\"row\">\n        <div class=\"col-lg-6\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_cajacompensacion\">Caja de Compensación:</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <label class=\"control-label\"></label>\n                            <ex-autocomplete name=\"cajacompensacion\" [form]=\"form\" [service]=\"_cs\" [item]=\"_form.item\" [itemVal]=\"itemCaja\"></ex-autocomplete>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class=\" col-lg-6\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_cajacompensacion\">Cesantias:</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <label class=\"control-label\"></label>\n                            <ex-autocomplete name=\"cesantia\" [form]=\"form\" [service]=\"_ces\" [item]=\"_form.item\" [itemVal]=\"itemCesantia\"></ex-autocomplete>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div bottom-form class=\"row\">\n        <div class=\"col-lg-6\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_cajacompensacion\">Eps:</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <label class=\"control-label\"></label>\n                            <ex-autocomplete name=\"eps\" [form]=\"form\" [service]=\"_es\" [item]=\"_form.item\" [itemVal]=\"itemEps\"></ex-autocomplete>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class=\"col-lg-6\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_cajacompensacion\">Pensión:</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <label class=\"control-label\"></label>\n                            <ex-autocomplete name=\"pension\" [form]=\"form\" [service]=\"_ps\" [item]=\"_form.item\" [itemVal]=\"itemPension\"></ex-autocomplete>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div bottom-form class=\"row\">\n        <div class=\"col-lg-6\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_cajacompensacion\">Cargo:</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <label class=\"control-label\"></label>\n                            <ex-autocomplete name=\"cargo\" [form]=\"form\" [service]=\"_cas\" [item]=\"_form.item\" [itemVal]=\"itemCargo\"></ex-autocomplete>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</ex-form>\n<router-outlet></router-outlet>\n"
 
 /***/ }),
 
@@ -302,6 +283,7 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__obligaciones_pension_pension_service__ = __webpack_require__("../../../../../src/app/obligaciones/pension/pension.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__obligaciones_eps_eps_service__ = __webpack_require__("../../../../../src/app/obligaciones/eps/eps.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__configuracion_cargo_cargo_service__ = __webpack_require__("../../../../../src/app/configuracion/cargo/cargo.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__configuracion_banco_banco_service__ = __webpack_require__("../../../../../src/app/configuracion/banco/banco.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EmpleadoComponent; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return EmpleadoListComponent; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return EmpleadoEditComponent; });
@@ -314,6 +296,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -356,6 +339,8 @@ var EmpleadoListComponent = (function () {
             { data: 'apellidos' },
             { data: 'cargo__nombre' },
             { data: 'cedula' },
+            { data: 'banco__nombre' },
+            { data: 'numero' },
             {
                 data: 'eps__nombre',
                 orderable: false,
@@ -388,7 +373,7 @@ EmpleadoListComponent = __decorate([
 ], EmpleadoListComponent);
 
 var EmpleadoEditComponent = (function () {
-    function EmpleadoEditComponent(_fb, _s, _rt, _cs, _ces, _es, _ps, _cas) {
+    function EmpleadoEditComponent(_fb, _s, _rt, _cs, _ces, _es, _ps, _cas, _b) {
         this._fb = _fb;
         this._s = _s;
         this._rt = _rt;
@@ -397,6 +382,7 @@ var EmpleadoEditComponent = (function () {
         this._es = _es;
         this._ps = _ps;
         this._cas = _cas;
+        this._b = _b;
         this.service = this._s;
         this.cajacompensacions = [];
         this.deleteable = false;
@@ -405,6 +391,7 @@ var EmpleadoEditComponent = (function () {
         this.itemCesantia = function (item) { return item.cesantia__nombre; };
         this.itemEps = function (item) { return item.eps__nombre; };
         this.itemPension = function (item) { return item.pension__nombre; };
+        this.itemBanco = function (item) { return item.banco__nombre; };
         this.form = this._fb.group({
             nombre: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
             apellidos: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
@@ -414,7 +401,9 @@ var EmpleadoEditComponent = (function () {
             cajacompensacion: [0, [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].pattern(/\d/)]],
             cesantia: [0, [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].pattern(/\d/)]],
             eps: [0, [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].pattern(/\d/)]],
-            pension: [0, [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].pattern(/\d/)]]
+            pension: [0, [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].pattern(/\d/)]],
+            banco: [0, [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].pattern(/\d/)]],
+            numero: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].min(0)]],
         });
         this.columns = ['col1', 'col2'];
         this.renderinputs = [
@@ -442,16 +431,16 @@ __decorate([
 ], EmpleadoEditComponent.prototype, "empleado", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _b || Object)
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _c || Object)
 ], EmpleadoEditComponent.prototype, "_form", void 0);
 EmpleadoEditComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         template: __webpack_require__("../../../../../src/app/empleados/empleado/edit.empleado.component.html")
     }),
-    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__empleado_service__["a" /* EmpleadoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__empleado_service__["a" /* EmpleadoService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_5__obligaciones_compensacion_compensacion_service__["a" /* CompensacionService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__obligaciones_compensacion_compensacion_service__["a" /* CompensacionService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_6__obligaciones_cesantias_cesantias_service__["a" /* CesantiasService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__obligaciones_cesantias_cesantias_service__["a" /* CesantiasService */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_8__obligaciones_eps_eps_service__["a" /* EpsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_8__obligaciones_eps_eps_service__["a" /* EpsService */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_7__obligaciones_pension_pension_service__["a" /* PensionService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_7__obligaciones_pension_pension_service__["a" /* PensionService */]) === "function" && _j || Object, typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_9__configuracion_cargo_cargo_service__["a" /* CargoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_9__configuracion_cargo_cargo_service__["a" /* CargoService */]) === "function" && _k || Object])
+    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__empleado_service__["a" /* EmpleadoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__empleado_service__["a" /* EmpleadoService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_5__obligaciones_compensacion_compensacion_service__["a" /* CompensacionService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__obligaciones_compensacion_compensacion_service__["a" /* CompensacionService */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_6__obligaciones_cesantias_cesantias_service__["a" /* CesantiasService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__obligaciones_cesantias_cesantias_service__["a" /* CesantiasService */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_8__obligaciones_eps_eps_service__["a" /* EpsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_8__obligaciones_eps_eps_service__["a" /* EpsService */]) === "function" && _j || Object, typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_7__obligaciones_pension_pension_service__["a" /* PensionService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_7__obligaciones_pension_pension_service__["a" /* PensionService */]) === "function" && _k || Object, typeof (_l = typeof __WEBPACK_IMPORTED_MODULE_9__configuracion_cargo_cargo_service__["a" /* CargoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_9__configuracion_cargo_cargo_service__["a" /* CargoService */]) === "function" && _l || Object, typeof (_m = typeof __WEBPACK_IMPORTED_MODULE_10__configuracion_banco_banco_service__["a" /* BancoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_10__configuracion_banco_banco_service__["a" /* BancoService */]) === "function" && _m || Object])
 ], EmpleadoEditComponent);
 
-var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+var _a, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
 //# sourceMappingURL=empleado.component.js.map
 
 /***/ }),
@@ -459,7 +448,7 @@ var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
 /***/ "../../../../../src/app/empleados/empleado/list.empleado.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ex-table #table title=\"Empleado\" icon=\"account_box\" [deleteable]=\"deleteable\" [aggregable]=\"aggregable\" [editable]=\"editable\" [service]=\"service\" [multiselect]=\"multiselect\" [columns]=\"columns\">\n    <th>Nombre</th>\n    <th>Apellido</th>\n    <th>Cargo</th>\n    <th>Cedula</th>\n    <th>Eps</th>\n    <th>Pensión</th>\n    <th>Cesantias</th>\n    <th>C Compensación</th>\n</ex-table>\n"
+module.exports = "<ex-table #table title=\"Empleado\" icon=\"account_box\" [deleteable]=\"deleteable\" [aggregable]=\"aggregable\" [editable]=\"editable\" [service]=\"service\" [multiselect]=\"multiselect\" [columns]=\"columns\">\n    <th>Nombre</th>\n    <th>Apellido</th>\n    <th>Cargo</th>\n    <th>Cedula</th>\n    <th>Banco</th>\n    <th>Número de cuenta</th>\n    <th>Eps</th>\n    <th>Pensión</th>\n    <th>Cesantias</th>\n    <th>C Compensación</th>\n</ex-table>\n"
 
 /***/ }),
 
@@ -486,6 +475,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__configuracion_cargo_cargo_service__ = __webpack_require__("../../../../../src/app/configuracion/cargo/cargo.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__configuracion_tipocontrato_tipocontrato_service__ = __webpack_require__("../../../../../src/app/configuracion/tipocontrato/tipocontrato.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__route__ = __webpack_require__("../../../../../src/app/empleados/route.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__configuracion_banco_banco_service__ = __webpack_require__("../../../../../src/app/configuracion/banco/banco.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EmpleadosModule", function() { return EmpleadosModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -493,6 +483,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -544,7 +535,8 @@ EmpleadosModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_13__obligaciones_eps_eps_service__["a" /* EpsService */],
             __WEBPACK_IMPORTED_MODULE_15__configuracion_cargo_cargo_service__["a" /* CargoService */],
             __WEBPACK_IMPORTED_MODULE_14__contrato_contrato_service__["a" /* ContratoService */],
-            __WEBPACK_IMPORTED_MODULE_16__configuracion_tipocontrato_tipocontrato_service__["a" /* TipoContratoService */]
+            __WEBPACK_IMPORTED_MODULE_16__configuracion_tipocontrato_tipocontrato_service__["a" /* TipoContratoService */],
+            __WEBPACK_IMPORTED_MODULE_18__configuracion_banco_banco_service__["a" /* BancoService */]
         ]
     })
 ], EmpleadosModule);
@@ -631,12 +623,14 @@ var EmpleadoRoutes = [
     {
         path: '', children: [
             {
-                path: 'empleados', component: __WEBPACK_IMPORTED_MODULE_1__empleado_empleado_component__["a" /* EmpleadoComponent */], children: [
+                path: 'empleados', component: __WEBPACK_IMPORTED_MODULE_1__empleado_empleado_component__["a" /* EmpleadoComponent */], data: { miga: 'Empleados' }, children: [
                     { path: '', component: __WEBPACK_IMPORTED_MODULE_1__empleado_empleado_component__["b" /* EmpleadoListComponent */] },
-                    { path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_1__empleado_empleado_component__["c" /* EmpleadoEditComponent */], resolve: { item: __WEBPACK_IMPORTED_MODULE_2__empleado_empleado_service__["a" /* EmpleadoService */] }, children: [
+                    {
+                        path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_1__empleado_empleado_component__["c" /* EmpleadoEditComponent */], data: { miga: 'Editar' }, resolve: { item: __WEBPACK_IMPORTED_MODULE_2__empleado_empleado_service__["a" /* EmpleadoService */] }, children: [
                             { path: '', component: __WEBPACK_IMPORTED_MODULE_0__contrato_contrato_component__["c" /* ContratoListComponent */] },
                             { path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_0__contrato_contrato_component__["b" /* EditContratoComponent */], resolve: { item: __WEBPACK_IMPORTED_MODULE_3__contrato_contrato_service__["a" /* ContratoService */] } }
-                        ] }
+                        ]
+                    }
                 ]
             }
         ]

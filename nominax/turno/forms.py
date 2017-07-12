@@ -157,3 +157,25 @@ class ProduccionForm(forms.ModelForm):
         exclude = ('eliminado_por', )
     # end class
 # end class
+
+
+class ProduccionFormEdit(forms.ModelForm):
+    
+    class Meta:
+        model = models.Produccion
+        exclude = ('eliminado_por', )
+    # end class
+
+    def save(self, commit=False):
+        master = super(ProduccionFormEdit, self).save(commit)
+        if master.eliminado:
+            user = CuserMiddleware.get_user()
+            if user:
+                master.eliminado_por = user
+            # end if
+        # end if
+        master.save()
+        self.save_m2m()
+        return master
+    # end def
+# end class

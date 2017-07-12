@@ -16,9 +16,9 @@ export const ConfiguracionRoutes: Routes = [
     {
         path: '', children: [
             {
-                path: 'cargos', component: CargoComponent, children: [
+                path: 'cargos', component: CargoComponent, data: { miga: 'Cargos' }, children: [
                     { path: '', component: CargoListComponent },
-                    { path: ':id/edit', component: EditCargoComponent, resolve: { item: CargoService } }
+                    { path: ':id/edit', component: EditCargoComponent, data: { miga: 'Editar' }, resolve: { item: CargoService } }
                 ]
             },
             {
@@ -27,29 +27,29 @@ export const ConfiguracionRoutes: Routes = [
                 ]
             },
             {
-                path: 'tipo/contrato', component: TipocontratoComponent, children: [
+                path: 'tipo/contrato', component: TipocontratoComponent, data: { miga: 'Tipos de contratos' }, children: [
                     { path: '', component: TipoContratoListComponent },
-                    { path: ':id/edit', component: EditTipoContratoComponent, resolve: { item: TipoContratoService } }
+                    { path: ':id/edit', component: EditTipoContratoComponent, data: { miga: 'Editar' }, resolve: { item: TipoContratoService } }
                 ]
             },
             {
-                path: 'unidad/produccion', component: UnidadproduccionComponent, children: [
+                path: 'unidad/produccion', component: UnidadproduccionComponent, data: { miga: 'Unidades de producción' }, children: [
                     { path: '', component: UnidadProduccionListComponent },
-                    { path: ':id/edit', component: EditUnidadProduccionComponent, resolve: { item: UnidadProduccionService } }
+                    { path: ':id/edit', component: EditUnidadProduccionComponent, data: { miga: 'Editar' }, resolve: { item: UnidadProduccionService } }
                 ]
             },
             {
-                path: 'tarifario', component: TarifarioComponent, children: [
+                path: 'tarifario', component: TarifarioComponent, data: { miga: 'Tarifario' }, children: [
                     { path: '', component: TarifarioListComponent },
-                    { path: ':id/edit', component: EditTarifarioComponent, resolve: { item: TarifarioService } }
+                    { path: ':id/edit', component: EditTarifarioComponent, data: { miga: 'Editar' }, resolve: { item: TarifarioService } }
 
                 ]
             },
 
             {
-                path: 'banco', component: BancoComponent, children: [
+                path: 'banco', component: BancoComponent, data: { miga: 'Bancos' }, children: [
                     { path: '', component: BancoListComponent },
-                    { path: ':id/edit', component: EditBancoComponent, resolve: { item: BancoService } }
+                    { path: ':id/edit', component: EditBancoComponent, data: { miga: 'Editar' }, resolve: { item: BancoService } }
 
                 ]
             }

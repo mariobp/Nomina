@@ -1,4 +1,4 @@
-import { Component, Input, forwardRef, OnInit } from '@angular/core';
+import { Component, Input, Output, forwardRef, OnInit, EventEmitter } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -13,6 +13,8 @@ export class AutoComponent {
     @Input('value') _value: any = '';
     @Input() render: any = (val: any) => val.nombre;
     @Input() itemVal: any = (item: any) => item.id;
+    @Output() cambio = new EventEmitter();
+
     options = [];
 
 
@@ -21,6 +23,7 @@ export class AutoComponent {
             return this.itemVal(this.item);
         } else {
             const value = this.options.filter(data => data.id === val)[0];
+            this.cambio.emit({ item: value });
             return val ? (value ? this.render(value) : '') : null;
         }
     }
@@ -33,7 +36,9 @@ export class AutoComponent {
         this._value = val;
     }
 
-    constructor() { }
+    constructor() {
+
+    }
 
     private onKeyPress(event) {
         this.onChange(event.target.value !== '' ? event.target.value : null);
@@ -41,11 +46,13 @@ export class AutoComponent {
     }
     private onChange(value) {
         this.filterVal(value)
+
     }
 
     private onFocus(event) {
         this.filterVal(null);
     }
+
 
     writeValue(value) {
         if (value) {

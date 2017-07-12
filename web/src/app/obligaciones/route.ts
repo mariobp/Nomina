@@ -13,22 +13,30 @@ import { PensionService } from './pension/pension.service';
 export const ObligacionesRoutes: Routes = [
     {
         path: '', children: [
-            { path: 'pension', component: PensionComponent , children:[
-                { path: '', component: PensionListComponent },
-                { path: ':id/edit', component: EditPensionComponent, resolve: { item: PensionService } }
-            ]},
-            { path: 'eps', component: EpsComponent, children: [
-                { path: '', component: EpsListComponent } ,
-                { path: ':id/edit', component: EditEpsComponent, resolve: { item: EpsService } }
-            ]},
-            { path: 'compensacion', component: CompensacionComponent, children: [
-                { path: '', component: CompensacionListComponent},
-                { path: ':id/edit', component: EditCompensacionComponent, resolve: { item: CompensacionService } }
-            ]},
-            { path: 'cesantias', component: CesantiasComponent, children:[
-                { path: '', component: CesantiasListComponent},
-                { path: ':id/edit', component: EditCesantiasComponent, resolve: { item: CesantiasService } }
-            ] }
+            {
+                path: 'pension', component: PensionComponent, data: { miga: 'Pensión' }, children: [
+                    { path: '', component: PensionListComponent },
+                    { path: ':id/edit', component: EditPensionComponent, data: { miga: 'Editar' }, resolve: { item: PensionService } }
+                ]
+            },
+            {
+                path: 'eps', component: EpsComponent, data: { miga: 'Eps' }, children: [
+                    { path: '', component: EpsListComponent },
+                    { path: ':id/edit', component: EditEpsComponent, data: { miga: 'Editar' }, resolve: { item: EpsService } }
+                ]
+            },
+            {
+                path: 'compensacion', component: CompensacionComponent, data: { miga: 'Caja de compensación' }, children: [
+                    { path: '', component: CompensacionListComponent },
+                    { path: ':id/edit', component: EditCompensacionComponent, data: { miga: 'Editar' }, resolve: { item: CompensacionService } }
+                ]
+            },
+            {
+                path: 'cesantias', component: CesantiasComponent, data: { miga: 'Cesantías' }, children: [
+                    { path: '', component: CesantiasListComponent },
+                    { path: ':id/edit', component: EditCesantiasComponent, data: { miga: 'Editar' }, resolve: { item: CesantiasService } }
+                ]
+            }
         ]
     }
 

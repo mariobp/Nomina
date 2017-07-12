@@ -9,6 +9,9 @@ import { TurnoComponent, TurnoEditComponent, TurnoListComponent } from './turno/
 import { TurnoService } from './turno/turno.service';
 import { EmpleadoService } from '../empleados/empleado/empleado.service';
 import { TurnoRoutes } from './route';
+import { ProduccionComponent, ProduccionListComponent, EditProduccionComponent } from './produccion/produccion.component';
+import { ProduccionService } from './produccion/produccion.service';
+import { UnidadProduccionService } from '../configuracion/unidadproduccion/unidadproduccion.service';
 
 @NgModule({
     imports: [
@@ -23,11 +26,16 @@ import { TurnoRoutes } from './route';
     declarations: [
         TurnoComponent,
         TurnoEditComponent,
-        TurnoListComponent
+        TurnoListComponent,
+        ProduccionComponent,
+        ProduccionListComponent,
+        EditProduccionComponent
     ],
     providers: [
         TurnoService,
-        EmpleadoService
+        EmpleadoService,
+        ProduccionService,
+        UnidadProduccionService
     ]
 })
 export class TurnoModule { }

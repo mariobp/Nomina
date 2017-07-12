@@ -16,6 +16,7 @@ class MasterEdit(forms.ModelForm):
             # end if
         # end if
         master.save()
+        self.save_m2m()
         return master
     # end def
 # end class

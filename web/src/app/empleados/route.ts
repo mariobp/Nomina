@@ -8,12 +8,14 @@ export const EmpleadoRoutes: Routes = [
     {
         path: '', children: [
             {
-                path: 'empleados', component: EmpleadoComponent, children: [
+                path: 'empleados', component: EmpleadoComponent, data: { miga: 'Empleados' }, children: [
                     { path: '', component: EmpleadoListComponent },
-                    { path: ':id/edit', component: EmpleadoEditComponent, resolve: { item: EmpleadoService }, children: [
-                        { path: '', component: ContratoListComponent },
-                        { path: ':id/edit', component: EditContratoComponent, resolve: { item: ContratoService } }
-                    ] }
+                    {
+                        path: ':id/edit', component: EmpleadoEditComponent, data: { miga: 'Editar' }, resolve: { item: EmpleadoService }, children: [
+                            { path: '', component: ContratoListComponent },
+                            { path: ':id/edit', component: EditContratoComponent, resolve: { item: ContratoService } }
+                        ]
+                    }
                 ]
             }
         ]
