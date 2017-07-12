@@ -16,18 +16,18 @@ class Corte(models.Model):
     fecha_fin = models.DateField(blank=True, null=True)
     cerrado = models.BooleanField(default=False)
 
-    nocturna = models.IntegerField("Valor de recargo nocturno %")
-    dominical = models.IntegerField("Valor de recargo dominical o festivo %")
-    nocturna_dominical = models.IntegerField("Valor de recargo nocturno dominical o festivo %")
-    descuento_salud = models.IntegerField("Descuento de salud y pensión para empleado %")
-    prestaciones_sociales = models.IntegerField("Pago de salud y pensión del empleador %")
-    tarifario = models.ManyToManyField(recursos.Tarifario)
+    nocturna = models.IntegerField("Valor de recargo nocturno %", blank=True)
+    dominical = models.IntegerField("Valor de recargo dominical o festivo %", blank=True)
+    nocturna_dominical = models.IntegerField("Valor de recargo nocturno dominical o festivo %", blank=True)
+    descuento_salud = models.IntegerField("Descuento de salud y pensión para empleado %", blank=True)
+    prestaciones_sociales = models.IntegerField("Pago de salud y pensión del empleador %", blank=True)
+    tarifario = models.ManyToManyField(recursos.Tarifario, blank=True)
 
-    extra_diurna = models.IntegerField("Valor de recargo de hora extra diurna %")
-    extra_nocturna = models.IntegerField("Valor de recargo de hora extra nocturna %")
+    extra_diurna = models.IntegerField("Valor de recargo de hora extra diurna %", blank=True)
+    extra_nocturna = models.IntegerField("Valor de recargo de hora extra nocturna %", blank=True)
 
-    extra_dominical_diurna = models.IntegerField("Valor de recargo de hora extra dominical %")
-    extra_dominical_nocturna = models.IntegerField("Valor de recargo de hora extra dominical nocturna %")
+    extra_dominical_diurna = models.IntegerField("Valor de recargo de hora extra dominical %", blank=True)
+    extra_dominical_nocturna = models.IntegerField("Valor de recargo de hora extra dominical nocturna %", blank=True)
 
     def __unicode__(self):
         return "%s-%s" % (str(self.fecha_inicio), str(self.fecha_fin))
@@ -42,7 +42,7 @@ class Nomina(models.Model):
     inicio_mes = models.DateField(blank=True, null=True)
 
     contrato = models.ForeignKey(recursos.Contrato, blank=True)
-    corte = models.ForeignKey(Corte)
+    corte = models.ForeignKey(Corte, blank=True)
     fecha = models.DateField(auto_now_add=True)
 
     diurnas = models.DecimalField("Hora diurna", blank=True, null=True, max_digits=10, decimal_places=2, )

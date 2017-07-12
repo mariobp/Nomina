@@ -40,7 +40,6 @@ def marcar_turno(request, pk):
     return HttpResponse(status=400)
 # end def
 
-
 class MasterList(supra.SupraListView):
     search_key = 'q'
     list_filter = ["id"]
@@ -117,7 +116,6 @@ class MasterList2(supra.SupraListView):
     # end def
 # end class
 
-
 class TurnoSupraForm(supra.SupraFormView):
     model = models.Turno
     form_class = forms.TurnoForm
@@ -157,7 +155,6 @@ class TurnoSupraForm(supra.SupraFormView):
     # end def
 # end class
 
-
 class TurnoSupraList(MasterList):
     model = models.Turno
     list_display = ('id', 'empleado', 'empleado__nombre', 'empleado__apellidos',
@@ -182,8 +179,6 @@ class TurnoSupraList(MasterList):
         return obj.horas_dominical()
     # end def
 # end class
-
-
 
 class ProduccionSupraList(MasterList2):
     model = models.Produccion

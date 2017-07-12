@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { TableComponent, RenderInput, FormComponent } from '../../../lib/components';
 import { NominaService } from './nomina.service';
@@ -24,6 +24,9 @@ export class NominaListComponent implements OnInit {
     deleteable = false;
     order = [[2, 'asc']]
 
+    private corte: any;
+    private title: string
+
     @ViewChild('table') private table: TableComponent;
 
     columns = [
@@ -46,14 +49,10 @@ export class NominaListComponent implements OnInit {
             }
         },
         {
-            data: 'empleado',
+            data: 'contrato__empleado',
             render: (data, type, full, meta) => {
                 return `${full.empleado_f.nombre} ${full.empleado_f.apellidos}`;
             }
-        },
-        {
-            data: 'salario_base',
-            render: TableComponent.renderDecimal
         },
         {
             data: 'salario_produccion',
@@ -75,12 +74,6 @@ export class NominaListComponent implements OnInit {
         },
         {
             data: 'bonificacion',
-            orderable: false,
-            searchable: false,
-            render: TableComponent.renderDecimal
-        },
-        {
-            data: 'subsidio_trasporte',
             orderable: false,
             searchable: false,
             render: TableComponent.renderDecimal
@@ -115,9 +108,20 @@ export class NominaListComponent implements OnInit {
         salario base
     */
 
-    constructor(private _as: NominaService) { }
+    constructor(private _as: NominaService, private _r: ActivatedRoute) {
+        if (!!this._r.snapshot.data['item'] && Object.keys(this._r.snapshot.data['item']).length !== 0) {
+            this.corte = this._r.snapshot.data['item'];
+            this.title = `Nominas deste ${this.corte.fecha_inicio}` + (!!this.corte.fecha_fin ? ` hasta ${this.corte.fecha_fin}` : '');
+        }
+    }
 
     ngOnInit() {
+        this.table.preAjax = data => {
+            if (this.corte) {
+                data['corte'] = this.corte.id;
+            }
+            return data;
+        }
         this.table.drawCallback = () => {
             $('.down').click(function(e) {
                 e.preventDefault();
@@ -142,47 +146,4 @@ export class NominaListComponent implements OnInit {
             });
         }
     }
-}
-
-
-@Component({
-    template: `<ex-form #f icon="assignment_ind" title="Nomina"
-        [form]="form"
-        [service]="service"
-        [columns]="columns"
-        [renderinputs]="renderinputs"></ex-form>`
-})
-export class NominaEditComponent implements OnInit {
-
-    form: FormGroup;
-    columns: string[];
-    renderinputs: RenderInput[];
-    service = this._s;
-
-    @ViewChild('f') private _form: FormComponent;
-
-    constructor(private _fb: FormBuilder, private _s: NominaService, private _rt: Router) {
-        this.form = this._fb.group({
-            aprobado: [false, [Validators.required]],
-            nomina: [[], [Validators.required]],
-            entrada: ['', [Validators.required]],
-            salida: ['', [Validators.required]],
-            h_diurna: [{ value: 0, disabled: true }],
-            h_dominical: [{ value: 0, disabled: true }],
-            h_extras: [{ value: 0, disabled: true }],
-            h_nocturna: [{ value: 0, disabled: true }],
-        });
-        this.columns = ['col1', 'col2'];
-        this.renderinputs = [
-            { column: 'col1', title: 'Nomina', type: 'text', name: 'nomina' },
-            { column: 'col1', title: 'Hora de entrada', type: 'text', name: 'entrada', class: 'datetimepicker' },
-            { column: 'col1', title: 'Hora de salida', type: 'text', name: 'salida', class: 'datetimepicker' },
-            { column: 'col2', title: 'Horas diurnas', type: 'number', name: 'h_diurna', step: '2' },
-            { column: 'col2', title: 'Horas nocturnas', type: 'number', name: 'h_nocturna', step: '2' },
-            { column: 'col2', title: 'Horas extras', type: 'number', name: 'h_extras', step: '2' },
-            { column: 'col2', title: 'Horas dominicales', type: 'number', name: 'h_dominical', step: '2' },
-        ];
-    }
-
-    ngOnInit() { }
 }

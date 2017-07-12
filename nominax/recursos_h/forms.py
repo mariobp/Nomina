@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import forms
+from configuracion import forms as conf
 import models
 from cuser.middleware import CuserMiddleware
 
@@ -29,6 +30,9 @@ class TarifarioForm(forms.ModelForm):
         if not tarifa.remplazado_por:
             remplazar = models.Tarifario.objects.filter(remplazado_por = None, unidad=tarifa.unidad, cargo=tarifa.cargo).last()
         # end if
+        config = conf.Configuracion.get_instance()
+        coding.tarifario.remove(remplazar)
+        coding.tarifario.add(tarifa)
         tarifa.save()
         if not tarifa.remplazado_por:
             remplazar.remplazado_por = tarifa
@@ -192,8 +196,8 @@ class ContratoForm(forms.ModelForm):
     # end class
 
     @staticmethod
-    def get_instance(empleado):
-        instance = models.Contrato.get_instance(empleado)
+    def get_instance(empleado, corte):
+        instance = models.Contrato.get_instance(empleado, corte)
         if instance:
             return instance
         # end if

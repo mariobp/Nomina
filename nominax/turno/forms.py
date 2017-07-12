@@ -67,7 +67,6 @@ class TurnoForm(forms.ModelForm):
     # end def
 
     def clean_empleado(self):
-        self.contrato = rec.ContratoForm.get_instance(self.cleaned_data['empleado'])
         return self.cleaned_data['empleado']
     # end def
 
@@ -86,19 +85,14 @@ class TurnoForm(forms.ModelForm):
         h_almuerzo_fin    = self.configuracion.h_almuerzo_fin
 
         instance = self.instance
-        contrato = self.contrato
 
         fecha_hora_entrada = instance.entrada.replace(tzinfo=None)
         fecha_hora_salida = instance.salida.replace(tzinfo=None)
 
-        fecha_extra_inicio = (fecha_hora_entrada + timedelta(hours = contrato.horas_trabajo))
-        fecha_extra_fin = fecha_hora_salida
 
         nocturno = periodic_timedelta(h_recargo_nocturno_inicio, h_recargo_nocturno_fin)
         delta = datedelta(fecha_hora_entrada, fecha_hora_salida)
         almuerzo = periodic_timedelta(h_almuerzo_inicio, h_almuerzo_fin)
-        fecha_extra_inicio = fecha_extra_inicio + almuerzo.intersect(delta).timedelta()
-        delta_extra = datedelta(fecha_extra_inicio, fecha_extra_fin)
         delta_dominicales = models.DiaDominical.multi_datedelta(delta)
         delta_festivos = models.DiaFestivo.multi_datedelta(delta)
         delta_dominicales_festivos = (delta_dominicales + delta_festivos).intersect(delta).difference(almuerzo)
@@ -113,11 +107,6 @@ class TurnoForm(forms.ModelForm):
         models.RangoFecha.objects.filter(diurna=turno).delete()
         models.RangoFecha.objects.filter(dominical=turno).delete()
         hasta_7 = datedelta(fecha_hora_entrada, (fecha_hora_entrada + timedelta(days=1)).replace(hour=7, minute=0, second=0) )
-
-        if not delta_extra.empty():
-            extras = models.RangoFecha.create(delta_extra.start_date, delta_extra.end_date)
-            turno.extras.add(extras)
-        # end if
 
         for delta_single in delta_nocturno.date_deltas:
             nocturna = models.RangoFecha.create(delta_single.start_date, delta_single.end_date)
@@ -148,6 +137,7 @@ class TurnoForm(forms.ModelForm):
             # end if
         # end if
         turno.save()
+        print 'aprobado', turno.aprobado
         if turno.aprobado:
             print 'turno aprobado'
             TurnoForm.cuando_apruebe(turno)

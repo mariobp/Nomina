@@ -582,6 +582,7 @@ class EmpleadoSupraList(supra.SupraListView):
 
     def get_queryset(self):
         queryset = super(EmpleadoSupraList, self).get_queryset()
+        queryset = queryset.distinct('id')
         if self.request.GET.get('num_page', False):
             self.paginate_by = self.request.GET.get('num_page', False)
         # end if
