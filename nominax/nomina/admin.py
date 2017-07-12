@@ -13,7 +13,7 @@ class NominaAdmin(admin.ModelAdmin):
 # end class
 
 class CorteAdmin(admin.ModelAdmin):
-	readonly_fields = ['fecha_inicio', 'fecha_fin']
+	readonly_fields = []
 admin.site.register(models.Corte, CorteAdmin)
 admin.site.register(models.Nomina, NominaAdmin)
 

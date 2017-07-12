@@ -195,8 +195,8 @@ class ContratoForm(forms.ModelForm):
     # end class
 
     @staticmethod
-    def get_instance(empleado):
-        instance = models.Contrato.get_instance(empleado)
+    def get_instance(empleado, corte):
+        instance = models.Contrato.get_instance(empleado, corte)
         if instance:
             return instance
         # end if

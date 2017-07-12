@@ -27,15 +27,17 @@ class CorteForms(forms.ModelForm):
             	instance.fecha_inicio = ultimo_corte.fecha_fin
             # end if
         # end if
-        instance.prestaciones_sociales = config.prestaciones_sociales
-        instance.nocturna = config.nocturna
-        instance.dominical = config.dominical
-        instance.nocturna_dominical = config.nocturna_dominical
-        instance.descuento_salud = config.descuento_salud
-        instance.extra_diurna = config.extra_diurna
-        instance.extra_nocturna = config.extra_nocturna
-        instance.extra_dominical_diurna = config.extra_dominical_diurna
-        instance.extra_dominical_nocturna = config.extra_dominical_nocturna
+        if not instance.cerrado:
+            instance.prestaciones_sociales = config.prestaciones_sociales
+            instance.nocturna = config.nocturna
+            instance.dominical = config.dominical
+            instance.nocturna_dominical = config.nocturna_dominical
+            instance.descuento_salud = config.descuento_salud
+            instance.extra_diurna = config.extra_diurna
+            instance.extra_nocturna = config.extra_nocturna
+            instance.extra_dominical_diurna = config.extra_dominical_diurna
+            instance.extra_dominical_nocturna = config.extra_dominical_nocturna
+        # end if
 
         instance.save()
         return instance
@@ -56,36 +58,33 @@ class NominaForm(forms.ModelForm):
     # end def
 
     def clean_contrato(self):
-        if not 'contrato' in self.cleaned_data or not self.cleaned_data['contrato']:
-            return rec.ContratoForm.get_instance(self.cleaned_data['empleado'])
+        self.month = turnos.TurnoForm.month(self.cleaned_data['contrato'].empleado, self.clean_inicio_mes().year, self.clean_inicio_mes().month)
+        self.turnos = turnos.TurnoForm.get_turnos(self.clean_corte(), self.cleaned_data['contrato'].empleado)
+        if not self.turnos.count():
+            raise forms.ValidationError('No hay turnos para este empleado')
         # end if
         return self.cleaned_data['contrato']
     # end def
 
-    def clean(self):
-    	if not self.cleaned_data['inicio_mes']:
-    	    self.cleaned_data['inicio_mes'] = (self.cleaned_data['corte'].fecha_inicio).replace(day=1)
-    	# end if
-    	self.month = turnos.TurnoForm.month(self.cleaned_data['contrato'].empleado, self.cleaned_data['inicio_mes'].year, self.cleaned_data['inicio_mes'].month)
-        self.turnos = turnos.TurnoForm.get_turnos(self.cleaned_data['corte'], self.cleaned_data['contrato'].empleado)
-        if not self.turnos.count():
-            raise forms.ValidationError('No hay turnos para este empleado')
+    def clean_inicio_mes(self):
+        if not 'inicio_mes' in self.cleaned_data or not self.cleaned_data['inicio_mes']:
+            return (self.clean_corte().fecha_inicio).replace(day=1)
         # end if
+        return self.cleaned_data['inicio_mes']
+    # end def
+
+
+    def clean(self):
         return self.cleaned_data
     # end def
 
     @staticmethod
     def get_instance(empleado):
         corte = CorteForms.get_instance()
-        instance = models.Nomina.objects.filter(empleado=empleado, corte=corte).first()
-        if not instance:
-            contrato = rec.ContratoForm.get_instance(empleado)
-            instance = models.Nomina()
-            instance.corte = corte
-            instance.salario_base = contrato.salario_base
-            instance.save()
-        # end if
-        return instance
+        instance = models.Nomina.objects.filter(contrato__empleado=empleado, corte=corte).first()
+        contr = rec.ContratoForm.get_instance(empleado, corte)
+        form = NominaForm({'contrato': contr.pk}, instance = instance)
+        return form
     # end def
 
     def posibles_horas_extras(self):
@@ -169,13 +168,12 @@ class NominaForm(forms.ModelForm):
 
 
 def cuando_apruebe(turno):
-    nomina = NominaForm.get_instance(empleado = turno.empleado)
-    #TODO aggregar campos y guardar formulario
-    nom_form = NominaForm({'empleado': turno.empleado.pk, 'corte': nomina.corte.pk, 'salario_base': nomina.salario_base, 'inicio_mes': (nomina.corte.fecha_inicio).replace(day=1)}, instance = nomina)
+    nom_form = NominaForm.get_instance(empleado = turno.empleado)
     if nom_form.is_valid():
     	nom_form.save()
     else:
-    	print nom_form.errors
+    	raise Exception(nom_form.errors)
     # end if
 # end def
+
 turnos.TurnoForm.cuando_apruebe = staticmethod(cuando_apruebe)
