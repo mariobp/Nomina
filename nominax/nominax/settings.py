@@ -106,7 +106,7 @@ WSGI_APPLICATION = 'nominax.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ingecol',
+        'NAME': 'nomina',
         'USER': 'postgres',
         'PASSWORD': 'Exile*74522547',
         'HOST': '127.0.0.1',
@@ -203,7 +203,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-WEB_URL = '/web/'
+WEB_URL = '/'
 WEB_ROOT = os.path.join(BASE_DIR, "web")
 
 ASSETS_URL = '/assets/'

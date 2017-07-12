@@ -9663,6 +9663,16 @@ footer {
   background-size: cover;
   border-radius: 50%;
   display: inline-block;
-  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2); }
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0 rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2); }
+
+.green {
+  color: #4caf50; }
+
+.red {
+  color: #f44336; }
+
+@media (max-width: 768px) {
+  .btn-responsive {
+    width: 100%; } }
 
 /*# sourceMappingURL=material-dashboard.css.map */

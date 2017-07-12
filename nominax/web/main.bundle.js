@@ -1,4 +1,4 @@
-webpackJsonp([7],{
+webpackJsonp([8],{
 
 /***/ "../../../../../src async recursive":
 /***/ (function(module, exports, __webpack_require__) {
@@ -6,11 +6,12 @@ webpackJsonp([7],{
 var map = {
 	"./configuracion/configuracion.module": [
 		"../../../../../src/app/configuracion/configuracion.module.ts",
-		4
+		6,
+		0
 	],
 	"./empleados/empleados.module": [
 		"../../../../../src/app/empleados/empleados.module.ts",
-		0
+		1
 	],
 	"./nomina/nomina.module": [
 		"../../../../../src/app/nomina/nomina.module.ts",
@@ -22,18 +23,19 @@ var map = {
 	],
 	"./turno/turno.module": [
 		"../../../../../src/app/turno/turno.module.ts",
-		1
+		4
 	],
 	"./usuarios/usuarios.module": [
 		"../../../../../src/app/usuarios/usuarios.module.ts",
-		3
+		3,
+		0
 	]
 };
 function webpackAsyncContext(req) {
 	var ids = map[req];
 	if(!ids)
 		return Promise.reject(new Error("Cannot find module '" + req + "'."));
-	return __webpack_require__.e(ids[1]).then(function() {
+	return Promise.all(ids.slice(1).map(__webpack_require__.e)).then(function() {
 		return __webpack_require__(ids[0]);
 	});
 };
@@ -85,8 +87,8 @@ var AppComponent = (function () {
     function AppComponent(_cs) {
         this._cs = _cs;
         this.title = 'angular';
-        // this._cs.conf('104.236.33.228', '8010');
-        this._cs.conf('isabela.com.co', '80');
+        // this._cs.conf({ host: '104.236.33.228', port: '8010' });
+        // this._cs.conf({ host: 'isabela.com.co' });
     }
     AppComponent.prototype.ngOnInit = function () {
         $.material.init();
@@ -193,7 +195,7 @@ var AppRouteModule = (function () {
 AppRouteModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         imports: [
-            __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forRoot(__WEBPACK_IMPORTED_MODULE_2__app_routing__["a" /* AppRoutes */], { preloadingStrategy: __WEBPACK_IMPORTED_MODULE_3__selective_strategy_service__["a" /* SelectiveStrategy */] })
+            __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forRoot(__WEBPACK_IMPORTED_MODULE_2__app_routing__["a" /* AppRoutes */], { useHash: true, preloadingStrategy: __WEBPACK_IMPORTED_MODULE_3__selective_strategy_service__["a" /* SelectiveStrategy */] })
         ],
         providers: [__WEBPACK_IMPORTED_MODULE_3__selective_strategy_service__["a" /* SelectiveStrategy */]],
         exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]]
@@ -213,20 +215,21 @@ AppRouteModule = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__usuarios_route__ = __webpack_require__("../../../../../src/app/usuarios/route.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__obligaciones_route__ = __webpack_require__("../../../../../src/app/obligaciones/route.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__configuracion_configuracion_route__ = __webpack_require__("../../../../../src/app/configuracion/configuracion.route.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__turno_route__ = __webpack_require__("../../../../../src/app/turno/route.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppRoutes; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return AppMenuMeta; });
 
 
 var AppRoutes = [
-    { path: '', redirectTo: 'turno', pathMatch: 'full' },
+    { path: '', redirectTo: 'produccion/turno', pathMatch: 'full' },
     {
         path: '', component: __WEBPACK_IMPORTED_MODULE_0__lib_base_base_component__["a" /* BaseComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_1__auth_auth_guard__["a" /* AuthGuard */]], data: { preload: true }, children: [
             // { path: '', loadChildren: './home/home.module#HomeModule' },
-            { path: '', loadChildren: './turno/turno.module#TurnoModule' },
+            { path: 'produccion', loadChildren: './turno/turno.module#TurnoModule' },
             { path: '', loadChildren: './empleados/empleados.module#EmpleadosModule' },
             { path: '', loadChildren: './nomina/nomina.module#NominaModule' },
             { path: 'usuarios', loadChildren: './usuarios/usuarios.module#UsuariosModule' },
-            { path: 'obligaciones', loadChildren: './obligaciones/obligaciones.module#ObligacionesModule' },
+            { path: 'obligaciones', loadChildren: './obligaciones/obligaciones.module#ObligacionesModule', },
             { path: 'configuracion', loadChildren: './configuracion/configuracion.module#ConfiguracionModule' }
         ]
     },
@@ -234,10 +237,11 @@ var AppRoutes = [
 
 
 
+
 var AppMenuMeta = [
     // { title: 'Inico', url: '/dashboard', icon: 'dashboard' },
     { title: 'Usuarios', icon: 'supervisor_account', children: __WEBPACK_IMPORTED_MODULE_2__usuarios_route__["b" /* UsuariosMenuMeta */] },
-    { title: 'Turno', icon: 'assignment_ind', url: '/turno' },
+    { title: 'Producción', icon: 'work', children: __WEBPACK_IMPORTED_MODULE_5__turno_route__["b" /* ProduccionMenuMeta */] },
     { title: 'Obligaciones', icon: 'assignment', children: __WEBPACK_IMPORTED_MODULE_3__obligaciones_route__["b" /* ObligacionesMenuMeta */] },
     { title: 'Empleados', icon: 'account_box', url: '/empleados' },
     { title: 'Nomina', icon: 'monetization_on', url: '/nomina' },
@@ -510,8 +514,8 @@ var AuthService = (function () {
             this.isLogin().then(function (data) {
                 _this.addUser(data);
             });
-            var u = JSON.parse(localStorage.getItem('user'));
-            if (u) {
+            if (localStorage.hasOwnProperty('user') && localStorage.user !== 'undefined') {
+                var u = JSON.parse(localStorage.getItem('user'));
                 this.addUser(u);
                 return u;
             }
@@ -709,6 +713,175 @@ RegistroComponent = __decorate([
 
 /***/ }),
 
+/***/ "../../../../../src/app/configuracion/banco/banco.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_components__ = __webpack_require__("../../../../../src/lib/components.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__banco_service__ = __webpack_require__("../../../../../src/app/configuracion/banco/banco.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BancoComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return EditBancoComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return BancoListComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var BancoComponent = (function () {
+    function BancoComponent() {
+    }
+    return BancoComponent;
+}());
+BancoComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: '<router-outlet></router-outlet>'
+    })
+], BancoComponent);
+
+var EditBancoComponent = (function () {
+    function EditBancoComponent(_fb, _s, _rt) {
+        this._fb = _fb;
+        this._s = _s;
+        this._rt = _rt;
+        this.service = this._s;
+        this.form = this._fb.group({
+            nombre: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].maxLength(30)]],
+            codigo: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].maxLength(30)]]
+        });
+        this.columns = ['col1',];
+        this.renderinputs = [
+            { column: 'col1', title: 'Nombre', type: 'text', name: 'nombre' },
+            { column: 'col1', title: 'Código', type: 'text', name: 'codigo' },
+        ];
+    }
+    EditBancoComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this._form.successful = function (data) {
+            _this._rt.navigate(['configuracion/banco']);
+        };
+    };
+    return EditBancoComponent;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _a || Object)
+], EditBancoComponent.prototype, "_form", void 0);
+EditBancoComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: "<ex-form #f icon=\"attach_money\" title=\"Banco\"\n        [form]=\"form\"\n        [service]=\"service\"\n        [columns]=\"columns\"\n        [renderinputs]=\"renderinputs\"></ex-form>"
+    }),
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__banco_service__["a" /* BancoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__banco_service__["a" /* BancoService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _d || Object])
+], EditBancoComponent);
+
+var BancoListComponent = (function () {
+    function BancoListComponent(_as) {
+        this._as = _as;
+        this.icon = 'attach_money';
+        this.title = 'Banco';
+        this.service = this._as;
+        this.multiselect = true;
+        this.columns = [
+            {
+                className: 'text-center',
+                orderable: false,
+                searchable: false,
+                data: 'id',
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderCheckRow
+            },
+            { data: 'nombre' },
+            { data: 'codigo' },
+        ];
+    }
+    BancoListComponent.prototype.onChange = function ($event) {
+        // console.log($event);
+    };
+    return BancoListComponent;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('table'),
+    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */]) === "function" && _e || Object)
+], BancoListComponent.prototype, "table", void 0);
+BancoListComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: __webpack_require__("../../../../../src/app/configuracion/banco/list.banco.component.html")
+    }),
+    __metadata("design:paramtypes", [typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_4__banco_service__["a" /* BancoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__banco_service__["a" /* BancoService */]) === "function" && _f || Object])
+], BancoListComponent);
+
+var _a, _b, _c, _d, _e, _f;
+//# sourceMappingURL=banco.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/configuracion/banco/banco.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_services__ = __webpack_require__("../../../../../src/lib/services.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BancoService; });
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var BancoService = (function (_super) {
+    __extends(BancoService, _super);
+    function BancoService(_cl, _rt) {
+        var _this = _super.call(this, _cl, _rt, 'recursos/banco/') || this;
+        _this._cl = _cl;
+        _this._rt = _rt;
+        return _this;
+    }
+    return BancoService;
+}(__WEBPACK_IMPORTED_MODULE_2__lib_services__["a" /* CrudService */]));
+BancoService = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__lib_services__["b" /* CallService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__lib_services__["b" /* CallService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
+], BancoService);
+
+var _a, _b;
+//# sourceMappingURL=banco.service.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/configuracion/banco/list.banco.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<ex-table #table [title]=\"title\" [icon]=\"icon\" [service]=\"service\" [multiselect]=\"multiselect\" [columns]=\"columns\">\n    <th>Nombre</th>\n    <th>Código</th>\n</ex-table>\n"
+
+/***/ }),
+
 /***/ "../../../../../src/app/configuracion/cargo/cargo.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -718,6 +891,7 @@ RegistroComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_components__ = __webpack_require__("../../../../../src/lib/components.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__cargo_service__ = __webpack_require__("../../../../../src/app/configuracion/cargo/cargo.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__unidadproduccion_unidadproduccion_service__ = __webpack_require__("../../../../../src/app/configuracion/unidadproduccion/unidadproduccion.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CargoComponent; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return CargoListComponent; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return EditCargoComponent; });
@@ -730,6 +904,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -762,9 +937,6 @@ var CargoListComponent = (function () {
                 render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderCheckRow
             },
             { data: 'nombre' },
-            { data: 'valor_hora_diurna' },
-            { data: 'valor_hora_festivo' },
-            { data: 'valor_hora_nocturna' }
         ];
     }
     CargoListComponent.prototype.onChange = function ($event) {
@@ -784,27 +956,29 @@ CargoListComponent = __decorate([
 ], CargoListComponent);
 
 var EditCargoComponent = (function () {
-    function EditCargoComponent(_fb, _s, _rt) {
+    function EditCargoComponent(_fb, _s, _u, _rt) {
         this._fb = _fb;
         this._s = _s;
+        this._u = _u;
         this._rt = _rt;
         this.service = this._s;
+        this.opciones = [];
+        this.nombre = function (item) { return item.nombre; };
         this.form = this._fb.group({
             nombre: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
-            valor_hora_diurna: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].min(1)]],
-            valor_hora_nocturna: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].min(1)]],
-            valor_hora_festivo: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].min(1)]],
+            unidades_produccion: [[], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
         });
         this.columns = ['col1',];
         this.renderinputs = [
             { column: 'col1', title: 'Nombre', type: 'text', name: 'nombre' },
-            { column: 'col1', title: 'Valor hora diurna', type: 'number', name: 'valor_hora_diurna' },
-            { column: 'col1', title: 'Valor hora nocturna', type: 'number', name: 'valor_hora_nocturna' },
-            { column: 'col1', title: 'Valor hora festivo', type: 'number', name: 'valor_hora_festivo' }
         ];
     }
-    EditCargoComponent.prototype.ngAfterViewInit = function () {
+    EditCargoComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this._form.setReady(true);
+        Promise.all([this._multi.complete]).then(function (data) {
+            _this._form.setReady(false);
+        });
         this._form.successful = function (data) {
             _this._rt.navigate(['configuracion/cargos']);
         };
@@ -815,14 +989,18 @@ __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
     __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _c || Object)
 ], EditCargoComponent.prototype, "_form", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('multi'),
+    __metadata("design:type", Object)
+], EditCargoComponent.prototype, "_multi", void 0);
 EditCargoComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        template: "<ex-form #f icon=\"turned_in\" title=\"Cargos\"\n        [form]=\"form\"\n        [service]=\"service\"\n        [columns]=\"columns\"\n        [renderinputs]=\"renderinputs\"></ex-form>"
+        template: __webpack_require__("../../../../../src/app/configuracion/cargo/form.cargo.component.html")
     }),
-    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__cargo_service__["a" /* CargoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__cargo_service__["a" /* CargoService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _f || Object])
+    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__cargo_service__["a" /* CargoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__cargo_service__["a" /* CargoService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_5__unidadproduccion_unidadproduccion_service__["a" /* UnidadProduccionService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__unidadproduccion_unidadproduccion_service__["a" /* UnidadProduccionService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _g || Object])
 ], EditCargoComponent);
 
-var _a, _b, _c, _d, _e, _f;
+var _a, _b, _c, _d, _e, _f, _g;
 //# sourceMappingURL=cargo.component.js.map
 
 /***/ }),
@@ -878,10 +1056,17 @@ var _a, _b;
 
 /***/ }),
 
+/***/ "../../../../../src/app/configuracion/cargo/form.cargo.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<ex-form #f icon=\"turned_in\" title=\"Cargos\" [form]=\"form\" [service]=\"service\" [columns]=\"columns\" [renderinputs]=\"renderinputs\">\n    <div bottom-form class=\"row\">\n        <div class=\"col-lg-12\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_tipocontrato\">Unidades de producción</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <ex-multi #multi name=\"unidades_produccion\" placeholder=\"Seleccione las unidades\" [form]=\"form\" [service]=\"_u\" [render]=\"nombre\" [item]=\"_form.item\"></ex-multi>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</ex-form>\n"
+
+/***/ }),
+
 /***/ "../../../../../src/app/configuracion/cargo/list.cargo.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ex-table #table [title]=\"title\" [icon]=\"icon\" [service]=\"service\" [multiselect]=\"multiselect\" [columns]=\"columns\">\n    <th>Nombre</th>\n    <th>Valor hora diurna</th>\n    <th>Valor hora nocturna</th>\n    <th>Valor hora festivo</th>\n</ex-table>\n"
+module.exports = "<ex-table #table [title]=\"title\" [icon]=\"icon\" [service]=\"service\" [multiselect]=\"multiselect\" [columns]=\"columns\">\n    <th>Nombre</th>\n</ex-table>\n"
 
 /***/ }),
 
@@ -892,10 +1077,22 @@ module.exports = "<ex-table #table [title]=\"title\" [icon]=\"icon\" [service]=\
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__cargo_cargo_component__ = __webpack_require__("../../../../../src/app/configuracion/cargo/cargo.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__general_general_component__ = __webpack_require__("../../../../../src/app/configuracion/general/general.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__tipocontrato_tipocontrato_component__ = __webpack_require__("../../../../../src/app/configuracion/tipocontrato/tipocontrato.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cargo_cargo_service__ = __webpack_require__("../../../../../src/app/configuracion/cargo/cargo.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__tipocontrato_tipocontrato_service__ = __webpack_require__("../../../../../src/app/configuracion/tipocontrato/tipocontrato.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__tarifario_tarifario_component__ = __webpack_require__("../../../../../src/app/configuracion/tarifario/tarifario.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__unidadproduccion_unidadproduccion_component__ = __webpack_require__("../../../../../src/app/configuracion/unidadproduccion/unidadproduccion.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__banco_banco_component__ = __webpack_require__("../../../../../src/app/configuracion/banco/banco.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__cargo_cargo_service__ = __webpack_require__("../../../../../src/app/configuracion/cargo/cargo.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__tipocontrato_tipocontrato_service__ = __webpack_require__("../../../../../src/app/configuracion/tipocontrato/tipocontrato.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__unidadproduccion_unidadproduccion_service__ = __webpack_require__("../../../../../src/app/configuracion/unidadproduccion/unidadproduccion.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__tarifario_tarifario_service__ = __webpack_require__("../../../../../src/app/configuracion/tarifario/tarifario.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__banco_banco_service__ = __webpack_require__("../../../../../src/app/configuracion/banco/banco.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ConfiguracionRoutes; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return ConfiguracionMenuMeta; });
+
+
+
+
+
+
 
 
 
@@ -904,26 +1101,60 @@ module.exports = "<ex-table #table [title]=\"title\" [icon]=\"icon\" [service]=\
 var ConfiguracionRoutes = [
     {
         path: '', children: [
-            { path: 'cargos', component: __WEBPACK_IMPORTED_MODULE_0__cargo_cargo_component__["a" /* CargoComponent */], children: [
+            {
+                path: 'cargos', component: __WEBPACK_IMPORTED_MODULE_0__cargo_cargo_component__["a" /* CargoComponent */], data: { miga: 'Cargos' }, children: [
                     { path: '', component: __WEBPACK_IMPORTED_MODULE_0__cargo_cargo_component__["b" /* CargoListComponent */] },
-                    { path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_0__cargo_cargo_component__["c" /* EditCargoComponent */], resolve: { item: __WEBPACK_IMPORTED_MODULE_3__cargo_cargo_service__["a" /* CargoService */] } }
-                ] },
-            { path: 'general', component: __WEBPACK_IMPORTED_MODULE_1__general_general_component__["a" /* GeneralComponent */], children: [
+                    { path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_0__cargo_cargo_component__["c" /* EditCargoComponent */], data: { miga: 'Editar' }, resolve: { item: __WEBPACK_IMPORTED_MODULE_6__cargo_cargo_service__["a" /* CargoService */] } }
+                ]
+            },
+            {
+                path: 'general', component: __WEBPACK_IMPORTED_MODULE_1__general_general_component__["a" /* GeneralComponent */], children: [
                     { path: '', component: __WEBPACK_IMPORTED_MODULE_1__general_general_component__["b" /* EditGeneralComponent */] }
-                ] },
-            { path: 'tipo/contrato', component: __WEBPACK_IMPORTED_MODULE_2__tipocontrato_tipocontrato_component__["a" /* TipocontratoComponent */], children: [
+                ]
+            },
+            {
+                path: 'tipo/contrato', component: __WEBPACK_IMPORTED_MODULE_2__tipocontrato_tipocontrato_component__["a" /* TipocontratoComponent */], data: { miga: 'Tipos de contratos' }, children: [
                     { path: '', component: __WEBPACK_IMPORTED_MODULE_2__tipocontrato_tipocontrato_component__["b" /* TipoContratoListComponent */] },
-                    { path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_2__tipocontrato_tipocontrato_component__["c" /* EditTipoContratoComponent */], resolve: { item: __WEBPACK_IMPORTED_MODULE_4__tipocontrato_tipocontrato_service__["a" /* TipoContratoService */] } }
-                ] }
+                    { path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_2__tipocontrato_tipocontrato_component__["c" /* EditTipoContratoComponent */], data: { miga: 'Editar' }, resolve: { item: __WEBPACK_IMPORTED_MODULE_7__tipocontrato_tipocontrato_service__["a" /* TipoContratoService */] } }
+                ]
+            },
+            {
+                path: 'unidad/produccion', component: __WEBPACK_IMPORTED_MODULE_4__unidadproduccion_unidadproduccion_component__["a" /* UnidadproduccionComponent */], data: { miga: 'Unidades de producción' }, children: [
+                    { path: '', component: __WEBPACK_IMPORTED_MODULE_4__unidadproduccion_unidadproduccion_component__["b" /* UnidadProduccionListComponent */] },
+                    { path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_4__unidadproduccion_unidadproduccion_component__["c" /* EditUnidadProduccionComponent */], data: { miga: 'Editar' }, resolve: { item: __WEBPACK_IMPORTED_MODULE_8__unidadproduccion_unidadproduccion_service__["a" /* UnidadProduccionService */] } }
+                ]
+            },
+            {
+                path: 'tarifario', component: __WEBPACK_IMPORTED_MODULE_3__tarifario_tarifario_component__["a" /* TarifarioComponent */], data: { miga: 'Tarifario' }, children: [
+                    { path: '', component: __WEBPACK_IMPORTED_MODULE_3__tarifario_tarifario_component__["b" /* TarifarioListComponent */] },
+                    { path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_3__tarifario_tarifario_component__["c" /* EditTarifarioComponent */], data: { miga: 'Editar' }, resolve: { item: __WEBPACK_IMPORTED_MODULE_9__tarifario_tarifario_service__["a" /* TarifarioService */] } }
+                ]
+            },
+            {
+                path: 'banco', component: __WEBPACK_IMPORTED_MODULE_5__banco_banco_component__["a" /* BancoComponent */], data: { miga: 'Bancos' }, children: [
+                    { path: '', component: __WEBPACK_IMPORTED_MODULE_5__banco_banco_component__["c" /* BancoListComponent */] },
+                    { path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_5__banco_banco_component__["b" /* EditBancoComponent */], data: { miga: 'Editar' }, resolve: { item: __WEBPACK_IMPORTED_MODULE_10__banco_banco_service__["a" /* BancoService */] } }
+                ]
+            }
         ]
     }
 ];
 var ConfiguracionMenuMeta = [
+    { title: 'Banco', url: '/configuracion/banco', icon: 'extension' },
     { title: 'Cargos', url: '/configuracion/cargos', icon: 'extension' },
     { title: 'Tipos de Contrato', url: '/configuracion/tipo/contrato', icon: 'extension' },
-    { title: 'Configuración General', url: '/configuracion/general', icon: 'extension' }
+    { title: 'Unidad de producción', url: '/configuracion/unidad/produccion', icon: 'extension' },
+    { title: 'Tarifario', url: '/configuracion/tarifario', icon: 'extension' },
+    { title: 'Configuración General', url: '/configuracion/general', icon: 'extension' },
 ];
 //# sourceMappingURL=configuracion.route.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/configuracion/general/form.configuracion.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<ex-form #f icon=\"settings\" title=\"Configuración general\" [form]=\"form\" [service]=\"service\" [columns]=\"columns\" [renderinputs]=\"renderinputs\" [deleteable]=\"deleteable\" [otro]=\"otro\">\n    <div bottom-form class=\"row\">\n        <div class=\"col-lg-12\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-2 label-on-left\" for=\"id_tarifario\">Unidades de producción</label>\n                    <div class=\"col-lg-10\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <ex-multi #multi name=\"tarifario\" placeholder=\"Seleccione las tarifas\" [form]=\"form\" [service]=\"_t\" [render]=\"nombre\" [item]=\"_form.item\"></ex-multi>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n</ex-form>\n"
 
 /***/ }),
 
@@ -936,6 +1167,7 @@ var ConfiguracionMenuMeta = [
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_components__ = __webpack_require__("../../../../../src/lib/components.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__general_service__ = __webpack_require__("../../../../../src/app/configuracion/general/general.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__tarifario_tarifario_service__ = __webpack_require__("../../../../../src/app/configuracion/tarifario/tarifario.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GeneralComponent; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return EditGeneralComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -947,6 +1179,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -964,13 +1197,15 @@ GeneralComponent = __decorate([
 ], GeneralComponent);
 
 var EditGeneralComponent = (function () {
-    function EditGeneralComponent(_fb, _s, _rt) {
+    function EditGeneralComponent(_fb, _s, _t, _rt) {
         this._fb = _fb;
         this._s = _s;
+        this._t = _t;
         this._rt = _rt;
         this.service = this._s;
         this.otro = false;
         this.deleteable = false;
+        this.nombre = function (item) { return "Para el(la) " + item.cargo__nombre + " el " + item.unidad__nombre + " es a: " + item.precio; };
         this.form = this._fb.group({
             tipo_corte: [[], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
             primer_dia: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].min(1), __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].max(31)]],
@@ -988,6 +1223,10 @@ var EditGeneralComponent = (function () {
             extra_dominical_nocturna: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].min(0)]],
             descuento_salud: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].min(0)]],
             prestaciones_sociales: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].min(0)]],
+            nit: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
+            numero_cuenta: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
+            tipo_cuenta: [[], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
+            tarifario: [[], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required]
         });
         this.columns = ['col1', 'col2'];
         this.renderinputs = [
@@ -1003,6 +1242,14 @@ var EditGeneralComponent = (function () {
             { column: 'col1', title: 'Hora de finalización de recargo nocturno', type: 'text', name: 'h_recargo_nocturno_fin', class: 'timepicker' },
             { column: 'col1', title: 'Hora de inicio de almuerzo', type: 'text', name: 'h_almuerzo_inicio', class: 'timepicker' },
             { column: 'col1', title: 'Hora de finalización del almuerzo', type: 'text', name: 'h_almuerzo_fin', class: 'timepicker' },
+            { column: 'col1', title: 'Nit', type: 'text', name: 'nit' },
+            { column: 'col1', title: 'Numero de cuenta', type: 'number', name: 'numero_cuenta' },
+            {
+                column: 'col1', title: 'Tipo de cuenta', type: 'null', name: 'tipo_cuenta', isSelect: true, options: [
+                    { title: 'Ahorros', value: 'S' },
+                    { title: 'Corriente', value: 'D' }
+                ]
+            },
             { column: 'col2', title: 'Valor recargo nocturno %', type: 'number', name: 'nocturna' },
             { column: 'col2', title: 'Valor recargo dominical %', type: 'number', name: 'dominical' },
             { column: 'col2', title: 'Valor recargo nocturno dominical %', type: 'number', name: 'nocturna_dominical' },
@@ -1014,34 +1261,17 @@ var EditGeneralComponent = (function () {
             { column: 'col2', title: 'Pago de salud y pensión del empleador %', type: 'number', name: 'prestaciones_sociales' },
         ];
     }
-    EditGeneralComponent.prototype.ngAfterViewInit = function () {
+    EditGeneralComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this._form.prePatchValue = function (value) {
-            // console.log(value);
-            if (value) {
-                if (!Array.isArray(value.tipo_corte)) {
-                    value.tipo_corte = [value.tipo_corte];
-                }
-            }
-            return value;
-        };
-        this._form.preSave = function (data) {
-            if (Array.isArray(data.tipo_corte)) {
-                data.tipo_corte = data.tipo_corte[0];
-            }
-            return data;
-        };
+        this._form.setReady(true);
+        Promise.all([this._s.list({}), this._multi.complete]).then(function (data) {
+            var datos = data[0].json();
+            _this._form.setItem(datos.object_list[0]);
+            _this._form.setReady(false);
+        });
         this._form.successful = function (data) {
             _this._rt.navigate(['configuracion/general']);
         };
-    };
-    EditGeneralComponent.prototype.ngAfterContentInit = function () {
-        var _this = this;
-        this._form.setReady(true);
-        this._s.list({}).then(function (data) { return data.json(); }).then(function (data) {
-            _this._form.setItem(data.object_list[0]);
-            _this._form.setReady(false);
-        });
     };
     return EditGeneralComponent;
 }());
@@ -1049,14 +1279,18 @@ __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
     __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _a || Object)
 ], EditGeneralComponent.prototype, "_form", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('multi'),
+    __metadata("design:type", Object)
+], EditGeneralComponent.prototype, "_multi", void 0);
 EditGeneralComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        template: "<ex-form #f icon=\"settings\" title=\"Configuraci\u00F3n general\"\n        [form]=\"form\"\n        [service]=\"service\"\n        [columns]=\"columns\"\n        [renderinputs]=\"renderinputs\"\n        [deleteable]=\"deleteable\"\n        [otro]=\"otro\"></ex-form>"
+        template: __webpack_require__("../../../../../src/app/configuracion/general/form.configuracion.component.html")
     }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__general_service__["a" /* ConfiguracionService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__general_service__["a" /* ConfiguracionService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _d || Object])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__general_service__["a" /* ConfiguracionService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__general_service__["a" /* ConfiguracionService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_5__tarifario_tarifario_service__["a" /* TarifarioService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__tarifario_tarifario_service__["a" /* TarifarioService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _e || Object])
 ], EditGeneralComponent);
 
-var _a, _b, _c, _d;
+var _a, _b, _c, _d, _e;
 //# sourceMappingURL=general.component.js.map
 
 /***/ }),
@@ -1108,6 +1342,189 @@ ConfiguracionService = __decorate([
 
 var _a, _b;
 //# sourceMappingURL=general.service.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/configuracion/tarifario/edit.tarifario.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<ex-form #f icon=\"local_atm\" title=\"Tarifario\" [form]=\"form\" [service]=\"service\" [columns]=\"columns\" [renderinputs]=\"renderinputs\">\n    <div top-form class=\"row\">\n        <div class=\"col-lg-12\">\n            <div class=\"row\">\n                <label class=\"col-lg-3 label-on-left\" for=\"id_unidad\">Unidad:</label>\n                <div class=\"col-lg-9\">\n                    <div class=\"form-group label-floating is-empty\">\n                        <label class=\"control-label\"></label>\n                        <ex-autocomplete name=\"unidad\" [form]=\"form\" [service]=\"_u\" [item]=\"_form.item\" [itemVal]=\"itemUnidad\"></ex-autocomplete>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class=\"col-lg-12\">\n            <div class=\"row\">\n                <label class=\"col-lg-3 label-on-left\" for=\"id_cargo\">Cargo:</label>\n                <div class=\"col-lg-9\">\n                    <div class=\"form-group label-floating is-empty\">\n                        <label class=\"control-label\"></label>\n                        <ex-autocomplete name=\"cargo\" [form]=\"form\" [service]=\"_c\" [item]=\"_form.item\" [itemVal]=\"itemCargo\"></ex-autocomplete>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</ex-form>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/configuracion/tarifario/list.tarifario.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<ex-table #table [title]=\"title\" [icon]=\"icon\" [service]=\"service\" [multiselect]=\"multiselect\" [columns]=\"columns\">\n    <th>Unidad</th>\n    <th>Cargo</th>\n    <th>Precio</th>\n</ex-table>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/configuracion/tarifario/tarifario.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_components__ = __webpack_require__("../../../../../src/lib/components.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__tarifario_service__ = __webpack_require__("../../../../../src/app/configuracion/tarifario/tarifario.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__unidadproduccion_unidadproduccion_service__ = __webpack_require__("../../../../../src/app/configuracion/unidadproduccion/unidadproduccion.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__cargo_cargo_service__ = __webpack_require__("../../../../../src/app/configuracion/cargo/cargo.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TarifarioComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return TarifarioListComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return EditTarifarioComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+var TarifarioComponent = (function () {
+    function TarifarioComponent() {
+    }
+    return TarifarioComponent;
+}());
+TarifarioComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: '<router-outlet></router-outlet>'
+    })
+], TarifarioComponent);
+
+var TarifarioListComponent = (function () {
+    function TarifarioListComponent(_s) {
+        this._s = _s;
+        this.icon = 'local_atm';
+        this.title = 'Tarifario';
+        this.service = this._s;
+        this.multiselect = true;
+        this.columns = [
+            {
+                className: 'text-center',
+                orderable: false,
+                searchable: false,
+                data: 'id',
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderCheckRow
+            },
+            { data: 'unidad__nombre' },
+            { data: 'cargo__nombre' },
+            { data: 'precio' }
+        ];
+    }
+    return TarifarioListComponent;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('table'),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */]) === "function" && _a || Object)
+], TarifarioListComponent.prototype, "table", void 0);
+TarifarioListComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: __webpack_require__("../../../../../src/app/configuracion/tarifario/list.tarifario.component.html")
+    }),
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4__tarifario_service__["a" /* TarifarioService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__tarifario_service__["a" /* TarifarioService */]) === "function" && _b || Object])
+], TarifarioListComponent);
+
+var EditTarifarioComponent = (function () {
+    function EditTarifarioComponent(_fb, _s, _u, _c, _rt) {
+        this._fb = _fb;
+        this._s = _s;
+        this._u = _u;
+        this._c = _c;
+        this._rt = _rt;
+        this.service = this._s;
+        this.itemCargo = function (item) { return item.cargo__nombre; };
+        this.itemUnidad = function (item) { return item.unidad__nombre; };
+        this.form = this._fb.group({
+            unidad: [0, [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].pattern(/\d/)]],
+            cargo: [0, [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].pattern(/\d/)]],
+            precio: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].min(0)]]
+        });
+        this.columns = ['col1'];
+        this.renderinputs = [
+            { column: 'col1', title: 'Precio', type: 'number', name: 'precio', },
+        ];
+    }
+    EditTarifarioComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this._form.successful = function (data) {
+            _this._rt.navigate(['configuracion/tarifario']);
+        };
+    };
+    return EditTarifarioComponent;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
+    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _d || Object)
+], EditTarifarioComponent.prototype, "_form", void 0);
+EditTarifarioComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: __webpack_require__("../../../../../src/app/configuracion/tarifario/edit.tarifario.component.html")
+    }),
+    __metadata("design:paramtypes", [typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_4__tarifario_service__["a" /* TarifarioService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__tarifario_service__["a" /* TarifarioService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_5__unidadproduccion_unidadproduccion_service__["a" /* UnidadProduccionService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__unidadproduccion_unidadproduccion_service__["a" /* UnidadProduccionService */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_6__cargo_cargo_service__["a" /* CargoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__cargo_cargo_service__["a" /* CargoService */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _j || Object])
+], EditTarifarioComponent);
+
+var _a, _b, _d, _e, _f, _g, _h, _j;
+//# sourceMappingURL=tarifario.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/configuracion/tarifario/tarifario.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_services__ = __webpack_require__("../../../../../src/lib/services.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TarifarioService; });
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var TarifarioService = (function (_super) {
+    __extends(TarifarioService, _super);
+    function TarifarioService(_cl, _rt) {
+        var _this = _super.call(this, _cl, _rt, 'recursos/tarifario/') || this;
+        _this._cl = _cl;
+        _this._rt = _rt;
+        _this.setEditUrl(_this.addUrl);
+        return _this;
+    }
+    return TarifarioService;
+}(__WEBPACK_IMPORTED_MODULE_2__lib_services__["a" /* CrudService */]));
+TarifarioService = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__lib_services__["b" /* CallService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__lib_services__["b" /* CallService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
+], TarifarioService);
+
+var _a, _b;
+//# sourceMappingURL=tarifario.service.js.map
 
 /***/ }),
 
@@ -1203,25 +1620,14 @@ var EditTipoContratoComponent = (function () {
             {
                 column: 'col1', title: 'Modalidad', type: null, name: 'modalidad', isSelect: true, options: [
                     { title: 'Por hora', value: 1 },
-                    { title: 'Salario fijo', value: 2 }
+                    { title: 'Salario fijo', value: 2 },
+                    { title: 'Por producción', value: 3 }
                 ]
             }
         ];
     }
-    EditTipoContratoComponent.prototype.ngAfterViewInit = function () {
+    EditTipoContratoComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this._form.prePatchValue = function (value) {
-            if (!Array.isArray(value.modalidad)) {
-                value.modalidad = [value.modalidad];
-            }
-            return value;
-        };
-        this._form.preSave = function (data) {
-            if (Array.isArray(data.modalidad)) {
-                data.modalidad = data.modalidad[0];
-            }
-            return data;
-        };
         this._form.successful = function (data) {
             _this._rt.navigate(['configuracion/tipo/contrato']);
         };
@@ -1295,6 +1701,221 @@ var _a, _b;
 
 /***/ }),
 
+/***/ "../../../../../src/app/configuracion/unidadproduccion/list.unidadproduccion.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<ex-table #table [title]=\"title\" [icon]=\"icon\" [service]=\"service\" [multiselect]=\"multiselect\" [columns]=\"columns\">\n    <th>Nombre</th>\n</ex-table>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/configuracion/unidadproduccion/unidadproduccion.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_components__ = __webpack_require__("../../../../../src/lib/components.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__unidadproduccion_service__ = __webpack_require__("../../../../../src/app/configuracion/unidadproduccion/unidadproduccion.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UnidadproduccionComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return UnidadProduccionListComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return EditUnidadProduccionComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var UnidadproduccionComponent = (function () {
+    function UnidadproduccionComponent() {
+    }
+    return UnidadproduccionComponent;
+}());
+UnidadproduccionComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: '<router-outlet></router-outlet>'
+    })
+], UnidadproduccionComponent);
+
+var UnidadProduccionListComponent = (function () {
+    function UnidadProduccionListComponent(_as) {
+        this._as = _as;
+        this.icon = 'label';
+        this.title = 'Unidad de producción';
+        this.service = this._as;
+        this.multiselect = true;
+        this.columns = [
+            {
+                className: 'text-center',
+                orderable: false,
+                searchable: false,
+                data: 'id',
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderCheckRow
+            },
+            { data: 'nombre' },
+        ];
+    }
+    return UnidadProduccionListComponent;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('table'),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */]) === "function" && _a || Object)
+], UnidadProduccionListComponent.prototype, "table", void 0);
+UnidadProduccionListComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: __webpack_require__("../../../../../src/app/configuracion/unidadproduccion/list.unidadproduccion.component.html")
+    }),
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4__unidadproduccion_service__["a" /* UnidadProduccionService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__unidadproduccion_service__["a" /* UnidadProduccionService */]) === "function" && _b || Object])
+], UnidadProduccionListComponent);
+
+var EditUnidadProduccionComponent = (function () {
+    function EditUnidadProduccionComponent(_fb, _s, _rt) {
+        this._fb = _fb;
+        this._s = _s;
+        this._rt = _rt;
+        this.service = this._s;
+        this.form = this._fb.group({
+            nombre: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].maxLength(30)]],
+        });
+        this.columns = ['col1'];
+        this.renderinputs = [
+            { column: 'col1', title: 'Nombre', type: 'text', name: 'nombre' },
+        ];
+    }
+    EditUnidadProduccionComponent.prototype.ngAfterViewInit = function () {
+        var _this = this;
+        this._form.successful = function (data) {
+            _this._rt.navigate(['configuracion/unidad/produccion']);
+        };
+    };
+    return EditUnidadProduccionComponent;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _c || Object)
+], EditUnidadProduccionComponent.prototype, "_form", void 0);
+EditUnidadProduccionComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: "<ex-form #f icon=\"label\" title=\"Unidad de producci\u00F3n\"\n        [form]=\"form\"\n        [service]=\"service\"\n        [columns]=\"columns\"\n        [renderinputs]=\"renderinputs\"></ex-form>"
+    }),
+    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__unidadproduccion_service__["a" /* UnidadProduccionService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__unidadproduccion_service__["a" /* UnidadProduccionService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _f || Object])
+], EditUnidadProduccionComponent);
+
+var _a, _b, _c, _d, _e, _f;
+//# sourceMappingURL=unidadproduccion.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/configuracion/unidadproduccion/unidadproduccion.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_services__ = __webpack_require__("../../../../../src/lib/services.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UnidadProduccionService; });
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var UnidadProduccionService = (function (_super) {
+    __extends(UnidadProduccionService, _super);
+    function UnidadProduccionService(_cl, _rt) {
+        var _this = _super.call(this, _cl, _rt, 'recursos/unidad/produccion/') || this;
+        _this._cl = _cl;
+        _this._rt = _rt;
+        _super.prototype.setRedirectUrl.call(_this, '/configuracion/unidad/produccion');
+        return _this;
+    }
+    return UnidadProduccionService;
+}(__WEBPACK_IMPORTED_MODULE_2__lib_services__["a" /* CrudService */]));
+UnidadProduccionService = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__lib_services__["b" /* CallService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__lib_services__["b" /* CallService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
+], UnidadProduccionService);
+
+var _a, _b;
+//# sourceMappingURL=unidadproduccion.service.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/empleados/empleado/empleado.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_services__ = __webpack_require__("../../../../../src/lib/services.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EmpleadoService; });
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var EmpleadoService = (function (_super) {
+    __extends(EmpleadoService, _super);
+    function EmpleadoService(_cl, _rt) {
+        var _this = _super.call(this, _cl, _rt, 'recursos/empleado/') || this;
+        _this._cl = _cl;
+        _this._rt = _rt;
+        _super.prototype.setRedirectUrl.call(_this, '/empleados');
+        return _this;
+    }
+    return EmpleadoService;
+}(__WEBPACK_IMPORTED_MODULE_2__lib_services__["a" /* CrudService */]));
+EmpleadoService = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__lib_services__["b" /* CallService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__lib_services__["b" /* CallService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
+], EmpleadoService);
+
+var _a, _b;
+//# sourceMappingURL=empleado.service.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/obligaciones/cesantias/cesantias.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1348,7 +1969,7 @@ var EditCesantiasComponent = (function () {
             { column: 'col1', title: 'Código', type: 'text', name: 'codigo' },
         ];
     }
-    EditCesantiasComponent.prototype.ngAfterViewInit = function () {
+    EditCesantiasComponent.prototype.ngOnInit = function () {
         var _this = this;
         this._form.successful = function (data) {
             _this._rt.navigate(['obligaciones/cesantias']);
@@ -1515,7 +2136,7 @@ var EditCompensacionComponent = (function () {
             { column: 'col1', title: 'Código', type: 'text', name: 'codigo' },
         ];
     }
-    EditCompensacionComponent.prototype.ngAfterViewInit = function () {
+    EditCompensacionComponent.prototype.ngOnInit = function () {
         var _this = this;
         this._form.successful = function (data) {
             _this._rt.navigate(['obligaciones/compensacion']);
@@ -1685,7 +2306,7 @@ var EditEpsComponent = (function () {
             { column: 'col1', title: 'Código', type: 'text', name: 'codigo' },
         ];
     }
-    EditEpsComponent.prototype.ngAfterViewInit = function () {
+    EditEpsComponent.prototype.ngOnInit = function () {
         var _this = this;
         this._form.successful = function (data) {
             _this._rt.navigate(['obligaciones/eps']);
@@ -1862,7 +2483,7 @@ var EditPensionComponent = (function () {
             { column: 'col1', title: 'Código', type: 'text', name: 'codigo' },
         ];
     }
-    EditPensionComponent.prototype.ngAfterViewInit = function () {
+    EditPensionComponent.prototype.ngOnInit = function () {
         var _this = this;
         this._form.successful = function (data) {
             _this._rt.navigate(['obligaciones/pension']);
@@ -1997,22 +2618,30 @@ var _a, _b;
 var ObligacionesRoutes = [
     {
         path: '', children: [
-            { path: 'pension', component: __WEBPACK_IMPORTED_MODULE_0__pension_pension_component__["a" /* PensionComponent */], children: [
+            {
+                path: 'pension', component: __WEBPACK_IMPORTED_MODULE_0__pension_pension_component__["a" /* PensionComponent */], data: { miga: 'Pensión' }, children: [
                     { path: '', component: __WEBPACK_IMPORTED_MODULE_0__pension_pension_component__["b" /* PensionListComponent */] },
-                    { path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_0__pension_pension_component__["c" /* EditPensionComponent */], resolve: { item: __WEBPACK_IMPORTED_MODULE_7__pension_pension_service__["a" /* PensionService */] } }
-                ] },
-            { path: 'eps', component: __WEBPACK_IMPORTED_MODULE_1__eps_eps_component__["a" /* EpsComponent */], children: [
+                    { path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_0__pension_pension_component__["c" /* EditPensionComponent */], data: { miga: 'Editar' }, resolve: { item: __WEBPACK_IMPORTED_MODULE_7__pension_pension_service__["a" /* PensionService */] } }
+                ]
+            },
+            {
+                path: 'eps', component: __WEBPACK_IMPORTED_MODULE_1__eps_eps_component__["a" /* EpsComponent */], data: { miga: 'Eps' }, children: [
                     { path: '', component: __WEBPACK_IMPORTED_MODULE_1__eps_eps_component__["b" /* EpsListComponent */] },
-                    { path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_1__eps_eps_component__["c" /* EditEpsComponent */], resolve: { item: __WEBPACK_IMPORTED_MODULE_6__eps_eps_service__["a" /* EpsService */] } }
-                ] },
-            { path: 'compensacion', component: __WEBPACK_IMPORTED_MODULE_2__compensacion_compensacion_component__["a" /* CompensacionComponent */], children: [
+                    { path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_1__eps_eps_component__["c" /* EditEpsComponent */], data: { miga: 'Editar' }, resolve: { item: __WEBPACK_IMPORTED_MODULE_6__eps_eps_service__["a" /* EpsService */] } }
+                ]
+            },
+            {
+                path: 'compensacion', component: __WEBPACK_IMPORTED_MODULE_2__compensacion_compensacion_component__["a" /* CompensacionComponent */], data: { miga: 'Caja de compensación' }, children: [
                     { path: '', component: __WEBPACK_IMPORTED_MODULE_2__compensacion_compensacion_component__["b" /* CompensacionListComponent */] },
-                    { path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_2__compensacion_compensacion_component__["c" /* EditCompensacionComponent */], resolve: { item: __WEBPACK_IMPORTED_MODULE_5__compensacion_compensacion_service__["a" /* CompensacionService */] } }
-                ] },
-            { path: 'cesantias', component: __WEBPACK_IMPORTED_MODULE_3__cesantias_cesantias_component__["a" /* CesantiasComponent */], children: [
+                    { path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_2__compensacion_compensacion_component__["c" /* EditCompensacionComponent */], data: { miga: 'Editar' }, resolve: { item: __WEBPACK_IMPORTED_MODULE_5__compensacion_compensacion_service__["a" /* CompensacionService */] } }
+                ]
+            },
+            {
+                path: 'cesantias', component: __WEBPACK_IMPORTED_MODULE_3__cesantias_cesantias_component__["a" /* CesantiasComponent */], data: { miga: 'Cesantías' }, children: [
                     { path: '', component: __WEBPACK_IMPORTED_MODULE_3__cesantias_cesantias_component__["b" /* CesantiasListComponent */] },
-                    { path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_3__cesantias_cesantias_component__["c" /* EditCesantiasComponent */], resolve: { item: __WEBPACK_IMPORTED_MODULE_4__cesantias_cesantias_service__["a" /* CesantiasService */] } }
-                ] }
+                    { path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_3__cesantias_cesantias_component__["c" /* EditCesantiasComponent */], data: { miga: 'Editar' }, resolve: { item: __WEBPACK_IMPORTED_MODULE_4__cesantias_cesantias_service__["a" /* CesantiasService */] } }
+                ]
+            }
         ]
     }
 ];
@@ -2061,6 +2690,569 @@ SelectiveStrategy = __decorate([
 ], SelectiveStrategy);
 
 //# sourceMappingURL=selective-strategy.service.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/turno/produccion/edit.produccion.html":
+/***/ (function(module, exports) {
+
+module.exports = "<ex-form #f icon=\"work\" title=\"Producción\" [form]=\"form\" [service]=\"service\" [columns]=\"columns\" [renderinputs]=\"renderinputs\">\n    <div top-form class=\"row\">\n        <div class=\"col-lg-12\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_unidad\">Unidad:</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <label class=\"control-label\"></label>\n                            <ex-autocomplete name=\"unidad\" (cambio)=\"onChange($event)\" [form]=\"form\" [service]=\"_u\" [item]=\"_form.item\" [itemVal]=\"itemUnidad\"></ex-autocomplete>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div top-form class=\"row\">\n        <div class=\"col-lg-12\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_tipocontrato\">Empleados</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <ex-multi #multi name=\"empleados\" placeholder=\"Seleccione los empleados\" [form]=\"form\" [service]=\"_e\" [render]=\"empleado\" [item]=\"_form.item\"></ex-multi>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</ex-form>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/turno/produccion/list.produccion.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<ex-table #table [title]=\"title\" [icon]=\"icon\" [service]=\"service\" [multiselect]=\"multiselect\" [columns]=\"columns\">\n    <th>Unidad</th>\n    <th>Cantidad</th>\n    <th>Fecha</th>\n</ex-table>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/turno/produccion/produccion.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_components__ = __webpack_require__("../../../../../src/lib/components.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__produccion_service__ = __webpack_require__("../../../../../src/app/turno/produccion/produccion.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__empleados_empleado_empleado_service__ = __webpack_require__("../../../../../src/app/empleados/empleado/empleado.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__configuracion_unidadproduccion_unidadproduccion_service__ = __webpack_require__("../../../../../src/app/configuracion/unidadproduccion/unidadproduccion.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProduccionComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return ProduccionListComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return EditProduccionComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+var ProduccionComponent = (function () {
+    function ProduccionComponent() {
+    }
+    return ProduccionComponent;
+}());
+ProduccionComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: '<router-outlet></router-outlet>'
+    })
+], ProduccionComponent);
+
+var ProduccionListComponent = (function () {
+    function ProduccionListComponent(_as) {
+        this._as = _as;
+        this.icon = 'work';
+        this.title = 'Producción';
+        this.service = this._as;
+        this.multiselect = true;
+        this.columns = [
+            {
+                className: 'text-center',
+                orderable: false,
+                searchable: false,
+                data: 'id',
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderCheckRow
+            },
+            { data: 'unidad__nombre' },
+            { data: 'cantidad' },
+            { data: 'fecha' }
+        ];
+    }
+    return ProduccionListComponent;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('table'),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */]) === "function" && _a || Object)
+], ProduccionListComponent.prototype, "table", void 0);
+ProduccionListComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: __webpack_require__("../../../../../src/app/turno/produccion/list.produccion.component.html")
+    }),
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4__produccion_service__["a" /* ProduccionService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__produccion_service__["a" /* ProduccionService */]) === "function" && _b || Object])
+], ProduccionListComponent);
+
+var EditProduccionComponent = (function () {
+    function EditProduccionComponent(_fb, _s, _e, _u, _rt, _r) {
+        this._fb = _fb;
+        this._s = _s;
+        this._e = _e;
+        this._u = _u;
+        this._rt = _rt;
+        this._r = _r;
+        this.service = this._s;
+        this.empleado = function (item) { return item.nombre + " " + item.apellidos + "(" + item.cargo__nombre + ")"; };
+        this.itemUnidad = function (item) { return "" + item.unidad__nombre; };
+        this.form = this._fb.group({
+            unidad: [[], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
+            empleados: [[], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
+            cantidad: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].min(0)]]
+        });
+        this.columns = ['col1'];
+        this.renderinputs = [
+            { column: 'col1', title: 'Cantidad', type: 'text', name: 'cantidad' },
+        ];
+        if (!!this._r.snapshot.data['item'] && Object.keys(this._r.snapshot.data['item']).length !== 0) {
+            this.produccion = this._r.snapshot.data['item'];
+            this.form.get('unidad').setValue(this.produccion.unidad);
+            this.form.get('unidad').disable();
+        }
+    }
+    EditProduccionComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        if (this.produccion) {
+            this._form.setReady(true);
+            this.empleadosList({ cargo__tarifario__unidad: this.produccion.unidad });
+        }
+        else {
+            this.form.get('empleados').disable();
+        }
+        this._form.successful = function (data) {
+            _this._rt.navigate(['produccion/produccion']);
+        };
+        this._form.preSave = function (data) {
+            if (_this.produccion) {
+                var datos = data;
+                datos['unidad'] = _this.produccion.unidad;
+            }
+            return data;
+        };
+    };
+    EditProduccionComponent.prototype.onChange = function (event) {
+        if (!!event.item) {
+            this.form.get('empleados').setValue([]);
+            this.empleadosList({ cargo__tarifario__unidad: event.item.id });
+            this.form.get('empleados').enable();
+        }
+    };
+    EditProduccionComponent.prototype.empleadosList = function (query) {
+        var _this = this;
+        Promise.all([this._e.list(query), this._multi.complete]).then(function (data) {
+            var datos = data[0].json();
+            console.log(datos);
+            _this._form.setReady(false);
+        });
+    };
+    return EditProduccionComponent;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _c || Object)
+], EditProduccionComponent.prototype, "_form", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('multi'),
+    __metadata("design:type", Object)
+], EditProduccionComponent.prototype, "_multi", void 0);
+EditProduccionComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: __webpack_require__("../../../../../src/app/turno/produccion/edit.produccion.html")
+    }),
+    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"]) === "function" && _d || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_4__produccion_service__["a" /* ProduccionService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__produccion_service__["a" /* ProduccionService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_5__empleados_empleado_empleado_service__["a" /* EmpleadoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__empleados_empleado_empleado_service__["a" /* EmpleadoService */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_6__configuracion_unidadproduccion_unidadproduccion_service__["a" /* UnidadProduccionService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__configuracion_unidadproduccion_unidadproduccion_service__["a" /* UnidadProduccionService */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _j || Object, typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */]) === "function" && _k || Object])
+], EditProduccionComponent);
+
+var _a, _b, _c, _d, _f, _g, _h, _j, _k;
+//# sourceMappingURL=produccion.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/turno/produccion/produccion.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_services__ = __webpack_require__("../../../../../src/lib/services.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProduccionService; });
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var ProduccionService = (function (_super) {
+    __extends(ProduccionService, _super);
+    function ProduccionService(_cl, _rt) {
+        var _this = _super.call(this, _cl, _rt, 'turnos/produccion/') || this;
+        _this._cl = _cl;
+        _this._rt = _rt;
+        _super.prototype.setRedirectUrl.call(_this, '/produccion/produccion');
+        return _this;
+    }
+    return ProduccionService;
+}(__WEBPACK_IMPORTED_MODULE_2__lib_services__["a" /* CrudService */]));
+ProduccionService = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__lib_services__["b" /* CallService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__lib_services__["b" /* CallService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
+], ProduccionService);
+
+var _a, _b;
+//# sourceMappingURL=produccion.service.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/turno/route.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__produccion_produccion_component__ = __webpack_require__("../../../../../src/app/turno/produccion/produccion.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__produccion_produccion_service__ = __webpack_require__("../../../../../src/app/turno/produccion/produccion.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__turno_turno_component__ = __webpack_require__("../../../../../src/app/turno/turno/turno.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__turno_turno_service__ = __webpack_require__("../../../../../src/app/turno/turno/turno.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TurnoRoutes; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return ProduccionMenuMeta; });
+
+
+
+
+var TurnoRoutes = [
+    {
+        path: '', children: [
+            {
+                path: 'turno', component: __WEBPACK_IMPORTED_MODULE_2__turno_turno_component__["a" /* TurnoComponent */], data: { miga: 'Turnos' }, children: [
+                    { path: '', component: __WEBPACK_IMPORTED_MODULE_2__turno_turno_component__["c" /* TurnoListComponent */] },
+                    { path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_2__turno_turno_component__["b" /* TurnoEditComponent */], data: { miga: 'Editar' }, resolve: { item: __WEBPACK_IMPORTED_MODULE_3__turno_turno_service__["a" /* TurnoService */] } }
+                ]
+            },
+            {
+                path: 'produccion', component: __WEBPACK_IMPORTED_MODULE_0__produccion_produccion_component__["a" /* ProduccionComponent */], data: { miga: 'Producciónes' }, children: [
+                    { path: '', component: __WEBPACK_IMPORTED_MODULE_0__produccion_produccion_component__["b" /* ProduccionListComponent */] },
+                    { path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_0__produccion_produccion_component__["c" /* EditProduccionComponent */], data: { miga: 'Editar' }, resolve: { item: __WEBPACK_IMPORTED_MODULE_1__produccion_produccion_service__["a" /* ProduccionService */] } }
+                ]
+            }
+        ]
+    }
+];
+var ProduccionMenuMeta = [
+    { title: 'Turnos', url: '/produccion/turno', icon: 'extension' },
+    { title: 'Producción', url: '/produccion/produccion', icon: 'extension' },
+];
+//# sourceMappingURL=route.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/turno/turno/edit.turno.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<ex-form #f icon=\"assignment_ind\" title=\"Turno\" [form]=\"form\" [service]=\"service\" [columns]=\"columns\" [renderinputs]=\"renderinputs\">\n    <div top-form class=\"row\">\n        <div top-form class=\"col-lg-6\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_empleado\">Empleado:</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <label class=\"control-label\"></label>\n                            <md-input-container [formGroup]=\"form\" style=\"width: 100%;\">\n                                <input id=\"id_empleado\" mdInput [mdAutocomplete]=\"auto\" formControlName=\"empleado\">\n                            </md-input-container>\n                            <md-autocomplete #auto=\"mdAutocomplete\" [displayWith]=\"displayFn\">\n                                <md-option *ngFor=\"let option of options\" [value]=\"option.id\">\n                                    <span>{{option.nombre}}</span> <span>{{option.apellidos}}</span> <span>({{option.cargo__nombre}})</span>\n                                </md-option>\n                            </md-autocomplete>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <button *ngIf=\"!!_form.item && !form.get('aprobado').value\" (click)=\"aprobate()\" [disabled]=\"!form.valid || !form.get('salida').value\" custom-button class=\"btn btn-primary\" type=\"button\">Aprobar</button>\n</ex-form>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/turno/turno/list.turno.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<ex-table #table title=\"Turno\" icon=\"assignment_ind\" [service]=\"service\" [multiselect]=\"multiselect\" [columns]=\"columns\">\n    <th>Empleado</th>\n    <th>Entrada</th>\n    <th>Salida</th>\n    <th>H Diurnas</th>\n    <th>H Extras</th>\n    <th>H Nocturnas</th>\n    <th>H Dominicales</th>\n</ex-table>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/turno/turno/turno.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/turno/turno/turno.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_components__ = __webpack_require__("../../../../../src/lib/components.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__turno_service__ = __webpack_require__("../../../../../src/app/turno/turno/turno.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_bs_notify__ = __webpack_require__("../../../../../src/lib/bs.notify.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__empleados_empleado_empleado_service__ = __webpack_require__("../../../../../src/app/empleados/empleado/empleado.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_startWith__ = __webpack_require__("../../../../rxjs/add/operator/startWith.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_startWith___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_startWith__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/add/operator/map.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_rxjs_add_operator_map__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TurnoComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return TurnoListComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return TurnoEditComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+
+var TurnoComponent = (function () {
+    function TurnoComponent() {
+    }
+    return TurnoComponent;
+}());
+TurnoComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: '<router-outlet></router-outlet>',
+        styles: [__webpack_require__("../../../../../src/app/turno/turno/turno.component.scss")]
+    })
+], TurnoComponent);
+
+var TurnoListComponent = (function () {
+    function TurnoListComponent(_as) {
+        this._as = _as;
+        this.service = this._as;
+        this.multiselect = true;
+        this.columns = [
+            {
+                className: 'text-center',
+                orderable: false,
+                searchable: false,
+                data: 'id',
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderCheckRow
+            },
+            {
+                data: 'empleado',
+                render: function (data, type, full, meta) {
+                    return "<a href=\"/empleados/" + data + "/edit/\">" + full.empleado__nombre + " " + full.empleado__apellidos + "</a>";
+                }
+            },
+            { data: 'entrada', className: 'text-center' },
+            { data: 'salida', className: 'text-center' },
+            {
+                data: 'h_diurna',
+                orderable: false,
+                searchable: false,
+                className: 'text-center',
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderDecimal
+            },
+            {
+                data: 'h_extras',
+                orderable: false,
+                searchable: false,
+                className: 'text-center',
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderDecimal
+            },
+            {
+                data: 'h_nocturna',
+                orderable: false,
+                searchable: false,
+                className: 'text-center',
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderDecimal
+            },
+            {
+                data: 'h_dominical',
+                orderable: false,
+                searchable: false,
+                className: 'text-center',
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderDecimal
+            }
+        ];
+    }
+    return TurnoListComponent;
+}());
+TurnoListComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: __webpack_require__("../../../../../src/app/turno/turno/list.turno.component.html")
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_4__turno_service__["a" /* TurnoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__turno_service__["a" /* TurnoService */]) === "function" && _a || Object])
+], TurnoListComponent);
+
+;
+var TurnoEditComponent = (function () {
+    function TurnoEditComponent(_fb, _s, _rt, _es) {
+        var _this = this;
+        this._fb = _fb;
+        this._s = _s;
+        this._rt = _rt;
+        this._es = _es;
+        this.service = this._s;
+        this.options = [];
+        this.displayFn = function (val) {
+            if (_this.options.length === 0 && !!_this._form.item) {
+                return _this._form.item.empleado__nombre + " " + _this._form.item.empleado__apellidos;
+            }
+            else {
+                var value = _this.options.filter(function (data) { return data.id === val; })[0];
+                return val ? (value ? value.nombre + " " + value.apellidos : '') : null;
+            }
+        };
+        this.form = this._fb.group({
+            aprobado: [false, [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required]],
+            empleado: [0, [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].pattern(/\d/)]],
+            entrada: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required]],
+            salida: ['', []],
+            h_diurna: [{ value: 0, disabled: true }],
+            h_dominical: [{ value: 0, disabled: true }],
+            h_extras: [{ value: 0, disabled: true }],
+            h_nocturna: [{ value: 0, disabled: true }],
+        });
+        this.columns = ['col1', 'col2'];
+        this.renderinputs = [
+            // { column: 'col1', title: 'Empleado', type: 'autocomplete', name: 'empleado' },
+            { column: 'col1', title: 'Hora de entrada', type: 'text', name: 'entrada', class: 'datetimepicker' },
+            { column: 'col1', title: 'Hora de salida', type: 'text', name: 'salida', class: 'datetimepicker' },
+            { column: 'col2', title: 'Horas diurnas', type: 'number', name: 'h_diurna', step: '2' },
+            { column: 'col2', title: 'Horas nocturnas', type: 'number', name: 'h_nocturna', step: '2' },
+            { column: 'col2', title: 'Horas extras', type: 'number', name: 'h_extras', step: '2' },
+            { column: 'col2', title: 'Horas dominicales', type: 'number', name: 'h_dominical', step: '2' },
+        ];
+        this.form.get('empleado').valueChanges
+            .startWith(null)
+            .subscribe(function (name) { return _this.filterVal(name); });
+    }
+    TurnoEditComponent.prototype.aprobate = function () {
+        var _this = this;
+        swal({
+            title: 'Estás seguro de aprobar este turno? ',
+            text: "Una vez aprobado el turno no sera modificable.",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#213b78',
+            cancelButtonColor: '#ff9800',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Aprobar'
+        }).then(function () {
+            _this.form.get('aprobado').setValue(true);
+            _this._form.save();
+        }, function () { });
+    };
+    TurnoEditComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this._form.prePatchValue = function (data) {
+            _this._form.deleteable = !data.aprobado;
+            _this._form.saveable = !data.aprobado;
+            if (!!data.empleado_id) {
+                data.empleado__nombre = data.empleado;
+                data.empleado = data.empleado_id;
+            }
+            return data;
+        };
+        this._form.successful = function (data) {
+            if (!_this._form.item) {
+                _this._rt.navigate(['/produccion/turno']);
+            }
+            else {
+                // console.log(data.json());
+                _this._form.setItem(data.json());
+            }
+        };
+        this._form.error = function (data) {
+            __WEBPACK_IMPORTED_MODULE_5__lib_bs_notify__["a" /* BsNotify */].error('Ha ocurrido un error al intentar gurdar los datos');
+            _this.form.get('aprobado').setValue(false);
+        };
+    };
+    TurnoEditComponent.prototype.filterVal = function (val) {
+        var _this = this;
+        this._es.list({ q: val ? val : '' })
+            .then(function (data) { return data.json(); })
+            .then(function (data) {
+            _this.options = data.object_list;
+        }).catch(function (error) { return console.log(error); });
+    };
+    return TurnoEditComponent;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _b || Object)
+], TurnoEditComponent.prototype, "_form", void 0);
+TurnoEditComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: __webpack_require__("../../../../../src/app/turno/turno/edit.turno.component.html")
+    }),
+    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__turno_service__["a" /* TurnoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__turno_service__["a" /* TurnoService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_6__empleados_empleado_empleado_service__["a" /* EmpleadoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__empleados_empleado_empleado_service__["a" /* EmpleadoService */]) === "function" && _f || Object])
+], TurnoEditComponent);
+
+var _a, _b, _c, _d, _e, _f;
+//# sourceMappingURL=turno.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/turno/turno/turno.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_services__ = __webpack_require__("../../../../../src/lib/services.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TurnoService; });
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var TurnoService = (function (_super) {
+    __extends(TurnoService, _super);
+    function TurnoService(_cl, _rt) {
+        var _this = _super.call(this, _cl, _rt, 'turnos/turno/') || this;
+        _this._cl = _cl;
+        _this._rt = _rt;
+        _super.prototype.setRedirectUrl.call(_this, '/produccion/turno');
+        return _this;
+    }
+    return TurnoService;
+}(__WEBPACK_IMPORTED_MODULE_2__lib_services__["a" /* CrudService */]));
+TurnoService = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__lib_services__["b" /* CallService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__lib_services__["b" /* CallService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
+], TurnoService);
+
+var _a, _b;
+//# sourceMappingURL=turno.service.js.map
 
 /***/ }),
 
@@ -2135,7 +3327,7 @@ var EditAdminComponent = (function () {
             { column: 'col1', title: 'Telefono', type: 'text', name: 'fijo' }
         ];
     }
-    EditAdminComponent.prototype.ngAfterViewInit = function () {
+    EditAdminComponent.prototype.ngOnInit = function () {
         var _this = this;
         this._form.successful = function (data) {
             _this._rt.navigate(['usuarios/admin']);
@@ -2233,6 +3425,7 @@ var AdminService = (function (_super) {
         var _this = _super.call(this, _cl, _rt, 'usuarios/administrador/') || this;
         _this._cl = _cl;
         _this._rt = _rt;
+        _this.setRedirectUrl('usuarios/admin/');
         return _this;
     }
     return AdminService;
@@ -2326,7 +3519,7 @@ var AsistenteEditComponent = (function () {
             { column: 'col1', title: 'Telefono', type: 'text', name: 'fijo' },
         ];
     }
-    AsistenteEditComponent.prototype.ngAfterViewInit = function () {
+    AsistenteEditComponent.prototype.ngOnInit = function () {
         var _this = this;
         this._form.successful = function (data) {
             _this._rt.navigate(['usuarios/asistente']);
@@ -2463,15 +3656,15 @@ var UsuariosRoutes = [
     {
         path: '', children: [
             {
-                path: 'admin', component: __WEBPACK_IMPORTED_MODULE_1__admin_admin_component__["a" /* AdminComponent */], children: [
+                path: 'admin', component: __WEBPACK_IMPORTED_MODULE_1__admin_admin_component__["a" /* AdminComponent */], data: { miga: 'Administrador' }, children: [
                     { path: '', component: __WEBPACK_IMPORTED_MODULE_1__admin_admin_component__["c" /* ListAdminComponent */] },
-                    { path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_1__admin_admin_component__["b" /* EditAdminComponent */], resolve: { item: __WEBPACK_IMPORTED_MODULE_3__admin_admin_service__["a" /* AdminService */] } }
+                    { path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_1__admin_admin_component__["b" /* EditAdminComponent */], data: { miga: 'Editar' }, resolve: { item: __WEBPACK_IMPORTED_MODULE_3__admin_admin_service__["a" /* AdminService */] } }
                 ]
             },
             {
-                path: 'asistente', component: __WEBPACK_IMPORTED_MODULE_0__asistente_asistente_component__["a" /* AsistenteComponent */], children: [
+                path: 'asistente', component: __WEBPACK_IMPORTED_MODULE_0__asistente_asistente_component__["a" /* AsistenteComponent */], data: { miga: 'Asistente' }, children: [
                     { path: '', component: __WEBPACK_IMPORTED_MODULE_0__asistente_asistente_component__["b" /* AsistenteListComponent */] },
-                    { path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_0__asistente_asistente_component__["c" /* AsistenteEditComponent */], resolve: { item: __WEBPACK_IMPORTED_MODULE_2__asistente_asistente_service__["a" /* AsistenteService */] } }
+                    { path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_0__asistente_asistente_component__["c" /* AsistenteEditComponent */], data: { miga: 'Editar' }, resolve: { item: __WEBPACK_IMPORTED_MODULE_2__asistente_asistente_service__["a" /* AsistenteService */] } }
                 ]
             },
         ]
@@ -2556,7 +3749,6 @@ module.exports = "<div [formGroup]=\"form\">\n    <md-input-container style=\"wi
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AutoComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2568,13 +3760,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
-
-var AutoComponent = AutoComponent_1 = (function () {
+var AutoComponent = (function () {
     function AutoComponent() {
         var _this = this;
         this._value = '';
         this.render = function (val) { return val.nombre; };
         this.itemVal = function (item) { return item.id; };
+        this.cambio = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
         this.options = [];
         this.displayFn = function (val) {
             if (_this.options.length === 0 && !!_this.item) {
@@ -2582,6 +3774,7 @@ var AutoComponent = AutoComponent_1 = (function () {
             }
             else {
                 var value = _this.options.filter(function (data) { return data.id === val; })[0];
+                _this.cambio.emit({ item: value });
                 return val ? (value ? _this.render(value) : '') : null;
             }
         };
@@ -2648,22 +3841,18 @@ __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Object)
 ], AutoComponent.prototype, "itemVal", void 0);
-AutoComponent = AutoComponent_1 = __decorate([
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", Object)
+], AutoComponent.prototype, "cambio", void 0);
+AutoComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'ex-autocomplete',
         template: __webpack_require__("../../../../../src/lib/auto/auto.component.html"),
-        providers: [
-            {
-                provide: __WEBPACK_IMPORTED_MODULE_1__angular_forms__["NG_VALUE_ACCESSOR"],
-                useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["forwardRef"])(function () { return AutoComponent_1; }),
-                multi: true
-            }
-        ]
     }),
     __metadata("design:paramtypes", [])
 ], AutoComponent);
 
-var AutoComponent_1;
 //# sourceMappingURL=auto.component.js.map
 
 /***/ }),
@@ -2671,7 +3860,7 @@ var AutoComponent_1;
 /***/ "../../../../../src/lib/base/base.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"wrapper\">\n    <ex-sidebar>\n        <ex-navbar mobile=\"true\"></ex-navbar>\n    </ex-sidebar>\n    <div class=\"main-panel\">\n        <ex-toolbar title=\"Nomina\">\n            <ex-navbar right=\"true\"></ex-navbar>\n        </ex-toolbar>\n        <div class=\"main-content\">\n            <router-outlet></router-outlet>\n        </div>\n    </div>\n</div>\n"
+module.exports = "<div class=\"wrapper\">\n    <ex-sidebar>\n        <ex-navbar mobile=\"true\"></ex-navbar>\n    </ex-sidebar>\n    <div class=\"main-panel\">\n        <ex-toolbar title=\"Nomina\">\n            <ex-navbar right=\"true\"></ex-navbar>\n        </ex-toolbar>\n        <div class=\"main-content\">\n            <ex-miga></ex-miga>\n            <router-outlet></router-outlet>\n        </div>\n    </div>\n</div>\n"
 
 /***/ }),
 
@@ -2821,7 +4010,7 @@ CardComponent = __decorate([
 /***/ "../../../../../src/lib/form/form.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ex-card [icon]=\"icon\" [title]=\"title\">\n    <form class=\"form-horizontal\" novalidate (submit)=\"save()\" [formGroup]=\"form\">\n        <ng-content select=\"[top-form]\"></ng-content>\n        <div class=\"row\">\n            <div *ngFor=\"let column of columns\" class=\"col-lg-{{12/columns.length}}\">\n                <div class=\"form-horizontal\">\n                    <div *ngFor=\"let input of renderinputs\">\n                        <div *ngIf=\"isRender(column, input.column, input.noitem)\" class=\"row\">\n                            <label class=\"col-lg-3 label-on-left\" for=\"id_{{input.name}}\">{{input.title}}:</label>\n                            <div class=\"col-lg-9\">\n                                <div class=\"form-group label-floating is-empty\" [class.has-error]=\"!!input.error\" [class.has-success]=\"!input.error\">\n                                    <label class=\"control-label\"></label>\n                                    <input *ngIf=\"!input.isSelect && input.type !== 'checkbox'\" class=\"form-control {{input.class}}\" [attr.step]=\"input.step\" [formControlName]=\"input.name\" [type]=\"input.type\" />\n                                    <select *ngIf=\"input.isSelect\" class=\"selectpicker\" id=\"id_{{input.name}}\" [formControlName]=\"input.name\" [multiple]=\"input.multiple\" [title]=\"input.title\" data-style=\"select-with-transition\" data-size=\"7\">\n                                        <option disabled value=\"-1\">{{input.title}}</option>\n                                        <option *ngFor=\"let option of input.options\" [value]=\"option.value\">{{option.title}}</option>\n                                    </select>\n                                    <md-checkbox *ngIf=\"input.type === 'checkbox'\" [formControlName]=\"input.name\"></md-checkbox>\n                                    <span *ngIf=\"!!input.error\" class=\"help-block\">{{input.error}}</span>\n                                    <!-- <pre *ngIf=\"!!form.get(input.name).errors\">{{form.get(input.name).errors | json }}</pre> -->\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <ng-content select=\"[bottom-form]\"></ng-content>\n        <div class=\"row\">\n            <div class=\"col-lg-6\">\n                <ng-content select=\"[custom-button]\"></ng-content>\n            </div>\n            <div class=\"col-lg-6 text-right\">\n                <button *ngIf=\"!item && saveable && otro\" class=\"btn btn-primary\" (click)=\"save(true)\" type=\"button\" [disabled]=\"!form.valid\">Guardar y Crear Otro</button>\n                <input *ngIf=\"!item && saveable\" class=\"btn btn-primary\" [disabled]=\"!form.valid\" type=\"submit\" value=\"Guardar\" />\n                <button *ngIf=\"!!item && deleteable\" class=\"btn btn-warning\" (click)=\"delete()\" type=\"button\">Eliminar</button>\n                <input *ngIf=\"!!item && saveable\" class=\"btn btn-primary\" type=\"submit\" value=\"Guardar Cambios\" [disabled]=\"!form.valid\" />\n                <button class=\"btn btn-primary\" (click)=\"back()\" type=\"button\">Regresar</button>\n            </div>\n        </div>\n    </form>\n    <div class=\"cargando\" *ngIf=\"_ready\">\n        <div class=\"loader\">\n            <svg class=\"circular\" viewBox=\"25 25 50 50\">\n                <circle class=\"path\" cx=\"50\" cy=\"50\" r=\"20\" fill=\"none\" stroke-width=\"2\" stroke-miterlimit=\"10\"/>\n            </svg>\n        </div>\n    </div>\n    <!-- <pre> value: {{ form.valid }}</pre> -->\n    <!-- <pre> value: {{ form.value | json }}</pre> -->\n</ex-card>\n"
+module.exports = "<ex-card [icon]=\"icon\" [title]=\"title\">\n    <form class=\"form-horizontal\" novalidate (submit)=\"save()\" [formGroup]=\"form\">\n        <ng-content select=\"[top-form]\"></ng-content>\n        <div class=\"row\">\n            <div *ngFor=\"let column of columns\" class=\"col-lg-{{12/columns.length}}\">\n                <div class=\"form-horizontal\">\n                    <div *ngFor=\"let input of renderinputs\">\n                        <div *ngIf=\"isRender(column, input.column, input.noitem)\" class=\"row\">\n                            <label class=\"col-lg-3 label-on-left\" for=\"id_{{input.name}}\">{{input.title}}:</label>\n                            <div class=\"col-lg-9\">\n                                <div class=\"form-group label-floating is-empty\" [class.has-error]=\"!!input.error\" [class.has-success]=\"!input.error\">\n                                    <label class=\"control-label\"></label>\n                                    <input *ngIf=\"!input.isSelect && input.type !== 'checkbox'\" class=\"form-control {{input.class}}\" [attr.step]=\"input.step\" [formControlName]=\"input.name\" [type]=\"input.type\" />\n                                    <md-select style=\"width:100%\" *ngIf=\"input.isSelect\" class=\"selectpicker\" id=\"id_{{input.name}}\" [formControlName]=\"input.name\" [title]=\"input.title\">\n                                        <md-option *ngFor=\"let option of input.options\" [value]=\"option.value\">{{option.title}}</md-option>\n                                    </md-select>\n                                    <md-checkbox *ngIf=\"input.type === 'checkbox'\" [formControlName]=\"input.name\"></md-checkbox>\n                                    <span *ngIf=\"!!input.error\" class=\"help-block\">{{input.error}}</span>\n                                    <!-- <pre *ngIf=\"!!form.get(input.name).errors\">{{form.get(input.name).errors | json }}</pre> -->\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <ng-content select=\"[bottom-form]\"></ng-content>\n        <div class=\"row\">\n            <div class=\"col-lg-6\">\n                <ng-content select=\"[custom-button]\"></ng-content>\n            </div>\n            <div class=\"col-lg-6 text-right\">\n                <button *ngIf=\"!item && saveable && otro\" class=\"btn btn-primary btn-responsive\" (click)=\"save(true)\" type=\"button\" [disabled]=\"!form.valid\">Guardar y Crear Otro</button>\n                <input *ngIf=\"!item && saveable\" class=\"btn btn-primary btn-responsive\" [disabled]=\"!form.valid\" type=\"submit\" value=\"Guardar\" />\n                <button *ngIf=\"!!item && deleteable\" class=\"btn btn-warning btn-responsive\" (click)=\"delete()\" type=\"button\">Eliminar</button>\n                <input *ngIf=\"!!item && saveable\" class=\"btn btn-primary btn-responsive\" type=\"submit\" value=\"Guardar Cambios\" [disabled]=\"!form.valid\" />\n                <button class=\"btn btn-primary btn-responsive\" (click)=\"back()\" type=\"button\">Regresar</button>\n            </div>\n        </div>\n    </form>\n    <div class=\"cargando\" *ngIf=\"_ready\">\n        <div class=\"loader\">\n            <svg class=\"circular\" viewBox=\"25 25 50 50\">\n                <circle class=\"path\" cx=\"50\" cy=\"50\" r=\"20\" fill=\"none\" stroke-width=\"2\" stroke-miterlimit=\"10\"/>\n            </svg>\n        </div>\n    </div>\n    <!-- <pre> value: {{ form.valid }}</pre> -->\n    <!-- <pre> value: {{ form.value | json }}</pre> -->\n</ex-card>\n"
 
 /***/ }),
 
@@ -2866,9 +4055,6 @@ var FormComponent = (function () {
             this.item = item;
             this.form.patchValue(this.item);
         }
-        if ($('.selectpicker').length !== 0) {
-            $('.selectpicker').selectpicker('refresh');
-        }
     };
     FormComponent.prototype.prePatchValue = function (value) {
         return value;
@@ -2881,9 +4067,6 @@ var FormComponent = (function () {
         this.form.valueChanges.subscribe(function (data) { return _this.onValueChanged(data); });
     };
     FormComponent.prototype.ngAfterViewInit = function () {
-        if ($('.selectpicker').length !== 0) {
-            $('.selectpicker').selectpicker();
-        }
         $('.datetimepicker').datetimepicker({
             format: 'DD/MM/YYYY h:mm A',
             icons: {
@@ -3153,6 +4336,8 @@ var _a, _b;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__form_form_component__ = __webpack_require__("../../../../../src/lib/form/form.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__navbar_navbar_component__ = __webpack_require__("../../../../../src/lib/navbar/navbar.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__auto_auto_component__ = __webpack_require__("../../../../../src/lib/auto/auto.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__multi_multi_component__ = __webpack_require__("../../../../../src/lib/multi/multi.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__miga_miga_component__ = __webpack_require__("../../../../../src/lib/miga/miga.component.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LibModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -3160,6 +4345,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -3186,6 +4373,8 @@ var LibComponents = [
     __WEBPACK_IMPORTED_MODULE_11__table_table_component__["a" /* TableComponent */],
     __WEBPACK_IMPORTED_MODULE_12__form_form_component__["a" /* FormComponent */],
     __WEBPACK_IMPORTED_MODULE_13__navbar_navbar_component__["a" /* NavbarComponent */],
+    __WEBPACK_IMPORTED_MODULE_15__multi_multi_component__["a" /* MultiComponent */],
+    __WEBPACK_IMPORTED_MODULE_16__miga_miga_component__["a" /* MigaComponent */]
 ];
 var LibModule = (function () {
     function LibModule() {
@@ -3202,6 +4391,7 @@ LibModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_4__angular_material__["b" /* MdAutocompleteModule */],
             __WEBPACK_IMPORTED_MODULE_4__angular_material__["c" /* MdCheckboxModule */],
             __WEBPACK_IMPORTED_MODULE_4__angular_material__["a" /* MdInputModule */],
+            __WEBPACK_IMPORTED_MODULE_4__angular_material__["d" /* MdSelectModule */]
         ],
         declarations: LibComponents,
         exports: LibComponents
@@ -3245,6 +4435,163 @@ LoaderComponent = __decorate([
 ], LoaderComponent);
 
 //# sourceMappingURL=loader.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/lib/miga/miga.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<ol *ngIf=\"migas.length > 0\" class=\"breadcrumb\">\n    <!-- <li><a routerLink=\"\" class=\"breadcrumb\">Home</a></li> -->\n    <li *ngFor=\"let breadcrumb of migas\">\n        <a [routerLink]=\"[breadcrumb.url]\">{{ breadcrumb.name }}</a>\n    </li>\n</ol>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/lib/miga/miga.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_filter__ = __webpack_require__("../../../../rxjs/add/operator/filter.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_filter___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_filter__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MigaComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var MigaComponent = (function () {
+    function MigaComponent(_rt, _art) {
+        this._rt = _rt;
+        this._art = _art;
+        this.migas = [];
+    }
+    MigaComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.migas = this.getMigas(this._art);
+        this._rt.events.filter(function (event) { return event instanceof __WEBPACK_IMPORTED_MODULE_1__angular_router__["d" /* NavigationEnd */]; }).subscribe(function (event) {
+            _this.migas = _this.getMigas(_this._art);
+        });
+    };
+    MigaComponent.prototype.getMigas = function (route, url, migas) {
+        if (url === void 0) { url = ''; }
+        if (migas === void 0) { migas = []; }
+        var routeURL = route.snapshot.url.map(function (segment) { return segment.path; }).join('/');
+        if (routeURL !== '') {
+            url += "/" + routeURL;
+            if (route.snapshot.data.hasOwnProperty('miga')) {
+                var title = route.snapshot.data['miga'];
+                if (route.snapshot.params.hasOwnProperty('id') && title === 'Editar') {
+                    title = route.snapshot.params['id'] === '0' ? 'Agregar' : title;
+                }
+                var miga = {
+                    name: title,
+                    url: url,
+                };
+                migas.push(miga);
+            }
+        }
+        if (!!route.firstChild) {
+            this.getMigas(route.firstChild, url, migas);
+        }
+        return migas;
+    };
+    return MigaComponent;
+}());
+MigaComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'ex-miga',
+        template: __webpack_require__("../../../../../src/lib/miga/miga.component.html"),
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */]) === "function" && _b || Object])
+], MigaComponent);
+
+var _a, _b;
+//# sourceMappingURL=miga.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/lib/multi/multi.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div [formGroup]=\"form\">\n    <md-select style=\"width:100%\" [placeholder]=\"placeholder\" [formControlName]=\"name\" name=\"name\" [multiple]=\"true\">\n        <md-option *ngFor=\"let option of options\" [value]=\"option.id\">{{render(option)}}</md-option>\n    </md-select>\n</div>\n<div class=\"cargando\" *ngIf=\"_ready\">\n    <div class=\"loader\">\n        <svg class=\"circular\" viewBox=\"25 25 50 50\">\n            <circle class=\"path\" cx=\"50\" cy=\"50\" r=\"20\" fill=\"none\" stroke-width=\"2\" stroke-miterlimit=\"10\"/>\n        </svg>\n    </div>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/lib/multi/multi.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MultiComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var MultiComponent = (function () {
+    function MultiComponent() {
+        this.render = function (item) { return item.id; };
+        this.options = [];
+    }
+    MultiComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.service.list({ num_page: 0 })
+            .then(function (data) { return data.json(); })
+            .then(function (data) {
+            _this.options = data.object_list;
+            _this.complete = Promise.resolve();
+        }).catch(function (error) { return console.log(error); });
+        if (!!this.item && this.item[this.name]) {
+            this.form[this.name] = this.item[this.name];
+        }
+    };
+    return MultiComponent;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Object)
+], MultiComponent.prototype, "service", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Object)
+], MultiComponent.prototype, "item", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Object)
+], MultiComponent.prototype, "form", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], MultiComponent.prototype, "name", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], MultiComponent.prototype, "placeholder", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Object)
+], MultiComponent.prototype, "render", void 0);
+MultiComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'ex-multi',
+        template: __webpack_require__("../../../../../src/lib/multi/multi.component.html")
+    }),
+    __metadata("design:paramtypes", [])
+], MultiComponent);
+
+//# sourceMappingURL=multi.component.js.map
 
 /***/ }),
 
@@ -3350,12 +4697,32 @@ var CallService = (function () {
     function CallService(_http) {
         this._http = _http;
         this.json = { 'Content-Type': 'application/json' };
-        this.protocol = 'http';
+        window._server = this.ip;
     }
-    CallService.prototype.getUrl = function (url, cprotocol) {
-        var proto = cprotocol || this.protocol;
-        return proto + "://" + this.host + (!!this.port && this.port !== '80' ? ":" + this.port : '') + (!!url ? "/" + url : '');
+    CallService.prototype.getUrl = function (url) {
+        var ip = this.ip;
+        var auxUrl = "/" + url;
+        if (ip) {
+            auxUrl = "" + ip + auxUrl;
+        }
+        return auxUrl;
     };
+    CallService.prototype.conf = function (ip) {
+        this._ip = ip;
+        window._server = this.ip;
+    };
+    Object.defineProperty(CallService.prototype, "ip", {
+        get: function () {
+            if (!!this._ip) {
+                var proto = !!this._ip.protocol ? this._ip.protocol : 'http';
+                var port = !!this._ip.port && this._ip.port !== '80' ? ":" + this._ip.port : '';
+                return proto + "://" + this._ip.host + port;
+            }
+            return '';
+        },
+        enumerable: true,
+        configurable: true
+    });
     CallService.prototype.getOptions = function (headersList, par) {
         var options = new __WEBPACK_IMPORTED_MODULE_0__angular_http__["b" /* RequestOptions */]();
         var headers = new __WEBPACK_IMPORTED_MODULE_0__angular_http__["c" /* Headers */]();
@@ -3378,14 +4745,6 @@ var CallService = (function () {
         options.withCredentials = true;
         return options;
     };
-    CallService.prototype.conf = function (chost, cport, cprotocol) {
-        if (cprotocol) {
-            this.protocol = cprotocol;
-        }
-        this.host = chost;
-        this.port = cport;
-        window._server = this.getUrl();
-    };
     CallService.prototype.get = function (url, params, head) {
         // console.log(this.getUrl(url));
         return this._http.get(this.getUrl(url), this.getOptions(head, params)).toPromise();
@@ -3404,9 +4763,6 @@ var CallService = (function () {
     };
     CallService.prototype.patch = function (url, body, head) {
         return this._http.patch(this.getUrl(url), body, this.getOptions(head)).toPromise();
-    };
-    CallService.prototype.ws = function (url) {
-        return new WebSocket(this.getUrl(url, 'ws'));
     };
     return CallService;
 }());
@@ -3460,6 +4816,41 @@ var CrudBase = (function () {
     CrudBase.prototype.setListUrl = function (val) {
         this.conf.list = val;
     };
+    Object.defineProperty(CrudBase.prototype, "addUrl", {
+        get: function () {
+            return this.conf.add;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(CrudBase.prototype, "editUrl", {
+        get: function () {
+            return this.conf.edit;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(CrudBase.prototype, "redirectUrl", {
+        get: function () {
+            return this.conf.redirect;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(CrudBase.prototype, "deleteUrl", {
+        get: function () {
+            return this.conf.delete;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(CrudBase.prototype, "listUrl", {
+        get: function () {
+            return this.conf.list;
+        },
+        enumerable: true,
+        configurable: true
+    });
     CrudBase.prototype.getById = function (id) {
         if (id === 0) {
             return Promise.resolve({});
@@ -3531,6 +4922,25 @@ var CrudBase = (function () {
             return null;
         });
     };
+    CrudBase.prototype.down = function (aurl, id, formt, getName) {
+        var url = "" + this._cl.getUrl(aurl) + id;
+        $.ajax({
+            url: url,
+            method: 'POST',
+            data: { file_format: formt },
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function (data) {
+                var blob = new Blob([data]);
+                var link = document.createElement('a');
+                var date = new Date();
+                link.href = window.URL.createObjectURL(blob);
+                link.download = getName();
+                link.click();
+            }
+        });
+    };
     return CrudBase;
 }());
 
@@ -3588,15 +4998,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 var SidebarComponent = (function () {
     function SidebarComponent() {
-        this.user = JSON.parse(localStorage.getItem('user'));
-        if (!!this.user.avatar) {
-            this.user.avatar = "url(" + window._server + this.user.avatar + ")";
+        if (localStorage.hasOwnProperty('user') && localStorage.user !== 'undefined') {
+            this.user = JSON.parse(localStorage.getItem('user'));
+            if (!!this.user.avatar) {
+                this.user.avatar = "url(" + window._server + this.user.avatar + ")";
+            }
+            else {
+                this.user['avatar'] = 'url(/assets/img/default-avatar.png)';
+            }
+            if (!!this.user.first_name) {
+                this.user['nombre'] = this.user.first_name;
+            }
+            if (!!this.user.last_name) {
+                this.user['apellidos'] = this.user.last_name;
+            }
         }
-        if (!!this.user.first_name) {
-            this.user.nombre = this.user.first_name;
-        }
-        if (!!this.user.last_name) {
-            this.user.apellidos = this.user.last_name;
+        else {
+            this.user['nombre'] = 'Usuario';
+            this.user['avatar'] = 'url(/assets/img/default-avatar.png)';
         }
     }
     SidebarComponent.prototype.ngOnInit = function () {
