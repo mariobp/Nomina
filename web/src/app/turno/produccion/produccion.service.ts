@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { CallService, CrudService } from '../../../lib/services';
 
 @Injectable()
-export class TurnoService extends CrudService {
+export class ProduccionService extends CrudService {
 
     constructor(protected _cl: CallService, protected _rt: Router) {
-        super(_cl, _rt, 'turnos/turno/');
-        super.setRedirectUrl('/produccion/turno');
+        super(_cl, _rt, 'turnos/produccion/');
+        super.setRedirectUrl('/produccion/produccion');
     }
 
 }
