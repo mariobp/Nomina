@@ -10,11 +10,11 @@ from django.utils.decorators import method_decorator
 from nominax.decorator import check_login
 from cuser.middleware import CuserMiddleware
 from django.db.models import Q, Sum, Count, F, ExpressionWrapper
+
 import models
 import forms
 import json
 
-# Create your views here.
 supra.SupraConf.ACCECC_CONTROL["allow"] = True
 supra.SupraConf.ACCECC_CONTROL["origin"] = ORIGIN
 supra.SupraConf.ACCECC_CONTROL["credentials"] = "true"
@@ -146,7 +146,6 @@ class TarifarioSupraFormDelete(supra.SupraDeleteView):
         return HttpResponse(status=200)
     # end def
 # end class
-
 
 """
     Cargos

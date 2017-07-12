@@ -7,6 +7,7 @@ from datetime import date, timedelta
 from turno.datedelta import datedelta, multi_datedelta
 from turno import models as turno
 from django.db.models import Q, Sum, Count, F, ExpressionWrapper
+from django.contrib.auth.models import User
 from decimal import Decimal, getcontext
 
 
@@ -31,10 +32,29 @@ class Corte(models.Model):
 
     def __unicode__(self):
         return "%s-%s" % (str(self.fecha_inicio), str(self.fecha_fin))
+    # end def
 
     @staticmethod
     def get_instance():
         return Corte.objects.filter(cerrado=False).order_by('fecha_inicio').last()
+    # end def
+# end class
+
+class Descuento(models.Model):
+    corte = models.ForeignKey(Corte, blank=True)
+    contratos = models.ManyToManyField(recursos.Contrato)
+    cantidad = models.DecimalField("Cantidad $", max_digits=10, decimal_places=2)
+    eliminado = models.BooleanField(default=False)
+    eliminado_por = models.ForeignKey(User, related_name="eliminado_por_descuento", blank=True, null=True)
+
+    @staticmethod
+    def get_descuento(contrato, corte):
+        descuentos = Descuento.objects.filter(contratos=contrato, corte=corte)
+        total = 0
+        for descuento in descuentos:
+            total = total + descuento.cantidad/descuento.contratos.count()
+        # end for
+        return total
     # end def
 # end class
 
@@ -63,7 +83,7 @@ class Nomina(models.Model):
         # end if
         produccion = produccion.annotate(total=ExpressionWrapper(
                 Sum('cantidad')/Count('empleados')*F('unidad__tarifario__precio'), 
-                output_field=models.DateTimeField()
+                output_field=models.DecimalField(max_digits=10, decimal_places=2)
             )
         )
         total = 0
@@ -132,8 +152,12 @@ class Nomina(models.Model):
         return 0
     # end def
 
+    def descuento(self):
+        return Descuento.get_descuento(self.contrato, self.corte)
+    # end def
+
     def total(self):
-        return self.neto() - self.descuento_salud()
+        return self.neto() - self.descuento_salud() - self.descuento()
     # end def
 
     def recargos(self):

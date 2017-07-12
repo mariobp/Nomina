@@ -4,10 +4,12 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from nominax.settings import ORIGIN
 from supra import views as supra
+from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from nominax.decorator import check_login
 import models
 import json
+import forms
 
 from django.core import mail 
 from email.mime.multipart import MIMEMultipart
@@ -22,6 +24,45 @@ supra.SupraConf.ACCECC_CONTROL["credentials"] = "true"
 supra.SupraConf.ACCECC_CONTROL["headers"] = "origin, content-type, accept"
 supra.SupraConf.ACCECC_CONTROL["methods"] = "POST, GET, PUT, DELETE ,OPTIONS"
 supra.SupraConf.body = True
+
+
+class MasterList(supra.SupraListView):
+    search_key = 'q'
+    list_filter = ["id"]
+    paginate_by = 10
+
+    @method_decorator(check_login)
+    def dispatch(self, request, *args, **kwargs):
+        return super(MasterList, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def get_queryset(self):
+        queryset = super(MasterList, self).get_queryset()
+        if self.request.GET.get('num_page', False):
+            if int(self.request.GET.get('num_page')) is 0:
+                self.paginate_by = None
+            else:
+                self.paginate_by = self.request.GET.get('num_page', False)
+            # end if
+        # end if
+        propiedad = self.request.GET.get('sort_property', False)
+        orden = self.request.GET.get('sort_direction', False)
+        eliminado = self.request.GET.get('eliminado', False)
+        if eliminado == '1':
+            queryset = queryset.filter(eliminado=True)
+        else:
+            queryset = queryset.filter(eliminado=False)
+        # end if
+        if propiedad and orden:
+            if orden == "asc":
+                queryset = queryset.order_by(propiedad)
+            elif orden == "desc":
+                propiedad = "-" + propiedad
+                queryset = queryset.order_by(propiedad)
+        # end if
+        return queryset
+    # end def
+# end class
 
 class SendMailSupraList(supra.SupraListView):
     model = models.Nomina
@@ -184,3 +225,59 @@ class CorteSupraList(supra.SupraListView):
         return queryset
     # end def
 # end class
+
+
+"""
+    Descuento
+"""
+
+class DescuentoSupraList(MasterList):
+    model = models.Descuento
+    list_display = ['id', 'cantidad', 'contratos', 'corte']
+
+    def get_queryset(self):
+        queryset = super(DescuentoSupraList, self).get_queryset()
+        corte = forms.CorteForms.get_instance()
+        queryset = queryset.filter(corte = corte)
+        return queryset
+    # end def
+
+    def contratos(self, obj, now):
+        lista = []
+        for u in obj.contratos.all():
+            lista.append(u.id)
+        return lista
+    # end def
+# end class
+
+class DescuentoSupraForm(supra.SupraFormView):
+    model = models.Descuento
+    form_class = forms.DescuentoForm
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(DescuentoSupraForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
+
+class DescuentoSupraFormDelete(supra.SupraDeleteView):
+    model = models.Descuento
+
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(DescuentoSupraFormDelete, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.eliminado = True
+        user = CuserMiddleware.get_user()
+        self.object.eliminado_por = user
+        self.object.save()
+        return HttpResponse(status=200)
+    # end def
+# end class
+
