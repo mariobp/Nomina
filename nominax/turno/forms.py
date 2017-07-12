@@ -158,3 +158,12 @@ class TurnoForm(forms.ModelForm):
         return turno
     # end def
 # end class
+
+
+class ProduccionForm(forms.ModelForm):
+
+    class Meta:
+        model = models.Produccion
+        exclude = ('eliminado_por', )
+    # end class
+# end class
