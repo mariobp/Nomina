@@ -38,6 +38,16 @@ class Corte(models.Model):
     # end def
 # end class
 
+class Descuento(models.Model):
+    corte = models.ForeignKey(Corte)
+    contratos = models.ManyToManyField(recursos.Contrato)
+    cantidad = models.DecimalField("Cantidad", max_digits=10, decimal_places=2)
+
+    def get_descuento(contrato, corte):
+        Descuento.objects.filter(contratos__contrato=contrato, corte=corte)
+    # end def
+# end class
+
 class Nomina(models.Model):
     inicio_mes = models.DateField(blank=True, null=True)
 
