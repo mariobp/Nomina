@@ -5,8 +5,11 @@ entrypoint: gunicorn -b :$PORT nominax.wsgi
 threadsafe: yes
 
 
-beta_settings:
-    cloud_sql_instances: vertical-airway-172321:us-east1:ingecol-db
+handlers:
+- url: /static
+  static_dir: static/
+- url: .*
+  script: nominax.wsgi.application
 
 runtime_config:
   python_version: 2

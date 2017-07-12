@@ -56,7 +56,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'nominax',
     'informes',
     'configuracion',
     'nomina',
@@ -105,11 +104,11 @@ WSGI_APPLICATION = 'nominax.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ingecol',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'nomina',#'ingecol',#
         'USER': 'postgres',
         'PASSWORD': 'Exile*74522547',
-        'HOST': '127.0.0.1',
+        'HOST': '104.236.33.228',#'127.0.0.1',#
         'POST': '5432'
     },
     'default2': {
@@ -117,12 +116,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite'),
     }
 }
-
-DATABASES['default']['HOST'] = '/cloudsql/vertical-airway-172321:us-east1:ingecol-db'
-if os.getenv('GAE_INSTANCE'):
-    pass
-else:
-    DATABASES['default']['HOST'] = '127.0.0.1'
 
 if 'test' in sys.argv:
     DATABASES['default'] = {
@@ -197,14 +190,8 @@ DATETIME_INPUT_FORMATS = [
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = 'http://storage.googleapis.com/vertical-airway-172321/static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-
-WEB_URL = '/web/'
-WEB_ROOT = os.path.join(BASE_DIR, "web")
-
-ASSETS_URL = '/assets/'
-ASSETS_ROOT = os.path.join(BASE_DIR, "web/assets")
