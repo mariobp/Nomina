@@ -535,7 +535,7 @@ class ContraoSupraList(supra.SupraListView):
                     'empleado__apellidos', 'fecha_inicio', 'fecha_finalizacion',
                     'descanso_turno', 'inicio_descanso', 'duracion_descanso',
                     'horas_trabajo', 'horas_trabajo_semanal', 'horas_trabajo_corte')
-    list_filter = ['empleado', 'tipo_contrato', 'id']
+    list_filter = ['empleado', 'tipo_contrato', 'id', 'empleado__nombre', 'empleado__apellidos', 'empleado__cedula', 'empleado__cargo', 'empleado__fecha_nacimiento',]
     paginate_by = 10
 
     @method_decorator(check_login)
