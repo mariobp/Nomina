@@ -10,6 +10,7 @@ from django.utils.decorators import method_decorator
 from nominax.decorator import check_login
 from cuser.middleware import CuserMiddleware
 from django.db.models import Q, Sum, Count, F, ExpressionWrapper
+from nomina import models as nomina
 
 import models
 import forms
@@ -549,6 +550,11 @@ class ContraoSupraList(supra.SupraListView):
         # end if
         propiedad = self.request.GET.get('sort_property', False)
         orden = self.request.GET.get('sort_direction', False)
+        corte_pk = self.request.GET.get('corte', False)
+        corte = nomina.Corte.objects.filter(pk=corte_pk).first()
+        print corte_pk, corte
+        if corte:
+            queryset = models.Contrato.filter_by_corte(queryset, corte)
         # end if
         if propiedad and orden:
             if orden == "asc":
@@ -568,9 +574,9 @@ class EmpleadoSupraList(supra.SupraListView):
                     'cargo__nombre', 'pension', 'pension__nombre',
                     'eps', 'eps__nombre', 'cesantia', 'cesantia__nombre',
                     'cajacompensacion', 'cajacompensacion__nombre', 'banco',
-                    'banco__nombre', 'numero']
+                    'banco__nombre', 'numero', ]
     search_fields = ['nombre', 'apellidos', 'cedula']
-    list_filter = ['cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion', 'id', 'cargo__tarifario__unidad']
+    list_filter = ['cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion', 'id', ]
     search_key = 'q'
     paginate_by = 10
 
@@ -581,7 +587,11 @@ class EmpleadoSupraList(supra.SupraListView):
 
     def get_queryset(self):
         queryset = super(EmpleadoSupraList, self).get_queryset()
-        queryset = queryset.distinct('id')
+        unidad = self.request.GET.get('cargo__tarifario__unidad', False)
+        if unidad:
+            cargos = models.Cargo.objects.filter(tarifario__remplazado_por__isnull=True, tarifario__unidad__pk=unidad).values('pk')
+            queryset = queryset.filter(cargo__in=cargos)
+        # end if
         if self.request.GET.get('num_page', False):
             self.paginate_by = self.request.GET.get('num_page', False)
         # end if
