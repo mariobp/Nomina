@@ -87,7 +87,7 @@ var AppComponent = (function () {
     function AppComponent(_cs) {
         this._cs = _cs;
         this.title = 'angular';
-        this._cs.conf({ host: '104.236.33.228', port: '8010' });
+        // this._cs.conf({ host: '104.236.33.228', port: '8010' });
         // this._cs.conf({ host: 'isabela.com.co' });
     }
     AppComponent.prototype.ngOnInit = function () {
