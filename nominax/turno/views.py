@@ -202,6 +202,13 @@ class ProduccionSupraForm(supra.SupraFormView):
     model = models.Produccion
     form_class = forms.ProduccionForm
 
+    def get_form_class(self):
+        if 'pk' in self.http_kwargs:
+            self.form_class = forms.ProduccionFormEdit
+        # end if
+        return self.form_class
+    # end class
+
     @method_decorator(check_login)
     @csrf_exempt
     def dispatch(self, request, *args, **kwargs):
