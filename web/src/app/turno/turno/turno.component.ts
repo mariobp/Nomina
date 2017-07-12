@@ -138,7 +138,7 @@ export class TurnoEditComponent implements OnInit {
         }
         this._form.successful = data => {
             if (!this._form.item) {
-                this._rt.navigate(['/turno']);
+                this._rt.navigate(['/produccion/turno']);
             } else {
                 // console.log(data.json());
                 this._form.setItem(data.json());

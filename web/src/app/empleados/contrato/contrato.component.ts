@@ -105,7 +105,7 @@ export class EditContratoComponent implements OnInit {
             fecha_inicio: ['', Validators.required],
             salario_base: ['', [Validators.required, Validators.min(0)]],
             subsidio_transporte: ['', [Validators.required, Validators.min(0)]],
-            descanso_turno: [''],
+            descanso_turno: [false],
             inicio_descanso: ['', Validators.min(0)],
             fecha_finalizacion: ['']
         });

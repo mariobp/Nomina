@@ -213,8 +213,12 @@ class Contrato(models.Model):
     eliminado_por = models.ForeignKey(User, related_name="eliminado_por_contrato", blank=True, null=True)
 
     @staticmethod
-    def get_instance(empleado):
-        return Contrato.objects.filter(empleado=empleado).exclude(fecha_finalizacion__lte=date.today()).order_by('fecha_inicio').last()
+    def get_instance(empleado, corte):
+        contratos = Contrato.objects.filter(empleado=empleado).exclude(fecha_finalizacion__lte = corte.fecha_inicio)
+        if corte.fecha_fin:
+            contratos = contratos.exclude(fecha_inicio__gt=corte.fecha_fin)
+        # end if
+        return contratos.order_by('fecha_inicio').last()
     # end def
 
     def __unicode__(self):
