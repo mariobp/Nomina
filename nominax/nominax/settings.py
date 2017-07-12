@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'cuser',
     'supra',
     'import_export',
+    'nominax',
 ]
 
 MIDDLEWARE = [
@@ -105,7 +106,7 @@ WSGI_APPLICATION = 'nominax.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ingecol',
+        'NAME': 'nomina',
         'USER': 'postgres',
         'PASSWORD': 'Exile*74522547',
         'HOST': '127.0.0.1',
