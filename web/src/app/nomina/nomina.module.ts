@@ -6,8 +6,10 @@ import { MdAutocompleteModule, MdInputModule } from '@angular/material';
 import { LibModule } from '../../lib/lib.module';
 import { HttpModule } from '@angular/http';
 
-import { NominaComponent, NominaEditComponent, NominaListComponent } from './nomina/nomina.component';
+import { NominaComponent, NominaListComponent } from './nomina/nomina.component';
+import { CorteComponent, CorteListComponent, CorteEditComponent } from './corte/corte.component';
 import { NominaService } from './nomina/nomina.service';
+import { CorteService } from './corte/corte.service';
 import { NominaRoutes } from './route';
 @NgModule({
     imports: [
@@ -22,11 +24,14 @@ import { NominaRoutes } from './route';
     ],
     declarations: [
         NominaComponent,
-        NominaEditComponent,
-        NominaListComponent
+        NominaListComponent,
+        CorteComponent,
+        CorteListComponent,
+        CorteEditComponent
     ],
     providers: [
-        NominaService
+        NominaService,
+        CorteService,
     ]
 })
 export class NominaModule { }

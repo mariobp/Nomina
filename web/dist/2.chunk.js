@@ -1,109 +1,6 @@
 webpackJsonp([2],{
 
-/***/ "../../../../../src/app/turno/route.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__turno_turno_component__ = __webpack_require__("../../../../../src/app/turno/turno/turno.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__turno_turno_service__ = __webpack_require__("../../../../../src/app/turno/turno/turno.service.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TurnoRoutes; });
-
-
-var TurnoRoutes = [
-    {
-        path: '', children: [
-            {
-                path: 'turno', component: __WEBPACK_IMPORTED_MODULE_0__turno_turno_component__["a" /* TurnoComponent */], children: [
-                    { path: '', component: __WEBPACK_IMPORTED_MODULE_0__turno_turno_component__["c" /* TurnoListComponent */] },
-                    { path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_0__turno_turno_component__["b" /* TurnoEditComponent */], resolve: { item: __WEBPACK_IMPORTED_MODULE_1__turno_turno_service__["a" /* TurnoService */] } }
-                ]
-            }
-        ]
-    }
-];
-//# sourceMappingURL=route.js.map
-
-/***/ }),
-
-/***/ "../../../../../src/app/turno/turno.module.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_material__ = __webpack_require__("../../../material/@angular/material.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_lib_module__ = __webpack_require__("../../../../../src/lib/lib.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__turno_turno_component__ = __webpack_require__("../../../../../src/app/turno/turno/turno.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__turno_turno_service__ = __webpack_require__("../../../../../src/app/turno/turno/turno.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__empleados_empleado_empleado_service__ = __webpack_require__("../../../../../src/app/empleados/empleado/empleado.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__route__ = __webpack_require__("../../../../../src/app/turno/route.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TurnoModule", function() { return TurnoModule; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-
-
-
-
-
-
-
-
-var TurnoModule = (function () {
-    function TurnoModule() {
-    }
-    return TurnoModule;
-}());
-TurnoModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
-        imports: [
-            __WEBPACK_IMPORTED_MODULE_5__lib_lib_module__["a" /* LibModule */],
-            __WEBPACK_IMPORTED_MODULE_3__angular_forms__["FormsModule"],
-            __WEBPACK_IMPORTED_MODULE_2__angular_common__["a" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_4__angular_material__["a" /* MdInputModule */],
-            __WEBPACK_IMPORTED_MODULE_3__angular_forms__["ReactiveFormsModule"],
-            __WEBPACK_IMPORTED_MODULE_4__angular_material__["b" /* MdAutocompleteModule */],
-            __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild(__WEBPACK_IMPORTED_MODULE_9__route__["a" /* TurnoRoutes */])
-        ],
-        declarations: [
-            __WEBPACK_IMPORTED_MODULE_6__turno_turno_component__["a" /* TurnoComponent */],
-            __WEBPACK_IMPORTED_MODULE_6__turno_turno_component__["b" /* TurnoEditComponent */],
-            __WEBPACK_IMPORTED_MODULE_6__turno_turno_component__["c" /* TurnoListComponent */]
-        ],
-        providers: [
-            __WEBPACK_IMPORTED_MODULE_7__turno_turno_service__["a" /* TurnoService */],
-            __WEBPACK_IMPORTED_MODULE_8__empleados_empleado_empleado_service__["a" /* EmpleadoService */]
-        ]
-    })
-], TurnoModule);
-
-//# sourceMappingURL=turno.module.js.map
-
-/***/ }),
-
-/***/ "../../../../../src/app/turno/turno/edit.turno.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<ex-form #f icon=\"assignment_ind\" title=\"Turno\" [form]=\"form\" [service]=\"service\" [columns]=\"columns\" [renderinputs]=\"renderinputs\">\n    <div top-form class=\"row\">\n        <div top-form class=\"col-lg-6\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_empleado\">Empleado:</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <label class=\"control-label\"></label>\n                            <md-input-container [formGroup]=\"form\" style=\"width: 100%;\">\n                                <input id=\"id_empleado\" mdInput [mdAutocomplete]=\"auto\" formControlName=\"empleado\">\n                            </md-input-container>\n                            <md-autocomplete #auto=\"mdAutocomplete\" [displayWith]=\"displayFn\">\n                                <md-option *ngFor=\"let option of options\" [value]=\"option.id\">\n                                    <span>{{option.nombre}}</span> <span>{{option.apellidos}}</span> <span>({{option.cargo__nombre}})</span>\n                                </md-option>\n                            </md-autocomplete>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <button *ngIf=\"!!_form.item && !form.get('aprobado').value\" (click)=\"aprobate()\" [disabled]=\"!form.valid || !form.get('salida').value\" custom-button class=\"btn btn-primary\" type=\"button\">Aprobar</button>\n</ex-form>\n"
-
-/***/ }),
-
-/***/ "../../../../../src/app/turno/turno/list.turno.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<ex-table #table title=\"Turno\" icon=\"assignment_ind\" [service]=\"service\" [multiselect]=\"multiselect\" [columns]=\"columns\">\n    <th>Empleado</th>\n    <th>Entrada</th>\n    <th>Salida</th>\n    <th>H Diurnas</th>\n    <th>H Extras</th>\n    <th>H Nocturnas</th>\n    <th>H Dominicales</th>\n</ex-table>\n"
-
-/***/ }),
-
-/***/ "../../../../../src/app/turno/turno/turno.component.scss":
+/***/ "../../../../../src/app/nomina/corte/corte.component.scss":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
@@ -121,24 +18,18 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ "../../../../../src/app/turno/turno/turno.component.ts":
+/***/ "../../../../../src/app/nomina/corte/corte.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_components__ = __webpack_require__("../../../../../src/lib/components.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__turno_service__ = __webpack_require__("../../../../../src/app/turno/turno/turno.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_bs_notify__ = __webpack_require__("../../../../../src/lib/bs.notify.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__empleados_empleado_empleado_service__ = __webpack_require__("../../../../../src/app/empleados/empleado/empleado.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_startWith__ = __webpack_require__("../../../../rxjs/add/operator/startWith.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_startWith___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_startWith__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/add/operator/map.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_rxjs_add_operator_map__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TurnoComponent; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return TurnoListComponent; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return TurnoEditComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_components__ = __webpack_require__("../../../../../src/lib/components.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__corte_service__ = __webpack_require__("../../../../../src/app/nomina/corte/corte.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CorteComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return CorteListComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return CorteEditComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -149,204 +40,136 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
-
-
-
-
-
-
-
-
-var TurnoComponent = (function () {
-    function TurnoComponent() {
+var CorteComponent = (function () {
+    function CorteComponent() {
     }
-    return TurnoComponent;
+    return CorteComponent;
 }());
-TurnoComponent = __decorate([
+CorteComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         template: '<router-outlet></router-outlet>',
-        styles: [__webpack_require__("../../../../../src/app/turno/turno/turno.component.scss")]
+        styles: [__webpack_require__("../../../../../src/app/nomina/corte/corte.component.scss")]
     })
-], TurnoComponent);
+], CorteComponent);
 
-var TurnoListComponent = (function () {
-    function TurnoListComponent(_as) {
-        this._as = _as;
-        this.service = this._as;
+
+
+var CorteListComponent = (function () {
+    function CorteListComponent(_s) {
+        this._s = _s;
+        this.service = this._s;
         this.multiselect = true;
+        this.aggregable = false;
+        this.editable = true;
+        this.deleteable = false;
+        this.order = [[1, 'desc']];
         this.columns = [
             {
                 className: 'text-center',
                 orderable: false,
                 searchable: false,
                 data: 'id',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderCheckRow
+                render: __WEBPACK_IMPORTED_MODULE_1__lib_components__["b" /* TableComponent */].renderCheckRow
             },
+            { className: 'text-center', data: 'fecha_inicio' },
+            { className: 'text-center', data: 'fecha_fin' },
             {
-                data: 'empleado',
-                render: function (data, type, full, meta) {
-                    return "<a href=\"/empleados/" + data + "/edit/\">" + full.empleado__nombre + " " + full.empleado__apellidos + "</a>";
+                className: 'text-center', data: 'cerrado', render: function (data) {
+                    var icon = 'lock_open';
+                    var color = 'green';
+                    var title = 'Abierto';
+                    if (data) {
+                        color = 'red';
+                        icon = 'lock_outline';
+                        title = 'Cerrado';
+                    }
+                    return "<i class=\"material-icons " + color + "\" title=\"" + title + "\">" + icon + "</i>";
                 }
-            },
-            { data: 'entrada', className: 'text-center' },
-            { data: 'salida', className: 'text-center' },
-            {
-                data: 'h_diurna',
-                orderable: false,
-                searchable: false,
-                className: 'text-center',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderDecimal
-            },
-            {
-                data: 'h_extras',
-                orderable: false,
-                searchable: false,
-                className: 'text-center',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderDecimal
-            },
-            {
-                data: 'h_nocturna',
-                orderable: false,
-                searchable: false,
-                className: 'text-center',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderDecimal
-            },
-            {
-                data: 'h_dominical',
-                orderable: false,
-                searchable: false,
-                className: 'text-center',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderDecimal
             }
         ];
     }
-    return TurnoListComponent;
+    CorteListComponent.prototype.ngOnInit = function () { };
+    return CorteListComponent;
 }());
-TurnoListComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        template: __webpack_require__("../../../../../src/app/turno/turno/list.turno.component.html")
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_4__turno_service__["a" /* TurnoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__turno_service__["a" /* TurnoService */]) === "function" && _a || Object])
-], TurnoListComponent);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('table'),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__lib_components__["b" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__lib_components__["b" /* TableComponent */]) === "function" && _a || Object)
+], CorteListComponent.prototype, "table", void 0);
+CorteListComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({ template: __webpack_require__("../../../../../src/app/nomina/corte/list.corte.component.html") }),
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__corte_service__["a" /* CorteService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__corte_service__["a" /* CorteService */]) === "function" && _b || Object])
+], CorteListComponent);
 
-;
-var TurnoEditComponent = (function () {
-    function TurnoEditComponent(_fb, _s, _rt, _es) {
-        var _this = this;
+
+
+
+var CorteEditComponent = (function () {
+    function CorteEditComponent(_fb, _s, _rt) {
         this._fb = _fb;
         this._s = _s;
         this._rt = _rt;
-        this._es = _es;
         this.service = this._s;
-        this.options = [];
-        this.displayFn = function (val) {
-            if (_this.options.length === 0 && !!_this._form.item) {
-                return _this._form.item.empleado__nombre + " " + _this._form.item.empleado__apellidos;
-            }
-            else {
-                var value = _this.options.filter(function (data) { return data.id === val; })[0];
-                return val ? (value ? value.nombre + " " + value.apellidos : '') : null;
-            }
-        };
+        this.deleteable = false;
+        this.saveable = false;
         this.form = this._fb.group({
-            aprobado: [false, [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required]],
-            empleado: [0, [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].pattern(/\d/)]],
-            entrada: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required]],
-            salida: ['', []],
-            h_diurna: [{ value: 0, disabled: true }],
-            h_dominical: [{ value: 0, disabled: true }],
-            h_extras: [{ value: 0, disabled: true }],
-            h_nocturna: [{ value: 0, disabled: true }],
+            fecha_inicio: [{ value: '', disabled: true }],
+            fecha_fin: [{ value: '', disabled: true }],
+            cerrado: [{ value: false, disabled: true }]
         });
         this.columns = ['col1', 'col2'];
         this.renderinputs = [
-            // { column: 'col1', title: 'Empleado', type: 'autocomplete', name: 'empleado' },
-            { column: 'col1', title: 'Hora de entrada', type: 'text', name: 'entrada', class: 'datetimepicker' },
-            { column: 'col1', title: 'Hora de salida', type: 'text', name: 'salida', class: 'datetimepicker' },
-            { column: 'col2', title: 'Horas diurnas', type: 'number', name: 'h_diurna', step: '2' },
-            { column: 'col2', title: 'Horas nocturnas', type: 'number', name: 'h_nocturna', step: '2' },
-            { column: 'col2', title: 'Horas extras', type: 'number', name: 'h_extras', step: '2' },
-            { column: 'col2', title: 'Horas dominicales', type: 'number', name: 'h_dominical', step: '2' },
+            { column: 'col1', title: 'Fecha de Inicio', type: 'text', name: 'fecha_inicio' },
+            { column: 'col2', title: 'Fecha de Finalizacion', type: 'text', name: 'fecha_fin' },
+            { column: 'col2', title: 'Cerrado', type: 'checkbox', name: 'cerrado' }
         ];
-        this.form.get('empleado').valueChanges
-            .startWith(null)
-            .subscribe(function (name) { return _this.filterVal(name); });
     }
-    TurnoEditComponent.prototype.aprobate = function () {
+    CorteEditComponent.prototype.ngOnInit = function () {
         var _this = this;
-        swal({
-            title: 'Estás seguro de aprobar este turno? ',
-            text: "Una vez aprobado el turno no sera modificable.",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#213b78',
-            cancelButtonColor: '#ff9800',
-            cancelButtonText: 'Cancelar',
-            confirmButtonText: 'Aprobar'
-        }).then(function () {
-            _this.form.get('aprobado').setValue(true);
-            _this._form.save();
-        }, function () { });
-    };
-    TurnoEditComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this._form.prePatchValue = function (data) {
-            _this._form.deleteable = !data.aprobado;
-            _this._form.saveable = !data.aprobado;
-            if (!!data.empleado_id) {
-                data.empleado__nombre = data.empleado;
-                data.empleado = data.empleado_id;
-            }
-            return data;
-        };
         this._form.successful = function (data) {
-            if (!_this._form.item) {
-                _this._rt.navigate(['/turno']);
-            }
-            else {
-                // console.log(data.json());
-                _this._form.setItem(data.json());
-            }
-        };
-        this._form.error = function (data) {
-            __WEBPACK_IMPORTED_MODULE_5__lib_bs_notify__["a" /* BsNotify */].error('Ha ocurrido un error al intentar gurdar los datos');
-            _this.form.get('aprobado').setValue(false);
+            _this._rt.navigate(['/nomina']);
         };
     };
-    TurnoEditComponent.prototype.filterVal = function (val) {
+    CorteEditComponent.prototype.plano1 = function () {
         var _this = this;
-        this._es.list({ q: val ? val : '' })
-            .then(function (data) { return data.json(); })
-            .then(function (data) {
-            _this.options = data.object_list;
-        }).catch(function (error) { return console.log(error); });
+        this._s.down('admin/nomina/nomina/export/free/?corte__id__exact=', this._form.item.id, 1, function () {
+            return "Bancolombia_pba_" + _this._form.item.fecha_inicio + "_" + _this._form.item.fecha_fin + ".txt";
+        });
     };
-    return TurnoEditComponent;
+    CorteEditComponent.prototype.plano2 = function () {
+        var _this = this;
+        this._s.down('admin/nomina/nomina/export/free/?corte__id__exact=', this._form.item.id, 3, function () {
+            return "Davivienda_pba_" + _this._form.item.fecha_inicio + "_" + _this._form.item.fecha_fin + ".xls";
+        });
+    };
+    CorteEditComponent.prototype.finiquito = function () {
+        console.log('finiquito');
+    };
+    return CorteEditComponent;
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _b || Object)
-], TurnoEditComponent.prototype, "_form", void 0);
-TurnoEditComponent = __decorate([
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__lib_components__["a" /* FormComponent */]) === "function" && _c || Object)
+], CorteEditComponent.prototype, "_form", void 0);
+CorteEditComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        template: __webpack_require__("../../../../../src/app/turno/turno/edit.turno.component.html")
+        template: __webpack_require__("../../../../../src/app/nomina/corte/edit.corte.component.html")
     }),
-    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__turno_service__["a" /* TurnoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__turno_service__["a" /* TurnoService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_6__empleados_empleado_empleado_service__["a" /* EmpleadoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__empleados_empleado_empleado_service__["a" /* EmpleadoService */]) === "function" && _f || Object])
-], TurnoEditComponent);
+    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__angular_forms__["FormBuilder"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__angular_forms__["FormBuilder"]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2__corte_service__["a" /* CorteService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__corte_service__["a" /* CorteService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */]) === "function" && _f || Object])
+], CorteEditComponent);
 
 var _a, _b, _c, _d, _e, _f;
-//# sourceMappingURL=turno.component.js.map
+//# sourceMappingURL=corte.component.js.map
 
 /***/ }),
 
-/***/ "../../../../../src/app/turno/turno/turno.service.ts":
+/***/ "../../../../../src/app/nomina/corte/corte.service.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_services__ = __webpack_require__("../../../../../src/lib/services.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TurnoService; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CorteService; });
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -369,36 +192,392 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var TurnoService = (function (_super) {
-    __extends(TurnoService, _super);
-    function TurnoService(_cl, _rt) {
-        var _this = _super.call(this, _cl, _rt, 'turnos/turno/') || this;
+var CorteService = (function (_super) {
+    __extends(CorteService, _super);
+    function CorteService(_cl, _rt) {
+        var _this = _super.call(this, _cl, _rt, 'nomina/corte/') || this;
         _this._cl = _cl;
         _this._rt = _rt;
-        _super.prototype.setRedirectUrl.call(_this, '/turno');
+        _this.setRedirectUrl('/nomina');
         return _this;
     }
-    return TurnoService;
+    return CorteService;
 }(__WEBPACK_IMPORTED_MODULE_2__lib_services__["a" /* CrudService */]));
-TurnoService = __decorate([
+CorteService = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__lib_services__["b" /* CallService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__lib_services__["b" /* CallService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
-], TurnoService);
+], CorteService);
 
 var _a, _b;
-//# sourceMappingURL=turno.service.js.map
+//# sourceMappingURL=corte.service.js.map
 
 /***/ }),
 
-/***/ "../../../../rxjs/add/operator/startWith.js":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "../../../../../src/app/nomina/corte/edit.corte.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<ex-form #f icon=\"alarm_off\" title=\"Corte\" [form]=\"form\" [service]=\"service\" [columns]=\"columns\" [renderinputs]=\"renderinputs\" [deleteable]=\"deleteable\" [saveable]=\"saveable\">\n    <button (click)=\"plano1()\" custom-button class=\"btn btn-primary btn-responsive\" type=\"button\">Plano Bancolombia</button>\n    <button (click)=\"plano2()\" custom-button class=\"btn btn-primary btn-responsive\" type=\"button\">Plano Davivienda</button>\n    <button (click)=\"finiquito()\" custom-button class=\"btn btn-primary btn-responsive\" type=\"button\">Finiquito via Email</button>\n</ex-form>\n<router-outlet></router-outlet>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/nomina/corte/list.corte.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<ex-table #table title=\"Corte\" icon=\"alarm_off\" [order]=\"order\" [aggregable]=\"aggregable \" [editable]=\"editable \" [deleteable]=\"deleteable \" [service]=\"service \" [multiselect]=\"multiselect \" [columns]=\"columns \">\n    <th>Inicio</th>\n    <th>Fin</th>\n    <th>Estado</th>\n</ex-table>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/nomina/nomina.module.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_material__ = __webpack_require__("../../../material/@angular/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_lib_module__ = __webpack_require__("../../../../../src/lib/lib.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__nomina_nomina_component__ = __webpack_require__("../../../../../src/app/nomina/nomina/nomina.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__corte_corte_component__ = __webpack_require__("../../../../../src/app/nomina/corte/corte.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__nomina_nomina_service__ = __webpack_require__("../../../../../src/app/nomina/nomina/nomina.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__corte_corte_service__ = __webpack_require__("../../../../../src/app/nomina/corte/corte.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__route__ = __webpack_require__("../../../../../src/app/nomina/route.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NominaModule", function() { return NominaModule; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 
-var Observable_1 = __webpack_require__("../../../../rxjs/Observable.js");
-var startWith_1 = __webpack_require__("../../../../rxjs/operator/startWith.js");
-Observable_1.Observable.prototype.startWith = startWith_1.startWith;
-//# sourceMappingURL=startWith.js.map
+
+
+
+
+
+
+
+
+
+
+
+var NominaModule = (function () {
+    function NominaModule() {
+    }
+    return NominaModule;
+}());
+NominaModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [
+            __WEBPACK_IMPORTED_MODULE_5__lib_lib_module__["a" /* LibModule */],
+            __WEBPACK_IMPORTED_MODULE_6__angular_http__["a" /* HttpModule */],
+            __WEBPACK_IMPORTED_MODULE_3__angular_forms__["FormsModule"],
+            __WEBPACK_IMPORTED_MODULE_2__angular_common__["a" /* CommonModule */],
+            __WEBPACK_IMPORTED_MODULE_4__angular_material__["a" /* MdInputModule */],
+            __WEBPACK_IMPORTED_MODULE_3__angular_forms__["ReactiveFormsModule"],
+            __WEBPACK_IMPORTED_MODULE_4__angular_material__["b" /* MdAutocompleteModule */],
+            __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild(__WEBPACK_IMPORTED_MODULE_11__route__["a" /* NominaRoutes */])
+        ],
+        declarations: [
+            __WEBPACK_IMPORTED_MODULE_7__nomina_nomina_component__["a" /* NominaComponent */],
+            __WEBPACK_IMPORTED_MODULE_7__nomina_nomina_component__["b" /* NominaListComponent */],
+            __WEBPACK_IMPORTED_MODULE_8__corte_corte_component__["a" /* CorteComponent */],
+            __WEBPACK_IMPORTED_MODULE_8__corte_corte_component__["b" /* CorteListComponent */],
+            __WEBPACK_IMPORTED_MODULE_8__corte_corte_component__["c" /* CorteEditComponent */]
+        ],
+        providers: [
+            __WEBPACK_IMPORTED_MODULE_9__nomina_nomina_service__["a" /* NominaService */],
+            __WEBPACK_IMPORTED_MODULE_10__corte_corte_service__["a" /* CorteService */],
+        ]
+    })
+], NominaModule);
+
+//# sourceMappingURL=nomina.module.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/nomina/nomina/list.nomina.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<ex-table #table [title]=\"title\" icon=\"monetization_on\" [order]=\"order\" [aggregable]=\"aggregable\" [editable]=\"editable\" [deleteable]=\"deleteable\" [service]=\"service\" [multiselect]=\"multiselect\" [columns]=\"columns\">\n    <th></th>\n    <th>Empleado</th>\n    <th>S Producción</th>\n    <th>S Legal</th>\n    <th>Regargos</th>\n    <th>Bonificación</th>\n    <th>Prestaciones</th>\n    <th>Descuento</th>\n    <th>Neto</th>\n    <th>Total</th>\n</ex-table>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/nomina/nomina/nomina.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/nomina/nomina/nomina.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_components__ = __webpack_require__("../../../../../src/lib/components.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__nomina_service__ = __webpack_require__("../../../../../src/app/nomina/nomina/nomina.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NominaComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return NominaListComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var NominaComponent = (function () {
+    function NominaComponent() {
+    }
+    return NominaComponent;
+}());
+NominaComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: '<router-outlet></router-outlet>',
+        styles: [__webpack_require__("../../../../../src/app/nomina/nomina/nomina.component.scss")]
+    })
+], NominaComponent);
+
+var NominaListComponent = (function () {
+    /*
+        nombre empleado
+        salario base
+    */
+    function NominaListComponent(_as, _r) {
+        this._as = _as;
+        this._r = _r;
+        this.service = this._as;
+        this.multiselect = true;
+        this.aggregable = false;
+        this.editable = false;
+        this.deleteable = false;
+        this.order = [[2, 'asc']];
+        this.columns = [
+            {
+                className: 'text-center',
+                orderable: false,
+                searchable: false,
+                data: 'id',
+                render: __WEBPACK_IMPORTED_MODULE_2__lib_components__["b" /* TableComponent */].renderCheckRow
+            },
+            {
+                className: 'text-center',
+                orderable: false,
+                searchable: false,
+                data: 'id',
+                render: function (data, type, full, meta) {
+                    return "<a style=\"cursor: pointer;\"class=\"down\" data-down=\"" + data + "\" data-empleado=\"" + full.empleado_f.nombre + " " + full.empleado_f.apellidos + "\">\n                    <i class=\"material-icons\">file_download</i>\n                </a>";
+                }
+            },
+            {
+                data: 'contrato__empleado',
+                render: function (data, type, full, meta) {
+                    return full.empleado_f.nombre + " " + full.empleado_f.apellidos;
+                }
+            },
+            {
+                data: 'salario_produccion',
+                orderable: false,
+                searchable: false,
+                render: __WEBPACK_IMPORTED_MODULE_2__lib_components__["b" /* TableComponent */].renderDecimal
+            },
+            {
+                data: 'salario_legal',
+                orderable: false,
+                searchable: false,
+                render: __WEBPACK_IMPORTED_MODULE_2__lib_components__["b" /* TableComponent */].renderDecimal
+            },
+            {
+                data: 'recargos',
+                orderable: false,
+                searchable: false,
+                render: __WEBPACK_IMPORTED_MODULE_2__lib_components__["b" /* TableComponent */].renderDecimal
+            },
+            {
+                data: 'bonificacion',
+                orderable: false,
+                searchable: false,
+                render: __WEBPACK_IMPORTED_MODULE_2__lib_components__["b" /* TableComponent */].renderDecimal
+            },
+            {
+                data: 'prestaciones_sociales',
+                orderable: false,
+                searchable: false,
+                render: __WEBPACK_IMPORTED_MODULE_2__lib_components__["b" /* TableComponent */].renderDecimal
+            },
+            {
+                data: 'descuento_salud',
+                orderable: false,
+                searchable: false,
+                render: __WEBPACK_IMPORTED_MODULE_2__lib_components__["b" /* TableComponent */].renderDecimal
+            },
+            {
+                data: 'neto',
+                orderable: false,
+                searchable: false,
+                render: __WEBPACK_IMPORTED_MODULE_2__lib_components__["b" /* TableComponent */].renderDecimal
+            },
+            {
+                data: 'total',
+                orderable: false,
+                searchable: false,
+                render: __WEBPACK_IMPORTED_MODULE_2__lib_components__["b" /* TableComponent */].renderDecimal
+            },
+        ];
+        if (!!this._r.snapshot.data['item'] && Object.keys(this._r.snapshot.data['item']).length !== 0) {
+            this.corte = this._r.snapshot.data['item'];
+            this.title = "Nominas deste " + this.corte.fecha_inicio + (!!this.corte.fecha_fin ? " hasta " + this.corte.fecha_fin : '');
+        }
+    }
+    NominaListComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.table.preAjax = function (data) {
+            if (_this.corte) {
+                data['corte'] = _this.corte.id;
+            }
+            return data;
+        };
+        this.table.drawCallback = function () {
+            $('.down').click(function (e) {
+                e.preventDefault();
+                var url = window._server + "/admin/nomina/nomina/export/free/?id=" + $(this).attr('data-down');
+                var empelado = $(this).attr('data-empleado');
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: { file_format: 0 },
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    success: function (data) {
+                        var blob = new Blob([data]);
+                        var link = document.createElement('a');
+                        var date = new Date();
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = "Finiquito_" + empelado + "_" + date.toLocaleDateString('es-CO') + ".pdf";
+                        link.click();
+                    }
+                });
+            });
+        };
+    };
+    return NominaListComponent;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('table'),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__lib_components__["b" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__lib_components__["b" /* TableComponent */]) === "function" && _a || Object)
+], NominaListComponent.prototype, "table", void 0);
+NominaListComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: __webpack_require__("../../../../../src/app/nomina/nomina/list.nomina.component.html")
+    }),
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__nomina_service__["a" /* NominaService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__nomina_service__["a" /* NominaService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */]) === "function" && _c || Object])
+], NominaListComponent);
+
+var _a, _b, _c;
+//# sourceMappingURL=nomina.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/nomina/nomina/nomina.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_services__ = __webpack_require__("../../../../../src/lib/services.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NominaService; });
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var NominaService = (function (_super) {
+    __extends(NominaService, _super);
+    function NominaService(_cl, _rt) {
+        var _this = _super.call(this, _cl, _rt) || this;
+        _this._cl = _cl;
+        _this._rt = _rt;
+        _super.prototype.setListUrl.call(_this, 'nomina/historial/');
+        return _this;
+    }
+    return NominaService;
+}(__WEBPACK_IMPORTED_MODULE_2__lib_services__["c" /* CrudBase */]));
+NominaService = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__lib_services__["b" /* CallService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__lib_services__["b" /* CallService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
+], NominaService);
+
+var _a, _b;
+//# sourceMappingURL=nomina.service.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/nomina/route.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__nomina_nomina_component__ = __webpack_require__("../../../../../src/app/nomina/nomina/nomina.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__corte_corte_component__ = __webpack_require__("../../../../../src/app/nomina/corte/corte.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__corte_corte_service__ = __webpack_require__("../../../../../src/app/nomina/corte/corte.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NominaRoutes; });
+
+
+
+var NominaRoutes = [
+    {
+        path: '', children: [
+            {
+                path: 'nomina', component: __WEBPACK_IMPORTED_MODULE_1__corte_corte_component__["a" /* CorteComponent */], children: [
+                    { path: '', component: __WEBPACK_IMPORTED_MODULE_1__corte_corte_component__["b" /* CorteListComponent */] },
+                    {
+                        path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_1__corte_corte_component__["c" /* CorteEditComponent */], resolve: { item: __WEBPACK_IMPORTED_MODULE_2__corte_corte_service__["a" /* CorteService */] }, children: [
+                            { path: '', component: __WEBPACK_IMPORTED_MODULE_0__nomina_nomina_component__["b" /* NominaListComponent */] }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+];
+//# sourceMappingURL=route.js.map
 
 /***/ })
 
