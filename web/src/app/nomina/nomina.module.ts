@@ -10,7 +10,9 @@ import { NominaComponent, NominaListComponent } from './nomina/nomina.component'
 import { CorteComponent, CorteListComponent, CorteEditComponent } from './corte/corte.component';
 import { NominaService } from './nomina/nomina.service';
 import { CorteService } from './corte/corte.service';
+import { DescuentoService } from './descuento/descuento.service';
 import { NominaRoutes } from './route';
+import { DescuentoComponent, DescuentoListComponent } from './descuento/descuento.component';
 @NgModule({
     imports: [
         LibModule,
@@ -27,11 +29,14 @@ import { NominaRoutes } from './route';
         NominaListComponent,
         CorteComponent,
         CorteListComponent,
-        CorteEditComponent
+        CorteEditComponent,
+        DescuentoComponent,
+        DescuentoListComponent
     ],
     providers: [
         NominaService,
         CorteService,
+        DescuentoService
     ]
 })
 export class NominaModule { }

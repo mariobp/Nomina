@@ -151,6 +151,7 @@ export class TableComponent implements OnInit {
                     // console.log(data);
                     this.selectedItems = [];
                     this.service.data = data.object_list;
+                    this.success(this.service.data);
                     cb({ 'draw': draw, 'recordsTotal': data.count, 'recordsFiltered': data.count, 'data': data.object_list });
                 })
                 .catch(err => {
@@ -163,6 +164,8 @@ export class TableComponent implements OnInit {
             BsNotify.error('No has definido un servicio que consultar');
         }
     }
+
+    success(data: any) { }
 
     onDelete() {
         if (this.deleteable) {

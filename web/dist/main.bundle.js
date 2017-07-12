@@ -11,11 +11,11 @@ var map = {
 	],
 	"./empleados/empleados.module": [
 		"../../../../../src/app/empleados/empleados.module.ts",
-		1
+		2
 	],
 	"./nomina/nomina.module": [
 		"../../../../../src/app/nomina/nomina.module.ts",
-		2
+		1
 	],
 	"./obligaciones/obligaciones.module": [
 		"../../../../../src/app/obligaciones/obligaciones.module.ts",
@@ -531,7 +531,7 @@ var AuthService = (function () {
             .then(function (res) { return res.json(); })
             .then(function (data) {
             _this.addUser(data);
-            _this._rt.navigate([_this.redirectUrl || '/turno']);
+            _this._rt.navigate([_this.redirectUrl || '/']);
         })
             .catch(function (err) { return console.log('error', err); });
     };
@@ -5191,6 +5191,7 @@ var TableComponent = (function () {
                 // console.log(data);
                 _this.selectedItems = [];
                 _this.service.data = data.object_list;
+                _this.success(_this.service.data);
                 cb({ 'draw': draw, 'recordsTotal': data.count, 'recordsFiltered': data.count, 'data': data.object_list });
             })
                 .catch(function (err) {
@@ -5204,6 +5205,7 @@ var TableComponent = (function () {
             __WEBPACK_IMPORTED_MODULE_1__bs_notify__["a" /* BsNotify */].error('No has definido un servicio que consultar');
         }
     };
+    TableComponent.prototype.success = function (data) { };
     TableComponent.prototype.onDelete = function () {
         var _this = this;
         if (this.deleteable) {
