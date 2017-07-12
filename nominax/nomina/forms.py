@@ -44,6 +44,21 @@ class CorteForms(forms.ModelForm):
     # end def
 # end class
 
+class DescuentoForm(forms.ModelForm):
+    class Meta:
+        model = models.Descuento
+        exclude = ()
+    # end class
+
+    def clean_corte(self):
+        if not 'corte' in self.cleaned_data or not self.cleaned_data['corte']:
+            return CorteForms.get_instance()
+        # end if
+        return self.cleaned_data['corte']
+    # end def
+
+# end class
+
 class NominaForm(forms.ModelForm):
     class Meta:
         model = models.Nomina
@@ -71,11 +86,6 @@ class NominaForm(forms.ModelForm):
             return (self.clean_corte().fecha_inicio).replace(day=1)
         # end if
         return self.cleaned_data['inicio_mes']
-    # end def
-
-
-    def clean(self):
-        return self.cleaned_data
     # end def
 
     @staticmethod
