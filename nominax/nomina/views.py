@@ -70,17 +70,17 @@ class SendMailSupraList(supra.SupraListView):
     sender = "exile"
     attach_name = "FINIQUITO.pdf"
     html = "hola!"
-    url = "http://192.168.43.195:8000/admin/nomina/nomina/export/free/"
+    url = "/admin/nomina/nomina/export/free/"
     list_filter=['corte']
     def get_queryset(self):
         queryset = super(SendMailSupraList, self).get_queryset()
         ids = self.request.GET.getlist('ids')
         queryset = queryset.filter(id__in=ids)
         for nom in queryset:
-            if nom.empleado.email:
+            if nom.contrato.empleado.email:
                 values = { 'file_format': 0, }
                 data = urllib.urlencode(values)
-                req = urllib2.Request(self.url + "?id=" + str(nom.id), data)
+                req = urllib2.Request("http://"+self.requet.get_host()+self.url + "?id=" + str(nom.id), data)
                 response = urllib2.urlopen(req)
                 result = response.read()
 
