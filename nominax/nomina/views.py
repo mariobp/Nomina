@@ -84,7 +84,7 @@ class SendMailSupraList(supra.SupraListView):
                 response = urllib2.urlopen(req)
                 result = response.read()
 
-                msg = mail.EmailMultiAlternatives(self.subject, ".", self.sender, [nom.empleado.email])
+                msg = mail.EmailMultiAlternatives(self.subject, ".", self.sender, [nom.contrato.empleado.email])
                 msg.attach_alternative(self.html, "text/html")
                 msg.attach(self.attach_name, result, "application/pdf")
                 msg.send()
