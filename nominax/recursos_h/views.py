@@ -535,6 +535,7 @@ class ContraoSupraList(supra.SupraListView):
                     'empleado__apellidos', 'fecha_inicio', 'fecha_finalizacion',
                     'descanso_turno', 'inicio_descanso', 'duracion_descanso',
                     'horas_trabajo', 'horas_trabajo_semanal', 'horas_trabajo_corte')
+
     list_filter = ['empleado', 'tipo_contrato', 'id', 'empleado__nombre', 'empleado__apellidos', 'empleado__cedula', 'empleado__cargo', 'empleado__fecha_nacimiento',]
     paginate_by = 10
 
@@ -552,7 +553,6 @@ class ContraoSupraList(supra.SupraListView):
         orden = self.request.GET.get('sort_direction', False)
         corte_pk = self.request.GET.get('corte', False)
         corte = nomina.Corte.objects.filter(pk=corte_pk).first()
-        print corte_pk, corte
         if corte:
             queryset = models.Contrato.filter_by_corte(queryset, corte)
         # end if

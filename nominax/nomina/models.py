@@ -47,6 +47,16 @@ class Descuento(models.Model):
     eliminado = models.BooleanField(default=False)
     eliminado_por = models.ForeignKey(User, related_name="eliminado_por_descuento", blank=True, null=True)
 
+    def empleados(self):
+        pks = self.contratos.all().values('id')
+        empleados = recursos.Empleado.objects.filter(contrato__in=pks)
+        string = ""
+        for empleado in empleados:
+            string = string + empleado.nombre + ' ' + empleado.apellidos + ', '
+        # end for
+        return string
+    # end def
+
     @staticmethod
     def get_descuento(contrato, corte):
         descuentos = Descuento.objects.filter(contratos=contrato, corte=corte)

@@ -71,6 +71,7 @@ class SendMailSupraList(supra.SupraListView):
     attach_name = "FINIQUITO.pdf"
     html = "hola!"
     url = "http://192.168.43.195:8000/admin/nomina/nomina/export/free/"
+    list_filter=['corte']
     def get_queryset(self):
         queryset = super(SendMailSupraList, self).get_queryset()
         ids = self.request.GET.getlist('ids')
@@ -233,13 +234,17 @@ class CorteSupraList(supra.SupraListView):
 
 class DescuentoSupraList(MasterList):
     model = models.Descuento
-    list_display = ['id', 'cantidad', 'contratos', 'corte']
+    list_display = ['id', 'cantidad', 'contratos', 'corte', 'empleados']
 
     def get_queryset(self):
         queryset = super(DescuentoSupraList, self).get_queryset()
         corte = forms.CorteForms.get_instance()
         queryset = queryset.filter(corte = corte)
         return queryset
+    # end def
+
+    def empleados(self, obj, now):
+        return obj.empleados()
     # end def
 
     def contratos(self, obj, now):
