@@ -14,19 +14,20 @@ export class TableComponent implements OnInit {
 
     @ViewChild('table') private table: ElementRef;
 
-    @Input('icon') public icon: string;
-    @Input('title') public title: string;
-    @Input('service') public service: any;
-    @Input('columns') public columns: any[] = [{ data: 'id' }];
-    @Input('multiselect') public multiselect = false;
-    @Input('deleteable') public deleteable = true;
-    @Input('aggregable') public aggregable = true;
-    @Input('editable') public editable = true;
-    @Input('order') public order: any[] = [[1, 'asc']];
-    @Input('redirect') public redirect = '0/edit';
-    @Input('enable') public enable = true;
+    @Input() public icon: string;
+    @Input() public title: string;
+    @Input() public service: any;
+    @Input() public columns: any[] = [{ data: 'id' }];
+    @Input() public multiselect = false;
+    @Input() public deleteable = true;
+    @Input() public aggregable = true;
+    @Input() public editable = true;
+    @Input() public order: any[] = [[1, 'asc']];
+    @Input() public addlink = [0, 'edit'];
+    @Input() public enable = true;
     private dataTable: any;
     public selectedItems: any[] = [];
+
 
     public static renderCheckRow(data) {
         return `
@@ -50,6 +51,9 @@ export class TableComponent implements OnInit {
 
     constructor(public _cs: CallService) { }
 
+    get itemSelected(): any {
+        return this.selectedItems[0] ? this.selectedItems[0] : null;
+    }
     ngOnInit() {
         const table = this.table.nativeElement;
         const conf = {
@@ -200,5 +204,21 @@ export class TableComponent implements OnInit {
                     })
             }, () => { });
         }
+    }
+
+    get editlink() {
+        return this._editlink();
+    }
+
+    _editlink: any = () => {
+        const aux = this.itemSelected;
+        if (!!aux) {
+            return [aux.id, 'edit']
+        }
+        return [aux]
+    }
+
+    set editlink(fn) {
+        this._editlink = fn;
     }
 }
