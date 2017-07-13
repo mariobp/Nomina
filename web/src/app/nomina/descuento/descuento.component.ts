@@ -23,7 +23,7 @@ export class DescuentoListComponent implements OnInit {
     @ViewChild('table') private table: TableComponent;
 
     private corte: any;
-    private title: any;
+    public title: any;
     addlink = [{ outlets: { 'descuento': [0, 'edit'] } }]
 
 
@@ -105,13 +105,13 @@ export class DescuentoEditComponent implements OnInit {
     renderinputs: RenderInput[];
     service = this._s;
 
-    @ViewChild('f') private _form: FormComponent;
+    @ViewChild('f') public _form: FormComponent;
 
     private corte: any
-    private title: string
+    public title: string
 
     constructor(private _fb: FormBuilder, private _s: DescuentoService, private _rt: Router, private _r: ActivatedRoute,
-        private _c: ContratoService) {
+        public _c: ContratoService) {
         if (!!this._r.parent.snapshot.data['item'] && Object.keys(this._r.parent.snapshot.data['item']).length !== 0) {
             this.corte = this._r.parent.snapshot.data['item'];
             this.title = `Descuentos deste ${this.corte.fecha_inicio}` + (!!this.corte.fecha_fin ? ` hasta ${this.corte.fecha_fin}` : '');

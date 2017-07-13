@@ -49,10 +49,10 @@ export class EditTarifarioComponent implements OnInit {
     renderinputs: RenderInput[];
     service = this._s;
 
-    @ViewChild('f') private _form: FormComponent;
+    @ViewChild('f') public _form: FormComponent;
 
     constructor(private _fb: FormBuilder, private _s: TarifarioService,
-        private _u: UnidadProduccionService, private _c: CargoService, private _rt: Router) {
+        public _u: UnidadProduccionService, public _c: CargoService, public _rt: Router) {
         this.form = this._fb.group({
             unidad: [0, [Validators.required, Validators.pattern(/\d/)]],
             cargo: [0, [Validators.required, Validators.pattern(/\d/)]],
@@ -62,7 +62,7 @@ export class EditTarifarioComponent implements OnInit {
         this.renderinputs = [
             { column: 'col1', title: 'Precio', type: 'number', name: 'precio', },
         ];
-    }
+    } public
 
     itemCargo = item => item.cargo__nombre;
     itemUnidad = item => item.unidad__nombre;

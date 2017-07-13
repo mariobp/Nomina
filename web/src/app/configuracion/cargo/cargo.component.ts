@@ -49,17 +49,16 @@ export class EditCargoComponent implements OnInit {
     renderinputs: RenderInput[];
     service = this._s;
     opciones = [];
-    nombre = item => item.nombre;
 
-    @ViewChild('f') private _form: FormComponent;
+    @ViewChild('f') public _form: FormComponent;
     @ViewChild('multi') private _multi: any;
 
-    constructor(private _fb: FormBuilder, private _s: CargoService, private _u: UnidadProduccionService, private _rt: Router) {
+    constructor(private _fb: FormBuilder, private _s: CargoService, public _u: UnidadProduccionService, private _rt: Router) {
         this.form = this._fb.group({
             nombre: ['', Validators.required],
             unidades_produccion: [[], Validators.required],
         });
-        this.columns = ['col1',];
+        this.columns = ['col1'];
         this.renderinputs = [
             { column: 'col1', title: 'Nombre', type: 'text', name: 'nombre' },
 
@@ -67,6 +66,7 @@ export class EditCargoComponent implements OnInit {
 
     }
 
+    nombre = item => item.nombre;
     ngOnInit() {
         this._form.setReady(true);
         Promise.all([this._multi.complete]).then(data => {

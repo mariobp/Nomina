@@ -10,13 +10,13 @@ export class MultiComponent implements OnInit {
     @Input() form: any;
     @Input() name: string;
     @Input() placeholder: string;
-    @Input() render = item => item.id;
     options = [];
     complete: Promise<any>;
     constructor() {
 
     }
 
+    @Input() render = item => item.id;
     ngOnInit() {
         this.service.list({ num_page: 0 })
             .then(data => data.json())
