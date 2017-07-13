@@ -25,7 +25,7 @@ export class ContratoListComponent implements OnInit {
     icon = 'description';
     title = 'Contrato';
     service = this._cs;
-    redirect = '0/edit/';
+    addlink = ['0/edit/'];
     columns = [
         {
             className: 'text-center',

@@ -22,9 +22,9 @@ export class EditGeneralComponent implements OnInit {
     service = this._s;
     otro = false;
     deleteable = false;
-    nombre = item => `Para el(la) ${item.cargo__nombre} el ${item.unidad__nombre} es a: ${item.precio}`;
     @ViewChild('f') private _form: FormComponent;
     @ViewChild('multi') private _multi: any;
+    nombre = item => `Para el(la) ${item.cargo__nombre} el ${item.unidad__nombre} es a: ${item.precio}`;
 
     constructor(private _fb: FormBuilder, private _s: ConfiguracionService, private _t: TarifarioService, private _rt: Router) {
         this.form = this._fb.group({
