@@ -7,7 +7,8 @@ export class NominaService extends CrudBase {
 
     constructor(protected _cl: CallService, protected _rt: Router) {
         super(_cl, _rt);
-        super.setListUrl('nomina/historial/');
+        this.setListUrl('nomina/historial/');
+        this.setRedirectUrl('/nomina');
     }
 
 }

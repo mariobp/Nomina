@@ -53,10 +53,8 @@ export class EditProduccionComponent implements OnInit {
     columns: string[];
     renderinputs: RenderInput[];
     service = this._s;
-    empleado = item => `${item.nombre} ${item.apellidos}(${item.cargo__nombre})`;
-    itemUnidad = item => `${item.unidad__nombre}`;
     private produccion: any;
-    @ViewChild('f') private _form: FormComponent;
+    @ViewChild('f') public _form: FormComponent;
     @ViewChild('multi') private _multi: any;
 
     constructor(private _fb: FormBuilder, private _s: ProduccionService, public _e: EmpleadoService,
@@ -76,6 +74,8 @@ export class EditProduccionComponent implements OnInit {
             this.form.get('unidad').disable();
         }
     }
+    empleado = item => `${item.nombre} ${item.apellidos}(${item.cargo__nombre})`;
+    itemUnidad = item => `${item.unidad__nombre}`;
 
     ngOnInit() {
         if (this.produccion) {

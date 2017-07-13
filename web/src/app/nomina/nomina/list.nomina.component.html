@@ -1,4 +1,4 @@
-<ex-table #table [title]="title" icon="monetization_on" [order]="order" [aggregable]="aggregable" [editable]="editable" [deleteable]="deleteable" [service]="service" [multiselect]="multiselect" [columns]="columns">
+<ex-table #table [title]="title" icon="monetization_on" (selectedItemsChange)="onSelectedItemsChange($event)" [order]="order" [aggregable]="aggregable" [editable]="editable" [deleteable]="deleteable" [service]="service" [multiselect]="multiselect" [columns]="columns">
     <th></th>
     <th>Empleado</th>
     <th>S Producción</th>
@@ -9,4 +9,6 @@
     <th>Descuento</th>
     <th>Neto</th>
     <th>Total</th>
+    <button (click)="finiquito()" buttons class="btn btn-primary btn-responsive" type="button">Finiquito via Email</button>
 </ex-table>
+<!-- <pre>{{itemList | json}}</pre> -->

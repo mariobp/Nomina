@@ -6,12 +6,54 @@ import { NominaService } from './nomina.service';
 
 declare var $: any;
 declare var window: any;
+declare var swal: any;
 
 @Component({
     template: '<router-outlet></router-outlet>',
     styleUrls: ['./nomina.component.scss']
 })
-export class NominaComponent { }
+export class NominaComponent {
+    static getQuery(ids: any[]) {
+        let res = '';
+        for (const value of ids) {
+            if (res !== '') {
+                res += '&';
+            } else {
+                res += '?'
+            }
+            res += `ids=${value}`
+        }
+        return res
+    }
+    static sendMail(d: string) {
+        swal({
+            title: 'Estás seguro? ',
+            text: `Se enviaran uno mas correos.`,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#213b78',
+            cancelButtonColor: '#ff9800',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Enviar'
+        }).then(() => {
+            $.ajax({
+                url: `${window._server}/nomina/send/mail/${d}`,
+                method: 'GET',
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function(data) {
+                    swal({
+                        title: 'Correos enviados!',
+                        text: 'Todos los correos fueron enviados con exito',
+                        type: 'success',
+                        confirmButtonColor: '#213b78',
+                    });
+                }
+            })
+        }, () => { });
+    }
+}
 
 @Component({
     templateUrl: './list.nomina.component.html'
@@ -25,7 +67,8 @@ export class NominaListComponent implements OnInit {
     order = [[2, 'asc']]
 
     private corte: any;
-    private title: string
+    public title: string;
+    private itemList = [];
 
     @ViewChild('table') private table: TableComponent;
 
@@ -113,6 +156,18 @@ export class NominaListComponent implements OnInit {
             this.corte = this._r.snapshot.data['item'];
             this.title = `Nominas deste ${this.corte.fecha_inicio}` + (!!this.corte.fecha_fin ? ` hasta ${this.corte.fecha_fin}` : '');
         }
+    }
+
+    onSelectedItemsChange(event) {
+        this.itemList = event.selectedItems
+    }
+
+    finiquito() {
+        const array = [];
+        for (const variable of this.itemList) {
+            array.push(variable.id)
+        }
+        NominaComponent.sendMail(NominaComponent.getQuery(array));
     }
 
     ngOnInit() {

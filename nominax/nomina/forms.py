@@ -24,11 +24,14 @@ class CorteForms(forms.ModelForm):
             instance = models.Corte()
             ultimo_corte = models.Corte.objects.all().order_by('fecha_inicio').last()
             if ultimo_corte:
-            	instance.fecha_inicio = ultimo_corte.fecha_fin
+            	instance.fecha_inicio = ultimo_corte.fecha_fin + timedelta(days=1)
             # end if
         # end if
         if not instance.cerrado:
             instance.prestaciones_sociales = config.prestaciones_sociales
+            instance.fecha_de_adelanto = instance.fecha_inicio.replace(day=config.primer_dia)
+            instance.fecha_fin = instance.fecha_inicio.replace(day=config.segundo_dia)
+
             instance.nocturna = config.nocturna
             instance.dominical = config.dominical
             instance.nocturna_dominical = config.nocturna_dominical
@@ -42,6 +45,21 @@ class CorteForms(forms.ModelForm):
         instance.save()
         return instance
     # end def
+# end class
+
+class DescuentoForm(forms.ModelForm):
+    class Meta:
+        model = models.Descuento
+        exclude = ()
+    # end class
+
+    def clean_corte(self):
+        if not 'corte' in self.cleaned_data or not self.cleaned_data['corte']:
+            return CorteForms.get_instance()
+        # end if
+        return self.cleaned_data['corte']
+    # end def
+
 # end class
 
 class NominaForm(forms.ModelForm):
@@ -71,11 +89,6 @@ class NominaForm(forms.ModelForm):
             return (self.clean_corte().fecha_inicio).replace(day=1)
         # end if
         return self.cleaned_data['inicio_mes']
-    # end def
-
-
-    def clean(self):
-        return self.cleaned_data
     # end def
 
     @staticmethod

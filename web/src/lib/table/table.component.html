@@ -13,7 +13,7 @@
             <div class="navbar-collapse collapse navbar-responsive-collapse" *ngIf="aggregable || editable || deleteable">
                 <ul class="nav navbar-nav navbar-right">
                     <li *ngIf="selectedItems.length == 1 && editable">
-                        <button [routerLink]="[selectedItems[0].id,'edit']" class="btn btn-primary btn-just-icon">
+                        <button [routerLink]="editlink" class="btn btn-primary btn-just-icon">
                             <i class="material-icons">create</i>
                         </button>
                     </li>
@@ -23,13 +23,14 @@
                         </button>
                     </li>
                     <li *ngIf="aggregable">
-                        <button [routerLink]="[redirect]" class="btn btn-primary btn-just-icon ">
+                        <button [routerLink]="addlink" class="btn btn-primary btn-just-icon ">
                             <i class="material-icons">add</i>
                         </button>
                     </li>
-                    <!-- <ng-content select="[buttons]"></ng-content> -->
+
                 </ul>
             </div>
+            <ng-content select="[buttons]"></ng-content>
         </div>
     </nav>
     <div class="material-datatables">
@@ -37,7 +38,7 @@
             <thead>
                 <tr>
                     <th>
-                        <div  class="checkbox">
+                        <div class="checkbox">
                             <label><input type="checkbox" id="selectAll"/></label>
                         </div>
                     </th>
