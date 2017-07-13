@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef, ViewChild, trigger, transition, style, animate  } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, ViewChild, trigger, transition, style, animate, Output, EventEmitter  } from '@angular/core';
 import { BsNotify } from '../bs.notify';
 import { CallService } from '../services';
 
@@ -28,6 +28,7 @@ export class TableComponent implements OnInit {
     private dataTable: any;
     public selectedItems: any[] = [];
 
+    @Output() selectedItemsChange = new EventEmitter();
 
     public static renderCheckRow(data) {
         return `
@@ -139,6 +140,7 @@ export class TableComponent implements OnInit {
         $.each($(table).find('tr.selected'), function() {
             self.selectedItems.push(self.dataTable.row(this).data());
         });
+        this.selectedItemsChange.emit({ selectedItems: this.selectedItems });
     }
 
 
@@ -154,6 +156,7 @@ export class TableComponent implements OnInit {
                 .then(data => {
                     // console.log(data);
                     this.selectedItems = [];
+                    this.selectedItemsChange.emit({ selectedItems: this.selectedItems });
                     this.service.data = data.object_list;
                     this.success(this.service.data);
                     cb({ 'draw': draw, 'recordsTotal': data.count, 'recordsFiltered': data.count, 'data': data.object_list });
