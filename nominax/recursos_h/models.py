@@ -212,13 +212,19 @@ class Contrato(models.Model):
     eliminado = models.BooleanField(default=False)
     eliminado_por = models.ForeignKey(User, related_name="eliminado_por_contrato", blank=True, null=True)
 
-    @staticmethod
-    def get_instance(empleado, corte):
-        contratos = Contrato.objects.filter(empleado=empleado).exclude(fecha_finalizacion__lte = corte.fecha_inicio)
+    @classmethod
+    def get_instance(cls, empleado, corte):
+        contratos = Contrato.objects.filter(empleado=empleado)
+        return cls.filter_by_corte(contratos, corte).order_by('fecha_inicio').last()
+    # end def
+
+    @classmethod
+    def filter_by_corte(cls, queryset, corte):
+        queryset = queryset.exclude(fecha_finalizacion__isnull=False, fecha_finalizacion__lte = corte.fecha_inicio)
         if corte.fecha_fin:
-            contratos = contratos.exclude(fecha_inicio__gt=corte.fecha_fin)
+            queryset = queryset.exclude(fecha_inicio__gt=corte.fecha_fin)
         # end if
-        return contratos.order_by('fecha_inicio').last()
+        return queryset
     # end def
 
     def __unicode__(self):

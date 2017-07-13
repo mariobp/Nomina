@@ -24,11 +24,14 @@ class CorteForms(forms.ModelForm):
             instance = models.Corte()
             ultimo_corte = models.Corte.objects.all().order_by('fecha_inicio').last()
             if ultimo_corte:
-            	instance.fecha_inicio = ultimo_corte.fecha_fin
+            	instance.fecha_inicio = ultimo_corte.fecha_fin + timedelta(days=1)
             # end if
         # end if
         if not instance.cerrado:
             instance.prestaciones_sociales = config.prestaciones_sociales
+            instance.fecha_de_adelanto = instance.fecha_inicio.replace(day=config.primer_dia)
+            instance.fecha_fin = instance.fecha_inicio.replace(day=config.segundo_dia)
+
             instance.nocturna = config.nocturna
             instance.dominical = config.dominical
             instance.nocturna_dominical = config.nocturna_dominical
