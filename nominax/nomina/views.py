@@ -5,6 +5,7 @@ from django.shortcuts import render
 from nominax.settings import ORIGIN
 from supra import views as supra
 from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from cuser.middleware import CuserMiddleware
 from nominax.decorator import check_login
