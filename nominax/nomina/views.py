@@ -80,7 +80,7 @@ class SendMailSupraList(supra.SupraListView):
             if nom.contrato.empleado.email:
                 values = { 'file_format': 0, }
                 data = urllib.urlencode(values)
-                req = urllib2.Request("http://"+self.requet.get_host()+self.url + "?id=" + str(nom.id), data)
+                req = urllib2.Request("http://"+self.request.get_host()+self.url + "?id=" + str(nom.id), data)
                 response = urllib2.urlopen(req)
                 result = response.read()
 
