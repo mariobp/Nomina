@@ -137,13 +137,16 @@ export class TurnoEditComponent implements OnInit {
             return data;
         }
         this._form.successful = data => {
-            if (!this._form.item) {
-                this._rt.navigate(['/produccion/turno']);
-            } else {
-                // console.log(data.json());
+            if (data) {
                 this._form.setItem(data.json());
             }
+
         }
+
+        this._form.back = () => {
+            this._rt.navigate(['/produccion/turno']);
+        }
+
         this._form.error = data => {
             BsNotify.error('Ha ocurrido un error al intentar gurdar los datos');
             this.form.get('aprobado').setValue(false);

@@ -68,7 +68,7 @@ export class NominaListComponent implements OnInit {
 
     private corte: any;
     public title: string;
-    private itemList = [];
+    public itemList = [];
 
     @ViewChild('table') private table: TableComponent;
 
