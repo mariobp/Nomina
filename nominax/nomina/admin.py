@@ -8,7 +8,7 @@ import forms
 class NominaAdmin(admin.ModelAdmin):
 	form = forms.NominaForm
 	list_display = ['contrato', 'diurnas','calcular_hora_extra_diurna', 'calcular_hora_nocturna', 'calcular_hora_extra_nocturna', 'calcular_hora_dominical_diurna', 'calcular_hora_dominical_nocturna', 'calcular_hora_dominical_extra_diurna', 'calcular_hora_dominical_extra_nocturna']
-	readonly_fields = ['descuento', 'valor_hora', 'recargos', 'salario_legal', 'adelanto', 'prestaciones_sociales', 'descuento_salud', 'bonificacion', 'neto', 'total']
+	readonly_fields = ['descuento', 'valor_hora', 'recargos', 'salario_legal', 'adelanto', 'descuento_salud', 'bonificacion', 'neto', 'total']
 	list_filter = ['id', 'contrato__empleado', 'corte']
 # end class
 

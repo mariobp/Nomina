@@ -30,7 +30,7 @@ class TarifarioForm(forms.ModelForm):
         if not tarifa.remplazado_por:
             remplazar = models.Tarifario.objects.filter(remplazado_por = None, unidad=tarifa.unidad, cargo=tarifa.cargo).last()
         # end if
-        config = conf.Configuracion.get_instance()
+        config = conf.ConfiguracionForm.get_instance()
         coding.tarifario.remove(remplazar)
         coding.tarifario.add(tarifa)
         tarifa.save()

@@ -9,6 +9,7 @@ import decimal
 from configuracion import forms as conf
 from datetime import date, timedelta
 from turno.datedelta import datedelta, multi_datedelta
+import calendar
 
 class CorteForms(forms.ModelForm):
     class Meta:
@@ -28,9 +29,10 @@ class CorteForms(forms.ModelForm):
             # end if
         # end if
         if not instance.cerrado:
-            instance.prestaciones_sociales = config.prestaciones_sociales
             instance.fecha_de_adelanto = instance.fecha_inicio.replace(day=config.primer_dia)
-            instance.fecha_fin = instance.fecha_inicio.replace(day=config.segundo_dia)
+            rango = calendar.monthrange(instance.fecha_inicio.year, instance.fecha_inicio.month)
+
+            instance.fecha_fin = instance.fecha_inicio.replace(day=config.segundo_dia if config.segundo_dia < rango[1] else rango[1])
 
             instance.nocturna = config.nocturna
             instance.dominical = config.dominical

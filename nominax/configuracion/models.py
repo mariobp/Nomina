@@ -34,7 +34,6 @@ class Configuracion(models.Model):
     tarifario = models.ManyToManyField(recursos.Tarifario)
 
     descuento_salud = models.IntegerField("Descuento de salud y pensión para empleado %")
-    prestaciones_sociales = models.IntegerField("Pago de salud y pensión del empleador %")
 
     nocturna = models.IntegerField("Valor de recargo nocturno %")
     dominical = models.IntegerField("Valor de recargo dominical o festivo %")

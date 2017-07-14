@@ -24,7 +24,7 @@ class ConfiguracionSupraList(supra.SupraListView):
     list_display = ['id', 'tipo_corte', 'primer_dia', 'segundo_dia', 'h_recargo_nocturno_inicio',
                     'h_recargo_nocturno_fin', 'descuento_salud', 'h_almuerzo_inicio',
                     'h_almuerzo_fin', 'extra_diurna', 'extra_nocturna', 'extra_dominical_diurna',
-                    'extra_dominical_nocturna', 'prestaciones_sociales', 'nocturna', 'dominical',
+                    'extra_dominical_nocturna', 'nocturna', 'dominical',
                     'nocturna_dominical', 'nit', 'numero_cuenta', 'tipo_cuenta', 'tarifario']
     time_format = "%H:%M"
 
