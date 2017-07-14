@@ -159,7 +159,7 @@ class TurnoSupraList(MasterList):
     model = models.Turno
     list_display = ('id', 'empleado', 'empleado__nombre', 'empleado__apellidos',
                     'entrada', 'salida', 'h_extras', 'h_nocturna', 'h_diurna',
-                    'h_dominical', 'aprobado', 'creator', 'last_editor')
+                    'h_dominical', 'aprobado', 'creator', 'last_editor', 'descontar_almuerzo')
     search_fields = ['empleado__nombre', 'empleado__apellidos']
     list_filter = ['empleado', 'aprobado']
 

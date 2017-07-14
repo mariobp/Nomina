@@ -102,7 +102,7 @@ class NominaSupraList(supra.SupraListView):
                     'contrato__subsidio_transporte', 'extras', 'extra_nocturna', 'extra_dominical_diurna',
                     'extra_dominical_nocturna', 'dominical_diurna', 'dominical_nocturna', 'nocturna',
                     'diurnas', 'dominical_diurna', 'dominical_nocturna',
-                    'salario_produccion', 'prestaciones_sociales', 'descuento_salud', 'bonificacion', 'valor_hora', 'salario_legal', 'neto', 'total', 'recargos']
+                    'salario_produccion', 'descuento_salud', 'bonificacion', 'valor_hora', 'salario_legal', 'neto', 'total', 'recargos']
     search_fields = ['contrato__empleado__nombre', 'contrato__empleado__apellidos', 'contrato__empleado__cedula', ]
     list_filter = ['contrato__empleado', 'contrato__empleado__cargo', 'fecha', 'corte']
     search_key = 'q'
@@ -110,10 +110,6 @@ class NominaSupraList(supra.SupraListView):
 
     def salario_produccion(self, obj, dict):
         return obj.salario_produccion_nomina()
-    # end def
-
-    def prestaciones_sociales(self, obj, dict):
-        return obj.prestaciones_sociales()
     # end def
 
     def descuento_salud(self, obj, dict):
@@ -200,7 +196,7 @@ class NominaSupraList2(supra.SupraListView):
 class CorteSupraList(supra.SupraListView):
     model = models.Corte
     list_display = ['id', 'fecha_inicio', 'fecha_fin', 'cerrado',
-                    'nocturna', 'dominical', 'nocturna_dominical', 'prestaciones_sociales',
+                    'nocturna', 'dominical', 'nocturna_dominical', 
                     'extra_diurna', 'extra_nocturna' , 'extra_dominical_diurna',
                     'extra_dominical_nocturna']
     list_filter = ['id']
