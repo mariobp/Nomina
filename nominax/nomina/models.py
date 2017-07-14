@@ -59,12 +59,11 @@ class Descuento(models.Model):
 
     @staticmethod
     def get_descuento(contrato, corte):
-        descuentos = Descuento.objects.filter(contratos=contrato, corte=corte)
-        total = 0
-        for descuento in descuentos:
-            total = total + descuento.cantidad/descuento.contratos.count()
-        # end for
-        return total
+        descuentos = Descuento.objects.filter(contratos=contrato, corte=corte).annotate(total=Sum('cantidad')).first()
+        if descuentos:
+            return descuentos.total
+        # end if
+        return 0
     # end def
 # end class
 
