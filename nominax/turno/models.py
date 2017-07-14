@@ -167,8 +167,6 @@ class Turno(models.Model):
         return u"Turno: %s %s - %s" % (self.empleado.nombre, self.empleado.apellidos, self.entrada.strftime('%Y-%m-%d'))
     # end def
 # end class
-
-
 class DiaFestivo(models.Model):
     choices = (
         (1, 'Enero'),
@@ -268,3 +266,4 @@ class Produccion(models.Model):
     eliminado_por = models.ForeignKey(User, related_name="eliminado_por_produccion", blank=True, null=True)
 
 # end class
+

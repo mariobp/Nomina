@@ -182,7 +182,7 @@ class TurnoSupraList(MasterList):
 
 class ProduccionSupraList(MasterList2):
     model = models.Produccion
-    list_display = ['id', 'fecha', 'unidad', 'cantidad', 'unidad__nombre', 'empleados']
+    list_display = ['id', 'fecha', 'unidad', 'cantidad', 'unidad__nombre', 'empleados', 'concepto__nombre']
     search_fields = ['fecha', 'unidad', 'cantidad']
 
     def empleados(self, obj, now):
@@ -229,3 +229,16 @@ class ProduccionSupraFormDelete(supra.SupraDeleteView):
         return HttpResponse(status=200)
     # end def
 # end class
+
+
+def probar_turnos(request):
+    if request.POST:
+        form = forms.ProbarTurnos(request.POST)
+        if form.is_valid():
+            form.save()
+        # end if
+    else:
+        form = forms.ProbarTurnos()
+        return render('supra/form.html', {'form':form})
+    # end def
+# end def

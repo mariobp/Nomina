@@ -17,3 +17,8 @@ urlpatterns += [
     url(r'^produccion/list/$', views.ProduccionSupraList.as_view(), name="produccion_list"),
     url(r'^produccion/form/(?P<pk>\d+)/$', views.ProduccionSupraForm.as_view(), name="produccion_edit"),
 ]
+
+# pruebas
+urlpatterns += [
+    url(r'^probar/turnos/$', views.probar_turnos, name="produccion"),
+]
