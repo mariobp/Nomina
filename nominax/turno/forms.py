@@ -15,7 +15,7 @@ class TurnoForm(forms.ModelForm):
 
     class Meta:
         model = models.Turno
-        fields = ['empleado', 'entrada', 'salida', 'aprobado']
+        fields = ['empleado', 'entrada', 'salida', 'aprobado', 'descontar_almuerzo']
     # end class
 
     @staticmethod
@@ -92,7 +92,11 @@ class TurnoForm(forms.ModelForm):
 
         nocturno = periodic_timedelta(h_recargo_nocturno_inicio, h_recargo_nocturno_fin)
         delta = datedelta(fecha_hora_entrada, fecha_hora_salida)
-        almuerzo = periodic_timedelta(h_almuerzo_inicio, h_almuerzo_fin)
+        if self.instance.descontar_almuerzo:
+            almuerzo = periodic_timedelta(h_almuerzo_inicio, h_almuerzo_fin)
+        else:
+            almuerzo = datedelta()
+        # end if
         delta_dominicales = models.DiaDominical.multi_datedelta(delta)
         delta_festivos = models.DiaFestivo.multi_datedelta(delta)
         delta_dominicales_festivos = (delta_dominicales + delta_festivos).intersect(delta).difference(almuerzo)
@@ -151,6 +155,16 @@ class TurnoForm(forms.ModelForm):
 
 
 class ProduccionForm(forms.ModelForm):
+    concepto__nombre = forms.CharField()
+
+    def clean_concepto__nombre(self): 
+        concepto, created = models.Concepto.objects.get_or_create(nombre=self.cleaned_data['concepto__nombre'])
+        if concepto:
+            self.cleaned_data['concepto'] = concepto
+            return self.cleaned_data['concepto__nombre']
+        # end if
+        raise forms.ValidationError("EL nombre del concepto es requerido")
+    # end def
 
     class Meta:
         model = models.Produccion
@@ -160,11 +174,20 @@ class ProduccionForm(forms.ModelForm):
 
 
 class ProduccionFormEdit(forms.ModelForm):
-    
+    concepto__nombre = forms.CharField()
     class Meta:
         model = models.Produccion
         exclude = ('eliminado_por', )
     # end class
+
+    def clean_concepto__nombre(self): 
+        concepto, created = models.Concepto.objects.get_or_create(nombre=self.cleaned_data['concepto__nombre'])
+        if concepto:
+            self.cleaned_data['concepto'] = concepto
+            return self.cleaned_data['concepto__nombre']
+        # end if
+        raise forms.ValidationError("EL nombre del concepto es requerido")
+    # end defor
 
     def save(self, commit=False):
         master = super(ProduccionFormEdit, self).save(commit)

@@ -45,6 +45,7 @@ class Turno(models.Model):
     nocturna = models.ManyToManyField(RangoFecha, related_name='nocturna', blank=True)
     diurna = models.ManyToManyField(RangoFecha, related_name='diurna', blank=True)
     dominical = models.ManyToManyField(RangoFecha, related_name='dominical', blank=True)
+    descontar_almuerzo = models.BooleanField(default=True)
 
     aprobado = models.BooleanField(default=False)
     aprobado_user = models.ForeignKey(User, verbose_name="Usuario que aprobo el turno", blank=True, null=True)
@@ -250,11 +251,16 @@ class DiaDominical(models.Model):
 
 # end class
 
+class Concepto(models.Model):
+    nombre = models.CharField(max_length=100)
+# end class
+
 class Produccion(models.Model):
     fecha = models.DateTimeField(auto_now_add=True)
     unidad = models.ForeignKey(recursos.UnidadProduccion)
     cantidad = models.IntegerField()
     empleados = models.ManyToManyField(recursos.Empleado)
+    concepto = models.ForeignKey(Concepto, null=True, blank=True)
 
     creator = CurrentUserField(add_only=True, related_name="created_produccion")
     last_editor = CurrentUserField(related_name="last_edited_produccion")

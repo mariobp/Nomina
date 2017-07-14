@@ -21,7 +21,6 @@ class Corte(models.Model):
     dominical = models.IntegerField("Valor de recargo dominical o festivo %", blank=True)
     nocturna_dominical = models.IntegerField("Valor de recargo nocturno dominical o festivo %", blank=True)
     descuento_salud = models.IntegerField("Descuento de salud y pensión para empleado %", blank=True)
-    prestaciones_sociales = models.IntegerField("Pago de salud y pensión del empleador %", blank=True)
     tarifario = models.ManyToManyField(recursos.Tarifario, blank=True)
 
     extra_diurna = models.IntegerField("Valor de recargo de hora extra diurna %", blank=True)
@@ -108,10 +107,6 @@ class Nomina(models.Model):
 
     def salario_produccion_nomina(self, ):
         return self.salario_produccion(self.corte.fecha_inicio, self.corte.fecha_fin)
-    # end def
-
-    def prestaciones_sociales(self):
-        return self.salario_legal()*self.corte.prestaciones_sociales/100
     # end def
 
     def descuento_salud(self):
