@@ -202,3 +202,19 @@ class ProduccionFormEdit(forms.ModelForm):
         return master
     # end def
 # end class
+
+
+import csv
+class ProbarTurnos(forms.Form):
+    archivo_a_probar = forms.FileField()
+
+    def save(self, commit):
+        super(ProbarTurnos, self).save(commit)
+        with open(self.archivo_a_probar.file, 'rb') as csvfile:
+            spamreader = csv.reader(csvfile, delimiter=';', quotechar='"')
+            for row in spamreader:
+                print row
+            # end for
+        # end for
+    # end def
+# end class
