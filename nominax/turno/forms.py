@@ -61,7 +61,7 @@ class TurnoForm(forms.ModelForm):
 
     def clean_salida(self):
         if self.cleaned_data['salida'] and self.cleaned_data['salida'] < self.cleaned_data['entrada']:
-            raise forms.ValidationError('La salida no puede ir antes que la entrada')
+            raise forms.ValidationError('La hora de salida no puede ser anterior a la hora de entrada')
         # end if
         return self.cleaned_data['salida']
     # end def
