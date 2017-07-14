@@ -33,7 +33,7 @@ export class TurnoListComponent {
         {
             data: 'empleado',
             render: (data, type, full, meta) => {
-                return `<a href="/empleados/${data}/edit/">${full.empleado__nombre} ${full.empleado__apellidos}</a>`;
+                return `<a href="#/empleados/${data}/edit/">${full.empleado__nombre} ${full.empleado__apellidos}</a>`;
             }
         },
         { data: 'entrada', className: 'text-center' },
@@ -89,9 +89,10 @@ export class TurnoEditComponent implements OnInit {
     constructor(private _fb: FormBuilder, private _s: TurnoService, private _rt: Router, private _es: EmpleadoService) {
         this.form = this._fb.group({
             aprobado: [false, [Validators.required]],
-            empleado: [0, [Validators.required, Validators.pattern(/\d/)]],
+            empleado: ['', [Validators.required, Validators.pattern(/\d/)]],
             entrada: ['', [Validators.required]],
             salida: ['', []],
+            descontar_almuerzo: [true, []],
             h_diurna: [{ value: 0, disabled: true }],
             h_dominical: [{ value: 0, disabled: true }],
             h_extras: [{ value: 0, disabled: true }],
@@ -102,6 +103,7 @@ export class TurnoEditComponent implements OnInit {
             // { column: 'col1', title: 'Empleado', type: 'autocomplete', name: 'empleado' },
             { column: 'col1', title: 'Hora de entrada', type: 'text', name: 'entrada', class: 'datetimepicker' },
             { column: 'col1', title: 'Hora de salida', type: 'text', name: 'salida', class: 'datetimepicker' },
+            { column: 'col1', title: 'Descontar hora de almuerzo', type: 'checkbox', name: 'descontar_almuerzo' },
             { column: 'col2', title: 'Horas diurnas', type: 'number', name: 'h_diurna', step: '2' },
             { column: 'col2', title: 'Horas nocturnas', type: 'number', name: 'h_nocturna', step: '2' },
             { column: 'col2', title: 'Horas extras', type: 'number', name: 'h_extras', step: '2' },
@@ -148,7 +150,6 @@ export class TurnoEditComponent implements OnInit {
         }
 
         this._form.error = data => {
-            BsNotify.error('Ha ocurrido un error al intentar gurdar los datos');
             this.form.get('aprobado').setValue(false);
         }
     }
@@ -156,9 +157,8 @@ export class TurnoEditComponent implements OnInit {
     filterVal(val) {
         this._es.list({ q: val ? val : '' })
             .then(data => data.json())
-            .then(data => {
-                this.options = data.object_list
-            }).catch(error => console.log(error));
+            .then(data => { this.options = data.object_list })
+            .catch(error => console.log(error));
     }
 
     displayFn = val => {
