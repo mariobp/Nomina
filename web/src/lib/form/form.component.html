@@ -15,8 +15,9 @@
                                         <md-option *ngFor="let option of input.options" [value]="option.value">{{option.title}}</md-option>
                                     </md-select>
                                     <md-checkbox *ngIf="input.type === 'checkbox'" [formControlName]="input.name"></md-checkbox>
-                                    <span *ngIf="!!input.error" class="help-block">{{input.error}}</span>
-                                    <!-- <pre *ngIf="!!form.get(input.name).errors">{{form.get(input.name).errors | json }}</pre> -->
+                                    <!-- {{input.error}} -->
+                                    <span>{{input.error}}</span>
+                                    <pre *ngIf="debug">{{form.get(input.name).errors | json }}</pre>
                                 </div>
                             </div>
                         </div>
@@ -45,6 +46,6 @@
             </svg>
         </div>
     </div>
-    <!-- <pre> value: {{ form.valid }}</pre> -->
-    <!-- <pre> value: {{ form.value | json }}</pre> -->
+    <pre *ngIf="debug"> value: {{ form.valid }}</pre>
+    <pre *ngIf="debug"> value: {{ form.value | json }}</pre>
 </ex-card>
