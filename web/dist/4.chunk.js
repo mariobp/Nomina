@@ -18,6 +18,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__produccion_produccion_component__ = __webpack_require__("../../../../../src/app/turno/produccion/produccion.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__produccion_produccion_service__ = __webpack_require__("../../../../../src/app/turno/produccion/produccion.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__configuracion_unidadproduccion_unidadproduccion_service__ = __webpack_require__("../../../../../src/app/configuracion/unidadproduccion/unidadproduccion.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__configuracion_cargo_cargo_service__ = __webpack_require__("../../../../../src/app/configuracion/cargo/cargo.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TurnoModule", function() { return TurnoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -25,6 +26,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -66,7 +68,8 @@ TurnoModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_7__turno_turno_service__["a" /* TurnoService */],
             __WEBPACK_IMPORTED_MODULE_8__empleados_empleado_empleado_service__["a" /* EmpleadoService */],
             __WEBPACK_IMPORTED_MODULE_11__produccion_produccion_service__["a" /* ProduccionService */],
-            __WEBPACK_IMPORTED_MODULE_12__configuracion_unidadproduccion_unidadproduccion_service__["a" /* UnidadProduccionService */]
+            __WEBPACK_IMPORTED_MODULE_12__configuracion_unidadproduccion_unidadproduccion_service__["a" /* UnidadProduccionService */],
+            __WEBPACK_IMPORTED_MODULE_13__configuracion_cargo_cargo_service__["a" /* CargoService */]
         ]
     })
 ], TurnoModule);
