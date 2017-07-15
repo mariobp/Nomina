@@ -12,6 +12,7 @@ import models
 import forms
 from django.utils import timezone
 from django.http import HttpResponse
+from cuser.middleware import CuserMiddleware
 
 supra.SupraConf.ACCECC_CONTROL["allow"] = True
 supra.SupraConf.ACCECC_CONTROL["origin"] = ORIGIN
@@ -177,6 +178,28 @@ class TurnoSupraList(MasterList):
 
     def h_dominical(self, obj, now):
         return obj.horas_dominical()
+    # end def
+# end class
+
+class TurnoSupraFormDelete(supra.SupraDeleteView):
+    model = models.Turno
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(TurnoSupraFormDelete, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if not self.object.aprobado:
+            self.object.eliminado = True
+            user = CuserMiddleware.get_user()
+            self.object.eliminado_por = user
+            self.object.save()
+            return HttpResponse(status=200)
+        # end if
+        return HttpResponse(status=403)
     # end def
 # end class
 
