@@ -61,7 +61,7 @@ class TurnoForm(forms.ModelForm):
 
     def clean_salida(self):
         if self.cleaned_data['salida'] and self.cleaned_data['salida'] < self.cleaned_data['entrada']:
-            raise forms.ValidationError('La salida no puede ir antes que la entrada')
+            raise forms.ValidationError('La hora de salida no puede ser anterior a la hora de entrada')
         # end if
         return self.cleaned_data['salida']
     # end def
@@ -200,5 +200,21 @@ class ProduccionFormEdit(forms.ModelForm):
         master.save()
         self.save_m2m()
         return master
+    # end def
+# end class
+
+
+import csv
+class ProbarTurnos(forms.Form):
+    archivo_a_probar = forms.FileField()
+
+    def save(self, commit):
+        super(ProbarTurnos, self).save(commit)
+        with open(self.archivo_a_probar.file, 'rb') as csvfile:
+            spamreader = csv.reader(csvfile, delimiter=';', quotechar='"')
+            for row in spamreader:
+                print row
+            # end for
+        # end for
     # end def
 # end class

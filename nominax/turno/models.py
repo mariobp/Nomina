@@ -52,6 +52,10 @@ class Turno(models.Model):
     creator = CurrentUserField(add_only=True, related_name="created_turno")
     last_editor = CurrentUserField(related_name="last_edited_turno")
 
+    eliminado = models.BooleanField(default=False)
+    eliminado_por = models.ForeignKey(User, related_name="eliminado_por_turno", blank=True, null=True)
+
+
     @staticmethod
     def month(empleado, year, month):
         return Turno.objects.filter(empleado=empleado, entrada__year=year, salida__month=month)
@@ -167,8 +171,6 @@ class Turno(models.Model):
         return u"Turno: %s %s - %s" % (self.empleado.nombre, self.empleado.apellidos, self.entrada.strftime('%Y-%m-%d'))
     # end def
 # end class
-
-
 class DiaFestivo(models.Model):
     choices = (
         (1, 'Enero'),
@@ -198,7 +200,6 @@ class DiaFestivo(models.Model):
         # end for
         return multi_datedelta(date_deltas)
     # end def
-
 # end class
 
 
@@ -248,7 +249,6 @@ class DiaDominical(models.Model):
     def __unicode__(self):
         return "%s, el %d° día de la semana" % (dict(self.choices)[self.dia], self.dia)
     # end def
-
 # end class
 
 class Concepto(models.Model):
@@ -266,5 +266,5 @@ class Produccion(models.Model):
     last_editor = CurrentUserField(related_name="last_edited_produccion")
     eliminado = models.BooleanField(default=False)
     eliminado_por = models.ForeignKey(User, related_name="eliminado_por_produccion", blank=True, null=True)
-
 # end class
+

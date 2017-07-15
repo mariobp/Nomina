@@ -9,6 +9,6 @@
     <th>Descuento</th>
     <th>Neto</th>
     <th>Total</th>
-    <button (click)="finiquito()" buttons class="btn btn-primary btn-responsive" type="button">Finiquito via Email</button>
+    <button [disabled]="itemList.length == 0" (click)="finiquito()" buttons class="btn btn-primary btn-responsive" type="button">Finiquito via Email</button>
 </ex-table>
 <!-- <pre>{{itemList | json}}</pre> -->

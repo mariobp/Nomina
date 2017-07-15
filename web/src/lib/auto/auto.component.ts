@@ -6,6 +6,9 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     templateUrl: './auto.component.html',
 })
 export class AutoComponent {
+    public options = [];
+
+    @Output() cambio: EventEmitter<any>;
     @Input() service: any;
     @Input() item: any;
     @Input() form: any;
@@ -13,10 +16,6 @@ export class AutoComponent {
     @Input('value') _value: any = '';
     @Input() render: any = (val: any) => val.nombre;
     @Input() itemVal: any = (item: any) => item.id;
-    @Output() cambio = new EventEmitter();
-
-    options = [];
-
 
     displayFn = val => {
         if (this.options.length === 0 && !!this.item) {
@@ -37,7 +36,7 @@ export class AutoComponent {
     }
 
     constructor() {
-
+        this.cambio = new EventEmitter();
     }
 
     private onKeyPress(event) {

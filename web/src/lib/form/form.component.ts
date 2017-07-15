@@ -30,20 +30,24 @@ export interface RenderInput {
 })
 export class FormComponent implements OnInit, AfterViewInit {
 
-    @Input('title') title: string;
-    @Input('icon') icon: string;
-    @Input('columns') columns: string[];
-    @Input('renderinputs') renderinputs: RenderInput[];
-    @Input('form') form: FormGroup;
-    @Input('service') service: any;
-    @Input('deleteable') public deleteable = true;
-    @Input('saveable') public saveable = true;
-    @Input('otro') public otro = true;
+    @Input() public title: string;
+    @Input() public icon: string;
+    @Input() public columns: string[];
+    @Input() public renderinputs: RenderInput[];
+    @Input() public form: FormGroup;
+    @Input() public service: any;
+    @Input() public deleteable = true;
+    @Input() public saveable = true;
+    @Input() public otro = true;
+    @Input() public debug = false;
+
     public _ready: boolean;
-    item: any;
+    public item: any;
+
     private errorMessages = {
         email: 'texto para error de email'
     }
+
     constructor(private _ar: ActivatedRoute) { }
 
     setReady(val: boolean) {
@@ -55,7 +59,7 @@ export class FormComponent implements OnInit, AfterViewInit {
         if (item) {
             this.item = item;
             this.form.patchValue(this.item);
-
+            console.log(item);
         }
 
     }
@@ -72,62 +76,35 @@ export class FormComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        $('.datetimepicker').datetimepicker({
-            format: 'DD/MM/YYYY h:mm A',
-            icons: {
-                time: 'fa fa-clock-o',
-                date: 'fa fa-calendar',
-                up: 'fa fa-chevron-up',
-                down: 'fa fa-chevron-down',
-                previous: 'fa fa-chevron-left',
-                next: 'fa fa-chevron-right',
-                today: 'fa fa-screenshot',
-                clear: 'fa fa-trash',
-                close: 'fa fa-remove'
-            }
-        });
-        $('.datepicker').datetimepicker({
-            format: 'DD/MM/YYYY',
-            icons: {
-                time: 'fa fa-clock-o',
-                date: 'fa fa-calendar',
-                up: 'fa fa-chevron-up',
-                down: 'fa fa-chevron-down',
-                previous: 'fa fa-chevron-left',
-                next: 'fa fa-chevron-right',
-                today: 'fa fa-screenshot',
-                clear: 'fa fa-trash',
-                close: 'fa fa-remove',
-                inline: true
-            }
-        });
-        $('.timepicker').datetimepicker({
-            // format: 'H:mm',    // use this format if you want the 24hours timepicker
-            format: 'h:mm A',    // use this format if you want the 12hours timpiecker with AM/PM toggle
-            icons: {
-                time: 'fa fa-clock-o',
-                date: 'fa fa-calendar',
-                up: 'fa fa-chevron-up',
-                down: 'fa fa-chevron-down',
-                previous: 'fa fa-chevron-left',
-                next: 'fa fa-chevron-right',
-                today: 'fa fa-screenshot',
-                clear: 'fa fa-trash',
-                close: 'fa fa-remove',
-                inline: true
-            }
-        });
-
         const self = this;
-
+        // format: 'H:mm', use this format if you want the 24hours timepicker
+        // format: 'h:mm A' use this format if you want the 12hours timpiecker with AM/PM toggle
+        const dt = 'DD/MM/YYYY h:mm A';
+        const d = 'DD/MM/YYYY';
+        const t = 'h:mm A';
+        const op = {
+            time: 'fa fa-clock-o',
+            date: 'fa fa-calendar',
+            up: 'fa fa-chevron-up',
+            down: 'fa fa-chevron-down',
+            previous: 'fa fa-chevron-left',
+            next: 'fa fa-chevron-right',
+            today: 'fa fa-screenshot',
+            clear: 'fa fa-trash',
+            close: 'fa fa-remove',
+            inline: true
+        };
+        $('.datetimepicker').datetimepicker({ format: dt, icons: op });
+        $('.datepicker').datetimepicker({ format: d, icons: op });
+        $('.timepicker').datetimepicker({ format: 'h:mm A', icons: op });
         $('.datetimepicker').on('dp.change', function(e) {
-            self.form.get($(this).attr('ng-reflect-name')).setValue($(this).datetimepicker({ format: 'DD/MM/YYYY h:mm A' }).val());
+            self.form.get($(this).attr('ng-reflect-name')).setValue($(this).datetimepicker({ format: dt }).val());
         });
         $('.datepicker').on('dp.change', function(e) {
-            self.form.get($(this).attr('ng-reflect-name')).setValue($(this).datetimepicker({ format: 'DD/MM/YYYY' }).val());
+            self.form.get($(this).attr('ng-reflect-name')).setValue($(this).datetimepicker({ format: d }).val());
         });
         $('.timepicker').on('dp.change', function(e) {
-            self.form.get($(this).attr('ng-reflect-name')).setValue($(this).datetimepicker({ format: 'h:mm A' }).val());
+            self.form.get($(this).attr('ng-reflect-name')).setValue($(this).datetimepicker({ format: t }).val());
         });
     }
 
@@ -163,10 +140,8 @@ export class FormComponent implements OnInit, AfterViewInit {
     }
 
     save(back?: boolean) {
-
         if (!!this.service && this.form.valid) {
             const body = this.preSave(this.form.value);
-            // console.log(body)
             this._ready = true;
             if (!!this.item) {
                 this.service.edit(this.item.id, body)
@@ -180,10 +155,7 @@ export class FormComponent implements OnInit, AfterViewInit {
                             confirmButtonColor: '#213b78',
                         });
                     })
-                    .catch(error => {
-                        this._ready = false;
-                        this.error(error);
-                    });
+                    .catch(error => this._error(error, 'Ha ocurrido un error al intentar gurdar los datos'));
             } else {
                 this.service.add(body)
                     .then(data => {
@@ -199,16 +171,13 @@ export class FormComponent implements OnInit, AfterViewInit {
                             this.successful(data);
                         }
                     })
-                    .catch(error => {
-                        this._ready = false;
-                        this._findErros(error.json());
-                        this.error(error);
-                    });
+                    .catch(error => this._error(error, 'Ha ocurrido un error al intentar gurdar los datos'));
             }
         } else {
             console.error('no se ha definido un service para este formulario')
         }
     }
+
     _findErros(errs) {
         if (errs) {
             for (const input of this.renderinputs) {
@@ -240,6 +209,7 @@ export class FormComponent implements OnInit, AfterViewInit {
                 this.service.delete(this.item.id)
                     .then(data => {
                         this.successful(data);
+                        this.back();
                         swal({
                             title: 'Eliminado!',
                             text: 'Registros se eliminado con exito',
@@ -248,8 +218,8 @@ export class FormComponent implements OnInit, AfterViewInit {
                         });
                     })
                     .catch(err => {
-                        BsNotify.error('No se han podido eliminar los registros');
-                        console.error(err);
+                        console.log(err)
+                        this._error(err, 'No se han podido eliminar los registros')
                     })
             }, () => { });
         }
@@ -264,7 +234,55 @@ export class FormComponent implements OnInit, AfterViewInit {
     back() {
         this.successful(null);
     }
-    error(error) {
-        BsNotify.error('Ha ocurrido un error al intentar gurdar los datos')
+
+    error(error) { }
+
+    _error(error: any, defaultMgs: string) {
+        this._ready = false;
+        console.log(error);
+        switch (error.status) {
+            case 0:
+                console.log(error);
+                swal({
+                    title: 'Sin Conexión!',
+                    text: 'Verifique su Conexión a Internet.',
+                    type: 'warning',
+                    confirmButtonColor: '#213b78',
+                });
+                break;
+            case 400:
+                this.error(error);
+                this._findErros(error.json());
+                break;
+            case 403:
+                swal({
+                    title: 'Sin Acceso!',
+                    text: 'Usted no tiene permitido realizar este cambio.',
+                    type: 'warning',
+                    confirmButtonColor: '#213b78',
+                });
+                break;
+            case 404:
+                swal({
+                    title: 'No se pudo encontrar el objeto!',
+                    // text: 'Usted no tiene permitido realizar este cambio.',
+                    type: 'warning',
+                    confirmButtonColor: '#213b78',
+                });
+                break;
+            case 408:
+                swal({
+                    title: 'Su solicitud ha tardado mucho tiempo!',
+                    text: 'Por favor verifique su Conexión a Internet y vuelva a intentarlo.',
+                    type: 'warning',
+                    confirmButtonColor: '#213b78',
+                });
+                break;
+            default:
+                this.error(error);
+                BsNotify.error(defaultMgs);
+                // console.error(error.json());
+                break;
+        }
     }
 }

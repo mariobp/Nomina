@@ -89,12 +89,12 @@ export class EmpleadoEditComponent implements OnInit {
             apellidos: ['', Validators.required],
             cedula: ['', [Validators.required, Validators.min(0)]],
             fecha_nacimiento: ['', [Validators.required]],
-            cargo: [0, [Validators.required, Validators.pattern(/\d/)]],
-            cajacompensacion: [0, [Validators.required, Validators.pattern(/\d/)]],
-            cesantia: [0, [Validators.required, Validators.pattern(/\d/)]],
-            eps: [0, [Validators.required, Validators.pattern(/\d/)]],
-            pension: [0, [Validators.required, Validators.pattern(/\d/)]],
-            banco: [0, [Validators.required, Validators.pattern(/\d/)]],
+            cargo: [[], [Validators.required, Validators.pattern(/\d/)]],
+            cajacompensacion: [[], [Validators.required, Validators.pattern(/\d/)]],
+            cesantia: [[], [Validators.required, Validators.pattern(/\d/)]],
+            eps: [[], [Validators.required, Validators.pattern(/\d/)]],
+            pension: [[], [Validators.required, Validators.pattern(/\d/)]],
+            banco: [[], [Validators.required, Validators.pattern(/\d/)]],
             numero: ['', [Validators.required, Validators.min(0)]],
 
         });

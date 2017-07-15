@@ -14,10 +14,10 @@
                                     <md-select style="width:100%" *ngIf="input.isSelect" class="selectpicker" id="id_{{input.name}}" [formControlName]="input.name" [title]="input.title">
                                         <md-option *ngFor="let option of input.options" [value]="option.value">{{option.title}}</md-option>
                                     </md-select>
-                                    <md-checkbox *ngIf="input.type === 'checkbox'" [formControlName]="input.name"></md-checkbox>
-                                    <span *ngIf="!!input.error" class="help-block">{{input.error}}</span>
-                                    <!-- <pre *ngIf="!!form.get(input.name).errors">{{form.get(input.name).errors | json }}</pre> -->
+                                    <span class="text-danger">{{input.error}}</span>
                                 </div>
+                                <md-checkbox *ngIf="input.type === 'checkbox'" [formControlName]="input.name"></md-checkbox>
+                                <pre *ngIf="debug">{{form.get(input.name).errors | json }}</pre>
                             </div>
                         </div>
                     </div>
@@ -45,6 +45,6 @@
             </svg>
         </div>
     </div>
-    <!-- <pre> value: {{ form.valid }}</pre> -->
-    <!-- <pre> value: {{ form.value | json }}</pre> -->
+    <pre *ngIf="debug"> form valid: {{ form.valid }}</pre>
+    <pre *ngIf="debug"> form value: {{ form.value | json }}</pre>
 </ex-card>

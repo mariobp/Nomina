@@ -69,11 +69,12 @@ export class EditCargoComponent implements OnInit {
     nombre = item => item.nombre;
     ngOnInit() {
         this._form.setReady(true);
-        Promise.all([this._multi.complete]).then(data => {
-            this._form.setReady(false);
-        });
         this._form.successful = data => {
             this._rt.navigate(['configuracion/cargos']);
         }
+    }
+
+    completeAjax(event) {
+        this._form.setReady(false);
     }
 }
