@@ -12,6 +12,7 @@ import models
 import forms
 from django.utils import timezone
 from django.http import HttpResponse
+from cuser.middleware import CuserMiddleware
 
 supra.SupraConf.ACCECC_CONTROL["allow"] = True
 supra.SupraConf.ACCECC_CONTROL["origin"] = ORIGIN
@@ -180,9 +181,31 @@ class TurnoSupraList(MasterList):
     # end def
 # end class
 
+class TurnoSupraFormDelete(supra.SupraDeleteView):
+    model = models.Turno
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(TurnoSupraFormDelete, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if not self.object.aprobado:
+            self.object.eliminado = True
+            user = CuserMiddleware.get_user()
+            self.object.eliminado_por = user
+            self.object.save()
+            return HttpResponse(status=200)
+        # end if
+        return HttpResponse(status=403)
+    # end def
+# end class
+
 class ProduccionSupraList(MasterList2):
     model = models.Produccion
-    list_display = ['id', 'fecha', 'unidad', 'cantidad', 'unidad__nombre', 'empleados']
+    list_display = ['id', 'fecha', 'unidad', 'cantidad', 'unidad__nombre', 'empleados', 'concepto__nombre']
     search_fields = ['fecha', 'unidad', 'cantidad']
 
     def empleados(self, obj, now):
@@ -229,3 +252,16 @@ class ProduccionSupraFormDelete(supra.SupraDeleteView):
         return HttpResponse(status=200)
     # end def
 # end class
+
+
+def probar_turnos(request):
+    if request.POST:
+        form = forms.ProbarTurnos(request.POST)
+        if form.is_valid():
+            form.save()
+        # end if
+    else:
+        form = forms.ProbarTurnos()
+        return render('supra/form.html', {'form':form})
+    # end def
+# end def
