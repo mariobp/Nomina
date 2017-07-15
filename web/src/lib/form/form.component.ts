@@ -59,7 +59,7 @@ export class FormComponent implements OnInit, AfterViewInit {
         if (item) {
             this.item = item;
             this.form.patchValue(this.item);
-
+            console.log(item);
         }
 
     }
@@ -237,6 +237,7 @@ export class FormComponent implements OnInit, AfterViewInit {
         this._ready = false;
         switch (error.status) {
             case 0:
+                console.log(error);
                 swal({
                     title: 'Sin Conexión!',
                     text: 'Verifique su Conexión a Internet.',
@@ -245,12 +246,21 @@ export class FormComponent implements OnInit, AfterViewInit {
                 });
                 break;
             case 400:
+                this.error(error);
                 this._findErros(error.json());
                 break;
             case 403:
                 swal({
                     title: 'Sin Acceso!',
                     text: 'Usted no tiene permitido realizar este cambio.',
+                    type: 'warning',
+                    confirmButtonColor: '#213b78',
+                });
+                break;
+            case 404:
+                swal({
+                    title: 'No se pudo encontrar el objeto!',
+                    // text: 'Usted no tiene permitido realizar este cambio.',
                     type: 'warning',
                     confirmButtonColor: '#213b78',
                 });

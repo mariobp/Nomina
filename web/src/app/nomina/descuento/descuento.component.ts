@@ -35,13 +35,13 @@ export class DescuentoListComponent implements OnInit {
             data: 'id',
             render: TableComponent.renderCheckRow
         },
+        { data: 'cantidad', render: TableComponent.renderDecimal },
         {
             orderable: false,
             searchable: false,
             className: 'truncate',
             data: 'empleados'
-        },
-        { data: 'cantidad', render: TableComponent.renderDecimal }
+        }
     ];
 
     constructor(private _s: DescuentoService, private _r: ActivatedRoute) {
@@ -85,7 +85,7 @@ export class DescuentoListComponent implements OnInit {
                 <div class="col-lg-12">
                     <div class="form-horizontal">
                         <div class="row">
-                            <label class="col-lg-2 label-on-left" for="id_tarifario">Unidades de producción</label>
+                            <label class="col-lg-2 label-on-left" for="id_tarifario">Empleados</label>
                             <div class="col-lg-10">
                                 <div class="form-group label-floating is-empty">
                                     <ex-multi #multi name="contratos" placeholder="Seleccione las contratos"
