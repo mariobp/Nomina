@@ -101,7 +101,7 @@ export class EditContratoComponent implements OnInit {
         public _tc: TipoContratoService, private _rt: Router, private _r: ActivatedRoute) {
         this.form = this._fb.group({
             empleado: [0],
-            tipo_contrato: [0, [Validators.required, Validators.pattern(/\d/)]],
+            tipo_contrato: [[], [Validators.required, Validators.pattern(/\d/)]],
             fecha_inicio: ['', Validators.required],
             salario_base: ['', [Validators.required, Validators.min(0)]],
             subsidio_transporte: ['', [Validators.required, Validators.min(0)]],
