@@ -139,7 +139,8 @@ export class TurnoEditComponent implements OnInit {
             return data;
         }
         this._form.successful = data => {
-            if (data) {
+            console.log(data);
+            if (data && data._body !== '') {
                 this._form.setItem(data.json());
             }
 
