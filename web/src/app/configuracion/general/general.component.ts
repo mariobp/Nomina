@@ -43,7 +43,6 @@ export class EditGeneralComponent implements OnInit {
             extra_dominical_diurna: ['', [Validators.required, Validators.min(0)]],
             extra_dominical_nocturna: ['', [Validators.required, Validators.min(0)]],
             descuento_salud: ['', [Validators.required, Validators.min(0)]],
-            prestaciones_sociales: ['', [Validators.required, Validators.min(0)]],
             nit: ['', Validators.required],
             numero_cuenta: ['', Validators.required],
             tipo_cuenta: [[], Validators.required],
@@ -79,7 +78,6 @@ export class EditGeneralComponent implements OnInit {
             { column: 'col2', title: 'Valor hora extra dominical diurna %', type: 'number', name: 'extra_dominical_diurna' },
             { column: 'col2', title: 'Valor hora extra dominical nocturna %', type: 'number', name: 'extra_dominical_nocturna' },
             { column: 'col2', title: 'Descuento de salud y pensión para empleado %', type: 'number', name: 'descuento_salud' },
-            { column: 'col2', title: 'Pago de salud y pensión del empleador %', type: 'number', name: 'prestaciones_sociales' },
         ];
     }
 

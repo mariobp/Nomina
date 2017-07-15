@@ -5,7 +5,8 @@ import { FormComponent, TableComponent, RenderInput } from '../../../lib/compone
 import { ProduccionService } from './produccion.service';
 import { EmpleadoService } from '../../empleados/empleado/empleado.service';
 import { UnidadProduccionService } from '../../configuracion/unidadproduccion/unidadproduccion.service';
-
+import { MultiComponent } from '../../../lib/multi/multi.component';
+import { CargoService } from '../../configuracion/cargo/cargo.service';
 
 @Component({
     template: '<router-outlet></router-outlet>'
@@ -34,8 +35,9 @@ export class ProduccionListComponent {
             render: TableComponent.renderCheckRow
         },
         { data: 'unidad__nombre' },
+        { data: 'concepto__nombre' },
         { data: 'cantidad' },
-        { data: 'fecha' }
+        { data: 'fecha' },
     ]
 
     constructor(private _as: ProduccionService) { }
@@ -53,20 +55,28 @@ export class EditProduccionComponent implements OnInit {
     columns: string[];
     renderinputs: RenderInput[];
     service = this._s;
+    debug = false;
+    cargoFilter = false;
     private produccion: any;
+    public auto = false;
+    params = {};
+
     @ViewChild('f') public _form: FormComponent;
-    @ViewChild('multi') private _multi: any;
+    @ViewChild('multi') private _multi: MultiComponent;
 
     constructor(private _fb: FormBuilder, private _s: ProduccionService, public _e: EmpleadoService,
-        public _u: UnidadProduccionService, private _rt: Router, private _r: ActivatedRoute) {
+        public _u: UnidadProduccionService, public _c: CargoService, private _rt: Router, private _r: ActivatedRoute) {
         this.form = this._fb.group({
             unidad: [[], Validators.required],
             empleados: [[], Validators.required],
-            cantidad: ['', [Validators.required, Validators.min(0)]]
+            cantidad: ['', [Validators.required, Validators.min(0)]],
+            concepto__nombre: ['', Validators.required]
         });
         this.columns = ['col1'];
         this.renderinputs = [
             { column: 'col1', title: 'Cantidad', type: 'text', name: 'cantidad' },
+            { column: 'col1', title: 'Concepto', type: 'text', name: 'concepto__nombre' },
+
         ];
         if (!!this._r.snapshot.data['item'] && Object.keys(this._r.snapshot.data['item']).length !== 0) {
             this.produccion = this._r.snapshot.data['item'];
@@ -74,17 +84,12 @@ export class EditProduccionComponent implements OnInit {
             this.form.get('unidad').disable();
         }
     }
+
     empleado = item => `${item.nombre} ${item.apellidos}(${item.cargo__nombre})`;
     itemUnidad = item => `${item.unidad__nombre}`;
+    itemCargo = item => `${item.nombre}`;
 
     ngOnInit() {
-        if (this.produccion) {
-            this._form.setReady(true);
-            this.empleadosList({ cargo__tarifario__unidad: this.produccion.unidad });
-        } else {
-            this.form.get('empleados').disable();
-        }
-
         this._form.successful = data => {
             this._rt.navigate(['produccion/produccion']);
         }
@@ -101,18 +106,50 @@ export class EditProduccionComponent implements OnInit {
 
     onChange(event) {
         if (!!event.item) {
-            this.form.get('empleados').setValue([]);
-            this.empleadosList({ cargo__tarifario__unidad: event.item.id });
-            this.form.get('empleados').enable();
+            const empleado = this.form.get('empleados');
+            empleado.setValue([]);
+            this.params['cargo__tarifario__unidad'] = event.item.id;
+            this.empleadosList(this.params);
+            if (!empleado.enabled) {
+                empleado.enable();
+            }
         }
     }
 
-    empleadosList(query: any) {
-        Promise.all([this._e.list(query), this._multi.complete]).then(data => {
-            const datos = data[0].json();
-            console.log(datos);
-            this._form.setReady(false);
-        });
+    onChange2(event) {
+        if (!!event.item) {
+            const empleado = this.form.get('empleados');
+            empleado.setValue([]);
+            this.params['cargo'] = event.item.id;
+            this.empleadosList(this.params);
+            this.cargoFilter = true;
+            if (!empleado.enabled) {
+                empleado.enable();
+            }
+        }
+    }
+
+
+    multiReady(event) {
+        if (this.produccion) {
+            this.params['cargo__tarifario__unidad'] = this.produccion.unidad;
+            this.empleadosList(this.params);
+        } else {
+            this.form.get('empleados').disable();
+        }
+    }
+
+    completeAjax(event) {
+        this._form.setReady(false);
+        if (this.cargoFilter) {
+            this._multi.selectAll();
+            this.cargoFilter = false;
+        }
+    }
+
+    empleadosList(query: object) {
+        this._form.setReady(true);
+        this._multi.filterList(query);
     }
 
 }

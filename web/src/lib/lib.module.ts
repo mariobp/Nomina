@@ -2,8 +2,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MdAutocompleteModule, MdInputModule, MdCheckboxModule, MdSelectModule } from '@angular/material';
-
+import { MdAutocompleteModule, MdInputModule, MdCheckboxModule, MdSelectModule, MdButtonModule } from '@angular/material';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { LoaderComponent } from './loader/loader.component';
@@ -42,7 +41,8 @@ const LibComponents = [
         MdAutocompleteModule,
         MdCheckboxModule,
         MdInputModule,
-        MdSelectModule
+        MdSelectModule,
+        MdButtonModule
     ],
     declarations: LibComponents,
     exports: LibComponents
