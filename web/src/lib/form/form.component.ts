@@ -209,6 +209,7 @@ export class FormComponent implements OnInit, AfterViewInit {
                 this.service.delete(this.item.id)
                     .then(data => {
                         this.successful(data);
+                        this.back();
                         swal({
                             title: 'Eliminado!',
                             text: 'Registros se eliminado con exito',
@@ -216,7 +217,10 @@ export class FormComponent implements OnInit, AfterViewInit {
                             confirmButtonColor: '#213b78',
                         });
                     })
-                    .catch(err => this._error(err, 'No se han podido eliminar los registros'))
+                    .catch(err => {
+                        console.log(err)
+                        this._error(err, 'No se han podido eliminar los registros')
+                    })
             }, () => { });
         }
     }
@@ -235,6 +239,7 @@ export class FormComponent implements OnInit, AfterViewInit {
 
     _error(error: any, defaultMgs: string) {
         this._ready = false;
+        console.log(error);
         switch (error.status) {
             case 0:
                 console.log(error);
@@ -276,7 +281,7 @@ export class FormComponent implements OnInit, AfterViewInit {
             default:
                 this.error(error);
                 BsNotify.error(defaultMgs);
-                console.error(error);
+                // console.error(error.json());
                 break;
         }
     }
