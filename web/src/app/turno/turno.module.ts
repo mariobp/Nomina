@@ -12,6 +12,7 @@ import { TurnoRoutes } from './route';
 import { ProduccionComponent, ProduccionListComponent, EditProduccionComponent } from './produccion/produccion.component';
 import { ProduccionService } from './produccion/produccion.service';
 import { UnidadProduccionService } from '../configuracion/unidadproduccion/unidadproduccion.service';
+import { CargoService } from '../configuracion/cargo/cargo.service';
 
 @NgModule({
     imports: [
@@ -35,7 +36,8 @@ import { UnidadProduccionService } from '../configuracion/unidadproduccion/unida
         TurnoService,
         EmpleadoService,
         ProduccionService,
-        UnidadProduccionService
+        UnidadProduccionService,
+        CargoService
     ]
 })
 export class TurnoModule { }

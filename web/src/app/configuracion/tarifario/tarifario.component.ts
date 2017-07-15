@@ -54,15 +54,15 @@ export class EditTarifarioComponent implements OnInit {
     constructor(private _fb: FormBuilder, private _s: TarifarioService,
         public _u: UnidadProduccionService, public _c: CargoService, public _rt: Router) {
         this.form = this._fb.group({
-            unidad: [0, [Validators.required, Validators.pattern(/\d/)]],
-            cargo: [0, [Validators.required, Validators.pattern(/\d/)]],
+            unidad: [[], [Validators.required, Validators.pattern(/\d/)]],
+            cargo: [[], [Validators.required, Validators.pattern(/\d/)]],
             precio: ['', [Validators.required, Validators.min(0)]]
         });
         this.columns = ['col1'];
         this.renderinputs = [
             { column: 'col1', title: 'Precio', type: 'number', name: 'precio', },
         ];
-    } public
+    }
 
     itemCargo = item => item.cargo__nombre;
     itemUnidad = item => item.unidad__nombre;
