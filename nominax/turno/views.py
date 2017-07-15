@@ -62,44 +62,6 @@ class MasterList(supra.SupraListView):
         # end if
         propiedad = self.request.GET.get('sort_property', False)
         orden = self.request.GET.get('sort_direction', False)
-        eliminado = self.request.GET.get('aprobado', False)
-        if eliminado == '1':
-            queryset = queryset.filter(aprobado=True)
-        else:
-            queryset = queryset.filter(aprobado=False)
-        # end if
-        if propiedad and orden:
-            if orden == "asc":
-                queryset = queryset.order_by(propiedad)
-            elif orden == "desc":
-                propiedad = "-" + propiedad
-                queryset = queryset.order_by(propiedad)
-        # end if
-        return queryset
-    # end def
-# end class
-
-class MasterList2(supra.SupraListView):
-    search_key = 'q'
-    list_filter = ["id"]
-    paginate_by = 10
-
-    @method_decorator(check_login)
-    def dispatch(self, request, *args, **kwargs):
-        return super(MasterList2, self).dispatch(request, *args, **kwargs)
-    # end def
-
-    def get_queryset(self):
-        queryset = super(MasterList2, self).get_queryset()
-        if self.request.GET.get('num_page', False):
-            if int(self.request.GET.get('num_page')) is 0:
-                self.paginate_by = None
-            else:
-                self.paginate_by = self.request.GET.get('num_page', False)
-            # end if
-        # end if
-        propiedad = self.request.GET.get('sort_property', False)
-        orden = self.request.GET.get('sort_direction', False)
         eliminado = self.request.GET.get('eliminado', False)
         if eliminado == '1':
             queryset = queryset.filter(eliminado=True)
@@ -164,6 +126,12 @@ class TurnoSupraList(MasterList):
     search_fields = ['empleado__nombre', 'empleado__apellidos']
     list_filter = ['empleado', 'aprobado']
 
+    def get_queryset(self):
+        queryset = super(TurnoSupraList, self).get_queryset()
+        queryset = queryset.filter(aprobado=False)
+        return queryset
+    # end def
+
     def h_extras(self, obj, now):
         return obj.horas_extras()
     # end def
@@ -197,13 +165,14 @@ class TurnoSupraFormDelete(supra.SupraDeleteView):
             user = CuserMiddleware.get_user()
             self.object.eliminado_por = user
             self.object.save()
+            print "eliminado", self.object.eliminado
             return HttpResponse(status=200)
         # end if
         return HttpResponse(status=403)
     # end def
 # end class
 
-class ProduccionSupraList(MasterList2):
+class ProduccionSupraList(MasterList):
     model = models.Produccion
     list_display = ['id', 'fecha', 'unidad', 'cantidad', 'unidad__nombre', 'empleados', 'concepto__nombre']
     search_fields = ['fecha', 'unidad', 'cantidad']
