@@ -978,12 +978,12 @@ var EditCargoComponent = (function () {
     EditCargoComponent.prototype.ngOnInit = function () {
         var _this = this;
         this._form.setReady(true);
-        Promise.all([this._multi.complete]).then(function (data) {
-            _this._form.setReady(false);
-        });
         this._form.successful = function (data) {
             _this._rt.navigate(['configuracion/cargos']);
         };
+    };
+    EditCargoComponent.prototype.completeAjax = function (event) {
+        this._form.setReady(false);
     };
     return EditCargoComponent;
 }());
@@ -1061,7 +1061,7 @@ var _a, _b;
 /***/ "../../../../../src/app/configuracion/cargo/form.cargo.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ex-form #f icon=\"turned_in\" title=\"Cargos\" [form]=\"form\" [service]=\"service\" [columns]=\"columns\" [renderinputs]=\"renderinputs\">\n    <div bottom-form class=\"row\">\n        <div class=\"col-lg-12\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_tipocontrato\">Unidades de producción</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <ex-multi #multi name=\"unidades_produccion\" placeholder=\"Seleccione las unidades\" [form]=\"form\" [service]=\"_u\" [render]=\"nombre\" [item]=\"_form.item\"></ex-multi>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</ex-form>\n"
+module.exports = "<ex-form #f icon=\"turned_in\" title=\"Cargos\" [form]=\"form\" [service]=\"service\" [columns]=\"columns\" [renderinputs]=\"renderinputs\">\n    <div bottom-form class=\"row\">\n        <div class=\"col-lg-12\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_tipocontrato\">Unidades de producción</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <ex-multi #multi name=\"unidades_produccion\" (complete)=\"completeAjax($event)\" placeholder=\"Seleccione las unidades\" [form]=\"form\" [service]=\"_u\" [render]=\"nombre\" [item]=\"_form.item\"></ex-multi>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</ex-form>\n"
 
 /***/ }),
 
@@ -1224,7 +1224,6 @@ var EditGeneralComponent = (function () {
             extra_dominical_diurna: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].min(0)]],
             extra_dominical_nocturna: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].min(0)]],
             descuento_salud: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].min(0)]],
-            prestaciones_sociales: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].min(0)]],
             nit: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
             numero_cuenta: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
             tipo_cuenta: [[], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
@@ -1260,7 +1259,6 @@ var EditGeneralComponent = (function () {
             { column: 'col2', title: 'Valor hora extra dominical diurna %', type: 'number', name: 'extra_dominical_diurna' },
             { column: 'col2', title: 'Valor hora extra dominical nocturna %', type: 'number', name: 'extra_dominical_nocturna' },
             { column: 'col2', title: 'Descuento de salud y pensión para empleado %', type: 'number', name: 'descuento_salud' },
-            { column: 'col2', title: 'Pago de salud y pensión del empleador %', type: 'number', name: 'prestaciones_sociales' },
         ];
     }
     EditGeneralComponent.prototype.ngOnInit = function () {
@@ -1446,8 +1444,8 @@ var EditTarifarioComponent = (function () {
         this.itemCargo = function (item) { return item.cargo__nombre; };
         this.itemUnidad = function (item) { return item.unidad__nombre; };
         this.form = this._fb.group({
-            unidad: [0, [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].pattern(/\d/)]],
-            cargo: [0, [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].pattern(/\d/)]],
+            unidad: [[], [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].pattern(/\d/)]],
+            cargo: [[], [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].pattern(/\d/)]],
             precio: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].min(0)]]
         });
         this.columns = ['col1'];
@@ -2698,14 +2696,14 @@ SelectiveStrategy = __decorate([
 /***/ "../../../../../src/app/turno/produccion/edit.produccion.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ex-form #f icon=\"work\" title=\"Producción\" [form]=\"form\" [service]=\"service\" [columns]=\"columns\" [renderinputs]=\"renderinputs\">\n    <div top-form class=\"row\">\n        <div class=\"col-lg-12\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_unidad\">Unidad:</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <label class=\"control-label\"></label>\n                            <ex-autocomplete name=\"unidad\" (cambio)=\"onChange($event)\" [form]=\"form\" [service]=\"_u\" [item]=\"_form.item\" [itemVal]=\"itemUnidad\"></ex-autocomplete>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div top-form class=\"row\">\n        <div class=\"col-lg-12\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_tipocontrato\">Empleados</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <ex-multi #multi name=\"empleados\" placeholder=\"Seleccione los empleados\" [form]=\"form\" [service]=\"_e\" [render]=\"empleado\" [item]=\"_form.item\"></ex-multi>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</ex-form>\n"
+module.exports = "<ex-form #f icon=\"work\" title=\"Producción\" [debug]=\"debug\" [form]=\"form\" [service]=\"service\" [columns]=\"columns\" [renderinputs]=\"renderinputs\">\n    <div top-form class=\"row\">\n        <div class=\"col-lg-12\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_unidad\">Unidad:</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <label class=\"control-label\"></label>\n                            <ex-autocomplete name=\"unidad\" (cambio)=\"onChange($event)\" [form]=\"form\" [service]=\"_u\" [item]=\"_form.item\" [itemVal]=\"itemUnidad\"></ex-autocomplete>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div top-form class=\"row\">\n        <div class=\"col-lg-12\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_cargo\">Cargo(Filtro):</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <label class=\"control-label\"></label>\n                            <ex-autocomplete (cambio)=\"onChange2($event)\" [service]=\"_c\" [item]=\"_form.item\" [itemVal]=\"itemCargo\"></ex-autocomplete>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div top-form class=\"row\">\n        <div class=\"col-lg-12\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_tipocontrato\">Empleados</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <ex-multi #multi name=\"empleados\" (complete)=\"completeAjax($event)\" (ready)=\"multiReady($event)\" placeholder=\"Seleccione los empleados\" [auto]=\"auto\" [form]=\"form\" [service]=\"_e\" [render]=\"empleado\" [item]=\"_form.item\"></ex-multi>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</ex-form>\n"
 
 /***/ }),
 
 /***/ "../../../../../src/app/turno/produccion/list.produccion.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ex-table #table [title]=\"title\" [icon]=\"icon\" [service]=\"service\" [multiselect]=\"multiselect\" [columns]=\"columns\">\n    <th>Unidad</th>\n    <th>Cantidad</th>\n    <th>Fecha</th>\n</ex-table>\n"
+module.exports = "<ex-table #table [title]=\"title\" [icon]=\"icon\" [service]=\"service\" [multiselect]=\"multiselect\" [columns]=\"columns\">\n    <th>Unidad</th>\n    <th>Concepto</th>\n    <th>Cantidad</th>\n    <th>Fecha</th>\n</ex-table>\n"
 
 /***/ }),
 
@@ -2720,6 +2718,8 @@ module.exports = "<ex-table #table [title]=\"title\" [icon]=\"icon\" [service]=\
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__produccion_service__ = __webpack_require__("../../../../../src/app/turno/produccion/produccion.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__empleados_empleado_empleado_service__ = __webpack_require__("../../../../../src/app/empleados/empleado/empleado.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__configuracion_unidadproduccion_unidadproduccion_service__ = __webpack_require__("../../../../../src/app/configuracion/unidadproduccion/unidadproduccion.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__lib_multi_multi_component__ = __webpack_require__("../../../../../src/lib/multi/multi.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__configuracion_cargo_cargo_service__ = __webpack_require__("../../../../../src/app/configuracion/cargo/cargo.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProduccionComponent; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return ProduccionListComponent; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return EditProduccionComponent; });
@@ -2732,6 +2732,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
+
 
 
 
@@ -2766,8 +2768,9 @@ var ProduccionListComponent = (function () {
                 render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderCheckRow
             },
             { data: 'unidad__nombre' },
+            { data: 'concepto__nombre' },
             { data: 'cantidad' },
-            { data: 'fecha' }
+            { data: 'fecha' },
         ];
     }
     return ProduccionListComponent;
@@ -2784,24 +2787,32 @@ ProduccionListComponent = __decorate([
 ], ProduccionListComponent);
 
 var EditProduccionComponent = (function () {
-    function EditProduccionComponent(_fb, _s, _e, _u, _rt, _r) {
+    function EditProduccionComponent(_fb, _s, _e, _u, _c, _rt, _r) {
         this._fb = _fb;
         this._s = _s;
         this._e = _e;
         this._u = _u;
+        this._c = _c;
         this._rt = _rt;
         this._r = _r;
         this.service = this._s;
+        this.debug = false;
+        this.cargoFilter = false;
+        this.auto = false;
+        this.params = {};
         this.empleado = function (item) { return item.nombre + " " + item.apellidos + "(" + item.cargo__nombre + ")"; };
         this.itemUnidad = function (item) { return "" + item.unidad__nombre; };
+        this.itemCargo = function (item) { return "" + item.nombre; };
         this.form = this._fb.group({
             unidad: [[], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
             empleados: [[], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
-            cantidad: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].min(0)]]
+            cantidad: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].min(0)]],
+            concepto__nombre: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required]
         });
         this.columns = ['col1'];
         this.renderinputs = [
             { column: 'col1', title: 'Cantidad', type: 'text', name: 'cantidad' },
+            { column: 'col1', title: 'Concepto', type: 'text', name: 'concepto__nombre' },
         ];
         if (!!this._r.snapshot.data['item'] && Object.keys(this._r.snapshot.data['item']).length !== 0) {
             this.produccion = this._r.snapshot.data['item'];
@@ -2811,13 +2822,6 @@ var EditProduccionComponent = (function () {
     }
     EditProduccionComponent.prototype.ngOnInit = function () {
         var _this = this;
-        if (this.produccion) {
-            this._form.setReady(true);
-            this.empleadosList({ cargo__tarifario__unidad: this.produccion.unidad });
-        }
-        else {
-            this.form.get('empleados').disable();
-        }
         this._form.successful = function (data) {
             _this._rt.navigate(['produccion/produccion']);
         };
@@ -2831,37 +2835,65 @@ var EditProduccionComponent = (function () {
     };
     EditProduccionComponent.prototype.onChange = function (event) {
         if (!!event.item) {
-            this.form.get('empleados').setValue([]);
-            this.empleadosList({ cargo__tarifario__unidad: event.item.id });
-            this.form.get('empleados').enable();
+            var empleado = this.form.get('empleados');
+            empleado.setValue([]);
+            this.params['cargo__tarifario__unidad'] = event.item.id;
+            this.empleadosList(this.params);
+            if (!empleado.enabled) {
+                empleado.enable();
+            }
+        }
+    };
+    EditProduccionComponent.prototype.onChange2 = function (event) {
+        if (!!event.item) {
+            var empleado = this.form.get('empleados');
+            empleado.setValue([]);
+            this.params['cargo'] = event.item.id;
+            this.empleadosList(this.params);
+            this.cargoFilter = true;
+            if (!empleado.enabled) {
+                empleado.enable();
+            }
+        }
+    };
+    EditProduccionComponent.prototype.multiReady = function (event) {
+        if (this.produccion) {
+            this.params['cargo__tarifario__unidad'] = this.produccion.unidad;
+            this.empleadosList(this.params);
+        }
+        else {
+            this.form.get('empleados').disable();
+        }
+    };
+    EditProduccionComponent.prototype.completeAjax = function (event) {
+        this._form.setReady(false);
+        if (this.cargoFilter) {
+            this._multi.selectAll();
+            this.cargoFilter = false;
         }
     };
     EditProduccionComponent.prototype.empleadosList = function (query) {
-        var _this = this;
-        Promise.all([this._e.list(query), this._multi.complete]).then(function (data) {
-            var datos = data[0].json();
-            console.log(datos);
-            _this._form.setReady(false);
-        });
+        this._form.setReady(true);
+        this._multi.filterList(query);
     };
     return EditProduccionComponent;
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _c || Object)
+    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _d || Object)
 ], EditProduccionComponent.prototype, "_form", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('multi'),
-    __metadata("design:type", Object)
+    __metadata("design:type", typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_7__lib_multi_multi_component__["a" /* MultiComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_7__lib_multi_multi_component__["a" /* MultiComponent */]) === "function" && _f || Object)
 ], EditProduccionComponent.prototype, "_multi", void 0);
 EditProduccionComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         template: __webpack_require__("../../../../../src/app/turno/produccion/edit.produccion.html")
     }),
-    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"]) === "function" && _d || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_4__produccion_service__["a" /* ProduccionService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__produccion_service__["a" /* ProduccionService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_5__empleados_empleado_empleado_service__["a" /* EmpleadoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__empleados_empleado_empleado_service__["a" /* EmpleadoService */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_6__configuracion_unidadproduccion_unidadproduccion_service__["a" /* UnidadProduccionService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__configuracion_unidadproduccion_unidadproduccion_service__["a" /* UnidadProduccionService */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _j || Object, typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */]) === "function" && _k || Object])
+    __metadata("design:paramtypes", [typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_4__produccion_service__["a" /* ProduccionService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__produccion_service__["a" /* ProduccionService */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_5__empleados_empleado_empleado_service__["a" /* EmpleadoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__empleados_empleado_empleado_service__["a" /* EmpleadoService */]) === "function" && _j || Object, typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_6__configuracion_unidadproduccion_unidadproduccion_service__["a" /* UnidadProduccionService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__configuracion_unidadproduccion_unidadproduccion_service__["a" /* UnidadProduccionService */]) === "function" && _k || Object, typeof (_l = typeof __WEBPACK_IMPORTED_MODULE_8__configuracion_cargo_cargo_service__["a" /* CargoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_8__configuracion_cargo_cargo_service__["a" /* CargoService */]) === "function" && _l || Object, typeof (_m = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _m || Object, typeof (_o = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */]) === "function" && _o || Object])
 ], EditProduccionComponent);
 
-var _a, _b, _c, _d, _f, _g, _h, _j, _k;
+var _a, _b, _d, _f, _g, _h, _j, _k, _l, _m, _o;
 //# sourceMappingURL=produccion.component.js.map
 
 /***/ }),
@@ -4412,7 +4444,8 @@ LibModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_4__angular_material__["b" /* MdAutocompleteModule */],
             __WEBPACK_IMPORTED_MODULE_4__angular_material__["c" /* MdCheckboxModule */],
             __WEBPACK_IMPORTED_MODULE_4__angular_material__["a" /* MdInputModule */],
-            __WEBPACK_IMPORTED_MODULE_4__angular_material__["d" /* MdSelectModule */]
+            __WEBPACK_IMPORTED_MODULE_4__angular_material__["d" /* MdSelectModule */],
+            __WEBPACK_IMPORTED_MODULE_4__angular_material__["e" /* MdButtonModule */]
         ],
         declarations: LibComponents,
         exports: LibComponents
@@ -4541,7 +4574,7 @@ var _a, _b;
 /***/ "../../../../../src/lib/multi/multi.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div [formGroup]=\"form\">\n    <md-select style=\"width:100%\" [placeholder]=\"placeholder\" [formControlName]=\"name\" name=\"name\" [multiple]=\"true\">\n        <md-option *ngFor=\"let option of options\" [value]=\"option.id\">{{render(option)}}</md-option>\n    </md-select>\n</div>\n<!-- <div class=\"cargando\" *ngIf=\"_ready\">\n    <div class=\"loader\">\n        <svg class=\"circular\" viewBox=\"25 25 50 50\">\n            <circle class=\"path\" cx=\"50\" cy=\"50\" r=\"20\" fill=\"none\" stroke-width=\"2\" stroke-miterlimit=\"10\"/>\n        </svg>\n    </div>\n</div> -->\n"
+module.exports = "<div [formGroup]=\"form\">\n    <md-select style=\"width:100%\" [placeholder]=\"placeholder\" auto=\"auto\" [formControlName]=\"name\" name=\"name\" [multiple]=\"true\">\n        <button style=\"width:100%\" md-button (click)=\"selectAll()\"><span *ngIf=\"todos\">Des-</span><span>Seleccionar todos</span></button>\n        <md-option *ngFor=\"let option of options\" [value]=\"option.id\">{{render(option)}}</md-option>\n    </md-select>\n</div>\n"
 
 /***/ }),
 
@@ -4563,20 +4596,56 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 var MultiComponent = (function () {
     function MultiComponent() {
+        this.todos = false;
         this.options = [];
+        this.auto = true;
+        this.ready = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.complete = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
         this.render = function (item) { return item.id; };
     }
     MultiComponent.prototype.ngOnInit = function () {
+        this.ready.emit({ ready: true });
+        if (!!this.item && this.item[this.name]) {
+            this.form.get(this.name).patchValue(this.item[this.name]);
+        }
+        if (this.auto) {
+            this.filterList({});
+        }
+    };
+    MultiComponent.prototype.onFocus = function (event) {
+        this.filterList({});
+    };
+    MultiComponent.prototype.selectAll = function () {
+        var all = [];
+        if (!this.todos) {
+            this.options.forEach(function (element) {
+                all.push(element.id);
+            });
+            this.form.get(this.name).patchValue(all);
+            this.todos = true;
+        }
+        else {
+            this.form.get(this.name).patchValue(all);
+            this.todos = false;
+        }
+    };
+    MultiComponent.prototype.filterList = function (query) {
         var _this = this;
-        this.service.list({ num_page: 0 })
+        var parametros = query;
+        parametros['num_page'] = 0;
+        this.service.list(parametros)
             .then(function (data) { return data.json(); })
             .then(function (data) {
             _this.options = data.object_list;
-            _this.complete = Promise.resolve();
+            var num = _this.options.length;
+            if (num === 0) {
+                _this.placeholder = "No se encontraron resultados";
+            }
+            else {
+                _this.placeholder = "Se encontraron " + num + " registros";
+            }
+            _this.complete.emit({ options: _this.options });
         }).catch(function (error) { return console.log(error); });
-        if (!!this.item && this.item[this.name]) {
-            this.form[this.name] = this.item[this.name];
-        }
     };
     return MultiComponent;
 }());
@@ -4600,6 +4669,18 @@ __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], MultiComponent.prototype, "placeholder", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Object)
+], MultiComponent.prototype, "auto", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", Object)
+], MultiComponent.prototype, "ready", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", Object)
+], MultiComponent.prototype, "complete", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Object)
