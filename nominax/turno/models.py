@@ -266,5 +266,13 @@ class Produccion(models.Model):
     last_editor = CurrentUserField(related_name="last_edited_produccion")
     eliminado = models.BooleanField(default=False)
     eliminado_por = models.ForeignKey(User, related_name="eliminado_por_produccion", blank=True, null=True)
+
+    def cargo(self):
+        empleado =  self.empleados.all().first()
+        if empleado:
+            return empleado.cargo
+        #end if
+        return None
+    #end def
 # end class
 

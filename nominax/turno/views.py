@@ -174,7 +174,7 @@ class TurnoSupraFormDelete(supra.SupraDeleteView):
 
 class ProduccionSupraList(MasterList):
     model = models.Produccion
-    list_display = ['id', 'fecha', 'unidad', 'cantidad', 'unidad__nombre', 'empleados', 'concepto__nombre']
+    list_display = ['id', 'fecha', 'unidad', 'cantidad', 'unidad__nombre', 'empleados', 'concepto__nombre', 'cargo', 'cargo__nombre']
     search_fields = ['fecha', 'unidad', 'cantidad']
 
     def empleados(self, obj, now):
@@ -183,6 +183,21 @@ class ProduccionSupraList(MasterList):
             lista.append(u.id)
         return lista
     # end def
+
+    def cargo(self, obj, now):
+        if obj.cargo():
+            return obj.cargo().id
+        #end if
+        return None
+    #end def
+
+    def cargo__nombre(self, obj, now):
+        if obj.cargo():
+            return obj.cargo().nombre
+        #end if
+        return "Sin Cargo"
+    #end def
+
 # end class
 
 class ProduccionSupraForm(supra.SupraFormView):
