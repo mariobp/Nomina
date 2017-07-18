@@ -66,7 +66,16 @@ class MasterList(supra.SupraListView):
 class UnidadProduccionSupraList(MasterList):
     list_display = ['id', 'nombre']
     search_fields = ['nombre']
+    list_filter = ['tarifario__cargo']
     model = models.UnidadProduccion
+
+    def get_queryset(self):
+        queryset = super(UnidadProduccionSupraList, self).get_queryset()
+        if self.request.GET.get('tarifario__cargo', False):
+            queryset = queryset.filter(tarifario__remplazado_por__isnull = True).distinct('id')
+        #end if
+        return queryset
+    #ed def
 # end class
 
 class UnidadProduccionSupraForm(supra.SupraFormView):
