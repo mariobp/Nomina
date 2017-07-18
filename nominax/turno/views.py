@@ -119,8 +119,8 @@ class TurnoSupraForm(supra.SupraFormView):
 class TurnoSupraList(MasterList):
     model = models.Turno
     list_display = ('id', 'empleado', 'empleado__nombre', 'empleado__apellidos',
-                    'entrada', 'salida', 'h_extras', 'h_nocturna', 'h_diurna',
-                    'h_dominical', 'aprobado', 'creator', 'last_editor', 'descontar_almuerzo')
+                    'entrada', 'salida', 'h_diurna','h_nocturna','h_extras', 'h_nocturna_extras',
+                    'h_dominical','h_dominical_nocturna','h_dominical_extra','h_dominical_extra_nocturna', 'aprobado', 'creator', 'last_editor', 'descontar_almuerzo')
     search_fields = ['empleado__nombre', 'empleado__apellidos']
     list_filter = ['empleado', 'aprobado']
 
@@ -141,9 +141,24 @@ class TurnoSupraList(MasterList):
     def h_diurna(self, obj, now):
         return obj.horas_diurna()
     # end def
+    def h_nocturna_extras(self, obj, now):
+        return obj.get_extras_nocturnas()
+    #end def
+
+    def h_dominical_nocturna(self, obj, now):
+        return obj.get_dominicales_nocturnas()
+    #end def
 
     def h_dominical(self, obj, now):
         return obj.horas_dominical()
+    # end def
+
+    def h_dominical_extra(self, obj, now):
+        return obj.get_dominicales_diurnas_extra()
+    # end def
+
+    def h_dominical_extra_nocturna(self, obj, now):
+        return obj.get_dominicales_nocturnas_extra()
     # end def
 # end class
 
@@ -171,7 +186,7 @@ class TurnoSupraFormDelete(supra.SupraDeleteView):
 
 class ProduccionSupraList(MasterList):
     model = models.Produccion
-    list_display = ['id', 'fecha', 'unidad', 'cantidad', 'unidad__nombre', 'empleados', 'concepto__nombre']
+    list_display = ['id', 'fecha', 'unidad', 'cantidad', 'unidad__nombre', 'empleados', 'concepto__nombre', 'cargo', 'cargo__nombre']
     search_fields = ['fecha', 'unidad', 'cantidad']
 
     def empleados(self, obj, now):
@@ -180,6 +195,21 @@ class ProduccionSupraList(MasterList):
             lista.append(u.id)
         return lista
     # end def
+
+    def cargo(self, obj, now):
+        if obj.cargo():
+            return obj.cargo().id
+        #end if
+        return None
+    #end def
+
+    def cargo__nombre(self, obj, now):
+        if obj.cargo():
+            return obj.cargo().nombre
+        #end if
+        return "Sin Cargo"
+    #end def
+
 # end class
 
 class ProduccionSupraForm(supra.SupraFormView):

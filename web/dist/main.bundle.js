@@ -1,4 +1,4 @@
-webpackJsonp([8],{
+webpackJsonp([7],{
 
 /***/ "../../../../../src async recursive":
 /***/ (function(module, exports, __webpack_require__) {
@@ -6,18 +6,15 @@ webpackJsonp([8],{
 var map = {
 	"./configuracion/configuracion.module": [
 		"../../../../../src/app/configuracion/configuracion.module.ts",
-		6,
-		0
+		3
 	],
 	"./empleados/empleados.module": [
 		"../../../../../src/app/empleados/empleados.module.ts",
-		2,
-		0
+		1
 	],
 	"./nomina/nomina.module": [
 		"../../../../../src/app/nomina/nomina.module.ts",
-		0,
-		1
+		0
 	],
 	"./obligaciones/obligaciones.module": [
 		"../../../../../src/app/obligaciones/obligaciones.module.ts",
@@ -29,15 +26,14 @@ var map = {
 	],
 	"./usuarios/usuarios.module": [
 		"../../../../../src/app/usuarios/usuarios.module.ts",
-		0,
-		3
+		2
 	]
 };
 function webpackAsyncContext(req) {
 	var ids = map[req];
 	if(!ids)
 		return Promise.reject(new Error("Cannot find module '" + req + "'."));
-	return Promise.all(ids.slice(1).map(__webpack_require__.e)).then(function() {
+	return __webpack_require__.e(ids[1]).then(function() {
 		return __webpack_require__(ids[0]);
 	});
 };
@@ -89,8 +85,8 @@ var AppComponent = (function () {
     function AppComponent(_cs) {
         this._cs = _cs;
         this.title = 'angular';
-        // this._cs.conf({ host: '104.236.33.228', port: '8010' });
-        // this._cs.conf({ host: 'isabela.com.co' });
+        //this._cs.conf({ host: '104.236.33.228', port: '8010' });
+        //this._cs.conf({ host: 'isabela.com.co' });
     }
     AppComponent.prototype.ngOnInit = function () {
         $.material.init();
@@ -1156,7 +1152,7 @@ var ConfiguracionMenuMeta = [
 /***/ "../../../../../src/app/configuracion/general/form.configuracion.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ex-form #f icon=\"settings\" title=\"Configuración general\" [form]=\"form\" [service]=\"service\" [columns]=\"columns\" [renderinputs]=\"renderinputs\" [deleteable]=\"deleteable\" [otro]=\"otro\">\n    <div bottom-form class=\"row\">\n        <div class=\"col-lg-12\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-2 label-on-left\" for=\"id_tarifario\">Unidades de producción</label>\n                    <div class=\"col-lg-10\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <ex-multi #multi name=\"tarifario\" placeholder=\"Seleccione las tarifas\" [form]=\"form\" [service]=\"_t\" [render]=\"nombre\" [item]=\"_form.item\"></ex-multi>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n</ex-form>\n"
+module.exports = "<ex-form #f icon=\"settings\" title=\"Configuración general\" [retur]=\"retur\" [form]=\"form\" [service]=\"service\" [columns]=\"columns\" [renderinputs]=\"renderinputs\" [deleteable]=\"deleteable\" [otro]=\"otro\">\n    <div bottom-form class=\"row\">\n        <div class=\"col-lg-12\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-2 label-on-left\" for=\"id_tarifario\">Unidades de producción</label>\n                    <div class=\"col-lg-10\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <ex-multi #multi name=\"tarifario\" placeholder=\"Seleccione las tarifas\" [form]=\"form\" [service]=\"_t\" [render]=\"nombre\" [item]=\"_form.item\"></ex-multi>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n</ex-form>\n"
 
 /***/ }),
 
@@ -1207,6 +1203,7 @@ var EditGeneralComponent = (function () {
         this.service = this._s;
         this.otro = false;
         this.deleteable = false;
+        this.retur = false;
         this.nombre = function (item) { return "Para el(la) " + item.cargo__nombre + " el " + item.unidad__nombre + " es a: " + item.precio; };
         this.form = this._fb.group({
             tipo_corte: [[], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
@@ -2696,14 +2693,14 @@ SelectiveStrategy = __decorate([
 /***/ "../../../../../src/app/turno/produccion/edit.produccion.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ex-form #f icon=\"work\" title=\"Producción\" [debug]=\"debug\" [form]=\"form\" [service]=\"service\" [columns]=\"columns\" [renderinputs]=\"renderinputs\">\n    <div top-form class=\"row\">\n        <div class=\"col-lg-12\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_unidad\">Unidad:</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <label class=\"control-label\"></label>\n                            <ex-autocomplete name=\"unidad\" (cambio)=\"onChange($event)\" [form]=\"form\" [service]=\"_u\" [item]=\"_form.item\" [itemVal]=\"itemUnidad\"></ex-autocomplete>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div top-form class=\"row\">\n        <div class=\"col-lg-12\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_cargo\">Cargo(Filtro):</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <label class=\"control-label\"></label>\n                            <ex-autocomplete (cambio)=\"onChange2($event)\" [service]=\"_c\" [item]=\"_form.item\" [itemVal]=\"itemCargo\"></ex-autocomplete>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div top-form class=\"row\">\n        <div class=\"col-lg-12\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_tipocontrato\">Empleados</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <ex-multi #multi name=\"empleados\" (complete)=\"completeAjax($event)\" (ready)=\"multiReady($event)\" placeholder=\"Seleccione los empleados\" [auto]=\"auto\" [form]=\"form\" [service]=\"_e\" [render]=\"empleado\" [item]=\"_form.item\"></ex-multi>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</ex-form>\n"
+module.exports = "<ex-form #f icon=\"work\" title=\"Producción\" [debug]=\"debug\" [form]=\"form\" [service]=\"service\" [columns]=\"columns\" [renderinputs]=\"renderinputs\">\n    <div top-form class=\"row\">\n        <div class=\"col-lg-12\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_cargo\">Cargo(Filtro):</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <label class=\"control-label\"></label>\n                            <ex-autocomplete name=\"cargo\" (cambio)=\"onChangeCargo($event)\" [service]=\"_c\" [form]=\"form\" [item]=\"_form.item\" [itemVal]=\"itemCargo\"></ex-autocomplete>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div top-form class=\"row\">\n        <div class=\"col-lg-12\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_unidad\">Unidad:</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <label class=\"control-label\"></label>\n                            <ex-autocomplete name=\"unidad\" [params]=\"paramsUnidad\" (cambio)=\"onChangeUnidad($event)\" [form]=\"form\" [service]=\"_u\" [item]=\"_form.item\" [itemVal]=\"itemUnidad\"></ex-autocomplete>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div top-form class=\"row\">\n        <div class=\"col-lg-12\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_tipocontrato\">Empleados</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <ex-multi #multi name=\"empleados\" (complete)=\"completeAjax($event)\" (ready)=\"multiReady($event)\" [placeholder]=\"placeholder\" [auto]=\"auto\" [form]=\"form\" [service]=\"_e\" [render]=\"empleado\" [item]=\"_form.item\"></ex-multi>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</ex-form>\n"
 
 /***/ }),
 
 /***/ "../../../../../src/app/turno/produccion/list.produccion.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ex-table #table [title]=\"title\" [icon]=\"icon\" [service]=\"service\" [multiselect]=\"multiselect\" [columns]=\"columns\">\n    <th>Unidad</th>\n    <th>Concepto</th>\n    <th>Cantidad</th>\n    <th>Fecha</th>\n</ex-table>\n"
+module.exports = "<ex-table #table [title]=\"title\" [icon]=\"icon\" [service]=\"service\" [multiselect]=\"multiselect\" [order]=\"order\" [columns]=\"columns\">\n    <th>Cargo</th>\n    <th>Unidad</th>\n    <th>Concepto</th>\n    <th>Cantidad</th>\n    <th>Fecha</th>\n</ex-table>\n"
 
 /***/ }),
 
@@ -2759,6 +2756,7 @@ var ProduccionListComponent = (function () {
         this.title = 'Producción';
         this.service = this._as;
         this.multiselect = true;
+        this.order = [[2, 'asc']];
         this.columns = [
             {
                 className: 'text-center',
@@ -2767,6 +2765,7 @@ var ProduccionListComponent = (function () {
                 data: 'id',
                 render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderCheckRow
             },
+            { data: 'cargo__nombre' },
             { data: 'unidad__nombre' },
             { data: 'concepto__nombre' },
             { data: 'cantidad' },
@@ -2797,14 +2796,17 @@ var EditProduccionComponent = (function () {
         this._r = _r;
         this.service = this._s;
         this.debug = false;
-        this.cargoFilter = false;
+        this.unidadFilter = false;
         this.auto = false;
+        this.placeholder = '';
         this.params = {};
+        this.paramsUnidad = {};
         this.empleado = function (item) { return item.nombre + " " + item.apellidos + "(" + item.cargo__nombre + ")"; };
         this.itemUnidad = function (item) { return "" + item.unidad__nombre; };
-        this.itemCargo = function (item) { return "" + item.nombre; };
+        this.itemCargo = function (item) { return "" + item.cargo__nombre; };
         this.form = this._fb.group({
-            unidad: [[], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
+            cargo: [[]],
+            unidad: [{ value: [], disabled: true }, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
             empleados: [[], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
             cantidad: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].min(0)]],
             concepto__nombre: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required]
@@ -2816,8 +2818,7 @@ var EditProduccionComponent = (function () {
         ];
         if (!!this._r.snapshot.data['item'] && Object.keys(this._r.snapshot.data['item']).length !== 0) {
             this.produccion = this._r.snapshot.data['item'];
-            this.form.get('unidad').setValue(this.produccion.unidad);
-            this.form.get('unidad').disable();
+            this.form.get('cargo').disable();
         }
     }
     EditProduccionComponent.prototype.ngOnInit = function () {
@@ -2833,32 +2834,44 @@ var EditProduccionComponent = (function () {
             return data;
         };
     };
-    EditProduccionComponent.prototype.onChange = function (event) {
+    EditProduccionComponent.prototype.onChangeUnidad = function (event) {
+        var empleado = this.form.get('empleados');
+        this.cleanEmpleado();
         if (!!event.item) {
-            var empleado = this.form.get('empleados');
-            empleado.setValue([]);
             this.params['cargo__tarifario__unidad'] = event.item.id;
             this.empleadosList(this.params);
+            this.placeholder = 'Seleccione los empleados';
             if (!empleado.enabled) {
                 empleado.enable();
             }
         }
     };
-    EditProduccionComponent.prototype.onChange2 = function (event) {
+    EditProduccionComponent.prototype.onChangeCargo = function (event) {
         if (!!event.item) {
-            var empleado = this.form.get('empleados');
-            empleado.setValue([]);
+            var unidad = this.form.get('unidad');
+            this.cleanEmpleado();
+            unidad.setValue([]);
+            this.placeholder = '';
+            this.params = {};
             this.params['cargo'] = event.item.id;
-            this.empleadosList(this.params);
-            this.cargoFilter = true;
-            if (!empleado.enabled) {
-                empleado.enable();
+            this.paramsUnidad['tarifario__cargo'] = event.item.id;
+            if (!unidad.enabled) {
+                unidad.enable();
             }
+        }
+    };
+    EditProduccionComponent.prototype.cleanEmpleado = function () {
+        var empleado = this.form.get('empleados');
+        empleado.setValue([]);
+        this._multi.todos = false;
+        if (empleado.enabled) {
+            empleado.disable();
         }
     };
     EditProduccionComponent.prototype.multiReady = function (event) {
         if (this.produccion) {
             this.params['cargo__tarifario__unidad'] = this.produccion.unidad;
+            this.params['cargo'] = this.produccion.cargo;
             this.empleadosList(this.params);
         }
         else {
@@ -2867,13 +2880,14 @@ var EditProduccionComponent = (function () {
     };
     EditProduccionComponent.prototype.completeAjax = function (event) {
         this._form.setReady(false);
-        if (this.cargoFilter) {
+        if (this.unidadFilter) {
             this._multi.selectAll();
-            this.cargoFilter = false;
+            this.unidadFilter = false;
         }
     };
     EditProduccionComponent.prototype.empleadosList = function (query) {
         this._form.setReady(true);
+        this.unidadFilter = true;
         this._multi.filterList(query);
     };
     return EditProduccionComponent;
@@ -2999,7 +3013,7 @@ module.exports = "<ex-form #f icon=\"assignment_ind\" title=\"Turno\" [form]=\"f
 /***/ "../../../../../src/app/turno/turno/list.turno.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ex-table #table title=\"Turno\" icon=\"assignment_ind\" [service]=\"service\" [multiselect]=\"multiselect\" [columns]=\"columns\">\n    <th>Empleado</th>\n    <th>Entrada</th>\n    <th>Salida</th>\n    <th>H Diurnas</th>\n    <th>H Extras</th>\n    <th>H Nocturnas</th>\n    <th>H Dominicales</th>\n</ex-table>\n"
+module.exports = "<ex-table #table title=\"Turno\" icon=\"assignment_ind\" [service]=\"service\" [multiselect]=\"multiselect\" [columns]=\"columns\">\n    <th>Empleado</th>\n    <th>Entrada</th>\n    <th>Salida</th>\n    <th>H Diurnas</th>\n    <th>H Extras</th>\n    <th>H Nocturnas</th>\n    <th>H Nocturnas Extras</th>\n    <th>H Dominicales</th>\n    <th>H Dominicales Extras</th>\n    <th>H Dominicales Nocturnas</th>\n    <th>H Dominicales Nocturnas Extras</th>\n</ex-table>\n"
 
 /***/ }),
 
@@ -3110,7 +3124,35 @@ var TurnoListComponent = (function () {
                 render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderDecimal
             },
             {
+                data: 'h_nocturna_extras',
+                orderable: false,
+                searchable: false,
+                className: 'text-center',
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderDecimal
+            },
+            {
                 data: 'h_dominical',
+                orderable: false,
+                searchable: false,
+                className: 'text-center',
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderDecimal
+            },
+            {
+                data: 'h_dominical_extra',
+                orderable: false,
+                searchable: false,
+                className: 'text-center',
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderDecimal
+            },
+            {
+                data: 'h_dominical_nocturna',
+                orderable: false,
+                searchable: false,
+                className: 'text-center',
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderDecimal
+            },
+            {
+                data: 'h_dominical_extra_nocturna',
                 orderable: false,
                 searchable: false,
                 className: 'text-center',
@@ -3156,17 +3198,24 @@ var TurnoEditComponent = (function () {
             h_dominical: [{ value: 0, disabled: true }],
             h_extras: [{ value: 0, disabled: true }],
             h_nocturna: [{ value: 0, disabled: true }],
+            h_dominical_extra: [{ value: 0, disabled: true }],
+            h_dominical_extra_nocturna: [{ value: 0, disabled: true }],
+            h_dominical_nocturna: [{ value: 0, disabled: true }],
+            h_nocturna_extras: [{ value: 0, disabled: true }]
         });
         this.columns = ['col1', 'col2'];
         this.renderinputs = [
-            // { column: 'col1', title: 'Empleado', type: 'autocomplete', name: 'empleado' },
             { column: 'col1', title: 'Hora de entrada', type: 'text', name: 'entrada', class: 'datetimepicker' },
             { column: 'col1', title: 'Hora de salida', type: 'text', name: 'salida', class: 'datetimepicker' },
             { column: 'col1', title: 'Descontar hora de almuerzo', type: 'checkbox', name: 'descontar_almuerzo' },
             { column: 'col2', title: 'Horas diurnas', type: 'number', name: 'h_diurna', step: '2' },
             { column: 'col2', title: 'Horas nocturnas', type: 'number', name: 'h_nocturna', step: '2' },
             { column: 'col2', title: 'Horas extras', type: 'number', name: 'h_extras', step: '2' },
+            { column: 'col2', title: 'Horas dominicales', type: 'number', name: 'h_nocturna_extras', step: '2' },
             { column: 'col2', title: 'Horas dominicales', type: 'number', name: 'h_dominical', step: '2' },
+            { column: 'col2', title: 'Horas dominicales extras', type: 'number', name: 'h_dominical_extra', step: '2' },
+            { column: 'col2', title: 'Horas dominicales nocturnas', type: 'number', name: 'h_dominical_nocturna', step: '2' },
+            { column: 'col2', title: 'Horas dominicales nocturnas extras ', type: 'number', name: 'h_dominical_extra_nocturna', step: '2' },
         ];
         this.form.get('empleado').valueChanges
             .startWith(null)
@@ -3197,6 +3246,7 @@ var TurnoEditComponent = (function () {
                 data.empleado__nombre = data.empleado;
                 data.empleado = data.empleado_id;
             }
+            console.log(data);
             return data;
         };
         this._form.successful = function (data) {
@@ -3799,6 +3849,7 @@ var AutoComponent = (function () {
         this._value = '';
         this.render = function (val) { return val.nombre; };
         this.itemVal = function (item) { return item.id; };
+        this.params = {};
         this.displayFn = function (val) {
             if (_this.options.length === 0 && !!_this.item) {
                 return _this.itemVal(_this.item);
@@ -3837,7 +3888,8 @@ var AutoComponent = (function () {
     };
     AutoComponent.prototype.filterVal = function (val) {
         var _this = this;
-        this.service.list({ q: val ? val : '' })
+        this.params['q'] = val ? val : '';
+        this.service.list(this.params)
             .then(function (data) { return data.json(); })
             .then(function (data) {
             _this.options = data.object_list;
@@ -3877,6 +3929,10 @@ __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Object)
 ], AutoComponent.prototype, "itemVal", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Object)
+], AutoComponent.prototype, "params", void 0);
 AutoComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'ex-autocomplete',
@@ -4043,7 +4099,7 @@ CardComponent = __decorate([
 /***/ "../../../../../src/lib/form/form.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ex-card [icon]=\"icon\" [title]=\"title\">\n    <form class=\"form-horizontal\" novalidate (submit)=\"save()\" [formGroup]=\"form\">\n        <ng-content select=\"[top-form]\"></ng-content>\n        <div class=\"row\">\n            <div *ngFor=\"let column of columns\" class=\"col-lg-{{12/columns.length}}\">\n                <div class=\"form-horizontal\">\n                    <div *ngFor=\"let input of renderinputs\">\n                        <div *ngIf=\"isRender(column, input.column, input.noitem)\" class=\"row\">\n                            <label class=\"col-lg-3 label-on-left\" for=\"id_{{input.name}}\">{{input.title}}:</label>\n                            <div class=\"col-lg-9\">\n                                <div class=\"form-group label-floating is-empty\" [class.has-error]=\"!!input.error\" [class.has-success]=\"!input.error\">\n                                    <label class=\"control-label\"></label>\n                                    <input *ngIf=\"!input.isSelect && input.type !== 'checkbox'\" class=\"form-control {{input.class}}\" [attr.step]=\"input.step\" [formControlName]=\"input.name\" [type]=\"input.type\" />\n                                    <md-select style=\"width:100%\" *ngIf=\"input.isSelect\" class=\"selectpicker\" id=\"id_{{input.name}}\" [formControlName]=\"input.name\" [title]=\"input.title\">\n                                        <md-option *ngFor=\"let option of input.options\" [value]=\"option.value\">{{option.title}}</md-option>\n                                    </md-select>\n                                    <span class=\"text-danger\">{{input.error}}</span>\n                                </div>\n                                <md-checkbox *ngIf=\"input.type === 'checkbox'\" [formControlName]=\"input.name\"></md-checkbox>\n                                <pre *ngIf=\"debug\">{{form.get(input.name).errors | json }}</pre>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <ng-content select=\"[bottom-form]\"></ng-content>\n        <div class=\"row\">\n            <div class=\"col-lg-6\">\n                <ng-content select=\"[custom-button]\"></ng-content>\n            </div>\n            <div class=\"col-lg-6 text-right\">\n                <button *ngIf=\"!item && saveable && otro\" class=\"btn btn-primary btn-responsive\" (click)=\"save(true)\" type=\"button\" [disabled]=\"!form.valid\">Guardar y Crear Otro</button>\n                <input *ngIf=\"!item && saveable\" class=\"btn btn-primary btn-responsive\" [disabled]=\"!form.valid\" type=\"submit\" value=\"Guardar\" />\n                <button *ngIf=\"!!item && deleteable\" class=\"btn btn-warning btn-responsive\" (click)=\"delete()\" type=\"button\">Eliminar</button>\n                <input *ngIf=\"!!item && saveable\" class=\"btn btn-primary btn-responsive\" type=\"submit\" value=\"Guardar Cambios\" [disabled]=\"!form.valid\" />\n                <button class=\"btn btn-primary btn-responsive\" (click)=\"back()\" type=\"button\">Regresar</button>\n            </div>\n        </div>\n    </form>\n    <div class=\"cargando\" *ngIf=\"_ready\">\n        <div class=\"loader\">\n            <svg class=\"circular\" viewBox=\"25 25 50 50\">\n                <circle class=\"path\" cx=\"50\" cy=\"50\" r=\"20\" fill=\"none\" stroke-width=\"2\" stroke-miterlimit=\"10\"/>\n            </svg>\n        </div>\n    </div>\n    <pre *ngIf=\"debug\"> form valid: {{ form.valid }}</pre>\n    <pre *ngIf=\"debug\"> form value: {{ form.value | json }}</pre>\n</ex-card>\n"
+module.exports = "<ex-card [icon]=\"icon\" [title]=\"title\">\n    <form class=\"form-horizontal\" novalidate (submit)=\"save()\" [formGroup]=\"form\">\n        <ng-content select=\"[top-form]\"></ng-content>\n        <div class=\"row\">\n            <div *ngFor=\"let column of columns\" class=\"col-lg-{{12/columns.length}}\">\n                <div class=\"form-horizontal\">\n                    <div *ngFor=\"let input of renderinputs\">\n                        <div *ngIf=\"isRender(column, input.column, input.noitem)\" class=\"row\">\n                            <label class=\"col-lg-3 label-on-left\" for=\"id_{{input.name}}\">{{input.title}}:</label>\n                            <div class=\"col-lg-9\">\n                                <div class=\"form-group label-floating is-empty\" [class.has-error]=\"!!input.error\" [class.has-success]=\"!input.error\">\n                                    <label class=\"control-label\"></label>\n                                    <input *ngIf=\"!input.isSelect && input.type !== 'checkbox'\" class=\"form-control {{input.class}}\" [attr.step]=\"input.step\" [formControlName]=\"input.name\" [type]=\"input.type\" />\n                                    <md-select style=\"width:100%\" *ngIf=\"input.isSelect\" class=\"selectpicker\" id=\"id_{{input.name}}\" [formControlName]=\"input.name\" [title]=\"input.title\">\n                                        <md-option *ngFor=\"let option of input.options\" [value]=\"option.value\">{{option.title}}</md-option>\n                                    </md-select>\n                                    <span class=\"text-danger\">{{input.error}}</span>\n                                </div>\n                                <md-checkbox *ngIf=\"input.type === 'checkbox'\" [formControlName]=\"input.name\"></md-checkbox>\n                                <pre *ngIf=\"debug\">{{form.get(input.name).errors | json }}</pre>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <ng-content select=\"[bottom-form]\"></ng-content>\n        <div class=\"row\">\n            <div class=\"col-lg-6\">\n                <ng-content select=\"[custom-button]\"></ng-content>\n            </div>\n            <div class=\"col-lg-6 text-right\">\n                <button *ngIf=\"!item && saveable && otro\" class=\"btn btn-primary btn-responsive\" (click)=\"save(true)\" type=\"button\" [disabled]=\"!form.valid\">Guardar y Crear Otro</button>\n                <input *ngIf=\"!item && saveable\" class=\"btn btn-primary btn-responsive\" [disabled]=\"!form.valid\" type=\"submit\" value=\"Guardar\" />\n                <button *ngIf=\"!!item && deleteable\" class=\"btn btn-warning btn-responsive\" (click)=\"delete()\" type=\"button\">Eliminar</button>\n                <input *ngIf=\"!!item && saveable\" class=\"btn btn-primary btn-responsive\" type=\"submit\" value=\"Guardar Cambios\" [disabled]=\"!form.valid\" />\n                <button *ngIf=\"retur\" class=\"btn btn-primary btn-responsive\" (click)=\"back()\" type=\"button\">Regresar</button>\n            </div>\n        </div>\n    </form>\n    <div class=\"cargando\" *ngIf=\"_ready\">\n        <div class=\"loader\">\n            <svg class=\"circular\" viewBox=\"25 25 50 50\">\n                <circle class=\"path\" cx=\"50\" cy=\"50\" r=\"20\" fill=\"none\" stroke-width=\"2\" stroke-miterlimit=\"10\"/>\n            </svg>\n        </div>\n    </div>\n    <pre *ngIf=\"debug\"> form valid: {{ form.valid }}</pre>\n    <pre *ngIf=\"debug\"> form value: {{ form.value | json }}</pre>\n</ex-card>\n"
 
 /***/ }),
 
@@ -4076,6 +4132,7 @@ var FormComponent = (function () {
         this.saveable = true;
         this.otro = true;
         this.debug = false;
+        this.retur = true;
         this.errorMessages = {
             email: 'texto para error de email'
         };
@@ -4357,6 +4414,10 @@ __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Object)
 ], FormComponent.prototype, "debug", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Object)
+], FormComponent.prototype, "retur", void 0);
 FormComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'ex-form',
@@ -4958,15 +5019,13 @@ var CrudBase = (function () {
             return Promise.resolve({});
         }
         ;
-        var res;
         if (this.data) {
-            res = this.data.filter(function (item) { return item.id === id; });
-            if (res) {
+            var res = this.data.filter(function (item) { return item.id === id; });
+            if (!!res[0]) {
                 return Promise.resolve(res[0]);
             }
-            return Promise.reject(null);
         }
-        return Promise.reject(null);
+        return this.list({ id: id }).then(function (data) { return data.json(); }).then(function (data) { return Promise.resolve(data.object_list[0]); });
     };
     CrudBase.prototype.list = function (query) {
         if (!!this.conf.list) {
@@ -5011,7 +5070,6 @@ var CrudBase = (function () {
         return this.getById(+id)
             .then(function (item) {
             if (item) {
-                // console.log(item);
                 return item;
             }
             console.log("Item was not found: " + id);

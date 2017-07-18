@@ -18,7 +18,7 @@ export class DescuentoListComponent implements OnInit {
     service = this._s;
     multiselect = true;
     icon = 'money_off'
-    order = [[2, 'asc']]
+    // order = [[2, 'asc']]
 
     @ViewChild('table') private table: TableComponent;
 
@@ -75,28 +75,29 @@ export class DescuentoListComponent implements OnInit {
 
 
 @Component({
-    template: `<ex-form #f icon="money_off"
+    template: `
+    <ex-form #f icon="money_off"
         [title]="title"
         [form]="form"
         [service]="service"
         [columns]="columns"
         [renderinputs]="renderinputs">
-            <div bottom-form class="row">
-                <div class="col-lg-12">
-                    <div class="form-horizontal">
-                        <div class="row">
-                            <label class="col-lg-2 label-on-left" for="id_tarifario">Empleados</label>
-                            <div class="col-lg-10">
-                                <div class="form-group label-floating is-empty">
-                                    <ex-multi #multi name="contratos" placeholder="Seleccione las contratos"
-                                        [form]="form" [service]="_c" [render]="nombre" [item]="_form.item"></ex-multi>
-                                </div>
+        <div bottom-form class="row">
+            <div class="col-lg-12">
+                <div class="form-horizontal">
+                    <div class="row">
+                        <label class="col-lg-2 label-on-left" for="id_tarifario">Empleados</label>
+                        <div class="col-lg-10">
+                            <div class="form-group label-floating is-empty">
+                                <ex-multi #multi name="contratos" placeholder="Seleccione las contratos"
+                                    [form]="form" [service]="_c" [render]="nombre" [item]="_form.item"></ex-multi>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </ex-form>`
+        </div>
+    </ex-form>`
 })
 export class DescuentoEditComponent implements OnInit {
 
