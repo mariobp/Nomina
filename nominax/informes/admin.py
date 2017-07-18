@@ -66,6 +66,9 @@ class NominaFResource(resources.ModelResource):
 	recargos = fields.Field()
 	neto = fields.Field()
 	salario_legal = fields.Field()
+	bonificacion = fields.Field()
+	descuento_salud = fields.Field()
+	descuento_salud_half = fields.Field()
 
 	total = fields.Field(column_name="Valor de Pago o de la recarga")
 
@@ -78,7 +81,7 @@ class NominaFResource(resources.ModelResource):
 	#end def	
 
 	def dehydrate_salario_legal(self, nomina):
-		return nomina.salario_legal()
+		return float(nomina.salario_legal())
 	#end def
 
 	def dehydrate_recargos(self, nomina):
@@ -86,20 +89,32 @@ class NominaFResource(resources.ModelResource):
 	#end def
 
 	def dehydrate_neto(self, nomina):
-		return nomina.neto()
+		return float(nomina.neto())
 	#end def
 
 	def dehydrate_total(self, nomina):
-		return nomina.total()
+		return "%.2f" % float(nomina.total())
+	#end def
+
+	def dehydrate_bonificacion(self, nomina):
+		return nomina.bonificacion()
+	#end def
+
+	def dehydrate_descuento_salud(self, nomina):
+		return "%.2f" % float(nomina.descuento_salud())
+	#end def
+
+	def dehydrate_descuento_salud_half(self, nomina):
+		return "%.2f" % float(nomina.descuento_salud()/2)
 	#end def
 
 	class Meta:
 		model = Nomina
-		fields = ['contrato__empleado__pension__nombre','contrato__empleado__eps__nombre','contrato__empleado__nombre', 'contrato__empleado__apellidos', 'corte__fecha_fin', 'contrato__empleado__cargo__nombre', 'salario_base', 'contrato__subsidio_transporte', 'extras', 'dominical_diurna', 'extra_dominical_diurna', 'nocturna', 'extra_nocturna', 'dominical_nocturna', 'extra_dominical_nocturna', 'recargos', 'salario_legal', 'contrato__empleado__banco__nombre', 'contrato__empleado__numero', 'total']
-		export_order = ['contrato__empleado__nombre', 'contrato__empleado__apellidos', 'contrato__empleado__pension__nombre','contrato__empleado__eps__nombre', 'corte__fecha_fin', 'contrato__empleado__cargo__nombre', 'salario_base', 'contrato__subsidio_transporte', 'extras', 'dominical_diurna', 'extra_dominical_diurna', 'nocturna', 'extra_nocturna', 'dominical_nocturna', 'extra_dominical_nocturna', 'recargos', 'salario_legal', 'contrato__empleado__banco__nombre', 'contrato__empleado__numero', 'total']
+		fields = ['contrato__empleado__nombre', 'contrato__empleado__apellidos', 'corte__fecha_fin', 'contrato__empleado__banco__nombre', 'contrato__empleado__numero', 'contrato__empleado__cargo__nombre', 'contrato__salario_base', 'contrato__subsidio_transporte', 'extras', 'dominical_diurna', 'extra_dominical_diurna', 'nocturna', 'extra_nocturna', 'dominical_nocturna', 'extra_dominical_nocturna', 'salario_legal', 'contrato__empleado__pension__nombre', 'contrato__empleado__eps__nombre', 'recargos', 'neto', 'bonificacion','descuento_salud_half','descuento_salud', 'total']
+		export_order = ['contrato__empleado__nombre','contrato__empleado__apellidos', 'corte__fecha_fin', 'contrato__empleado__banco__nombre', 'contrato__empleado__numero', 'contrato__empleado__cargo__nombre', 'contrato__salario_base', 'contrato__subsidio_transporte', 'extras', 'dominical_diurna', 'extra_dominical_diurna', 'nocturna', 'extra_nocturna', 'dominical_nocturna', 'extra_dominical_nocturna', 'salario_legal', 'contrato__empleado__pension__nombre', 'contrato__empleado__eps__nombre', 'recargos', 'neto', 'bonificacion', 'descuento_salud_half','descuento_salud', 'total']
 	# end class
 #end class
 
 
 
-reports.register_export(Nomina, NominaResource)
+reports.register_export(Nomina, [NominaResource, NominaFResource])

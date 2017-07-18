@@ -20,6 +20,11 @@ from supra.views import access_control
 
 class PdfExportMixin(ExportMixin):
 
+    def export_action(self, request, rs, *args, **kwargs):
+        self.resource_class = self.resource_classes[int(rs)]
+        return super(PdfExportMixin, self).export_action(request, *args, **kwargs)
+    #end def
+
     def get_export_formats(self,):
         formats = super(PdfExportMixin, self).get_export_formats()
         return [PDF, Bancolombia, base_formats.CSV, base_formats.XLSX]
@@ -27,7 +32,7 @@ class PdfExportMixin(ExportMixin):
     def get_urls(self):
         urls = super(PdfExportMixin, self).get_urls()
         my_urls = [
-            url(r'^export/free/$',
+            url(r'^export/free/(?P<rs>\d+)/$',
                 csrf_exempt(access_control(self.export_action)),
                 name='%s_%s_export' % self.get_model_info()),
         ]
@@ -53,7 +58,7 @@ def register(model, *args, **kwargs):
     		modeladmin = admin.ModelAdmin
     	# end if
         class newadmin(PdfExportMixin, modeladmin):
-            resource_class = registry[model]
+            resource_classes = registry[model]
         # end class
         return old_register(model, newadmin)
     # end if
