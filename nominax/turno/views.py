@@ -124,7 +124,7 @@ class TurnoSupraList(MasterList):
                     'entrada', 'salida', 'h_diurna','h_nocturna','h_extras', 'h_nocturna_extras',
                     'h_dominical','h_dominical_nocturna','h_dominical_extra','h_dominical_extra_nocturna', 'aprobado', 'creator', 'last_editor', 'descontar_almuerzo')
     search_fields = ['empleado__nombre', 'empleado__apellidos']
-    list_filter = ['empleado', 'aprobado']
+    list_filter = ['empleado', 'aprobado', 'id']
 
     def get_queryset(self):
         queryset = super(TurnoSupraList, self).get_queryset()

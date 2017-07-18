@@ -13,7 +13,7 @@ import models
 import json
 import forms
 
-from django.core import mail 
+from django.core import mail
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.header import Header
@@ -104,7 +104,7 @@ class NominaSupraList(supra.SupraListView):
                     'diurnas', 'dominical_diurna', 'dominical_nocturna',
                     'salario_produccion', 'descuento_salud', 'bonificacion', 'valor_hora', 'salario_legal', 'neto', 'total', 'recargos']
     search_fields = ['contrato__empleado__nombre', 'contrato__empleado__apellidos', 'contrato__empleado__cedula', ]
-    list_filter = ['contrato__empleado', 'contrato__empleado__cargo', 'fecha', 'corte']
+    list_filter = ['contrato__empleado', 'contrato__empleado__cargo', 'fecha', 'corte', 'id']
     search_key = 'q'
     paginate_by = 10
 
@@ -185,7 +185,7 @@ class NominaSupraList2(supra.SupraListView):
                     'contrato__subsidio_transporte', 'extras', 'extra_nocturna', 'extra_dominical_diurna',
                     'extra_dominical_nocturna', 'dominical_diurna', 'dominical_nocturna', 'nocturna',
                     'diurnas', 'dominical_diurna', 'dominical_nocturna']
-    list_filter = ['empleado', 'empleado__cargo', 'fecha', 'corte']
+    list_filter = ['empleado', 'empleado__cargo', 'fecha', 'corte', 'id']
 
     def empleado_f(self, obj, now):
         return {"id": obj.empleado.id, "nombre": obj.empleado.nombre, "apellidos": obj.empleado.apellidos, "cedula": obj.empleado.cedula}
@@ -196,7 +196,7 @@ class NominaSupraList2(supra.SupraListView):
 class CorteSupraList(supra.SupraListView):
     model = models.Corte
     list_display = ['id', 'fecha_inicio', 'fecha_fin', 'cerrado',
-                    'nocturna', 'dominical', 'nocturna_dominical', 
+                    'nocturna', 'dominical', 'nocturna_dominical',
                     'extra_diurna', 'extra_nocturna' , 'extra_dominical_diurna',
                     'extra_dominical_nocturna']
     list_filter = ['id']
@@ -283,4 +283,3 @@ class DescuentoSupraFormDelete(supra.SupraDeleteView):
         return HttpResponse(status=200)
     # end def
 # end class
-
