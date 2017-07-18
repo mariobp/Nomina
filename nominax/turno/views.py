@@ -82,16 +82,14 @@ class MasterList(supra.SupraListView):
 class TurnoSupraForm(supra.SupraFormView):
     model = models.Turno
     form_class = forms.TurnoForm
-    list_display = ('id', 'empleado_id', 'empleado',
-                    'entrada', 'salida', 'aprobado',
-                    'creator', 'last_editor')
-
-    """
+    list_display = ('id', 'empleado_id', 'empleado', 'entrada', 'salida', 'aprobado', 'creator', 'last_editor', 'h_extras', 'h_nocturna', 'h_diurna', 'h_dominical',)
+    
     def h_extras(self, obj, now):
         if self.instance:
             return self.instance.horas_extras()
         return None
     # end def
+    """
 
     def h_nocturna(self, obj, now):
         if self.instance:
@@ -124,7 +122,7 @@ class TurnoSupraList(MasterList):
                     'entrada', 'salida', 'h_diurna','h_nocturna','h_extras', 'h_nocturna_extras',
                     'h_dominical','h_dominical_nocturna','h_dominical_extra','h_dominical_extra_nocturna', 'aprobado', 'creator', 'last_editor', 'descontar_almuerzo')
     search_fields = ['empleado__nombre', 'empleado__apellidos']
-    list_filter = ['empleado', 'aprobado']
+    list_filter = ['empleado', 'aprobado', 'id']
 
     def get_queryset(self):
         queryset = super(TurnoSupraList, self).get_queryset()
@@ -180,7 +178,6 @@ class TurnoSupraFormDelete(supra.SupraDeleteView):
             user = CuserMiddleware.get_user()
             self.object.eliminado_por = user
             self.object.save()
-            print "eliminado", self.object.eliminado
             return HttpResponse(status=200)
         # end if
         return HttpResponse(status=403)
@@ -251,7 +248,6 @@ class ProduccionSupraFormDelete(supra.SupraDeleteView):
         return HttpResponse(status=200)
     # end def
 # end class
-
 
 def probar_turnos(request):
     if request.POST:

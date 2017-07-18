@@ -66,7 +66,7 @@ class MasterList(supra.SupraListView):
 class UnidadProduccionSupraList(MasterList):
     list_display = ['id', 'nombre']
     search_fields = ['nombre']
-    list_filter = ['tarifario__cargo']
+    list_filter = ['tarifario__cargo', 'id']
     model = models.UnidadProduccion
 
     def get_queryset(self):

@@ -65,15 +65,13 @@ export class CrudBase implements Resolve<any> {
         if (id === 0) {
             return Promise.resolve({})
         };
-        let res;
         if (this.data) {
-            res = this.data.filter(item => item.id === id);
-            if (res) {
+            const res = this.data.filter(item => item.id === id);
+            if (!!res[0]) {
                 return Promise.resolve(res[0]);
             }
-            return Promise.reject(null);
         }
-        return Promise.reject(null);
+        return this.list({ id: id }).then(data => data.json()).then(data => Promise.resolve(data.object_list[0]));
     }
 
     list(query) {
@@ -118,7 +116,6 @@ export class CrudBase implements Resolve<any> {
         return this.getById(+id)
             .then(item => {
                 if (item) {
-                    // console.log(item);
                     return item;
                 }
                 console.log(`Item was not found: ${id}`);

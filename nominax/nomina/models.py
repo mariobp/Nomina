@@ -85,20 +85,21 @@ class Nomina(models.Model):
 
     def salario_produccion(self, fecha_inicio, fecha_fin):
         tarifas = self.corte.tarifario.values_list('id', flat=True)
-        produccion = turno.Produccion.objects.filter(fecha__gte=fecha_inicio, empleados=self.contrato.empleado, unidad__tarifario__in=tarifas)
+        produccion = turno.Produccion.objects.filter(fecha__gte=fecha_inicio, empleados=self.contrato.empleado, unidad__tarifario__in=tarifas).distinct('id')
         if fecha_fin:
             produccion = produccion.filter(fecha__lt=fecha_fin)
         # end if
-        produccion = produccion.annotate(total=ExpressionWrapper(
-                Sum('cantidad')/Count('empleados')*F('unidad__tarifario__precio'), 
-                output_field=models.DecimalField(max_digits=10, decimal_places=2)
-            )
-        )
         total = 0
         for pro in produccion:
-            total = total + pro.total
-        # end if
+            tarifa = recursos.Tarifario.objects.filter(unidad=pro.unidad, cargo=self.contrato.empleado.cargo, remplazado_por__isnull=True).last()
+            sub_total = pro.cantidad/pro.empleados.count()*tarifa.precio
+            total = total + sub_total
+        # end for
         return total
+    # end def
+
+    def salario_produccion_total(self):
+        return self.salario_produccion_adelanto() + self.salario_produccion_nomina()
     # end def
 
     def salario_produccion_adelanto(self, ):
@@ -137,7 +138,6 @@ class Nomina(models.Model):
     # end def
 
     def adelanto(self):
-        print self.contrato.tipo_contrato.modalidad
         if self.contrato.tipo_contrato.modalidad == recursos.TipoContrato.PRODUCCION:
             return self.salario_produccion_adelanto()
         # end if

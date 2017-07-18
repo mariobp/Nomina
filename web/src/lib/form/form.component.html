@@ -10,7 +10,7 @@
                             <div class="col-lg-9">
                                 <div class="form-group label-floating is-empty" [class.has-error]="!!input.error" [class.has-success]="!input.error">
                                     <label class="control-label"></label>
-                                    <input *ngIf="!input.isSelect && input.type !== 'checkbox'" class="form-control {{input.class}}" [attr.step]="input.step" [formControlName]="input.name" [type]="input.type" />
+                                    <input *ngIf="!input.isSelect && input.type !== 'checkbox'" class="form-control {{input.class}}" [attr.step]="input.step" name="{{input.name}}" [formControlName]="input.name" [type]="input.type" />
                                     <md-select style="width:100%" *ngIf="input.isSelect" class="selectpicker" id="id_{{input.name}}" [formControlName]="input.name" [title]="input.title">
                                         <md-option *ngFor="let option of input.options" [value]="option.value">{{option.title}}</md-option>
                                     </md-select>
@@ -34,7 +34,7 @@
                 <input *ngIf="!item && saveable" class="btn btn-primary btn-responsive" [disabled]="!form.valid" type="submit" value="Guardar" />
                 <button *ngIf="!!item && deleteable" class="btn btn-warning btn-responsive" (click)="delete()" type="button">Eliminar</button>
                 <input *ngIf="!!item && saveable" class="btn btn-primary btn-responsive" type="submit" value="Guardar Cambios" [disabled]="!form.valid" />
-                <button class="btn btn-primary btn-responsive" (click)="back()" type="button">Regresar</button>
+                <button *ngIf="retur" class="btn btn-primary btn-responsive" (click)="back()" type="button">Regresar</button>
             </div>
         </div>
     </form>

@@ -118,11 +118,12 @@ DATABASES = {
     }
 }
 
-#DATABASES['default']['HOST'] = '/cloudsql/vertical-airway-172321:us-east1:ingecol-db'
-#if os.getenv('GAE_INSTANCE'):
-#    pass
-#else:
-#    DATABASES['default']['HOST'] = '127.0.0.1'
+DATABASES['default']['HOST'] = '/cloudsql/vertical-airway-172321:us-east1:ingecol-db'
+if os.getenv('GAE_INSTANCE'):
+    pass
+else:
+    DATABASES['default']['HOST'] = '127.0.0.1'
+    DATABASES['default']['NAME'] = 'nomina'
 
 if 'test' in sys.argv:
     DATABASES['default'] = {

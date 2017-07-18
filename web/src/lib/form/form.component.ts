@@ -40,7 +40,7 @@ export class FormComponent implements OnInit, AfterViewInit {
     @Input() public saveable = true;
     @Input() public otro = true;
     @Input() public debug = false;
-
+    @Input() public retur = true;
     public _ready: boolean;
     public item: any;
 
@@ -98,13 +98,13 @@ export class FormComponent implements OnInit, AfterViewInit {
         $('.datepicker').datetimepicker({ format: d, icons: op });
         $('.timepicker').datetimepicker({ format: 'h:mm A', icons: op });
         $('.datetimepicker').on('dp.change', function(e) {
-            self.form.get($(this).attr('ng-reflect-name')).setValue($(this).datetimepicker({ format: dt }).val());
+            self.form.get($(this).attr('name')).setValue($(this).datetimepicker({ format: dt }).val());
         });
         $('.datepicker').on('dp.change', function(e) {
-            self.form.get($(this).attr('ng-reflect-name')).setValue($(this).datetimepicker({ format: d }).val());
+            self.form.get($(this).attr('name')).setValue($(this).datetimepicker({ format: d }).val());
         });
         $('.timepicker').on('dp.change', function(e) {
-            self.form.get($(this).attr('ng-reflect-name')).setValue($(this).datetimepicker({ format: t }).val());
+            self.form.get($(this).attr('name')).setValue($(this).datetimepicker({ format: t }).val());
         });
     }
 
