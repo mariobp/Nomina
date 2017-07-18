@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { CallService, CrudService } from '../../../lib/services';
+import { SampleComponent } from 'ex-componentex';
 
 @Injectable()
 export class DescuentoService extends CrudService {

@@ -60,7 +60,35 @@ export class TurnoListComponent {
             render: TableComponent.renderDecimal
         },
         {
+            data: 'h_nocturna_extras',
+            orderable: false,
+            searchable: false,
+            className: 'text-center',
+            render: TableComponent.renderDecimal
+        },
+        {
             data: 'h_dominical',
+            orderable: false,
+            searchable: false,
+            className: 'text-center',
+            render: TableComponent.renderDecimal
+        },
+        {
+            data: 'h_dominical_extra',
+            orderable: false,
+            searchable: false,
+            className: 'text-center',
+            render: TableComponent.renderDecimal
+        },
+        {
+            data: 'h_dominical_nocturna',
+            orderable: false,
+            searchable: false,
+            className: 'text-center',
+            render: TableComponent.renderDecimal
+        },
+        {
+            data: 'h_dominical_extra_nocturna',
             orderable: false,
             searchable: false,
             className: 'text-center',
@@ -97,17 +125,24 @@ export class TurnoEditComponent implements OnInit {
             h_dominical: [{ value: 0, disabled: true }],
             h_extras: [{ value: 0, disabled: true }],
             h_nocturna: [{ value: 0, disabled: true }],
+            h_dominical_extra: [{ value: 0, disabled: true }],
+            h_dominical_extra_nocturna: [{ value: 0, disabled: true }],
+            h_dominical_nocturna: [{ value: 0, disabled: true }],
+            h_nocturna_extras: [{ value: 0, disabled: true }]
         });
         this.columns = ['col1', 'col2'];
         this.renderinputs = [
-            // { column: 'col1', title: 'Empleado', type: 'autocomplete', name: 'empleado' },
             { column: 'col1', title: 'Hora de entrada', type: 'text', name: 'entrada', class: 'datetimepicker' },
             { column: 'col1', title: 'Hora de salida', type: 'text', name: 'salida', class: 'datetimepicker' },
             { column: 'col1', title: 'Descontar hora de almuerzo', type: 'checkbox', name: 'descontar_almuerzo' },
             { column: 'col2', title: 'Horas diurnas', type: 'number', name: 'h_diurna', step: '2' },
             { column: 'col2', title: 'Horas nocturnas', type: 'number', name: 'h_nocturna', step: '2' },
             { column: 'col2', title: 'Horas extras', type: 'number', name: 'h_extras', step: '2' },
+            { column: 'col2', title: 'Horas dominicales', type: 'number', name: 'h_nocturna_extras', step: '2' },
             { column: 'col2', title: 'Horas dominicales', type: 'number', name: 'h_dominical', step: '2' },
+            { column: 'col2', title: 'Horas dominicales extras', type: 'number', name: 'h_dominical_extra', step: '2' },
+            { column: 'col2', title: 'Horas dominicales nocturnas', type: 'number', name: 'h_dominical_nocturna', step: '2' },
+            { column: 'col2', title: 'Horas dominicales nocturnas extras ', type: 'number', name: 'h_dominical_extra_nocturna', step: '2' },
         ];
         this.form.get('empleado').valueChanges
             .startWith(null)
@@ -136,6 +171,7 @@ export class TurnoEditComponent implements OnInit {
                 data.empleado__nombre = data.empleado;
                 data.empleado = data.empleado_id;
             }
+            console.log(data);
             return data;
         }
         this._form.successful = data => {
