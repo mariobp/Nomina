@@ -16,6 +16,7 @@ export class AutoComponent {
     @Input('value') _value: any = '';
     @Input() render: any = (val: any) => val.nombre;
     @Input() itemVal: any = (item: any) => item.id;
+    @Input() params = {};
 
     displayFn = val => {
         if (this.options.length === 0 && !!this.item) {
@@ -60,7 +61,8 @@ export class AutoComponent {
     }
 
     filterVal(val) {
-        this.service.list({ q: val ? val : '' })
+        this.params['q'] = val ? val : '';
+        this.service.list(this.params)
             .then(data => data.json())
             .then(data => {
                 this.options = data.object_list

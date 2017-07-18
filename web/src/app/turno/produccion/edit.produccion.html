@@ -3,11 +3,11 @@
         <div class="col-lg-12">
             <div class="form-horizontal">
                 <div class="row">
-                    <label class="col-lg-3 label-on-left" for="id_unidad">Unidad:</label>
+                    <label class="col-lg-3 label-on-left" for="id_cargo">Cargo(Filtro):</label>
                     <div class="col-lg-9">
                         <div class="form-group label-floating is-empty">
                             <label class="control-label"></label>
-                            <ex-autocomplete name="unidad" (cambio)="onChange($event)" [form]="form" [service]="_u" [item]="_form.item" [itemVal]="itemUnidad"></ex-autocomplete>
+                            <ex-autocomplete name="cargo" (cambio)="onChangeCargo($event)" [service]="_c" [form]="form" [item]="_form.item" [itemVal]="itemCargo"></ex-autocomplete>
                         </div>
                     </div>
                 </div>
@@ -18,11 +18,11 @@
         <div class="col-lg-12">
             <div class="form-horizontal">
                 <div class="row">
-                    <label class="col-lg-3 label-on-left" for="id_cargo">Cargo(Filtro):</label>
+                    <label class="col-lg-3 label-on-left" for="id_unidad">Unidad:</label>
                     <div class="col-lg-9">
                         <div class="form-group label-floating is-empty">
                             <label class="control-label"></label>
-                            <ex-autocomplete (cambio)="onChange2($event)" [service]="_c" [item]="_form.item" [itemVal]="itemCargo"></ex-autocomplete>
+                            <ex-autocomplete name="unidad" [params]="paramsUnidad" (cambio)="onChangeUnidad($event)" [form]="form" [service]="_u" [item]="_form.item" [itemVal]="itemUnidad"></ex-autocomplete>
                         </div>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                     <label class="col-lg-3 label-on-left" for="id_tipocontrato">Empleados</label>
                     <div class="col-lg-9">
                         <div class="form-group label-floating is-empty">
-                            <ex-multi #multi name="empleados" (complete)="completeAjax($event)" (ready)="multiReady($event)" placeholder="Seleccione los empleados" [auto]="auto" [form]="form" [service]="_e" [render]="empleado" [item]="_form.item"></ex-multi>
+                            <ex-multi #multi name="empleados" (complete)="completeAjax($event)" (ready)="multiReady($event)" [placeholder]="placeholder" [auto]="auto" [form]="form" [service]="_e" [render]="empleado" [item]="_form.item"></ex-multi>
                         </div>
                     </div>
                 </div>

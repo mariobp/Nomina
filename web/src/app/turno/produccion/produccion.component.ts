@@ -26,6 +26,8 @@ export class ProduccionListComponent {
     title = 'Producción';
     service = this._as;
     multiselect = true;
+    order = [[2, 'asc']]
+
     columns = [
         {
             className: 'text-center',
@@ -34,6 +36,7 @@ export class ProduccionListComponent {
             data: 'id',
             render: TableComponent.renderCheckRow
         },
+        { data: 'cargo__nombre' },
         { data: 'unidad__nombre' },
         { data: 'concepto__nombre' },
         { data: 'cantidad' },
@@ -56,10 +59,12 @@ export class EditProduccionComponent implements OnInit {
     renderinputs: RenderInput[];
     service = this._s;
     debug = false;
-    cargoFilter = false;
+    unidadFilter = false;
     private produccion: any;
     public auto = false;
+    placeholder = '';
     params = {};
+    paramsUnidad = {};
 
     @ViewChild('f') public _form: FormComponent;
     @ViewChild('multi') private _multi: MultiComponent;
@@ -67,7 +72,8 @@ export class EditProduccionComponent implements OnInit {
     constructor(private _fb: FormBuilder, private _s: ProduccionService, public _e: EmpleadoService,
         public _u: UnidadProduccionService, public _c: CargoService, private _rt: Router, private _r: ActivatedRoute) {
         this.form = this._fb.group({
-            unidad: [[], Validators.required],
+            cargo: [[]],
+            unidad: [{ value: [], disabled: true }, Validators.required],
             empleados: [[], Validators.required],
             cantidad: ['', [Validators.required, Validators.min(0)]],
             concepto__nombre: ['', Validators.required]
@@ -80,14 +86,13 @@ export class EditProduccionComponent implements OnInit {
         ];
         if (!!this._r.snapshot.data['item'] && Object.keys(this._r.snapshot.data['item']).length !== 0) {
             this.produccion = this._r.snapshot.data['item'];
-            this.form.get('unidad').setValue(this.produccion.unidad);
-            this.form.get('unidad').disable();
+            this.form.get('cargo').disable();
         }
     }
 
     empleado = item => `${item.nombre} ${item.apellidos}(${item.cargo__nombre})`;
     itemUnidad = item => `${item.unidad__nombre}`;
-    itemCargo = item => `${item.nombre}`;
+    itemCargo = item => `${item.cargo__nombre}`;
 
     ngOnInit() {
         this._form.successful = data => {
@@ -104,35 +109,48 @@ export class EditProduccionComponent implements OnInit {
         }
     }
 
-    onChange(event) {
+    onChangeUnidad(event) {
+        const empleado = this.form.get('empleados');
+        this.cleanEmpleado();
         if (!!event.item) {
-            const empleado = this.form.get('empleados');
-            empleado.setValue([]);
             this.params['cargo__tarifario__unidad'] = event.item.id;
             this.empleadosList(this.params);
+            this.placeholder = 'Seleccione los empleados';
             if (!empleado.enabled) {
                 empleado.enable();
             }
         }
     }
 
-    onChange2(event) {
+    onChangeCargo(event) {
         if (!!event.item) {
-            const empleado = this.form.get('empleados');
-            empleado.setValue([]);
+            const unidad = this.form.get('unidad');
+            this.cleanEmpleado();
+            unidad.setValue([]);
+            this.placeholder = '';
+            this.params = {};
             this.params['cargo'] = event.item.id;
-            this.empleadosList(this.params);
-            this.cargoFilter = true;
-            if (!empleado.enabled) {
-                empleado.enable();
+            this.paramsUnidad['tarifario__cargo'] = event.item.id;
+            if (!unidad.enabled) {
+                unidad.enable();
             }
+
         }
     }
 
+    cleanEmpleado() {
+        const empleado = this.form.get('empleados');
+        empleado.setValue([]);
+        this._multi.todos = false;
+        if (empleado.enabled) {
+            empleado.disable();
+        }
+    }
 
     multiReady(event) {
         if (this.produccion) {
             this.params['cargo__tarifario__unidad'] = this.produccion.unidad;
+            this.params['cargo'] = this.produccion.cargo;
             this.empleadosList(this.params);
         } else {
             this.form.get('empleados').disable();
@@ -141,14 +159,15 @@ export class EditProduccionComponent implements OnInit {
 
     completeAjax(event) {
         this._form.setReady(false);
-        if (this.cargoFilter) {
+        if (this.unidadFilter) {
             this._multi.selectAll();
-            this.cargoFilter = false;
+            this.unidadFilter = false;
         }
     }
 
     empleadosList(query: object) {
         this._form.setReady(true);
+        this.unidadFilter = true;
         this._multi.filterList(query);
     }
 
