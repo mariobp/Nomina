@@ -127,19 +127,24 @@ class NominaForm(forms.ModelForm):
         deltas_nocturno = multi_datedelta()
         deltas_dominical_diurno = multi_datedelta()
         deltas_dominical_nocturno = multi_datedelta()
-        
-        for turno in self.turnos:
-            deltas_diurno = deltas_diurno + turno.get_delta_diurna().difference(turno.get_delta_dominical())
+        print self.turnos.count()
+        for turno in self.turnos.order_by('entrada'):
+            print turno
+            print turno.get_delta_diurna(),'difference', (turno.get_delta_dominical())
+            deltas_diurno1 = turno.get_delta_diurna().difference(turno.get_delta_dominical())
+            deltas_diurno = deltas_diurno + deltas_diurno1
+            print 'deltas_diurno:', deltas_diurno1.horas()
             deltas_nocturno = deltas_nocturno + turno.get_delta_nocturna().difference(turno.get_delta_dominical())
             deltas_dominical_diurno = deltas_dominical_diurno + turno.get_delta_dominical().intersect(turno.get_delta_diurna())
             deltas_dominical_nocturno = deltas_dominical_nocturno + turno.get_delta_dominical().intersect(turno.get_delta_nocturna())
             
-            print 'total: ', deltas_diurno.horas() + deltas_nocturno.horas() + deltas_dominical_diurno.horas() + deltas_dominical_nocturno.horas()
+            #print 'total: ', deltas_diurno.horas() + deltas_nocturno.horas() + deltas_dominical_diurno.horas() + deltas_dominical_nocturno.horas()
+            
             print turno.entrada, turno.salida
-            print deltas_diurno.horas()
-            print deltas_nocturno.horas()
-            print deltas_dominical_diurno.horas()
-            print deltas_dominical_nocturno.horas()
+            print 'deltas_diurno:', deltas_diurno.horas()
+            print 'deltas_nocturno:', deltas_nocturno.horas()
+            print 'deltas_dominical_diurno:', deltas_dominical_diurno.horas()
+            print 'deltas_dominical_nocturno:', deltas_dominical_nocturno.horas()
         # end def
 
         nomina.hora_diurna = deltas_diurno.horas()
