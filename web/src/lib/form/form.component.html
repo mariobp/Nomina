@@ -34,7 +34,7 @@
                 <input *ngIf="!item && saveable" class="btn btn-primary btn-responsive" [disabled]="!form.valid" type="submit" value="Guardar" />
                 <button *ngIf="!!item && deleteable" class="btn btn-warning btn-responsive" (click)="delete()" type="button">Eliminar</button>
                 <input *ngIf="!!item && saveable" class="btn btn-primary btn-responsive" type="submit" value="Guardar Cambios" [disabled]="!form.valid" />
-                <button class="btn btn-primary btn-responsive" (click)="back()" type="button">Regresar</button>
+                <button *ngIf="retur" class="btn btn-primary btn-responsive" (click)="back()" type="button">Regresar</button>
             </div>
         </div>
     </form>

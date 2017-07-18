@@ -40,7 +40,7 @@ export class FormComponent implements OnInit, AfterViewInit {
     @Input() public saveable = true;
     @Input() public otro = true;
     @Input() public debug = false;
-
+    @Input() public retur = true;
     public _ready: boolean;
     public item: any;
 
