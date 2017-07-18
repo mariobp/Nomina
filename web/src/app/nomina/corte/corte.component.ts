@@ -90,14 +90,10 @@ export class CorteEditComponent implements OnInit {
     }
 
     plano1() {
-        this._s.down('admin/nomina/nomina/export/free/?corte__id__exact=', this._form.item.id, 1, () => {
-            return `Bancolombia_pba_${this._form.item.fecha_inicio}_${this._form.item.fecha_fin}.txt`;
-        });
+        this._s.down('admin/nomina/nomina/export/free/?corte__id__exact=', this._form.item.id, 1);
     }
     plano2() {
-        this._s.down('admin/nomina/nomina/export/free/?corte__id__exact=', this._form.item.id, 3, () => {
-            return `Davivienda_pba_${this._form.item.fecha_inicio}_${this._form.item.fecha_fin}.xls`;
-        });
+        this._s.down('admin/nomina/nomina/export/free/?corte__id__exact=', this._form.item.id, 3);
     }
     finiquito() {
         console.log('finiquito')
