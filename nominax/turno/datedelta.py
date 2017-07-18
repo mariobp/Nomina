@@ -85,14 +85,14 @@ class datedelta():
             return multi_datedelta()
         elif date_delta.empty():
             return multi_datedelta([datedelta(self.start_date, self.end_date)])
-        elif self.end_date > date_delta.start_date and date_delta.start_date > self.start_date:
+        elif self.end_date >= date_delta.start_date and date_delta.start_date >= self.start_date:
             delta = multi_datedelta([datedelta(self.start_date, date_delta.start_date)])
-            if date_delta.end_date < self.end_date:
+            if date_delta.end_date <= self.end_date:
                 delta = delta + datedelta(date_delta.end_date, self.end_date)
             # end if
             return delta
-        elif date_delta.end_date > self.start_date and self.start_date > date_delta.start_date:
-            if date_delta.end_date > self.end_date:
+        elif date_delta.end_date >= self.start_date and self.start_date >= date_delta.start_date:
+            if date_delta.end_date >= self.end_date:
                 return multi_datedelta()
             # end if
             return multi_datedelta([datedelta(date_delta.end_date, self.end_date)])
@@ -131,7 +131,6 @@ class multi_datedelta():
         for single_dalta in self.date_deltas:
             if not len(date_deltas):
                 delta = single_dalta.move_to_hour(hour)
-                print delta, hour
             else:
                 delta = single_dalta
             # end if
@@ -192,13 +191,12 @@ class multi_datedelta():
     def difference_multi(self, multi_date_delta):
         multi_date_deltas = multi_datedelta(self.date_deltas)
         for single_dalta in multi_date_delta.date_deltas:
-            multi_date_deltas = multi_date_delta.difference_single(single_dalta)
+            multi_date_deltas = multi_date_deltas.difference_single(single_dalta)
         # end for
         return multi_date_deltas
     # end def
     
     def difference_periodic(self, periodic_time_delta):
-        print periodic_time_delta.empty()
         if not periodic_time_delta.empty():
             multi_date_deltas = multi_datedelta(self.date_deltas)
             multi_date_deltas = periodic_time_delta.invert().intersect(multi_date_deltas)
@@ -232,7 +230,12 @@ class multi_datedelta():
     # end if
 
     def __add__(self, date_delta):
-        if isinstance(date_delta, datedelta):
+        if date_delta.empty():
+            if self.empty():
+                return multi_datedelta()
+            # end if
+            return multi_datedelta(self.date_deltas)
+        elif isinstance(date_delta, datedelta):
             return multi_datedelta(self.date_deltas + [date_delta])
         elif isinstance(date_delta, multi_datedelta):
             return multi_datedelta(self.date_deltas + date_delta.date_deltas)

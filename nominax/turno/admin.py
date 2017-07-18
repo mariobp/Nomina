@@ -9,15 +9,25 @@ class DiaDominicalAdmin(admin.ModelAdmin):
 	list_display = ['dia', 'proximo', 'anterior']
 
 class TurnoAdmin(admin.ModelAdmin):
-	list_display = ['empleado', 'aprobado','entrada', 'salida', 'horas_extras', 'horas_nocturna', 'horas_diurna', 'horas_dominical', 'total_horas']
+	list_display = ['empleado', 'aprobado', 'descontar_almuerzo', 'entrada', 'salida', 'horas_extras', 'horas_nocturna', 'horas_diurna', 'horas_dominical', 'total_horas']
 	readonly_fields = ['extras', 'nocturna', 'diurna', 'dominical']
 	list_filter = ['empleado', 'aprobado']
 
 	def get_queryset(self, *args, **kwargs):
 		queryset = super(TurnoAdmin, self).get_queryset(*args, **kwargs)
+		queryset = queryset.filter(empleado__pk=15)
 		#queryset.update(aprobado=True)
-		#for turno in queryset:
+		diurnas = 0
+		nocturnas = 0
+		for turno in queryset:
+			horas_diurna = turno.horas_diurna()
+			horas_nocturna = turno.horas_nocturna()
+
+			diurnas = diurnas + horas_diurna
+			nocturnas = nocturnas + horas_nocturna
+			
 		# 	forms.TurnoForm.update_form(turno, {})
+		print diurnas, nocturnas
 		return queryset
 	# end def
 
