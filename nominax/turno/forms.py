@@ -29,7 +29,6 @@ class TurnoForm(forms.ModelForm):
         if corte.fecha_fin:
             turnos = turnos.filter(entrada__date__lte=corte.fecha_fin)
         # end if
-        print 'turnos:', turnos.count()
         return turnos.order_by('entrada')
     # end def
 
@@ -93,26 +92,25 @@ class TurnoForm(forms.ModelForm):
 
         nocturno = periodic_timedelta(h_recargo_nocturno_inicio, h_recargo_nocturno_fin)
         delta = datedelta(fecha_hora_entrada, fecha_hora_salida)
+
         if self.instance.descontar_almuerzo:
             almuerzo = periodic_timedelta(h_almuerzo_inicio, h_almuerzo_fin)
         else:
             almuerzo = datedelta()
         # end if
+
         delta_dominicales = models.DiaDominical.multi_datedelta(delta)
         delta_festivos = models.DiaFestivo.multi_datedelta(delta)
-        print delta_festivos
+
         delta_dominicales_festivos = (delta_dominicales + delta_festivos).intersect(delta).difference(almuerzo)
         delta_dia = datedelta.for_day(fecha_hora_entrada.date(), datedelta.START_TIME, datedelta.END_TIME)
-        #delta_dominicales_festivos_dia = delta_dominicales_festivos.intersect(delta_dia)
-        print delta_dominicales_festivos
+
         delta_nocturno = nocturno.intersect(delta)
         delta_diurno = delta.difference(almuerzo).difference(nocturno)
-        #print 'delta_diurno:', delta.difference(almuerzo), delta_diurno, nocturno
         models.RangoFecha.objects.filter(extras=turno).delete()
         models.RangoFecha.objects.filter(nocturna=turno).delete()
         models.RangoFecha.objects.filter(diurna=turno).delete()
         models.RangoFecha.objects.filter(dominical=turno).delete()
-        #hasta_7 = datedelta(fecha_hora_entrada, (fecha_hora_entrada + timedelta(days=1)).replace(hour=7, minute=0, second=0) )
 
         for delta_single in delta_nocturno.date_deltas:
             nocturna = models.RangoFecha.create(delta_single.start_date, delta_single.end_date)
@@ -135,7 +133,6 @@ class TurnoForm(forms.ModelForm):
 
     def save(self, commit=False):
         turno = super(TurnoForm, self).save(commit)
-
         if turno.aprobado:
             user = CuserMiddleware.get_user()
             if user:
@@ -143,9 +140,7 @@ class TurnoForm(forms.ModelForm):
             # end if
         # end if
         turno.save()
-        print 'aprobado', turno.aprobado
         if turno.aprobado:
-            print 'turno aprobado'
             TurnoForm.cuando_apruebe(turno)
         # end if
         if turno.salida:

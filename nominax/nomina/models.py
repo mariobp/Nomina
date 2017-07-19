@@ -9,6 +9,7 @@ from turno import models as turno
 from django.db.models import Q, Sum, Count, F, ExpressionWrapper
 from django.contrib.auth.models import User
 from decimal import Decimal, getcontext
+from django.utils.functional import cached_property
 
 
 class Corte(models.Model):
@@ -98,34 +99,70 @@ class Nomina(models.Model):
         return total
     # end def
 
-    def salario_produccion_total(self):
-        return self.salario_produccion_adelanto() + self.salario_produccion_nomina()
+    @cached_property
+    def salario_base(self):
+        return self.contrato.salario_base
     # end def
 
-    def salario_produccion_adelanto(self, ):
+    @cached_property
+    def subsidio_transporte(self):
+        return self.contrato.subsidio_transporte
+    # end def
+
+    @cached_property
+    def total_devengado(self):
+        return self.salario_base + self.subsidio_transporte + Decimal(self.recargos)
+    # end def
+
+    @cached_property
+    def salario_produccion_total(self):
+        return self.salario_produccion_adelanto + self.salario_produccion_nomina
+    # end def
+
+    @cached_property
+    def salario_produccion_adelanto(self):
         return self.salario_produccion(self.corte.fecha_inicio, self.corte.fecha_de_adelanto)
     # end def
 
-    def salario_produccion_nomina(self, ):
+    @cached_property
+    def salario_produccion_nomina(self):
         return self.salario_produccion(self.corte.fecha_inicio, self.corte.fecha_fin)
     # end def
 
+    @cached_property
     def descuento_salud(self):
         try:
-            return (self.salario_legal() - self.contrato.subsidio_transporte)*self.corte.descuento_salud/100
+            return (self.total_devengado - self.contrato.subsidio_transporte)*self.corte.descuento_salud/100
         except Exception as e:
             print e
         return 0
     # end def
 
+    @cached_property
     def bonificacion(self):
-        bonificacion = self.salario_produccion_adelanto() + self.salario_produccion_nomina() - self.salario_legal()
+        return self.bonificacion_neta - self.descuento_bonificacion
+    # end def
+
+    @cached_property
+    def descuento_bonificacion(self):
+        percent = self.total*Decimal(0.4)
+        print percent, self.bonificacion_neta
+        if self.bonificacion_neta > percent:
+            return self.bonificacion_neta - percent
+        # end if
+        return 0
+    # end def
+
+    @cached_property
+    def bonificacion_neta(self):
+        bonificacion = self.salario_produccion_adelanto + self.salario_produccion_nomina - self.total_devengado
         if bonificacion < 0:
             return 0
         # end if
-        return bonificacion
+        return bonificacion        
     # end def
 
+    @cached_property
     def valor_hora(self):
         if self.contrato.salario_base:
             return Decimal(self.contrato.salario_base)/Decimal(240)
@@ -133,109 +170,135 @@ class Nomina(models.Model):
         return 0
     # end def
 
-    def salario_legal(self):
-        return (self.contrato.salario_base) + (self.contrato.subsidio_transporte ) + Decimal(self.recargos())
-    # end def
-
+    @cached_property
     def adelanto(self):
         if self.contrato.tipo_contrato.modalidad == recursos.TipoContrato.PRODUCCION:
-            return self.salario_produccion_adelanto()
+            return self.salario_produccion_adelanto
+        elif self.contrato.tipo_contrato.modalidad == recursos.TipoContrato.SALARIO_FIJO:
+            return self.salario_base/2
         # end if
         return 0
     # end def
 
+    @cached_property
     def neto(self):
         if self.contrato.tipo_contrato.modalidad == recursos.TipoContrato.SALARIO_FIJO:
-            return self.salario_legal()
+            return self.total
         elif self.contrato.tipo_contrato.modalidad == recursos.TipoContrato.PRODUCCION:
-            if self.salario_produccion_adelanto() + self.salario_produccion_nomina() < (self.contrato.salario_base or 0):
-                return self.salario_legal() - self.salario_produccion_adelanto()
+            if self.salario_produccion_adelanto + self.salario_produccion_nomina < self.total_devengado:
+                return self.total_devengado - self.salario_produccion_adelanto
             # end if
-            return self.salario_produccion_nomina()
+            return self.bonificacion + self.total
         # end if
         return 0
     # end def
 
+    @cached_property
     def descuento(self):
-        return Descuento.get_descuento(self.contrato, self.corte)
+        try:
+            return Descuento.get_descuento(self.contrato, self.corte)
+        except Exception as a:
+            print a
+        # end try
     # end def
 
+    @cached_property
+    def total_deducido(self):
+        return self.descuento_salud + self.descuento
+    # end def
+
+    @cached_property
     def total(self):
-        return self.neto() - self.descuento_salud() - self.descuento()
+        return self.total_devengado - self.total_deducido
     # end def
 
+    @cached_property
+    def total_pagar(self):
+        return self.neto - self.adelanto
+    # end def
+
+    @cached_property
     def recargos(self):
         recargos = 0
-        recargos = recargos + self.calcular_hora_extra_diurna()
-        recargos = recargos + self.calcular_hora_nocturna()
-        recargos = recargos + self.calcular_hora_extra_nocturna()
-        recargos = recargos + self.calcular_hora_dominical_diurna()
-        recargos = recargos + self.calcular_hora_dominical_nocturna()
-        recargos = recargos + self.calcular_hora_dominical_extra_diurna()
-        recargos = recargos + self.calcular_hora_dominical_extra_nocturna()
+        recargos = recargos + self.calcular_hora_extra_diurna
+        recargos = recargos + self.calcular_hora_nocturna
+        recargos = recargos + self.calcular_hora_extra_nocturna
+        recargos = recargos + self.calcular_hora_dominical_diurna
+        recargos = recargos + self.calcular_hora_dominical_nocturna
+        recargos = recargos + self.calcular_hora_dominical_extra_diurna
+        recargos = recargos + self.calcular_hora_dominical_extra_nocturna
         return recargos
     # end def
 
+    @cached_property
     def calcular_hora_diurna(self):
-        valor_hora = self.valor_hora()
+        valor_hora = self.valor_hora
         if self.diurnas != None:
-            return int(valor_hora*self.diurnas*10**2)/10.0**2
+            return valor_hora*self.diurnas
         # end if
         return 0
     # end def
 
+    @cached_property
     def calcular_hora_extra_diurna(self):
-        valor_hora = self.valor_hora()
+        valor_hora = self.valor_hora
         if self.extras != None:
-            return int(valor_hora*self.corte.extra_diurna/100*self.extras*10**2)/10.0**2
+            return valor_hora*self.corte.extra_diurna/100*self.extras
         # end if
         return 0
     # end def
 
+    @cached_property
     def calcular_hora_nocturna(self):
-        valor_hora = self.valor_hora()
+        valor_hora = self.valor_hora
         if self.nocturna != None:
-            return int(valor_hora*self.corte.nocturna/100*self.nocturna*10**2)/10.0**2
+            return valor_hora*self.corte.nocturna/100*self.nocturna
         # end if
         return 0
     # end def
 
+    @cached_property
     def calcular_hora_extra_nocturna(self):
-        valor_hora = self.valor_hora()
+        valor_hora = self.valor_hora
         if self.extra_nocturna != None:
-            return int(valor_hora*self.corte.extra_nocturna/100*self.extra_nocturna*10**2)/10.0**2
+            return valor_hora*self.corte.extra_nocturna/100*self.extra_nocturna
         # end if
         return 0
     # end def
 
+    @cached_property
     def calcular_hora_dominical_diurna(self):
-        valor_hora = self.valor_hora()
+        valor_hora = self.valor_hora
         if self.dominical_diurna != None:
-            return int(valor_hora*self.corte.dominical/100*self.dominical_diurna*10**2)/10.0**2
+            print valor_hora,self.corte.dominical,100,self.dominical_diurna
+            return valor_hora*self.corte.dominical/100*self.dominical_diurna
         # end if
         return 0
     # end def
 
+    @cached_property
     def calcular_hora_dominical_nocturna(self):
-        valor_hora = self.valor_hora()
+        valor_hora = self.valor_hora
         if self.dominical_nocturna != None:
-            return int(valor_hora*self.corte.nocturna_dominical/100*self.dominical_nocturna*10**2)/10.0**2
+            return valor_hora*self.corte.nocturna_dominical/100*self.dominical_nocturna
         # end if
         return 0
     # end def
 
+    @cached_property
     def calcular_hora_dominical_extra_diurna(self):
-        valor_hora = self.valor_hora()
+        valor_hora = self.valor_hora
         if self.extra_dominical_diurna != None:
-            return int(valor_hora*self.corte.extra_dominical_diurna/100*self.extra_dominical_diurna*10**2)/10.0**2
+            return valor_hora*self.corte.extra_dominical_diurna/100*self.extra_dominical_diurna
         # end if
         return 0
     # end def
 
+    @cached_property
     def calcular_hora_dominical_extra_nocturna(self):
-        valor_hora = self.valor_hora()
+        valor_hora = self.valor_hora
         if self.extra_dominical_nocturna != None:
-            return int(valor_hora*self.corte.extra_dominical_nocturna/100*self.extra_dominical_nocturna*10**2)/10.0**2
+            return valor_hora*self.corte.extra_dominical_nocturna/100*self.extra_dominical_nocturna
         # end if
         return 0
     # end def
