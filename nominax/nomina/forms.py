@@ -64,6 +64,21 @@ class DescuentoForm(forms.ModelForm):
 
 # end class
 
+class DescuentoProduccionForm(forms.ModelForm):
+    class Meta:
+        model = models.DescuentoProduccion
+        exclude = ()
+    # end class
+
+    def clean_corte(self):
+        if not 'corte' in self.cleaned_data or not self.cleaned_data['corte']:
+            return CorteForms.get_instance()
+        # end if
+        return self.cleaned_data['corte']
+    # end def
+
+# end class
+
 class NominaForm(forms.ModelForm):
     class Meta:
         model = models.Nomina

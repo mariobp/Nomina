@@ -85,6 +85,8 @@ class DescuentoProduccion(models.Model):
     unidad = models.ForeignKey(recursos.UnidadProduccion)
     cantidad = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2)
     concepto = models.CharField(max_length=120)
+    eliminado = models.BooleanField(default=False)
+    eliminado_por = models.ForeignKey(User, related_name="eliminado_por_descuentop", blank=True, null=True)
 # end class
 
 class Nomina(models.Model):

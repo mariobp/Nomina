@@ -287,3 +287,51 @@ class DescuentoSupraFormDelete(supra.SupraDeleteView):
         return HttpResponse(status=200)
     # end def
 # end class
+
+"""
+    DescuentoProduccion
+"""
+
+class DescuentoProduccionSupraList(MasterList):
+    model = models.DescuentoProduccion
+    list_display = ['id', 'fecha', 'corte', 'unidad', 'unidad__nombre','cantidad', 'concepto']
+
+    def get_queryset(self):
+        queryset = super(DescuentoProduccionSupraList, self).get_queryset()
+        corte = forms.CorteForms.get_instance()
+        queryset = queryset.filter(corte = corte)
+        return queryset
+    # end def
+
+# end class
+
+class DescuentoProduccionSupraForm(supra.SupraFormView):
+    model = models.DescuentoProduccion
+    form_class = forms.DescuentoProduccionForm
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(DescuentoProduccionSupraForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
+
+class DescuentoProduccionSupraFormDelete(supra.SupraDeleteView):
+    model = models.DescuentoProduccion
+
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(DescuentoProduccionSupraFormDelete, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.eliminado = True
+        user = CuserMiddleware.get_user()
+        self.object.eliminado_por = user
+        self.object.save()
+        return HttpResponse(status=200)
+    # end def
+# end class
