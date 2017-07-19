@@ -253,10 +253,14 @@ class DiaDominical(models.Model):
 
 class Concepto(models.Model):
     nombre = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        return self.nombre
+    # end def
 # end class
 
 class Produccion(models.Model):
-    fecha = models.DateTimeField(auto_now_add=True)
+    fecha = models.DateTimeField()
     unidad = models.ForeignKey(recursos.UnidadProduccion)
     cantidad = models.IntegerField()
     empleados = models.ManyToManyField(recursos.Empleado)
@@ -274,5 +278,8 @@ class Produccion(models.Model):
         #end if
         return None
     #end def
+
+    def __unicode__(self):
+        return u"%s %s x%d" % (str(self.empleados), self.fecha, self.cantidad)
 # end class
 

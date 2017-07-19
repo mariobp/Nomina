@@ -20,6 +20,8 @@ from email.header import Header
 import urllib
 import urllib2
 
+from django.contrib.humanize.templatetags.humanize import intcomma
+
 supra.SupraConf.ACCECC_CONTROL["allow"] = True
 supra.SupraConf.ACCECC_CONTROL["origin"] = ORIGIN
 supra.SupraConf.ACCECC_CONTROL["credentials"] = "true"
@@ -102,42 +104,46 @@ class NominaSupraList(supra.SupraListView):
                     'contrato__subsidio_transporte', 'extras', 'extra_nocturna', 'extra_dominical_diurna',
                     'extra_dominical_nocturna', 'dominical_diurna', 'dominical_nocturna', 'nocturna',
                     'diurnas', 'dominical_diurna', 'dominical_nocturna',
-                    'salario_produccion', 'descuento_salud', 'bonificacion', 'valor_hora', 'salario_legal', 'neto', 'total', 'recargos']
+                    'salario_produccion', 'descuento_salud', 'bonificacion', 'valor_hora', 'salario_legal', 'neto', 'total', 'recargos', 'total_pagar']
     search_fields = ['contrato__empleado__nombre', 'contrato__empleado__apellidos', 'contrato__empleado__cedula', ]
     list_filter = ['contrato__empleado', 'contrato__empleado__cargo', 'fecha', 'corte', 'id']
     search_key = 'q'
     paginate_by = 10
 
     def salario_produccion(self, obj, dict):
-        return obj.salario_produccion_nomina()
+        return "$" + intcomma(round(obj.salario_produccion_nomina, 2))
     # end def
 
     def descuento_salud(self, obj, dict):
-        return obj.descuento_salud()
+        return "$" + intcomma(round(obj.descuento_salud, 2))
     # end def
 
     def bonificacion(self, obj, dict):
-        return obj.bonificacion()
+        return "$" + intcomma(round(obj.bonificacion, 2))
     # end def
 
     def valor_hora(self, obj, dict):
-        return obj.valor_hora()
+        return "$" + intcomma(round(obj.valor_hora, 2))
     # end def
 
     def salario_legal(self, obj, dict):
-        return obj.salario_legal()
+        return "$" + intcomma(round(obj.total_devengado, 2))
     # end def
 
     def neto(self, obj, dict):
-        return obj.neto()
+        return "$" + intcomma(round(obj.neto, 2))
     # end def
 
     def total(self, obj, dict):
-        return obj.total()
+        return "$" + intcomma(round(obj.total, 2))
+    # end def
+    
+    def total_pagar(self, obj, dict):
+        return "$" + intcomma(round(obj.total_pagar, 2))
     # end def
 
     def recargos(self, obj, dict):
-        return obj.recargos()
+        return "$" + intcomma(round(obj.recargos, 2))
     # end def
 
 

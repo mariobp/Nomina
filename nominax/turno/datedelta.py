@@ -1,6 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from datetime import datetime, date, time, timedelta
+log_on = True
+
+def log (*string):
+    if log_on:
+        print ' '.join(str(x) for x in string)
+    # end if
+# end def
 
 class datedelta():
     start_date = None
@@ -197,6 +204,7 @@ class multi_datedelta():
     # end def
     
     def difference_periodic(self, periodic_time_delta):
+        log(self, 'difference_periodic', periodic_time_delta)
         if not periodic_time_delta.empty():
             multi_date_deltas = multi_datedelta(self.date_deltas)
             multi_date_deltas = periodic_time_delta.invert().intersect(multi_date_deltas)
@@ -279,6 +287,8 @@ class periodic_timedelta():
     # end def
 
     def intersect_single(self, date_delta):
+
+        log (self, 'intersect', date_delta)
         multi_date_delta = multi_datedelta()
         for single_date in date_delta.daterange():
             multi_date_delta = multi_date_delta + self.intersec_by_day(single_date, date_delta)

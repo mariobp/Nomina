@@ -19,15 +19,18 @@ class TurnoAdmin(admin.ModelAdmin):
 		#queryset.update(aprobado=True)
 		diurnas = 0
 		nocturnas = 0
+		total = 0
 		for turno in queryset:
 			horas_diurna = turno.horas_diurna()
 			horas_nocturna = turno.horas_nocturna()
+			total_horas = turno.total_horas()
 
 			diurnas = diurnas + horas_diurna
 			nocturnas = nocturnas + horas_nocturna
+			total = total + total_horas
 			
 		# 	forms.TurnoForm.update_form(turno, {})
-		print diurnas, nocturnas
+		print diurnas, nocturnas, total
 		return queryset
 	# end def
 

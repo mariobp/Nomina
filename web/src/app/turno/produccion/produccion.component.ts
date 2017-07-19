@@ -76,12 +76,15 @@ export class EditProduccionComponent implements OnInit {
             unidad: [{ value: [], disabled: true }, Validators.required],
             empleados: [[], Validators.required],
             cantidad: ['', [Validators.required, Validators.min(0)]],
-            concepto__nombre: ['', Validators.required]
+            concepto__nombre: ['', Validators.required],
+            fecha: ['', Validators.required]
         });
         this.columns = ['col1'];
         this.renderinputs = [
             { column: 'col1', title: 'Cantidad', type: 'text', name: 'cantidad' },
             { column: 'col1', title: 'Concepto', type: 'text', name: 'concepto__nombre' },
+            { column: 'col1', title: 'Fecha', type: 'text', name: 'fecha', class: 'datetimepicker' },
+
 
         ];
         if (!!this._r.snapshot.data['item'] && Object.keys(this._r.snapshot.data['item']).length !== 0) {
