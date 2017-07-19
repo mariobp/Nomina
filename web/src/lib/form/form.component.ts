@@ -98,13 +98,13 @@ export class FormComponent implements OnInit, AfterViewInit {
         $('.datepicker').datetimepicker({ format: d, icons: op });
         $('.timepicker').datetimepicker({ format: 'h:mm A', icons: op });
         $('.datetimepicker').on('dp.change', function(e) {
-            self.form.get($(this).attr('ng-reflect-name')).setValue($(this).datetimepicker({ format: dt }).val());
+            self.form.get($(this).attr('name')).setValue($(this).datetimepicker({ format: dt }).val());
         });
         $('.datepicker').on('dp.change', function(e) {
-            self.form.get($(this).attr('ng-reflect-name')).setValue($(this).datetimepicker({ format: d }).val());
+            self.form.get($(this).attr('name')).setValue($(this).datetimepicker({ format: d }).val());
         });
         $('.timepicker').on('dp.change', function(e) {
-            self.form.get($(this).attr('ng-reflect-name')).setValue($(this).datetimepicker({ format: t }).val());
+            self.form.get($(this).attr('name')).setValue($(this).datetimepicker({ format: t }).val());
         });
     }
 

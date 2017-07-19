@@ -86,7 +86,7 @@ export class NominaListComponent implements OnInit {
             searchable: false,
             data: 'id',
             render: (data, type, full, meta) => {
-                return `<a style="cursor: pointer;"class="down" data-down="${data}" data-empleado="${full.empleado_f.nombre} ${full.empleado_f.apellidos}">
+                return `<a style="cursor: pointer;"class="down" data-down="${data}">
                     <i class="material-icons">file_download</i>
                 </a>`;
             }
@@ -117,12 +117,6 @@ export class NominaListComponent implements OnInit {
         },
         {
             data: 'bonificacion',
-            orderable: false,
-            searchable: false,
-            render: TableComponent.renderDecimal
-        },
-        {
-            data: 'prestaciones_sociales',
             orderable: false,
             searchable: false,
             render: TableComponent.renderDecimal
@@ -178,26 +172,10 @@ export class NominaListComponent implements OnInit {
             return data;
         }
         this.table.drawCallback = () => {
+            const self = this;
             $('.down').click(function(e) {
+                self._as.down('admin/nomina/nomina/export/free/?corte__id__exact=', $(this).attr('data-down'), 0);
                 e.preventDefault();
-                const url = `${window._server}/admin/nomina/nomina/export/free/?id=${$(this).attr('data-down')}`;
-                const empelado = $(this).attr('data-empleado')
-                $.ajax({
-                    url: url,
-                    method: 'POST',
-                    data: { file_format: 0 },
-                    xhrFields: {
-                        withCredentials: true
-                    },
-                    success: function(data) {
-                        const blob = new Blob([data]);
-                        const link = document.createElement('a');
-                        const date = new Date();
-                        link.href = window.URL.createObjectURL(blob);
-                        link.download = `Finiquito_${empelado}_${date.toLocaleDateString('es-CO')}.pdf`;
-                        link.click();
-                    }
-                });
             });
         }
     }

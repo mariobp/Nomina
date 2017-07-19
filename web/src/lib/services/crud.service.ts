@@ -129,24 +129,23 @@ export class CrudBase implements Resolve<any> {
             });
     }
 
-    down(aurl: string, id: string, formt: number, getName: any) {
+    down(aurl: string, id: string, formt: number) {
         const url = `${this._cl.getUrl(aurl)}${id}`;
-        $.ajax({
-            url: url,
-            method: 'POST',
-            data: { file_format: formt },
-            xhrFields: {
-                withCredentials: true
-            },
-            success: function(data) {
-                const blob = new Blob([data]);
-                const link = document.createElement('a');
-                const date = new Date();
-                link.href = window.URL.createObjectURL(blob);
-                link.download = getName();
-                link.click();
-            }
-        });
+        const form = document.createElement('form');
+        const input = document.createElement('input');
+        const button = document.createElement('button');
+        button.setAttribute('type', 'submit')
+        input.setAttribute('type', 'hidden');
+        input.setAttribute('name', 'file_format');
+        input.setAttribute('value', '' + formt);
+        form.setAttribute('action', url);
+        form.setAttribute('method', 'POST');
+        form.setAttribute('target', '_blank')
+        form.appendChild(input);
+        form.appendChild(button);
+        document.body.appendChild(form);
+        button.click();
+        document.body.removeChild(form);
     }
 }
 

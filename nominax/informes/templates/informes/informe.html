@@ -69,30 +69,30 @@
 							</tr>
 							<tr>
 								<td>NOMINA</td>
-								<td class="center">{{row.17}}</td>
+								<td class="center">{{row.2}}</td>
 							</tr>
 							<tr>
 								<td>BANCO</td>
-								<td class="center">BANCOLOMBIA</td>
+								<td class="center">{{row.3}}</td>
 							</tr>
 							<tr>
 								<td>CUENTA Nº</td>
-								<td class="center">78785676202</td>
+								<td class="center">{{row.4}}</td>
 							</tr>
 							<tr>
 								<td>CARGO</td>
-								<td class="center">{{row.18}}</td>
+								<td class="center">{{row.5}}</td>
 							</tr>
 							<tr>
 								<td colspan="2" style="border: none;">&nbsp;</td>
 							</tr>
 							<tr>
 								<td>SALARIO BASE</td>
-								<td class="number" width="40%"><span>$</span>{{row.4|intcomma}}</td>
+								<td class="number" width="40%"><span>$</span>{{row.6|intcomma}}</td>
 							</tr>
 							<tr>
 								<td>AUXILIO DE TRANSPORTE</td>
-								<td class="number"><span>$</span>{{row.5|intcomma}}</td>
+								<td class="number"><span>$</span>{{row.7|intcomma}}</td>
 							</tr>
 							<tr>
 								<td>DÍAS</td>
@@ -100,7 +100,7 @@
 							</tr>
 							<tr>
 								<td>HORAS DIURNAS EXTRAS</td>
-								<td class="center">{{row.7|floatformat}}</td>
+								<td class="center">{{row.8|floatformat}}</td>
 							</tr>
 							<tr>
 								<td>HORAS DIURNAS DOMINICALES</td>
@@ -108,38 +108,38 @@
 							</tr>
 							<tr>
 								<td>HORAS DIURNAS EXTRAS DOMINICALES</td>
-								<td class="center">{{row.11|floatformat}}</td>
-							</tr>
-							<tr>
-								<td>HORAS CON RECARGO NOCTURNO</td>
-								<td class="center">{{row.6|floatformat}}</td>
-							</tr>
-							<tr>
-								<td>HORAS NOCTURNAS EXTRAS</td>
-								<td class="center">{{row.8|floatformat}}</td>
-							</tr>
-							<tr>
-								<td>HORAS NOCTURNAS DOMINICALES</td>
 								<td class="center">{{row.10|floatformat}}</td>
 							</tr>
 							<tr>
-								<td>HORAS NOCTURNAS EXTRAS DOMINICALES</td>
+								<td>HORAS CON RECARGO NOCTURNO</td>
+								<td class="center">{{row.11|floatformat}}</td>
+							</tr>
+							<tr>
+								<td>HORAS NOCTURNAS EXTRAS</td>
 								<td class="center">{{row.12|floatformat}}</td>
+							</tr>
+							<tr>
+								<td>HORAS NOCTURNAS DOMINICALES</td>
+								<td class="center">{{row.13|floatformat}}</td>
+							</tr>
+							<tr>
+								<td>HORAS NOCTURNAS EXTRAS DOMINICALES</td>
+								<td class="center">{{row.14|floatformat}}</td>
 							</tr>
 							<tr>
 								<td colspan="2" style="border: none;">&nbsp;</td>
 							</tr>
 							<tr>
 								<td>BASE SALUD</td>
-								<td class="number"><span>$</span>{{row.4|add:row.5|intcomma}}</td>
+								<td class="number"><span>$</span>{{row.15|intcomma}}</td>
 							</tr>
 							<tr>
 								<td>BASE PENSIÓN</td>
-								<td class="number"><span>$</span>{{row.4|add:row.5|intcomma}}</td>
+								<td class="number"><span>$</span>{{row.15|intcomma}}</td>
 							</tr>
 							<tr>
 								<td>BASE LIQUIDACIÓN</td>
-								<td class="number"><span>$</span>{{row.4|add:row.5|intcomma}}</td>
+								<td class="number"><span>$</span>{{row.15|intcomma}}</td>
 							</tr>
 							<tr>
 								<td style="border: none;">&nbsp;</td>
@@ -167,11 +167,11 @@
 						<tbody>
 							<tr>
 								<td>PENSIÓN</td>
-								<td colspan="2" class="center">{{row.13}}</td>
+								<td colspan="2" class="center">{{row.16}}</td>
 							</tr>
 							<tr>
 								<td>SALUD</td>
-								<td colspan="2" class="center">{{row.14}}</td>
+								<td colspan="2" class="center">{{row.17}}</td>
 							</tr>
 							<tr>
 								<td colspan="3" style="border: none;">&nbsp;</td>
@@ -179,27 +179,27 @@
 							<tr>
 								<td>EXTRAS Y RECARGOS</td>
 								<td width="15%">&nbsp;</td>
-								<td class="number" width="55%"><span>$</span>{{row.2|intcomma}}</td>
+								<td class="number" width="55%"><span>$</span>{{row.18|intcomma}}</td>
 							</tr>
 							<tr>
 								<td>SALARIO BASE</td>
 								<td>&nbsp;</td>
-								<td class="number"><span>$</span>{{row.4|intcomma}}</td>
+								<td class="number"><span>$</span>{{row.6|intcomma}}</td>
 							</tr>
 							<tr>
 								<td>AUX TRANSPORTE</td>
 								<td>&nbsp;</td>
-								<td class="number"><span>$</span>{{row.5|intcomma}}</td>
+								<td class="number"><span>$</span>{{row.7|intcomma}}</td>
 							</tr>
 							<tr>
 								<td>SUBTOTAL</td>
 								<td>&nbsp;</td>
-								<td class="number"><span>$</span>{{row.1|intcomma}}</td>
+								<td class="number"><span>$</span>{{row.15|intcomma}}</td>
 							</tr>
 							<tr>
 								<td>BONIFICACIÓN</td>
 								<td>&nbsp;</td>
-								<td class="number"><span>$</span>0</td>
+								<td class="number"><span>$</span>{{row.20|intcomma}}</td>
 							</tr>
 							<tr>
 								<td>ALIMENTACIÓN</td>
@@ -209,17 +209,17 @@
 							<tr>
 								<td>SUBTOTAL</td>
 								<td>&nbsp;</td>
-								<td class="number"><span>$</span>{{row.1|intcomma}}</td>
+								<td class="number"><span>$</span>{{row.19|intcomma}}</td>
 							</tr>
 							<tr>
 								<td>SALUD</td>
 								<td class="center">4%</td>
-								<td class="number"><span>$</span>83.140,00</td>
+								<td class="number"><span>$</span>{{row.21|intcomma}}</td>
 							</tr>
 							<tr>
 								<td>PENSIÓN</td>
 								<td class="center">4%</td>
-								<td class="number"><span>$</span>83.140,00</td>
+								<td class="number"><span>$</span>{{row.21|intcomma}}</td>
 							</tr>
 							<tr>
 								<td>RECORDAR</td>
@@ -249,12 +249,12 @@
 							<tr>
 								<td>TOTAL DEDUCIDO</td>
 								<td>&nbsp;</td>
-								<td class="number"><span>$</span>83.140,00</td>
+								<td class="number"><span>$</span>{{row.22|intcomma}}</td>
 							</tr>
 							<tr>
 								<td>NETO</td>
 								<td>&nbsp;</td>
-								<td class="number"><span>$</span>{{row.3|intcomma}}</td>
+								<td class="number"><span>$</span>{{row.23|intcomma}}</td>
 							</tr>
 							<tr>
 								<td style="border: none;">&nbsp;</td>
