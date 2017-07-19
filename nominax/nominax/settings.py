@@ -106,7 +106,7 @@ WSGI_APPLICATION = 'nominax.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'nominax',
+        'NAME': 'nomina',
         'USER': 'postgres',
         'PASSWORD': 'Exile*74522547',
         'HOST': '104.236.33.228',
@@ -123,13 +123,12 @@ DATABASES = {
 #    pass
 #else:
 #    DATABASES['default']['HOST'] = '127.0.0.1'
-#    DATABASES['default']['NAME'] = 'nomina'
 
-if 'test' in sys.argv:
-    DATABASES['default'] = {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db_test.sqlite'),
-    }
+#if 'test' in sys.argv:
+#    DATABASES['default'] = {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'db_test.sqlite'),
+#    }
  
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators

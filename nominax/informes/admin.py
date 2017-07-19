@@ -51,7 +51,7 @@ class NominaResource(resources.ModelResource):
 	#end def
 
 	def dehydrate_total(self, nomina):
-		return nomina.total()
+		return nomina.total
 	#end def
 
 	class Meta:
