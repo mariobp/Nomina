@@ -44,6 +44,7 @@ class Descuento(models.Model):
     corte = models.ForeignKey(Corte, blank=True)
     contratos = models.ManyToManyField(recursos.Contrato)
     cantidad = models.DecimalField("Cantidad $", max_digits=10, decimal_places=2)
+    recurrente = models.BooleanField(default=False)
     eliminado = models.BooleanField(default=False)
     eliminado_por = models.ForeignKey(User, related_name="eliminado_por_descuento", blank=True, null=True)
 
@@ -60,11 +61,30 @@ class Descuento(models.Model):
     @staticmethod
     def get_descuento(contrato, corte):
         descuentos = Descuento.objects.filter(contratos=contrato, corte=corte).annotate(total=Sum('cantidad')).first()
+        recurrentes = Descuento.objects.filter(contratos=contrato, corte__fecha_inicio__lt=corte.fecha_inicio, recurrente=True).annotate(total=Sum('cantidad')).first()
+        total = 0
         if descuentos:
             return descuentos.total
         # end if
-        return 0
+        if recurrentes:
+            return recurrentes.total
+        # end if
+        return total
     # end def
+# end class
+
+class DiaIncapacidad(models.Model):
+    fecha = models.DateField()
+    empleado = models.ForeignKey(recursos.Empleado)
+    dias = models.IntegerField()
+# end class
+
+class DescuentoProduccion(models.Model):
+    fecha  = models.DateTimeField(auto_now_add=True)
+    corte = models.ForeignKey(Corte, blank=True)
+    unidad = models.ForeignKey(recursos.UnidadProduccion)
+    cantidad = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2)
+    concepto = models.CharField(max_length=120)
 # end class
 
 class Nomina(models.Model):
@@ -84,17 +104,33 @@ class Nomina(models.Model):
     extra_dominical_diurna = models.DecimalField("Hora extra dominical diurna", blank=True, null=True, max_digits=10, decimal_places=2, )
     extra_dominical_nocturna = models.DecimalField("Hora extra dominical nocturna", blank=True, null=True, max_digits=10, decimal_places=2, )
 
-    def salario_produccion(self, fecha_inicio, fecha_fin):
+    def get_produccion(self, fecha_inicio, fecha_fin):
         tarifas = self.corte.tarifario.values_list('id', flat=True)
         produccion = turno.Produccion.objects.filter(fecha__gte=fecha_inicio, empleados=self.contrato.empleado, unidad__tarifario__in=tarifas).distinct('id')
         if fecha_fin:
             produccion = produccion.filter(fecha__lt=fecha_fin)
         # end if
+        return produccion
+    # end def
+
+    def salario_produccion(self, fecha_inicio, fecha_fin):
+        produccion = self.get_produccion(fecha_inicio, fecha_fin)
         total = 0
         for pro in produccion:
             tarifa = recursos.Tarifario.objects.filter(unidad=pro.unidad, cargo=self.contrato.empleado.cargo, remplazado_por__isnull=True).last()
-            sub_total = pro.cantidad/pro.empleados.count()*tarifa.precio
+            sub_total = pro.cantidad/pro.empleados.count()*tarifa.precio 
             total = total + sub_total
+        # end for
+        return total
+    # end def
+
+    def descuento_produccion(self):
+        descuentos = turno.DescuentoProduccion.objects.filter(corte=self.corte)
+        produccion = self.get_produccion(self.corte.fecha_inicio, self.corte.fecha_fin)
+        total = 0
+        for des in descuentos:
+            pros = produccion.filter(unidad=des.unidad).count()
+            total = total + des.cantitad/pros
         # end for
         return total
     # end def
@@ -145,7 +181,7 @@ class Nomina(models.Model):
 
     @cached_property
     def descuento_bonificacion(self):
-        percent = self.total*Decimal(0.4)
+        percent = self.total_devengado*Decimal(0.4)
         print percent, self.bonificacion_neta
         if self.bonificacion_neta > percent:
             return self.bonificacion_neta - percent
@@ -188,7 +224,7 @@ class Nomina(models.Model):
             if self.salario_produccion_adelanto + self.salario_produccion_nomina < self.total_devengado:
                 return self.total_devengado - self.salario_produccion_adelanto
             # end if
-            return self.bonificacion + self.total
+            return self.bonificacion + self.total_devengado
         # end if
         return 0
     # end def
@@ -270,7 +306,6 @@ class Nomina(models.Model):
     def calcular_hora_dominical_diurna(self):
         valor_hora = self.valor_hora
         if self.dominical_diurna != None:
-            print valor_hora,self.corte.dominical,100,self.dominical_diurna
             return valor_hora*self.corte.dominical/100*self.dominical_diurna
         # end if
         return 0

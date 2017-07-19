@@ -171,6 +171,7 @@ class Turno(models.Model):
         return u"Turno: %s %s - %s" % (self.empleado.nombre, self.empleado.apellidos, self.entrada.strftime('%Y-%m-%d'))
     # end def
 # end class
+
 class DiaFestivo(models.Model):
     choices = (
         (1, 'Enero'),
@@ -281,5 +282,5 @@ class Produccion(models.Model):
 
     def __unicode__(self):
         return u"%s %s x%d" % (str(self.empleados), self.fecha, self.cantidad)
+    # end def
 # end class
-

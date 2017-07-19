@@ -184,7 +184,6 @@ class NominaSupraList(supra.SupraListView):
     # end def
 # end class
 
-
 class NominaSupraList2(supra.SupraListView):
     model = models.Nomina
     list_display = ['id', 'empleado', 'empleado_f', 'corte', 'fecha', 'contrato__salario_base',
@@ -197,7 +196,6 @@ class NominaSupraList2(supra.SupraListView):
         return {"id": obj.empleado.id, "nombre": obj.empleado.nombre, "apellidos": obj.empleado.apellidos, "cedula": obj.empleado.cedula}
     # end class
 # end class
-
 
 class CorteSupraList(supra.SupraListView):
     model = models.Corte

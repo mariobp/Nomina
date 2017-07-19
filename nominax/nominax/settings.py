@@ -106,7 +106,7 @@ WSGI_APPLICATION = 'nominax.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'nominax',
+        'NAME': 'nomina',
         'USER': 'postgres',
         'PASSWORD': 'Exile*74522547',
         'HOST': '104.236.33.228',
@@ -118,12 +118,12 @@ DATABASES = {
     }
 }
 
-DATABASES['default']['HOST'] = '/cloudsql/vertical-airway-172321:us-east1:ingecol-db'
-if os.getenv('GAE_INSTANCE'):
-    pass
-else:
-    DATABASES['default']['HOST'] = '127.0.0.1'
-    DATABASES['default']['NAME'] = 'nomina'
+#DATABASES['default']['HOST'] = '/cloudsql/vertical-airway-172321:us-east1:ingecol-db'
+#if os.getenv('GAE_INSTANCE'):
+#    pass
+#else:
+#    DATABASES['default']['HOST'] = '127.0.0.1'
+#    DATABASES['default']['NAME'] = 'nomina'
 
 if 'test' in sys.argv:
     DATABASES['default'] = {
