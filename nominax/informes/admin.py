@@ -39,15 +39,15 @@ class NominaResource(resources.ModelResource):
 	#end def	
 
 	def dehydrate_salario_legal(self, nomina):
-		return nomina.salario_legal()
+		return nomina.total_devengado
 	#end def
 
 	def dehydrate_recargos(self, nomina):
-		return nomina.recargos()
+		return nomina.recargos
 	#end def
 
 	def dehydrate_neto(self, nomina):
-		return nomina.neto()
+		return nomina.neto
 	#end def
 
 	def dehydrate_total(self, nomina):
@@ -81,31 +81,31 @@ class NominaFResource(resources.ModelResource):
 	#end def	
 
 	def dehydrate_salario_legal(self, nomina):
-		return float(nomina.salario_legal())
+		return float(nomina.total_devengado)
 	#end def
 
 	def dehydrate_recargos(self, nomina):
-		return nomina.recargos()
+		return nomina.recargos
 	#end def
 
 	def dehydrate_neto(self, nomina):
-		return float(nomina.neto())
+		return float(nomina.neto)
 	#end def
 
 	def dehydrate_total(self, nomina):
-		return "%.2f" % float(nomina.total())
+		return "%.2f" % float(nomina.total)
 	#end def
 
 	def dehydrate_bonificacion(self, nomina):
-		return nomina.bonificacion()
+		return nomina.bonificacion
 	#end def
 
 	def dehydrate_descuento_salud(self, nomina):
-		return "%.2f" % float(nomina.descuento_salud())
+		return "%.2f" % float(nomina.descuento_salud)
 	#end def
 
 	def dehydrate_descuento_salud_half(self, nomina):
-		return "%.2f" % float(nomina.descuento_salud()/2)
+		return "%.2f" % float(nomina.descuento_salud/2)
 	#end def
 
 	class Meta:
