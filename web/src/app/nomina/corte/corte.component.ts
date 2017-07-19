@@ -90,10 +90,10 @@ export class CorteEditComponent implements OnInit {
     }
 
     plano1() {
-        this._s.down('admin/nomina/nomina/export/free/?corte__id__exact=', this._form.item.id, 1);
+        this._s.down('admin/nomina/nomina/export/free/0/?corte__id__exact=', this._form.item.id, 1);
     }
     plano2() {
-        this._s.down('admin/nomina/nomina/export/free/?corte__id__exact=', this._form.item.id, 3);
+        this._s.down('admin/nomina/nomina/export/free/0/?corte__id__exact=', this._form.item.id, 3);
     }
     finiquito() {
         console.log('finiquito')
