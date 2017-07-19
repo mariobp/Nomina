@@ -174,7 +174,7 @@ export class NominaListComponent implements OnInit {
         this.table.drawCallback = () => {
             const self = this;
             $('.down').click(function(e) {
-                self._as.down('admin/nomina/nomina/export/free/?corte__id__exact=', $(this).attr('data-down'), 0);
+                self._as.down('admin/nomina/nomina/export/free/1/?corte__id__exact=', $(this).attr('data-down'), 0);
                 e.preventDefault();
             });
         }
