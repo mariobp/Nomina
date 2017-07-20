@@ -45,7 +45,21 @@ export class FormComponent implements OnInit, AfterViewInit {
     public item: any;
 
     private errorMessages = {
-        email: 'texto para error de email'
+        email: 'Ingrese una dirección de correo valida',
+        required: 'Este campo es requerido',
+        url: 'Ingrese una url',
+        min: data => {
+            return `El valor debe ser mayor o igual a ${data.min}, actualmente es ${data.actual}`;
+        },
+        max: data => {
+            return `El valor debe ser menor o igual a ${data.max}, actualmente es ${data.actual}`;
+        },
+        minlength: data => {
+            return `El numero de caracteres debe ser mayor o igual a ${data.requiredLength}, actualmente es ${data.actualLength}`;
+        },
+        maxlength: data => {
+            return `El numero de caracteres debe ser menor o igual a ${data.requiredLength}, actualmente es ${data.actualLength}`;
+        },
     }
 
     constructor(private _ar: ActivatedRoute) { }
@@ -117,7 +131,14 @@ export class FormComponent implements OnInit, AfterViewInit {
                     let res = '';
                     for (const key in control.errors) {
                         if (!!control.errors[key]) {
-                            res += this.errorMessages[key] || key + ' ';
+                            let messege = '';
+                            const errors = this.errorMessages[key];
+                            if (typeof errors === "function") {
+                                messege = errors(control.errors[key]);
+                            } else {
+                                messege = errors;
+                            }
+                            res += messege || key + ' ';
                         }
                     }
                     return res;

@@ -13,6 +13,8 @@ import { ProduccionComponent, ProduccionListComponent, EditProduccionComponent }
 import { ProduccionService } from './produccion/produccion.service';
 import { UnidadProduccionService } from '../configuracion/unidadproduccion/unidadproduccion.service';
 import { CargoService } from '../configuracion/cargo/cargo.service';
+import { DescuentoComponent, DescuentoListComponent, EditDescuentoComponent } from './descuento/descuento.component';
+import { DescuentoService } from '../turno/descuento/descuento.service';
 
 @NgModule({
     imports: [
@@ -30,14 +32,18 @@ import { CargoService } from '../configuracion/cargo/cargo.service';
         TurnoListComponent,
         ProduccionComponent,
         ProduccionListComponent,
-        EditProduccionComponent
+        EditProduccionComponent,
+        DescuentoComponent,
+        DescuentoListComponent,
+        EditDescuentoComponent
     ],
     providers: [
         TurnoService,
         EmpleadoService,
         ProduccionService,
         UnidadProduccionService,
-        CargoService
+        CargoService,
+        DescuentoService
     ]
 })
 export class TurnoModule { }

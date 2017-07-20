@@ -4,6 +4,8 @@ import { ProduccionComponent, ProduccionListComponent, EditProduccionComponent }
 import { ProduccionService } from './produccion/produccion.service';
 import { TurnoComponent, TurnoEditComponent, TurnoListComponent } from './turno/turno.component';
 import { TurnoService } from './turno/turno.service';
+import { DescuentoComponent, DescuentoListComponent, EditDescuentoComponent } from './descuento/descuento.component';
+import { DescuentoService } from '../turno/descuento/descuento.service';
 
 export const TurnoRoutes: Routes = [
     {
@@ -15,9 +17,15 @@ export const TurnoRoutes: Routes = [
                 ]
             },
             {
-                path: 'produccion', component: ProduccionComponent, data: { miga: 'Producciónes' }, children: [
+                path: 'produccion', component: ProduccionComponent, data: { miga: 'Producciones' }, children: [
                     { path: '', component: ProduccionListComponent },
                     { path: ':id/edit', component: EditProduccionComponent, data: { miga: 'Editar' }, resolve: { item: ProduccionService } }
+                ]
+            },
+            {
+                path: 'descuento', component: DescuentoComponent, data: { miga: 'Descuentos de producción' }, children: [
+                    { path: '', component: DescuentoListComponent },
+                    { path: ':id/edit', component: EditDescuentoComponent, data: { miga: 'Editar' }, resolve: { item: DescuentoService } }
                 ]
             }
         ]
@@ -28,4 +36,5 @@ export const TurnoRoutes: Routes = [
 export const ProduccionMenuMeta: MenuMeta[] = [
     { title: 'Turnos', url: '/produccion/turno', icon: 'extension' },
     { title: 'Producción', url: '/produccion/produccion', icon: 'extension' },
+    { title: 'Descuentos de producción', url: '/produccion/descuento', icon: 'extension' },
 ];
