@@ -42,6 +42,7 @@ class Corte(models.Model):
 
 class Descuento(models.Model):
     corte = models.ForeignKey(Corte, blank=True)
+    concepto = models.CharField(max_length=120)
     contratos = models.ManyToManyField(recursos.Contrato)
     cantidad = models.DecimalField("Cantidad $", max_digits=10, decimal_places=2)
     recurrente = models.BooleanField(default=False)
