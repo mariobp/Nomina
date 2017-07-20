@@ -74,7 +74,18 @@ class Descuento(models.Model):
     # end def
 # end class
 
+class TipoIncapacidad(models.Model):
+    nombre = models.CharField(max_length=120)
+# end class
+
+class PagoIncapacidad(models.Model):
+    tipo = models.ForeignKey(TipoIncapacidad)
+    dia = models.IntegerField("Día desde el cual aplica")
+    porcentaje = models.IntegerField("Porcentaje a aplicar")
+# end class
+
 class DiaIncapacidad(models.Model):
+    tipo = models.ForeignKey(TipoIncapacidad)
     fecha = models.DateField()
     empleado = models.ForeignKey(recursos.Empleado)
     dias = models.IntegerField()

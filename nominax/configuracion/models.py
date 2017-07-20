@@ -89,8 +89,3 @@ class Concepto(models.Model):
         return u"%s" % (self.nombre)
     # end def
 # end class
-
-class PagoIncapacidad(models.Model):
-    dia = models.IntegerField("Día desde el cual aplica")
-    porcentaje = models.IntegerField("Porcentaje a aplicar")
-# end class
