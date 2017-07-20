@@ -60,7 +60,7 @@ class Descuento(models.Model):
 
     @staticmethod
     def get_descuento(contrato, corte):
-        descuentos = Descuento.objects.filter(contratos=contrato, corte=corte).annotate(total=Sum('cantidad')).first()
+        descuentos = Descuento.objects.filter(contratos=contrato, corte=corte, eliminado=False).annotate(total=Sum('cantidad')).first()
         recurrentes = Descuento.objects.filter(contratos=contrato, corte__fecha_inicio__lt=corte.fecha_inicio, recurrente=True).annotate(total=Sum('cantidad')).first()
         total = 0
         if descuentos:
@@ -126,15 +126,20 @@ class Nomina(models.Model):
         return total
     # end def
 
+    @cached_property
     def descuento_produccion(self):
-        descuentos = turno.DescuentoProduccion.objects.filter(corte=self.corte)
-        produccion = self.get_produccion(self.corte.fecha_inicio, self.corte.fecha_fin)
-        total = 0
-        for des in descuentos:
-            pros = produccion.filter(unidad=des.unidad).count()
-            total = total + des.cantitad/pros
-        # end for
-        return total
+        try:
+            descuentos = DescuentoProduccion.objects.filter(corte=self.corte, eliminado=False)
+            produccion = self.get_produccion(self.corte.fecha_inicio, self.corte.fecha_fin)
+            total = 0
+            for des in descuentos:
+                pros = produccion.filter(unidad=des.unidad).count()
+                total = total + des.cantidad/pros
+            # end for
+            return total
+        except Exception as e:
+            print e
+        # end try
     # end def
 
     @cached_property
@@ -159,12 +164,21 @@ class Nomina(models.Model):
 
     @cached_property
     def salario_produccion_adelanto(self):
-        return self.salario_produccion(self.corte.fecha_inicio, self.corte.fecha_de_adelanto)
+        adelanto = self.salario_produccion(self.corte.fecha_inicio, self.corte.fecha_de_adelanto)
+        if self.descuento_produccion > adelanto:
+            return 0
+        # end if
+        return adelanto
     # end def
 
     @cached_property
     def salario_produccion_nomina(self):
-        return self.salario_produccion(self.corte.fecha_inicio, self.corte.fecha_fin)
+        nomina = self.salario_produccion(self.corte.fecha_de_adelanto, self.corte.fecha_fin)
+        adelanto = self.salario_produccion(self.corte.fecha_inicio, self.corte.fecha_de_adelanto)
+        if self.descuento_produccion > adelanto:
+            return nomina - (self.descuento_produccion - adelanto)
+        # end if
+        return nomina
     # end def
 
     @cached_property
@@ -184,7 +198,6 @@ class Nomina(models.Model):
     @cached_property
     def descuento_bonificacion(self):
         percent = self.total_devengado*Decimal(0.4)
-        print percent, self.bonificacion_neta
         if self.bonificacion_neta > percent:
             return self.bonificacion_neta - percent
         # end if

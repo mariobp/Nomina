@@ -33,6 +33,7 @@ class NominaAdmin(admin.ModelAdmin):
 		'bonificacion',
 		'neto',
 		'total_pagar',
+		'descuento_produccion',
 	]
 
 	def salario_base(self, obj):
