@@ -335,3 +335,51 @@ class DescuentoProduccionSupraFormDelete(supra.SupraDeleteView):
         return HttpResponse(status=200)
     # end def
 # end class
+
+class TipoIncapacidadSupraList(supra.SupraListView):
+    model = models.TipoIncapacidad
+    list_display = ['id', 'nombre']
+
+# end class
+
+class TipoIncapacidadSupraForm(supra.SupraFormView):
+    model = models.TipoIncapacidad
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(TipoIncapacidadSupraForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
+
+class PagoIncapacidadSupraList(supra.SupraListView):
+    model = models.PagoIncapacidad
+    list_display = ['id', 'tipo', 'dia', 'porcentaje', 'tipo__nombre']
+
+# end class
+
+class PagoIncapacidadSupraForm(supra.SupraFormView):
+    model = models.PagoIncapacidad
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(PagoIncapacidadSupraForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
+
+class DiaIncapacidadSupraList(supra.SupraListView):
+    model = models.DiaIncapacidad
+    list_display = ['id', 'tipo', 'fecha', 'empleado', 'dias','tipo__nombre',]
+
+# end class
+
+class DiaIncapacidadSupraForm(supra.SupraFormView):
+    model = models.DiaIncapacidad
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(DiaIncapacidadSupraForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
