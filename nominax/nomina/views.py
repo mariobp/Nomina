@@ -104,48 +104,100 @@ class NominaSupraList(supra.SupraListView):
                     'contrato__subsidio_transporte', 'extras', 'extra_nocturna', 'extra_dominical_diurna',
                     'extra_dominical_nocturna', 'dominical_diurna', 'dominical_nocturna', 'nocturna',
                     'diurnas', 'dominical_diurna', 'dominical_nocturna',
-                    'salario_produccion', 'descuento_salud', 'bonificacion', 'valor_hora', 'salario_legal', 'neto', 'total', 'recargos', 'total_pagar']
+                    'salario_base', 'subsidio_transporte', 'recargos', 'total_devengado', 'calcular_hora_diurna', 'calcular_hora_extra_diurna', 'calcular_hora_nocturna', 'calcular_hora_extra_nocturna', 'calcular_hora_dominical_diurna', 'calcular_hora_dominical_nocturna', 'calcular_hora_dominical_extra_diurna', 'calcular_hora_dominical_extra_nocturna', 'descuento_salud', 'descuentos_adicionales', 'total_deducido', 'total', 'adelanto', 'bonificacion_neta', 'descuento_bonificacion', 'bonificacion', 'neto', 'total_pagar'
+                    ]
     search_fields = ['contrato__empleado__nombre', 'contrato__empleado__apellidos', 'contrato__empleado__cedula', ]
     list_filter = ['contrato__empleado', 'contrato__empleado__cargo', 'fecha', 'corte', 'id']
     search_key = 'q'
     paginate_by = 10
 
-    def salario_produccion(self, obj, dict):
-        return "$" + intcomma(round(obj.salario_produccion_nomina, 2))
+    def salario_base(self, obj, row):
+        return "$" + intcomma(round(obj.salario_base, 2))
     # end def
 
-    def descuento_salud(self, obj, dict):
-        return "$" + intcomma(round(obj.descuento_salud, 2))
+    def subsidio_transporte(self, obj, row):
+        return "$" + intcomma(round(obj.subsidio_transporte, 2))
     # end def
 
-    def bonificacion(self, obj, dict):
-        return "$" + intcomma(round(obj.bonificacion, 2))
-    # end def
-
-    def valor_hora(self, obj, dict):
-        return "$" + intcomma(round(obj.valor_hora, 2))
-    # end def
-
-    def salario_legal(self, obj, dict):
-        return "$" + intcomma(round(obj.total_devengado, 2))
-    # end def
-
-    def neto(self, obj, dict):
-        return "$" + intcomma(round(obj.neto, 2))
-    # end def
-
-    def total(self, obj, dict):
-        return "$" + intcomma(round(obj.total, 2))
-    # end def
-
-    def total_pagar(self, obj, dict):
-        return "$" + intcomma(round(obj.total_pagar, 2))
-    # end def
-
-    def recargos(self, obj, dict):
+    def recargos(self, obj, row):
         return "$" + intcomma(round(obj.recargos, 2))
     # end def
 
+    def total_devengado(self, obj, row):
+        return "$" + intcomma(round(obj.total_devengado, 2))
+    # end def
+
+    def calcular_hora_diurna(self, obj, row):
+        return "$" + intcomma(round(obj.calcular_hora_diurna, 2))
+    # end def
+
+    def calcular_hora_extra_diurna(self, obj, row):
+        return "$" + intcomma(round(obj.calcular_hora_extra_diurna, 2))
+    # end def
+
+    def calcular_hora_nocturna(self, obj, row):
+        return "$" + intcomma(round(obj.calcular_hora_nocturna, 2))
+    # end def
+
+    def calcular_hora_extra_nocturna(self, obj, row):
+        return "$" + intcomma(round(obj.calcular_hora_extra_nocturna, 2))
+    # end def
+
+    def calcular_hora_dominical_diurna(self, obj, row):
+        return "$" + intcomma(round(obj.calcular_hora_dominical_diurna, 2))
+    # end def
+
+    def calcular_hora_dominical_nocturna(self, obj, row):
+        return "$" + intcomma(round(obj.calcular_hora_dominical_nocturna, 2))
+    # end def
+
+    def calcular_hora_dominical_extra_diurna(self, obj, row):
+        return "$" + intcomma(round(obj.calcular_hora_dominical_extra_diurna, 2))
+    # end def
+
+    def calcular_hora_dominical_extra_nocturna(self, obj, row):
+        return "$" + intcomma(round(obj.calcular_hora_dominical_extra_nocturna, 2))
+    # end def
+
+    def descuento_salud(self, obj, row):
+        return "$" + intcomma(round(obj.descuento_salud, 2))
+    # end def
+
+    def descuentos_adicionales(self, obj, row):
+        return "$" + intcomma(round(obj.descuento, 2))
+    # end def
+
+    def total_deducido(self, obj, row):
+        return "$" + intcomma(round(obj.total_deducido, 2))
+    # end def
+
+    def total(self, obj, row):
+        return "$" + intcomma(round(obj.total, 2))
+    # end def
+
+    def adelanto(self, obj, row):
+        return "$" + intcomma(round(obj.adelanto, 2))
+    # end def
+
+    def bonificacion_neta(self, obj, row):
+        return "$" + intcomma(round(obj.bonificacion_neta, 2))
+    # end def
+
+    def descuento_bonificacion(self, obj, row):
+        return "$" + intcomma(round(obj.descuento_bonificacion, 2))
+    # end def
+
+    def bonificacion(self, obj, row):
+        return "$" + intcomma(round(obj.bonificacion, 2))
+    # end def
+
+    def neto(self, obj, row):
+        return "$" + intcomma(round(obj.neto, 2))
+    # end def
+
+    def total_pagar(self, obj, row):
+        return "$" + intcomma(round(obj.total_pagar, 2))
+    # end def
 
     def empleado_f(self, obj, now):
         return {"id": obj.contrato.empleado.id, "nombre": obj.contrato.empleado.nombre, "apellidos": obj.contrato.empleado.apellidos, "cedula": obj.contrato.empleado.cedula}
