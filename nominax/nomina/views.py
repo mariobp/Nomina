@@ -137,7 +137,7 @@ class NominaSupraList(supra.SupraListView):
     def total(self, obj, dict):
         return "$" + intcomma(round(obj.total, 2))
     # end def
-    
+
     def total_pagar(self, obj, dict):
         return "$" + intcomma(round(obj.total_pagar, 2))
     # end def
@@ -370,7 +370,7 @@ class PagoIncapacidadSupraForm(supra.SupraFormView):
 
 class DiaIncapacidadSupraList(supra.SupraListView):
     model = models.DiaIncapacidad
-    list_display = ['id', 'tipo', 'fecha', 'empleado', 'dias','tipo__nombre',]
+    list_display = ['id', 'tipo', 'fecha', 'empleado', 'empleado__nombre', 'empleado__apellidos', 'dias','tipo__nombre',]
 
 # end class
 
