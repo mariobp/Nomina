@@ -98,52 +98,138 @@ export class NominaListComponent implements OnInit {
             }
         },
         {
-            data: 'salario_produccion',
+            className: 'text-right',
+            data: 'salario_base',
             orderable: false,
-            searchable: false,
-            render: TableComponent.renderDecimal
+            searchable: false
         },
         {
-            data: 'salario_legal',
+            className: 'text-right',
+            data: 'subsidio_transporte',
             orderable: false,
-            searchable: false,
-            render: TableComponent.renderDecimal
+            searchable: false
         },
         {
+            className: 'text-right',
             data: 'recargos',
             orderable: false,
-            searchable: false,
-            render: TableComponent.renderDecimal
+            searchable: false
         },
         {
-            data: 'bonificacion',
+            className: 'text-right',
+            data: 'total_devengado',
             orderable: false,
-            searchable: false,
-            render: TableComponent.renderDecimal
+            searchable: false
         },
         {
+            className: 'text-right',
+            data: 'calcular_hora_diurna',
+            orderable: false,
+            searchable: false
+        },
+        {
+            className: 'text-right',
+            data: 'calcular_hora_extra_diurna',
+            orderable: false,
+            searchable: false
+        },
+        {
+            className: 'text-right',
+            data: 'calcular_hora_nocturna',
+            orderable: false,
+            searchable: false
+        },
+        {
+            className: 'text-right',
+            data: 'calcular_hora_extra_nocturna',
+            orderable: false,
+            searchable: false
+        },
+        {
+            className: 'text-right',
+            data: 'calcular_hora_dominical_diurna',
+            orderable: false,
+            searchable: false
+        },
+        {
+            className: 'text-right',
+            data: 'calcular_hora_dominical_nocturna',
+            orderable: false,
+            searchable: false
+        },
+        {
+            className: 'text-right',
+            data: 'calcular_hora_dominical_extra_diurna',
+            orderable: false,
+            searchable: false
+        },
+        {
+            className: 'text-right',
+            data: 'calcular_hora_dominical_extra_nocturna',
+            orderable: false,
+            searchable: false
+        },
+        {
+            className: 'text-right',
             data: 'descuento_salud',
             orderable: false,
-            searchable: false,
-            render: TableComponent.renderDecimal
+            searchable: false
         },
         {
-            data: 'neto',
+            className: 'text-right',
+            data: 'descuentos_adicionales',
             orderable: false,
-            searchable: false,
-            render: TableComponent.renderDecimal
+            searchable: false
         },
         {
+            className: 'text-right',
+            data: 'total_deducido',
+            orderable: false,
+            searchable: false
+        },
+        {
+            className: 'text-right',
             data: 'total',
             orderable: false,
-            searchable: false,
-            render: TableComponent.renderDecimal
+            searchable: false
         },
+        {
+            className: 'text-right',
+            data: 'adelanto',
+            orderable: false,
+            searchable: false
+        },
+        {
+            className: 'text-right',
+            data: 'bonificacion_neta',
+            orderable: false,
+            searchable: false
+        },
+        {
+            className: 'text-right',
+            data: 'descuento_bonificacion',
+            orderable: false,
+            searchable: false
+        },
+        {
+            className: 'text-right',
+            data: 'bonificacion',
+            orderable: false,
+            searchable: false
+        },
+        {
+            className: 'text-right',
+            data: 'neto',
+            orderable: false,
+            searchable: false
+        },
+        {
+            className: 'text-right',
+            data: 'total_pagar',
+            orderable: false,
+            searchable: false
+        }
     ];
-    /*
-        nombre empleado
-        salario base
-    */
 
     constructor(private _as: NominaService, private _r: ActivatedRoute) {
         if (!!this._r.snapshot.data['item'] && Object.keys(this._r.snapshot.data['item']).length !== 0) {

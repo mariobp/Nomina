@@ -1,13 +1,28 @@
 <ex-table #table [title]="title" icon="monetization_on" (selectedItemsChange)="onSelectedItemsChange($event)" [order]="order" [aggregable]="aggregable" [editable]="editable" [deleteable]="deleteable" [service]="service" [multiselect]="multiselect" [columns]="columns">
     <th></th>
     <th>Empleado</th>
-    <th>S Producción</th>
-    <th>S Legal</th>
-    <th>Regargos</th>
-    <th>Bonificación</th>
-    <th>Descuento</th>
-    <th>Neto</th>
+    <th>S base</th>
+    <th>Subsidio transporte</th>
+    <th>Recargos</th>
+    <th>T Devengado</th>
+    <th>H diurna</th>
+    <th>H extra diurna</th>
+    <th>H nocturna</th>
+    <th>H extra nocturna</th>
+    <th>H dominical diurna</th>
+    <th>H dominical nocturna</th>
+    <th>H dominical extra_diurna</th>
+    <th>H dominical extra nocturna</th>
+    <th>Descuento salud</th>
+    <th>Descuentos adicionales</th>
+    <th>T deducido</th>
     <th>Total</th>
+    <th>Adelanto</th>
+    <th>B neta</th>
+    <th>B bonificacion</th>
+    <th>Bonificacion</th>
+    <th>Neto</th>
+    <th>T Pagar</th>
     <button [disabled]="itemList.length == 0" (click)="finiquito()" buttons class="btn btn-primary btn-responsive" type="button">Finiquito via Email</button>
 </ex-table>
 <!-- <pre>{{itemList | json}}</pre> -->

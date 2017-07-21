@@ -8,12 +8,14 @@ import { HttpModule } from '@angular/http';
 
 import { NominaComponent, NominaListComponent } from './nomina/nomina.component';
 import { CorteComponent, CorteListComponent, CorteEditComponent } from './corte/corte.component';
+import { DescuentoComponent, DescuentoListComponent, DescuentoEditComponent } from './descuento/descuento.component';
+
 import { NominaService } from './nomina/nomina.service';
 import { CorteService } from './corte/corte.service';
 import { DescuentoService } from './descuento/descuento.service';
 import { ContratoService } from '../empleados/contrato/contrato.service';
+
 import { NominaRoutes } from './route';
-import { DescuentoComponent, DescuentoListComponent, DescuentoEditComponent } from './descuento/descuento.component';
 @NgModule({
     imports: [
         LibModule,
@@ -33,7 +35,7 @@ import { DescuentoComponent, DescuentoListComponent, DescuentoEditComponent } fr
         CorteEditComponent,
         DescuentoComponent,
         DescuentoListComponent,
-        DescuentoEditComponent
+        DescuentoEditComponent,
     ],
     providers: [
         NominaService,
