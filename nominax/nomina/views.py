@@ -199,7 +199,6 @@ class NominaSupraList(supra.SupraListView):
         return intcomma(round(obj.total_pagar, 2))
     # end def
 
-
     def empleado_f(self, obj, now):
         return {"id": obj.contrato.empleado.id, "nombre": obj.contrato.empleado.nombre, "apellidos": obj.contrato.empleado.apellidos, "cedula": obj.contrato.empleado.cedula}
     # end class
@@ -423,7 +422,7 @@ class PagoIncapacidadSupraForm(supra.SupraFormView):
 
 class DiaIncapacidadSupraList(supra.SupraListView):
     model = models.DiaIncapacidad
-    list_display = ['id', 'tipo', 'fecha', 'empleado', 'dias','tipo__nombre',]
+    list_display = ['id', 'tipo', 'fecha', 'empleado', 'empleado__nombre', 'empleado__apellidos', 'dias','tipo__nombre',]
 
 # end class
 
