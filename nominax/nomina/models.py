@@ -76,12 +76,18 @@ class Descuento(models.Model):
 
 class TipoIncapacidad(models.Model):
     nombre = models.CharField(max_length=120)
+    def __unicode__(self):
+        return u"%s" % (self.nombre, )
+    # end def
 # end class
 
 class PagoIncapacidad(models.Model):
     tipo = models.ForeignKey(TipoIncapacidad)
     dia = models.IntegerField("Día desde el cual aplica")
     porcentaje = models.IntegerField("Porcentaje a aplicar")
+    def __unicode__(self):
+        return u"%s° dia  %d%% - %s" % (self.dia, self.porcentaje, self.tipo)
+    # end def
 # end class
 
 class DiaIncapacidad(models.Model):
@@ -89,6 +95,47 @@ class DiaIncapacidad(models.Model):
     fecha = models.DateField()
     empleado = models.ForeignKey(recursos.Empleado)
     dias = models.IntegerField()
+
+    @staticmethod
+    def get_incapacidades(corte):
+        dias = DiaIncapacidad.objects.filter(fecha__gte=corte.fecha_inicio)
+        if corte.fecha_fin:
+            dias = dias.filter(fecha__lt=corte.fecha_fin)
+        # end if
+        return dias
+    # end def
+
+    @classmethod
+    def porcentaje(cls, corte):
+        dias = cls.get_incapacidades(corte)
+        total = 0
+        for dia in dias:
+            total = total + dia.costo()
+        # end for
+        return total
+    # end def
+
+    def costo(self):
+        pagos = PagoIncapacidad.objects.filter(dia__lte = self.dias, tipo=self.tipo)
+        total = 0
+        por = 100
+        dia = 1
+        for pago in pagos:
+            total = total + (pago.dia - dia)*por
+            print (pago.dia - dia), 'x', por
+            por = pago.porcentaje
+            dia = pago.dia
+        # end for
+        if self.dias > pago.dia:
+            total = total + (self.dias - dia + 1)*pago.porcentaje
+            print (self.dias - dia + 1), 'x', pago.porcentaje
+        # end if
+        return total
+    # end def
+
+    def __unicode__(self):
+        return u"%s, %d dias - %s" % (self.fecha, self.dias, self.tipo)
+    # end def
 # end class
 
 class DescuentoProduccion(models.Model):
@@ -125,6 +172,14 @@ class Nomina(models.Model):
             produccion = produccion.filter(fecha__lt=fecha_fin)
         # end if
         return produccion
+    # end def
+
+    def incapacidad(self):
+        try:
+            pors = DiaIncapacidad.porcentaje(self.corte)
+            return pors/100*self.salario_base/30
+        except Exception as e:
+            print e
     # end def
 
     def salario_produccion(self, fecha_inicio, fecha_fin):

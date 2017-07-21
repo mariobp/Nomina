@@ -34,6 +34,7 @@ class NominaAdmin(admin.ModelAdmin):
 		'neto',
 		'total_pagar',
 		'descuento_produccion',
+		'incapacidad'
 	]
 
 	def salario_base(self, obj):
@@ -135,4 +136,7 @@ class DescuentoAdmin(admin.ModelAdmin):
 admin.site.register(models.Corte, CorteAdmin)
 admin.site.register(models.Nomina, NominaAdmin)
 admin.site.register(models.Descuento, DescuentoAdmin)
+admin.site.register(models.TipoIncapacidad)
+admin.site.register(models.PagoIncapacidad)
+admin.site.register(models.DiaIncapacidad)
 
