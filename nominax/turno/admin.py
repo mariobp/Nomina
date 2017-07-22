@@ -15,7 +15,7 @@ class TurnoAdmin(admin.ModelAdmin):
 
 	def get_queryset(self, *args, **kwargs):
 		queryset = super(TurnoAdmin, self).get_queryset(*args, **kwargs)
-		queryset = queryset.filter(empleado__pk=1)
+		queryset = queryset.filter(id=395)
 		#queryset.update(aprobado=True)
 		diurnas = 0
 		nocturnas = 0

@@ -131,34 +131,34 @@ class TurnoSupraList(MasterList):
     # end def
 
     def h_extras(self, obj, now):
-        return obj.horas_extras()
+        return obj.show_extra_duirna()
     # end def
 
     def h_nocturna(self, obj, now):
-        return obj.horas_nocturna()
+        return obj.show_nocturnas()
     # end def
 
     def h_diurna(self, obj, now):
-        return obj.horas_diurna()
+        return obj.show_diurnas()
     # end def
     def h_nocturna_extras(self, obj, now):
-        return obj.get_extras_nocturnas()
+        return obj.show_extra_nocturnas()
     #end def
 
     def h_dominical_nocturna(self, obj, now):
-        return obj.get_dominicales_nocturnas()
+        return obj.show_dominicales_nocturnas()
     #end def
 
     def h_dominical(self, obj, now):
-        return obj.horas_dominical()
+        return obj.show_dominicales_diurnas()
     # end def
 
     def h_dominical_extra(self, obj, now):
-        return obj.get_dominicales_diurnas_extra()
+        return obj.show_dominicales_diurnas_extra()
     # end def
 
     def h_dominical_extra_nocturna(self, obj, now):
-        return obj.get_dominicales_nocturnas_extra()
+        return obj.show_dominicales_nocturnas_extra()
     # end def
 # end class
 
