@@ -20,7 +20,7 @@ from supra.views import access_control
 
 class PdfExportMixin(ExportMixin):
 
-    def export_action(self, request, rs, *args, **kwargs):
+    def export_action(self, request, rs=0, *args, **kwargs):
         self.resource_class = self.resource_classes[int(rs)]
         return super(PdfExportMixin, self).export_action(request, *args, **kwargs)
     #end def
