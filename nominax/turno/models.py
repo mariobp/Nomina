@@ -61,6 +61,75 @@ class Turno(models.Model):
         return Turno.objects.filter(empleado=empleado, entrada__year=year, salida__month=month)
     # end def
 
+    """
+    metodos para retornar en el listview
+    """
+
+    def show_nocturnas(self):
+        delta_dominical = self.get_delta_dominical()
+        delta_nocturna = self.get_delta_nocturna()
+        delta_extras = self.get_delta_extras()
+        delta_dominical_nocturna = delta_dominical.intersect(delta_nocturna)
+        delta_extra_nocturna = delta_nocturna.difference(delta_dominical_nocturna).intersect(delta_extras)
+        return delta_nocturna.difference(delta_dominical_nocturna).difference(delta_extra_nocturna).horas()
+    #end def
+
+    def show_extra_nocturnas(self):
+        delta_dominical = self.get_delta_dominical()
+        delta_nocturna = self.get_delta_nocturna()
+        delta_extras = self.get_delta_extras()
+        delta_dominical_nocturna = delta_dominical.intersect(delta_nocturna)
+        delta_extra_nocturna = delta_nocturna.difference(delta_dominical_nocturna).intersect(delta_extras)
+        return delta_extra_nocturna.horas()
+    #end def
+
+    def show_dominicales_nocturnas(self):
+        delta_dominical = self.get_delta_dominical()
+        delta_nocturna = self.get_delta_nocturna()
+        return delta_dominical.intersect(delta_nocturna).horas() - self.show_dominicales_nocturnas_extra()
+    #end def
+
+    def show_dominicales_nocturnas_extra(self):
+        delta_dominical = self.get_delta_dominical()
+        delta_nocturna = self.get_delta_nocturna()
+        delta_extras = self.get_delta_extras()
+        return delta_dominical.intersect(delta_nocturna).intersect(delta_extras).horas()
+    # end def
+
+    def show_diurnas(self):
+        delta_dominical = self.get_delta_dominical()
+        delta_diurna = self.get_delta_diurna()
+        delta_extras = self.get_delta_extras()
+        delta_dominical_diurna = delta_dominical.intersect(delta_diurna)
+        delta_extra_diurna = delta_diurna.difference(delta_dominical_diurna).intersect(delta_extras)
+        return delta_diurna.difference(delta_dominical_diurna).difference(delta_extra_diurna).horas()
+    #end def
+
+    def show_extra_duirna(self):
+        delta_dominical = self.get_delta_dominical()
+        delta_diurna = self.get_delta_diurna()
+        delta_extras = self.get_delta_extras()
+        delta_dominical_diurna = delta_dominical.intersect(delta_diurna)
+        return delta_diurna.difference(delta_dominical_diurna).intersect(delta_extras).horas()
+    #end def
+
+    def show_dominicales_diurnas(self):
+        delta_dominical = self.get_delta_dominical()
+        delta_diurna = self.get_delta_diurna()
+        return delta_dominical.intersect(delta_diurna).horas() - self.show_dominicales_diurnas_extra()
+    #end def
+
+    def show_dominicales_diurnas_extra(self):
+        delta_dominical = self.get_delta_dominical()
+        delta_diurna = self.get_delta_diurna()
+        delta_extras = self.get_delta_extras()
+        return delta_dominical.intersect(delta_diurna).intersect(delta_extras).horas()
+    # end def
+
+    """
+     fin metodos para retornar en el listview
+    """
+
     def get_extras_nocturnas(self):
         delta_extras = self.get_delta_extras()
         delta_nocturna = self.get_delta_nocturna()

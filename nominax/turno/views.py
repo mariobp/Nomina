@@ -82,14 +82,14 @@ class MasterList(supra.SupraListView):
 class TurnoSupraForm(supra.SupraFormView):
     model = models.Turno
     form_class = forms.TurnoForm
-    list_display = ('id', 'empleado_id', 'empleado', 'entrada', 'salida', 'aprobado', 'creator', 'last_editor', 'h_extras', 'h_nocturna', 'h_diurna', 'h_dominical',)
+    list_display = ('id', 'empleado_id', 'empleado', 'entrada', 'salida', 'aprobado', 'creator', 'last_editor',)
     
+    """
     def h_extras(self, obj, now):
-        if self.instance:
+        if hasattr(self, 'instance') and self.instance:
             return self.instance.horas_extras()
         return None
     # end def
-    """
 
     def h_nocturna(self, obj, now):
         if self.instance:
@@ -131,34 +131,34 @@ class TurnoSupraList(MasterList):
     # end def
 
     def h_extras(self, obj, now):
-        return obj.horas_extras()
+        return obj.show_extra_duirna()
     # end def
 
     def h_nocturna(self, obj, now):
-        return obj.horas_nocturna()
+        return obj.show_nocturnas()
     # end def
 
     def h_diurna(self, obj, now):
-        return obj.horas_diurna()
+        return obj.show_diurnas()
     # end def
     def h_nocturna_extras(self, obj, now):
-        return obj.get_extras_nocturnas()
+        return obj.show_extra_nocturnas()
     #end def
 
     def h_dominical_nocturna(self, obj, now):
-        return obj.get_dominicales_nocturnas()
+        return obj.show_dominicales_nocturnas()
     #end def
 
     def h_dominical(self, obj, now):
-        return obj.horas_dominical()
+        return obj.show_dominicales_diurnas()
     # end def
 
     def h_dominical_extra(self, obj, now):
-        return obj.get_dominicales_diurnas_extra()
+        return obj.show_dominicales_diurnas_extra()
     # end def
 
     def h_dominical_extra_nocturna(self, obj, now):
-        return obj.get_dominicales_nocturnas_extra()
+        return obj.show_dominicales_nocturnas_extra()
     # end def
 # end class
 

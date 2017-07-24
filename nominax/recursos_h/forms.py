@@ -25,14 +25,19 @@ class MasterEdit(forms.ModelForm):
 class TarifarioForm(forms.ModelForm):
 
     def save(self, commit=False):
+        print commit
         tarifa = super(TarifarioForm, self).save(commit)
+
+        if not commit:
+            tarifa.save()
+        #end if
 
         if not tarifa.remplazado_por:
             remplazar = models.Tarifario.objects.filter(remplazado_por = None, unidad=tarifa.unidad, cargo=tarifa.cargo).last()
         # end if
         config = conf.ConfiguracionForm.get_instance()
-        coding.tarifario.remove(remplazar)
-        coding.tarifario.add(tarifa)
+        config.tarifario.remove(remplazar)
+        config.tarifario.add(tarifa)
         tarifa.save()
         if not tarifa.remplazado_por:
             remplazar.remplazado_por = tarifa

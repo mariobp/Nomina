@@ -12,10 +12,11 @@ class TurnoAdmin(admin.ModelAdmin):
 	list_display = ['empleado', 'aprobado', 'descontar_almuerzo', 'entrada', 'salida', 'horas_extras', 'horas_nocturna', 'horas_diurna', 'horas_dominical', 'total_horas']
 	readonly_fields = ['extras', 'nocturna', 'diurna', 'dominical']
 	list_filter = ['empleado', 'aprobado']
-
+	
+	"""
 	def get_queryset(self, *args, **kwargs):
 		queryset = super(TurnoAdmin, self).get_queryset(*args, **kwargs)
-		queryset = queryset.filter(empleado__pk=15)
+		#queryset = queryset.filter(id=395)
 		#queryset.update(aprobado=True)
 		diurnas = 0
 		nocturnas = 0
@@ -33,6 +34,7 @@ class TurnoAdmin(admin.ModelAdmin):
 		print diurnas, nocturnas, total
 		return queryset
 	# end def
+	"""
 
 	form = forms.TurnoForm
 # end class

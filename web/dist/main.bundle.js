@@ -1,4 +1,4 @@
-webpackJsonp([7],{
+webpackJsonp([6],{
 
 /***/ "../../../../../src async recursive":
 /***/ (function(module, exports, __webpack_require__) {
@@ -6,18 +6,15 @@ webpackJsonp([7],{
 var map = {
 	"./configuracion/configuracion.module": [
 		"../../../../../src/app/configuracion/configuracion.module.ts",
-		6,
-		0
+		3
 	],
 	"./empleados/empleados.module": [
 		"../../../../../src/app/empleados/empleados.module.ts",
-		2,
-		0
+		1
 	],
 	"./nomina/nomina.module": [
 		"../../../../../src/app/nomina/nomina.module.ts",
-		0,
-		1
+		0
 	],
 	"./obligaciones/obligaciones.module": [
 		"../../../../../src/app/obligaciones/obligaciones.module.ts",
@@ -29,15 +26,14 @@ var map = {
 	],
 	"./usuarios/usuarios.module": [
 		"../../../../../src/app/usuarios/usuarios.module.ts",
-		0,
-		3
+		2
 	]
 };
 function webpackAsyncContext(req) {
 	var ids = map[req];
 	if(!ids)
 		return Promise.reject(new Error("Cannot find module '" + req + "'."));
-	return Promise.all(ids.slice(1).map(__webpack_require__.e)).then(function() {
+	return __webpack_require__.e(ids[1]).then(function() {
 		return __webpack_require__(ids[0]);
 	});
 };
@@ -89,7 +85,7 @@ var AppComponent = (function () {
     function AppComponent(_cs) {
         this._cs = _cs;
         this.title = 'angular';
-        this._cs.conf({ host: '104.236.33.228', port: '8010' });
+        // this._cs.conf({ host: '104.236.33.228', port: '8010' });
         // this._cs.conf({ host: 'isabela.com.co' });
     }
     AppComponent.prototype.ngOnInit = function () {
