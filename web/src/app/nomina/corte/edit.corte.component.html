@@ -1,7 +1,7 @@
 <ex-form #f icon="alarm_off" title="Corte" [form]="form" [service]="service" [columns]="columns" [renderinputs]="renderinputs" [deleteable]="deleteable" [saveable]="saveable">
     <button (click)="plano1()" custom-button class="btn btn-primary btn-responsive" type="button">Plano Bancolombia</button>
     <button (click)="plano2()" custom-button class="btn btn-primary btn-responsive" type="button">Plano Davivienda</button>
-    <!-- <button (click)="finiquito()" custom-button class="btn btn-primary btn-responsive" type="button">Finiquito via Email</button> -->
+    <button (click)="descuento()" custom-button class="btn btn-primary btn-responsive" type="button">Descuento Bonificación</button>
 </ex-form>
 <router-outlet></router-outlet>
 <router-outlet name="descuento"></router-outlet>
