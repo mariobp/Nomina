@@ -42,6 +42,7 @@ class Corte(models.Model):
 
 class Descuento(models.Model):
     corte = models.ForeignKey(Corte, blank=True)
+    corte_final = models.ForeignKey(Corte, related_name="corte_final", blank=True, null=True)
     concepto = models.CharField(max_length=120)
     contratos = models.ManyToManyField(recursos.Contrato)
     cantidad = models.DecimalField("Cantidad $", max_digits=10, decimal_places=2)
@@ -60,17 +61,21 @@ class Descuento(models.Model):
     # end def
 
     @staticmethod
-    def get_descuento(contrato, corte):
-        descuentos = Descuento.objects.filter(contratos=contrato, corte=corte, eliminado=False).annotate(total=Sum('cantidad')).first()
-        recurrentes = Descuento.objects.filter(contratos=contrato, corte__fecha_inicio__lt=corte.fecha_inicio, recurrente=True).annotate(total=Sum('cantidad')).first()
-        total = 0
+    def get_descuentos_corte(corte, queryset=None):
+        if not queryset:
+            queryset = Descuento.objects
+        # end if
+        return queryset.filter(Q(corte=corte) | Q(corte__fecha_inicio__lt=corte.fecha_inicio, recurrente=True)).filter(eliminado=False).exclude(corte_final=corte)
+    # end def
+
+    @classmethod
+    def get_descuento(cls, contrato, corte):
+        descuentos = cls.get_descuentos_corte(corte)
+        descuentos = descuentos.filter(contratos=contrato).annotate(total=Sum('cantidad')).first()
         if descuentos:
             return descuentos.total
         # end if
-        if recurrentes:
-            return recurrentes.total
-        # end if
-        return total
+        return 0
     # end def
 # end class
 
@@ -122,13 +127,11 @@ class DiaIncapacidad(models.Model):
         dia = 1
         for pago in pagos:
             total = total + (pago.dia - dia)*por
-            print (pago.dia - dia), 'x', por
             por = pago.porcentaje
             dia = pago.dia
         # end for
         if self.dias > pago.dia:
             total = total + (self.dias - dia + 1)*pago.porcentaje
-            print (self.dias - dia + 1), 'x', pago.porcentaje
         # end if
         return total
     # end def

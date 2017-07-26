@@ -12,6 +12,7 @@ urlpatterns = [
 """
 urlpatterns = urlpatterns + [
     url(r'^descuento/form/$', views.DescuentoSupraForm.as_view(), name="descuento"),
+    url(r'^finalizar/descuento/form/(?P<pk>\d+)/$', views.FinalizarDescuentoSupraForm.as_view(), name="finalizar_descuento"),
     url(r'^descuento/list/$', views.DescuentoSupraList.as_view(), name="descuento_list"),
     url(r'^descuento/form/(?P<pk>\d+)/$', views.DescuentoSupraForm.as_view(), name="descuento_edit"),
     url(r'^descuento/delete/(?P<pk>\d+)/$', views.DescuentoSupraFormDelete.as_view(), name="descuento_delete"),

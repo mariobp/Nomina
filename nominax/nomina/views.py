@@ -164,6 +164,7 @@ class NominaSupraList(supra.SupraListView):
     # end def
 
     def descuentos_adicionales(self, obj, row):
+        print obj.descuento
         return "$" + intcomma(round(obj.descuento, 2))
     # end def
 
@@ -288,12 +289,17 @@ class CorteSupraList(supra.SupraListView):
 
 class DescuentoSupraList(MasterList):
     model = models.Descuento
-    list_display = ['id', 'cantidad', 'contratos', 'corte', 'empleados']
+    list_display = ['id', 'cantidad', 'contratos', 'corte', 'empleados', 'recurrente']
 
     def get_queryset(self):
         queryset = super(DescuentoSupraList, self).get_queryset()
-        corte = forms.CorteForms.get_instance()
-        queryset = queryset.filter(corte = corte)
+        corte_pk = self.request.GET.get('corte', False)
+        if corte_pk:
+            corte = models.Corte.objects.filter(pk=corte_pk).first()
+        else:
+            corte = forms.CorteForms.get_instance()
+        # end if
+        queryset = models.Descuento.get_descuentos_corte(corte, queryset)
         return queryset
     # end def
 
@@ -317,6 +323,17 @@ class DescuentoSupraForm(supra.SupraFormView):
     @csrf_exempt
     def dispatch(self, request, *args, **kwargs):
         return super(DescuentoSupraForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
+
+class FinalizarDescuentoSupraForm(supra.SupraFormView):
+    model = models.Descuento
+    form_class = forms.FinalizarDescuentoForm
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(FinalizarDescuentoSupraForm, self).dispatch(request, *args, **kwargs)
     # end def
 # end class
 
