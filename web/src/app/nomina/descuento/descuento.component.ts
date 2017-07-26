@@ -52,7 +52,12 @@ export class DescuentoListComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.table.success = data => console.log(data);
+        this.table.preAjax = data => {
+            if (this.corte) {
+                data['corte'] = this.corte.id;
+            }
+            return data;
+        }
         this.table.editlink = () => {
             const aux = this.table.itemSelected;
             if (!!aux) {

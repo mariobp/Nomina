@@ -61,7 +61,20 @@ class DescuentoForm(forms.ModelForm):
         # end if
         return self.cleaned_data['corte']
     # end def
+# end class
 
+class FinalizarDescuentoForm(forms.ModelForm):
+    class Meta:
+        model = models.Descuento
+        fields = ['corte_final']
+    # end class
+
+    def clean_corte_final(self):
+        if not 'corte_final' in self.cleaned_data or not self.cleaned_data['corte_final']:
+            return CorteForms.get_instance()
+        # end if
+        return self.cleaned_data['corte_final']
+    # end def
 # end class
 
 class DescuentoProduccionForm(forms.ModelForm):

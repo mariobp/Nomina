@@ -72,7 +72,10 @@ class Descuento(models.Model):
     def get_descuento(cls, contrato, corte):
         descuentos = cls.get_descuentos_corte(corte)
         descuentos = descuentos.filter(contratos=contrato).annotate(total=Sum('cantidad')).first()
-        return descuentos.total
+        if descuentos:
+            return descuentos.total
+        # end if
+        return 0
     # end def
 # end class
 
@@ -133,13 +136,11 @@ class DiaIncapacidad(models.Model):
         dia = 1
         for pago in pagos:
             total = total + (pago.dia - dia)*por
-            print (pago.dia - dia), 'x', por
             por = pago.porcentaje
             dia = pago.dia
         # end for
         if self.dias > pago.dia:
             total = total + (self.dias - dia + 1)*pago.porcentaje
-            print (self.dias - dia + 1), 'x', pago.porcentaje
         # end if
         return total
     # end def

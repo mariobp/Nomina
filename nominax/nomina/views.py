@@ -164,6 +164,7 @@ class NominaSupraList(supra.SupraListView):
     # end def
 
     def descuentos_adicionales(self, obj, row):
+        print obj.descuento
         return "$" + intcomma(round(obj.descuento, 2))
     # end def
 
@@ -322,6 +323,17 @@ class DescuentoSupraForm(supra.SupraFormView):
     @csrf_exempt
     def dispatch(self, request, *args, **kwargs):
         return super(DescuentoSupraForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
+
+class FinalizarDescuentoSupraForm(supra.SupraFormView):
+    model = models.Descuento
+    form_class = forms.FinalizarDescuentoForm
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(FinalizarDescuentoSupraForm, self).dispatch(request, *args, **kwargs)
     # end def
 # end class
 
