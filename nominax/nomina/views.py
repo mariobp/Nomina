@@ -164,6 +164,7 @@ class NominaSupraList(supra.SupraListView):
     # end def
 
     def descuentos_adicionales(self, obj, row):
+        print obj.descuento
         return "$" + intcomma(round(obj.descuento, 2))
     # end def
 
