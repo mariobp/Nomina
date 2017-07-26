@@ -288,12 +288,12 @@ class CorteSupraList(supra.SupraListView):
 
 class DescuentoSupraList(MasterList):
     model = models.Descuento
-    list_display = ['id', 'cantidad', 'contratos', 'corte', 'empleados']
+    list_display = ['id', 'cantidad', 'contratos', 'corte', 'empleados', 'recurrente']
 
     def get_queryset(self):
         queryset = super(DescuentoSupraList, self).get_queryset()
         corte = forms.CorteForms.get_instance()
-        queryset = queryset.filter(corte = corte)
+        queryset = models.Descuento.get_descuentos_corte(corte, queryset)
         return queryset
     # end def
 
