@@ -326,6 +326,17 @@ class DescuentoSupraForm(supra.SupraFormView):
     # end def
 # end class
 
+class FinalizarDescuentoSupraForm(supra.SupraFormView):
+    model = models.Descuento
+    form_class = forms.FinalizarDescuentoForm
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(FinalizarDescuentoSupraForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
+
 class DescuentoSupraFormDelete(supra.SupraDeleteView):
     model = models.Descuento
 
