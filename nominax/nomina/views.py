@@ -292,7 +292,12 @@ class DescuentoSupraList(MasterList):
 
     def get_queryset(self):
         queryset = super(DescuentoSupraList, self).get_queryset()
-        corte = forms.CorteForms.get_instance()
+        corte_pk = self.request.GET.get('corte', False)
+        if corte_pk:
+            corte = models.Corte.objects.filter(pk=corte_pk).first()
+        else:
+            corte = forms.CorteForms.get_instance()
+        # end if
         queryset = models.Descuento.get_descuentos_corte(corte, queryset)
         return queryset
     # end def
