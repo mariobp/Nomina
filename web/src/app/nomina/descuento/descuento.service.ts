@@ -10,4 +10,7 @@ export class DescuentoService extends CrudService {
         this.setRedirectUrl('/nomina')
     }
 
+    finalizarDescuento(id) {
+        return this._cl.post(`nomina/finalizar/descuento/form/${id}/`)
+    }
 }

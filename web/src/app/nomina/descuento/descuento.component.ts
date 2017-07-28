@@ -6,6 +6,9 @@ import { TableComponent } from '../../../lib/components';
 import { DescuentoService } from './descuento.service';
 import { ContratoService } from '../../empleados/contrato/contrato.service';
 
+declare var $: any;
+declare var window: any;
+
 @Component({
     template: '<router-outlet></router-outlet>'
 })
@@ -41,8 +44,25 @@ export class DescuentoListComponent implements OnInit {
             searchable: false,
             className: 'truncate',
             data: 'empleados'
+        },
+        {
+            orderable: false,
+            searchable: false,
+            data: 'recurrente',
+            className: 'text-center',
+            render: (data, type, full, meta) => {
+                let res = '';
+                if (!data) {
+                    res = 'disabled'
+                }
+                return `<button type="button" (click)="nocEvent($event)" class="btn btn-primary recurrente" data-id="${full.id}" ${res}> Finalizar </button>`;
+            }
         }
     ];
+
+    nocEvent(event) {
+        console.log(event);
+    }
 
     constructor(private _s: DescuentoService, private _r: ActivatedRoute) {
         if (!!this._r.snapshot.data['item'] && Object.keys(this._r.snapshot.data['item']).length !== 0) {
@@ -65,6 +85,15 @@ export class DescuentoListComponent implements OnInit {
             }
             return [{ outlets: { 'descuento': [aux] } }]
         };
+        this.table.drawCallback = () => {
+            const self = this;
+            $(this.table.table.nativeElement).on('click', '.recurrente', function() {
+                self._s.finalizarDescuento($(this).attr('data-id'));
+                setTimeout(function() {
+                    self.table.dataTable.ajax.reload();
+                }, 500)
+            });
+        }
     }
 
     get aggregable() {
@@ -125,11 +154,15 @@ export class DescuentoEditComponent implements OnInit {
         this.form = this._fb.group({
             cantidad: [0, [Validators.required, Validators.pattern(/\d/)]],
             contratos: [[], [Validators.required]],
-            corte: this.corte.id
+            concepto: ['', [Validators.required]],
+            corte: this.corte.id,
+            recurrente: false
         });
         this.columns = ['col1'];
         this.renderinputs = [
-            { title: 'Cantidad', type: 'number', column: 'col1', name: 'cantidad' }
+            { title: 'Cantidad', type: 'number', column: 'col1', name: 'cantidad' },
+            { title: 'Concepto', type: 'string', column: 'col1', name: 'concepto' },
+            { title: 'Recurrente', type: 'checkbox', column: 'col1', name: 'recurrente' }
         ];
     }
 

@@ -73,7 +73,6 @@ export class FormComponent implements OnInit, AfterViewInit {
         if (item) {
             this.item = item;
             this.form.patchValue(this.item);
-            console.log(item);
         }
 
     }

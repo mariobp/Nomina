@@ -12,7 +12,7 @@ declare var swal: any;
 })
 export class TableComponent implements OnInit {
 
-    @ViewChild('table') private table: ElementRef;
+    @ViewChild('table') public table: ElementRef;
 
     @Input() public icon: string;
     @Input() public title: string;
@@ -25,7 +25,7 @@ export class TableComponent implements OnInit {
     @Input() public order: any[] = [[1, 'asc']];
     @Input() public addlink = [0, 'edit'];
     @Input() public enable = true;
-    private dataTable: any;
+    public dataTable: any;
     public selectedItems: any[] = [];
 
     @Output() selectedItemsChange = new EventEmitter();
