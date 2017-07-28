@@ -585,7 +585,7 @@ class EmpleadoSupraList(supra.SupraListView):
                     'cajacompensacion', 'cajacompensacion__nombre', 'banco',
                     'banco__nombre', 'numero', ]
     search_fields = ['nombre', 'apellidos', 'cedula']
-    list_filter = ['cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion', 'id', ]
+    list_filter = ['cargo', 'pension', 'eps', 'cesantia', 'cajacompensacion', 'id']
     search_key = 'q'
     paginate_by = 10
 
@@ -598,8 +598,8 @@ class EmpleadoSupraList(supra.SupraListView):
         queryset = super(EmpleadoSupraList, self).get_queryset()
         unidad = self.request.GET.get('cargo__tarifario__unidad', False)
         if unidad:
-            cargos = models.Cargo.objects.filter(tarifario__remplazado_por__isnull=True, tarifario__unidad__pk=unidad).values('pk')
-            queryset = queryset.filter(cargo__in=cargos)
+            cargos = models.Cargo.objects.filter(tarifario__remplazado_por__isnull=True, tarifario__unidad__pk=unidad).values('pk')            
+            queryset = queryset.filter(cargo__in=cargos, contrato__tipo_contrato__modalidad=models.TipoContrato.PRODUCCION)
         # end if
         if self.request.GET.get('num_page', False):
             self.paginate_by = self.request.GET.get('num_page', False)
