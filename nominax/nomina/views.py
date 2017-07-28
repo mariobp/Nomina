@@ -289,7 +289,7 @@ class CorteSupraList(supra.SupraListView):
 
 class DescuentoSupraList(MasterList):
     model = models.Descuento
-    list_display = ['id', 'cantidad', 'contratos', 'corte', 'empleados', 'recurrente']
+    list_display = ['id', 'cantidad', 'contratos', 'corte', 'empleados', 'recurrente', 'concepto']
 
     def get_queryset(self):
         queryset = super(DescuentoSupraList, self).get_queryset()
@@ -421,10 +421,48 @@ class TipoIncapacidadSupraForm(supra.SupraFormView):
     # end def
 # end class
 
+class TipoIncapacidadSupraFormDelete(supra.SupraDeleteView):
+    model = models.TipoIncapacidad
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(TipoIncapacidadSupraFormDelete, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.eliminado = True
+        user = CuserMiddleware.get_user()
+        self.object.eliminado_por = user
+        self.object.save()
+        return HttpResponse(status=200)
+    # end def
+# end class
+
 class PagoIncapacidadSupraList(MasterList):
     model = models.PagoIncapacidad
     list_display = ['id', 'tipo', 'dia', 'porcentaje', 'tipo__nombre']
 
+# end class
+
+class PagoIncapacidadSupraFormDelete(supra.SupraDeleteView):
+    model = models.PagoIncapacidad
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(PagoIncapacidadSupraFormDelete, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.eliminado = True
+        user = CuserMiddleware.get_user()
+        self.object.eliminado_por = user
+        self.object.save()
+        return HttpResponse(status=200)
+    # end def
 # end class
 
 class PagoIncapacidadSupraForm(supra.SupraFormView):
@@ -450,5 +488,24 @@ class DiaIncapacidadSupraForm(supra.SupraFormView):
     @csrf_exempt
     def dispatch(self, request, *args, **kwargs):
         return super(DiaIncapacidadSupraForm, self).dispatch(request, *args, **kwargs)
+    # end def
+# end class
+
+class DiaIncapacidadSupraFormDelete(supra.SupraDeleteView):
+    model = models.DiaIncapacidad
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(DiaIncapacidadSupraFormDelete, self).dispatch(request, *args, **kwargs)
+    # end def
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.eliminado = True
+        user = CuserMiddleware.get_user()
+        self.object.eliminado_por = user
+        self.object.save()
+        return HttpResponse(status=200)
     # end def
 # end class

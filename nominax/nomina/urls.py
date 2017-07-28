@@ -33,6 +33,7 @@ urlpatterns = urlpatterns + [
     url(r'^tipo/incapacidad/form/$', views.TipoIncapacidadSupraForm.as_view(), name="tipo_incapacidad"),
     url(r'^tipo/incapacidad/list/$', views.TipoIncapacidadSupraList.as_view(), name="tipo_incapacidad_list"),
     url(r'^tipo/incapacidad/form/(?P<pk>\d+)/$', views.TipoIncapacidadSupraForm.as_view(), name="tipo_incapacidad_edit"),
+    url(r'^tipo/incapacidad/delete/(?P<pk>\d+)/$', views.TipoIncapacidadSupraFormDelete.as_view(), name="tipo_incapacidad_delete"),
 ]
 """
     PagoIncapacidad urls
@@ -41,6 +42,7 @@ urlpatterns = urlpatterns + [
     url(r'^pago/incapacidad/form/$', views.PagoIncapacidadSupraForm.as_view(), name="pago_incapacidad"),
     url(r'^pago/incapacidad/list/$', views.PagoIncapacidadSupraList.as_view(), name="pago_incapacidad_list"),
     url(r'^pago/incapacidad/form/(?P<pk>\d+)/$', views.PagoIncapacidadSupraForm.as_view(), name="pago_incapacidad_edit"),
+    url(r'^pago/incapacidad/delete/(?P<pk>\d+)/$', views.PagoIncapacidadSupraFormDelete.as_view(), name="pago_incapacidad_delete"),
 ]
 """
     DiaIncapacidad urls
@@ -49,4 +51,5 @@ urlpatterns = urlpatterns + [
     url(r'^dia/incapacidad/form/$', views.DiaIncapacidadSupraForm.as_view(), name="dia_incapacidad"),
     url(r'^dia/incapacidad/list/$', views.DiaIncapacidadSupraList.as_view(), name="dia_incapacidad_list"),
     url(r'^dia/incapacidad/form/(?P<pk>\d+)/$', views.DiaIncapacidadSupraForm.as_view(), name="dia_incapacidad_edit"),
+    url(r'^dia/incapacidad/delete/(?P<pk>\d+)/$', views.DiaIncapacidadSupraFormDelete.as_view(), name="dia_incapacidad_delete"),
 ]

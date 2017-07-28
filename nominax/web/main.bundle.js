@@ -1,4 +1,4 @@
-webpackJsonp([6],{
+webpackJsonp([7],{
 
 /***/ "../../../../../src async recursive":
 /***/ (function(module, exports, __webpack_require__) {
@@ -6,15 +6,18 @@ webpackJsonp([6],{
 var map = {
 	"./configuracion/configuracion.module": [
 		"../../../../../src/app/configuracion/configuracion.module.ts",
-		3
+		6,
+		0
 	],
 	"./empleados/empleados.module": [
 		"../../../../../src/app/empleados/empleados.module.ts",
-		1
+		2,
+		0
 	],
 	"./nomina/nomina.module": [
 		"../../../../../src/app/nomina/nomina.module.ts",
-		0
+		0,
+		1
 	],
 	"./obligaciones/obligaciones.module": [
 		"../../../../../src/app/obligaciones/obligaciones.module.ts",
@@ -26,14 +29,15 @@ var map = {
 	],
 	"./usuarios/usuarios.module": [
 		"../../../../../src/app/usuarios/usuarios.module.ts",
-		2
+		0,
+		3
 	]
 };
 function webpackAsyncContext(req) {
 	var ids = map[req];
 	if(!ids)
 		return Promise.reject(new Error("Cannot find module '" + req + "'."));
-	return __webpack_require__.e(ids[1]).then(function() {
+	return Promise.all(ids.slice(1).map(__webpack_require__.e)).then(function() {
 		return __webpack_require__(ids[0]);
 	});
 };
