@@ -363,7 +363,7 @@ class DescuentoSupraFormDelete(supra.SupraDeleteView):
 
 class DescuentoProduccionSupraList(MasterList):
     model = models.DescuentoProduccion
-    list_display = ['id', 'fecha', 'corte', 'unidad', 'unidad__nombre','cantidad', 'concepto']
+    list_display = ['id', 'fecha', 'corte', 'unidad', 'unidad__nombre','cantidad', 'concepto', 'cargo']
 
     def get_queryset(self):
         queryset = super(DescuentoProduccionSupraList, self).get_queryset()
