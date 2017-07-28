@@ -79,7 +79,9 @@ class SendMailSupraList(supra.SupraListView):
     def get_queryset(self):
         queryset = super(SendMailSupraList, self).get_queryset()
         ids = self.request.GET.getlist('ids')
-        queryset = queryset.filter(id__in=ids)
+        if ids and len(ids):
+            queryset = queryset.filter(id__in=ids)
+        # end if
         for nom in queryset:
             if nom.contrato.empleado.email:
                 values = { 'file_format': 0, }
