@@ -81,6 +81,9 @@ class Descuento(models.Model):
 
 class TipoIncapacidad(models.Model):
     nombre = models.CharField(max_length=120)
+
+    eliminado = models.BooleanField(default=False)
+    eliminado_por = models.ForeignKey(User, related_name="eliminado_por_tipo_incapacidad", blank=True, null=True)
     def __unicode__(self):
         return u"%s" % (self.nombre, )
     # end def
@@ -90,6 +93,9 @@ class PagoIncapacidad(models.Model):
     tipo = models.ForeignKey(TipoIncapacidad)
     dia = models.IntegerField("Día desde el cual aplica")
     porcentaje = models.IntegerField("Porcentaje a aplicar")
+
+    eliminado = models.BooleanField(default=False)
+    eliminado_por = models.ForeignKey(User, related_name="eliminado_por_pago_incapacidad", blank=True, null=True)
     def __unicode__(self):
         return u"%s° dia  %d%% - %s" % (self.dia, self.porcentaje, self.tipo)
     # end def
@@ -100,6 +106,9 @@ class DiaIncapacidad(models.Model):
     fecha = models.DateField()
     empleado = models.ForeignKey(recursos.Empleado)
     dias = models.IntegerField()
+
+    eliminado = models.BooleanField(default=False)
+    eliminado_por = models.ForeignKey(User, related_name="eliminado_por_dia_incapacidad", blank=True, null=True)
 
     @staticmethod
     def get_incapacidades(corte):
