@@ -81,6 +81,9 @@ class Descuento(models.Model):
 
 class TipoIncapacidad(models.Model):
     nombre = models.CharField(max_length=120)
+
+    eliminado = models.BooleanField(default=False)
+    eliminado_por = models.ForeignKey(User, related_name="eliminado_por_tipo_incapacidad", blank=True, null=True)
     def __unicode__(self):
         return u"%s" % (self.nombre, )
     # end def
@@ -90,6 +93,9 @@ class PagoIncapacidad(models.Model):
     tipo = models.ForeignKey(TipoIncapacidad)
     dia = models.IntegerField("Día desde el cual aplica")
     porcentaje = models.IntegerField("Porcentaje a aplicar")
+
+    eliminado = models.BooleanField(default=False)
+    eliminado_por = models.ForeignKey(User, related_name="eliminado_por_pago_incapacidad", blank=True, null=True)
     def __unicode__(self):
         return u"%s° dia  %d%% - %s" % (self.dia, self.porcentaje, self.tipo)
     # end def
@@ -100,6 +106,9 @@ class DiaIncapacidad(models.Model):
     fecha = models.DateField()
     empleado = models.ForeignKey(recursos.Empleado)
     dias = models.IntegerField()
+
+    eliminado = models.BooleanField(default=False)
+    eliminado_por = models.ForeignKey(User, related_name="eliminado_por_dia_incapacidad", blank=True, null=True)
 
     @staticmethod
     def get_incapacidades(corte):
@@ -145,6 +154,7 @@ class DescuentoProduccion(models.Model):
     fecha  = models.DateTimeField(auto_now_add=True)
     corte = models.ForeignKey(Corte, blank=True)
     unidad = models.ForeignKey(recursos.UnidadProduccion)
+    cargo = models.ForeignKey(recursos.Cargo)
     cantidad = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2)
     concepto = models.CharField(max_length=120)
     eliminado = models.BooleanField(default=False)
@@ -199,7 +209,7 @@ class Nomina(models.Model):
     @cached_property
     def descuento_produccion(self):
         try:
-            descuentos = DescuentoProduccion.objects.filter(corte=self.corte, eliminado=False)
+            descuentos = DescuentoProduccion.objects.filter(corte=self.corte, cargo=self.contrato.empleado.cargo, eliminado=False)
             produccion = self.get_produccion(self.corte.fecha_inicio, self.corte.fecha_fin)
             total = 0
             for des in descuentos:
