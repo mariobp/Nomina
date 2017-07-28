@@ -119,8 +119,11 @@ class NominaDescResource(resources.ModelResource):
 
 	descuento_bonificacion = fields.Field(column_name="Descuento en bonificacion")
 	empleado = fields.Field(column_name="Empleado")
+	cedula = fields.Field(column_name="Cedula", attribute="contrato__empleado__cedula")
 	cargo = fields.Field(column_name="Cargo", attribute="contrato__empleado__cargo__nombre")
 	corte = fields.Field(column_name="Corte", attribute="corte__fecha_fin")
+	cuenta = fields.Field(column_name="Cuenta", attribute="contrato__empleado__numero")
+	banco = fields.Field(column_name="Banco", attribute="contrato__empleado__banco__nombre")
 
 	def dehydrate_descuento_bonificacion(self, nomina):
 		return "%.2f" % float(nomina.descuento_bonificacion)
@@ -132,8 +135,8 @@ class NominaDescResource(resources.ModelResource):
 
 	class Meta:
 		model = Nomina
-		fields = ['empleado', 'cargo', 'corte', 'descuento_bonificacion']
-		export_order = ['empleado','cargo', 'corte', 'descuento_bonificacion']
+		fields = ['empleado', 'cedula','cargo', 'corte', 'descuento_bonificacion', 'cuenta', 'banco']
+		export_order = ['empleado','cedula','cargo', 'corte', 'descuento_bonificacion', 'cuenta', 'banco']
 	# end class
 #end class
 
