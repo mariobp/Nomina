@@ -79,7 +79,9 @@ class SendMailSupraList(supra.SupraListView):
     def get_queryset(self):
         queryset = super(SendMailSupraList, self).get_queryset()
         ids = self.request.GET.getlist('ids')
-        queryset = queryset.filter(id__in=ids)
+        if ids and len(ids):
+            queryset = queryset.filter(id__in=ids)
+        # end if
         for nom in queryset:
             if nom.contrato.empleado.email:
                 values = { 'file_format': 0, }
@@ -363,7 +365,7 @@ class DescuentoSupraFormDelete(supra.SupraDeleteView):
 
 class DescuentoProduccionSupraList(MasterList):
     model = models.DescuentoProduccion
-    list_display = ['id', 'fecha', 'corte', 'unidad', 'unidad__nombre','cantidad', 'concepto']
+    list_display = ['id', 'fecha', 'corte', 'unidad', 'unidad__nombre','cantidad', 'concepto', 'cargo', 'cargo__nombre']
 
     def get_queryset(self):
         queryset = super(DescuentoProduccionSupraList, self).get_queryset()

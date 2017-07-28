@@ -154,6 +154,7 @@ class DescuentoProduccion(models.Model):
     fecha  = models.DateTimeField(auto_now_add=True)
     corte = models.ForeignKey(Corte, blank=True)
     unidad = models.ForeignKey(recursos.UnidadProduccion)
+    cargo = models.ForeignKey(recursos.Cargo)
     cantidad = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2)
     concepto = models.CharField(max_length=120)
     eliminado = models.BooleanField(default=False)
@@ -208,7 +209,7 @@ class Nomina(models.Model):
     @cached_property
     def descuento_produccion(self):
         try:
-            descuentos = DescuentoProduccion.objects.filter(corte=self.corte, eliminado=False)
+            descuentos = DescuentoProduccion.objects.filter(corte=self.corte, cargo=self.contrato.empleado.cargo, eliminado=False)
             produccion = self.get_produccion(self.corte.fecha_inicio, self.corte.fecha_fin)
             total = 0
             for des in descuentos:
