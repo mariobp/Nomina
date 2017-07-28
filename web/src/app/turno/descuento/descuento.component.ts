@@ -4,6 +4,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { FormComponent, TableComponent, RenderInput } from '../../../lib/components'
 import { DescuentoService } from './descuento.service';
 import { UnidadProduccionService } from '../../configuracion/unidadproduccion/unidadproduccion.service';
+import { CargoService } from '../../configuracion/cargo/cargo.service';
 
 
 @Component({
@@ -34,6 +35,7 @@ export class DescuentoListComponent {
             render: TableComponent.renderCheckRow
         },
         { data: 'unidad__nombre' },
+        { data: 'cargo__nombre' },
         { data: 'concepto' },
         { data: 'cantidad' },
         { data: 'fecha' },
@@ -63,10 +65,11 @@ export class EditDescuentoComponent implements OnInit {
 
     @ViewChild('f') public _form: FormComponent;
 
-    constructor(private _fb: FormBuilder, private _s: DescuentoService, public _u: UnidadProduccionService,
+    constructor(private _fb: FormBuilder, private _s: DescuentoService, public _c: CargoService, public _u: UnidadProduccionService,
         private _rt: Router, private _r: ActivatedRoute) {
         this.form = this._fb.group({
             unidad: [[], Validators.required],
+            cargo: [[], Validators.required],
             cantidad: ['', [Validators.required, Validators.min(1)]],
             concepto: ['', [Validators.required]],
             fecha: ['', Validators.required]
@@ -76,12 +79,11 @@ export class EditDescuentoComponent implements OnInit {
             { column: 'col1', title: 'Cantidad', type: 'number', step: '3', name: 'cantidad' },
             { column: 'col1', title: 'Concepto', type: 'text', name: 'concepto' },
             { column: 'col1', title: 'Fecha', type: 'text', name: 'fecha', class: 'datetimepicker' },
-
-
         ];
     }
 
     itemUnidad = item => `${item.unidad__nombre}`;
+    itemCargo = item => `${item.cargo__nombre}`;
 
     ngOnInit() {
         this._form.successful = data => {
