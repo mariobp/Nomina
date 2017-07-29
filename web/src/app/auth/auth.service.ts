@@ -53,15 +53,18 @@ export class AuthService {
 
     login(body: any) {
         if (!body.username && !body.password) {
-            return;
+            return Promise.reject(null);
         }
-        this._cl.post('usuarios/login/', body)
+        return this._cl.post('usuarios/login/', body)
             .then(res => res.json())
             .then(data => {
                 this.addUser(data);
                 this._rt.navigate([this.redirectUrl || '/']);
+                return Promise.resolve(data);
             })
-            .catch(err => console.log('error', err));
+            .catch(err => {
+                return Promise.reject(err);
+            });
     }
 
     logout() {
