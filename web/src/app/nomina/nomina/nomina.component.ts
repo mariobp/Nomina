@@ -247,7 +247,11 @@ export class NominaListComponent implements OnInit {
         for (const variable of this.itemList) {
             array.push(variable.id)
         }
-        NominaComponent.sendMail(NominaComponent.getQuery(array));
+        if (array.length > 0) {
+            NominaComponent.sendMail(NominaComponent.getQuery(array));
+        } else {
+            NominaComponent.sendMail(`?corte=${this.corte.id}`);
+        }
     }
 
     ngOnInit() {
