@@ -171,11 +171,9 @@ export class TurnoEditComponent implements OnInit {
                 data.empleado__nombre = data.empleado;
                 data.empleado = data.empleado_id;
             }
-            console.log(data);
             return data;
         }
         this._form.successful = data => {
-            console.log(data);
             if (data && data._body !== '') {
                 this._form.setItem(data.json());
             }
