@@ -132,7 +132,7 @@ export class FormComponent implements OnInit, AfterViewInit {
                         if (!!control.errors[key]) {
                             let messege = '';
                             const errors = this.errorMessages[key];
-                            if (typeof errors === "function") {
+                            if (typeof errors === 'function') {
                                 messege = errors(control.errors[key]);
                             } else {
                                 messege = errors;
