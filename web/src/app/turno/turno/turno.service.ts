@@ -7,7 +7,7 @@ export class TurnoService extends CrudService {
 
     constructor(protected _cl: CallService, protected _rt: Router) {
         super(_cl, _rt, 'turnos/turno/');
-        super.setRedirectUrl('/produccion/turno');
+        super.setRedirectUrl('/operacion/turno');
     }
 
 }

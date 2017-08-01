@@ -6,6 +6,8 @@ import { TurnoComponent, TurnoEditComponent, TurnoListComponent } from './turno/
 import { TurnoService } from './turno/turno.service';
 import { DescuentoComponent, DescuentoListComponent, EditDescuentoComponent } from './descuento/descuento.component';
 import { DescuentoService } from '../turno/descuento/descuento.service';
+import { IncapacidadComponent, EditIncapacidadComponent, IncapacidadListComponent } from '../turno/incapacidad/incapacidad.component';
+import { IncapacidadService } from '../turno/incapacidad/incapacidad.service';
 
 export const TurnoRoutes: Routes = [
     {
@@ -27,6 +29,12 @@ export const TurnoRoutes: Routes = [
                     { path: '', component: DescuentoListComponent },
                     { path: ':id/edit', component: EditDescuentoComponent, data: { miga: 'Editar' }, resolve: { item: DescuentoService } }
                 ]
+            },
+            {
+                path: 'incapacidad', component: IncapacidadComponent, data: { miga: 'Incapacidad' }, children: [
+                    { path: '', component: IncapacidadListComponent },
+                    { path: ':id/edit', component: EditIncapacidadComponent, data: { miga: 'Editar' }, resolve: { item: IncapacidadService } }
+                ]
             }
         ]
     }
@@ -34,7 +42,9 @@ export const TurnoRoutes: Routes = [
 ];
 
 export const ProduccionMenuMeta: MenuMeta[] = [
-    { title: 'Turnos', url: '/produccion/turno', icon: 'extension' },
-    { title: 'Producción', url: '/produccion/produccion', icon: 'extension' },
-    { title: 'Descuentos de producción', url: '/produccion/descuento', icon: 'extension' },
+    { title: 'Turnos', url: '/operacion/turno', icon: 'extension' },
+    { title: 'Producción', url: '/operacion/produccion', icon: 'extension' },
+    { title: 'Descuentos de producción', url: '/operacion/descuento', icon: 'extension' },
+    { title: 'Incapacidad', url: '/operacion/incapacidad', icon: 'extension' },
+
 ];

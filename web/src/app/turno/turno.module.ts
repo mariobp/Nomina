@@ -15,6 +15,9 @@ import { UnidadProduccionService } from '../configuracion/unidadproduccion/unida
 import { CargoService } from '../configuracion/cargo/cargo.service';
 import { DescuentoComponent, DescuentoListComponent, EditDescuentoComponent } from './descuento/descuento.component';
 import { DescuentoService } from '../turno/descuento/descuento.service';
+import { IncapacidadComponent, EditIncapacidadComponent, IncapacidadListComponent } from './incapacidad/incapacidad.component';
+import { IncapacidadService } from './incapacidad/incapacidad.service';
+import { TipoIncapacidadService } from '../incapacidad/tipo/tipo.incapacidad.service';
 
 @NgModule({
     imports: [
@@ -35,7 +38,10 @@ import { DescuentoService } from '../turno/descuento/descuento.service';
         EditProduccionComponent,
         DescuentoComponent,
         DescuentoListComponent,
-        EditDescuentoComponent
+        EditDescuentoComponent,
+        IncapacidadComponent,
+        EditIncapacidadComponent,
+        IncapacidadListComponent
     ],
     providers: [
         TurnoService,
@@ -43,7 +49,9 @@ import { DescuentoService } from '../turno/descuento/descuento.service';
         ProduccionService,
         UnidadProduccionService,
         CargoService,
-        DescuentoService
+        DescuentoService,
+        IncapacidadService,
+        TipoIncapacidadService
     ]
 })
 export class TurnoModule { }

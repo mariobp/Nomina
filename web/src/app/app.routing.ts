@@ -12,10 +12,12 @@ export interface MenuMeta {
 }
 
 export const AppRoutes: Routes = [
-    { path: '', redirectTo: 'produccion/turno', pathMatch: 'full' },
+    { path: '', redirectTo: 'operacion/turno', pathMatch: 'full' },
     {
         path: '', component: BaseComponent, canActivate: [AuthGuard], data: { preload: true }, children: [
             // { path: '', loadChildren: './home/home.module#HomeModule' },
+            { path: 'operacion', loadChildren: './turno/turno.module#TurnoModule' },
+            { path: '', loadChildren: './empleados/empleados.module#EmpleadosModule' },
             { path: '', loadChildren: './nomina/nomina.module#NominaModule' },
             { path: '', loadChildren: './empleados/empleados.module#EmpleadosModule' },
             { path: 'produccion', loadChildren: './turno/turno.module#TurnoModule' },
@@ -37,7 +39,7 @@ import { IncapacidadMenuMeta } from './incapacidad/route';
 export const AppMenuMeta: MenuMeta[] = [
     // { title: 'Inico', url: '/dashboard', icon: 'dashboard' },
     { title: 'Usuarios', icon: 'supervisor_account', children: UsuariosMenuMeta },
-    { title: 'Producción', icon: 'work', children: ProduccionMenuMeta },
+    { title: 'Operación', icon: 'work', children: ProduccionMenuMeta },
     { title: 'Obligaciones', icon: 'assignment', children: ObligacionesMenuMeta },
     { title: 'Empleados', icon: 'account_box', url: '/empleados' },
     { title: 'Nomina', icon: 'monetization_on', url: '/nomina' },
