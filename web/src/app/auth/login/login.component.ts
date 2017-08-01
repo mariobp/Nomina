@@ -36,8 +36,8 @@ export class LoginComponent implements OnInit {
                 this.ready = false;
                 if (!!err) {
                     swal({
-                        title: 'Login Fallido',
-                        text: 'Verifique sus datos.',
+                        title: 'Inicio de sesión fallido',
+                        text: 'El correo electrónico o la contraseña no son válidos.',
                         type: 'warning',
                         confirmButtonColor: '#213b78',
                     });
