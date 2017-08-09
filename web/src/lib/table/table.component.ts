@@ -119,7 +119,7 @@ export class TableComponent implements OnInit {
             $(table).find('tbody tr input[type=checkbox][name=selectedItems]').on('change', function(event) {
                 self._onSelectedRow($(this).closest('tr')[0]);
             });
-            $('#selectAll').on('change', function(event) {
+            $(table).find('#selectAll').on('change', function(event) {
                 const check = this.checked;
                 $.each($(table).find('tbody tr input[type=checkbox][name=selectedItems]'), function(id, val) {
                     const tr = $(val).closest('tr')[0];

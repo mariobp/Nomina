@@ -98,4 +98,7 @@ export class CorteEditComponent implements OnInit {
     descuento() {
         this._s.down('admin/nomina/nomina/export/free/2/?corte__id__exact=', this._form.item.id, 3);
     }
+    resumen() {
+        this._s.down('admin/nomina/nomina/export/free/3/?corte__id__exact=', this._form.item.id, 3);
+    }
 }
