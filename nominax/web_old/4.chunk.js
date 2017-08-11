@@ -21,6 +21,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__configuracion_cargo_cargo_service__ = __webpack_require__("../../../../../src/app/configuracion/cargo/cargo.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__descuento_descuento_component__ = __webpack_require__("../../../../../src/app/turno/descuento/descuento.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__turno_descuento_descuento_service__ = __webpack_require__("../../../../../src/app/turno/descuento/descuento.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__incapacidad_incapacidad_component__ = __webpack_require__("../../../../../src/app/turno/incapacidad/incapacidad.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__incapacidad_incapacidad_service__ = __webpack_require__("../../../../../src/app/turno/incapacidad/incapacidad.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__incapacidad_tipo_tipo_incapacidad_service__ = __webpack_require__("../../../../../src/app/incapacidad/tipo/tipo.incapacidad.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TurnoModule", function() { return TurnoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -28,6 +31,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
+
 
 
 
@@ -69,7 +75,10 @@ TurnoModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_10__produccion_produccion_component__["c" /* EditProduccionComponent */],
             __WEBPACK_IMPORTED_MODULE_14__descuento_descuento_component__["a" /* DescuentoComponent */],
             __WEBPACK_IMPORTED_MODULE_14__descuento_descuento_component__["b" /* DescuentoListComponent */],
-            __WEBPACK_IMPORTED_MODULE_14__descuento_descuento_component__["c" /* EditDescuentoComponent */]
+            __WEBPACK_IMPORTED_MODULE_14__descuento_descuento_component__["c" /* EditDescuentoComponent */],
+            __WEBPACK_IMPORTED_MODULE_16__incapacidad_incapacidad_component__["a" /* IncapacidadComponent */],
+            __WEBPACK_IMPORTED_MODULE_16__incapacidad_incapacidad_component__["b" /* EditIncapacidadComponent */],
+            __WEBPACK_IMPORTED_MODULE_16__incapacidad_incapacidad_component__["c" /* IncapacidadListComponent */]
         ],
         providers: [
             __WEBPACK_IMPORTED_MODULE_7__turno_turno_service__["a" /* TurnoService */],
@@ -77,7 +86,9 @@ TurnoModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_11__produccion_produccion_service__["a" /* ProduccionService */],
             __WEBPACK_IMPORTED_MODULE_12__configuracion_unidadproduccion_unidadproduccion_service__["a" /* UnidadProduccionService */],
             __WEBPACK_IMPORTED_MODULE_13__configuracion_cargo_cargo_service__["a" /* CargoService */],
-            __WEBPACK_IMPORTED_MODULE_15__turno_descuento_descuento_service__["a" /* DescuentoService */]
+            __WEBPACK_IMPORTED_MODULE_15__turno_descuento_descuento_service__["a" /* DescuentoService */],
+            __WEBPACK_IMPORTED_MODULE_17__incapacidad_incapacidad_service__["a" /* IncapacidadService */],
+            __WEBPACK_IMPORTED_MODULE_18__incapacidad_tipo_tipo_incapacidad_service__["a" /* TipoIncapacidadService */]
         ]
     })
 ], TurnoModule);
