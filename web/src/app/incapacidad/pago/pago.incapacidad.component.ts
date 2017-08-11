@@ -58,7 +58,7 @@ export class PagoIncapacidadListComponent implements OnInit {
             <div top-form class="row">
             <div class="col-lg-12">
                 <div class="row">
-                    <label class="col-lg-3 label-on-left" for="id_cargo">Cargo:</label>
+                    <label class="col-lg-3 label-on-left" for="id_cargo">Tipo:</label>
                     <div class="col-lg-9">
                         <div class="form-group label-floating is-empty">
                             <label class="control-label"></label>
