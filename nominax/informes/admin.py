@@ -12,6 +12,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.contrib import admin
 from nomina.models import Nomina
+from turno.models import Turno
 from django.db.models import Count
 
 class NominaResource(resources.ModelResource):
@@ -257,4 +258,62 @@ class NominaResuResource(resources.ModelResource):
 #end class
 
 
+class TurnoResource(resources.ModelResource):
+
+	empleado = fields.Field(column_name="Empleado")
+	cedula = fields.Field(column_name="Cedula", attribute="empleado__cedula") 
+	cargo = fields.Field(column_name="Cargo", attribute="empleado__cargo__nombre")
+	hora_diurna = fields.Field(column_name="Horas diurnas")
+	hora_extra_diurna = fields.Field(column_name="Horas extras diurna")
+	hora_nocturna = fields.Field(column_name="Horas nocturnas")
+	hora_nocturna_extra = fields.Field(column_name="Horas nocturnas extras")
+	dominicales = fields.Field(column_name="Horas dominicales diurnas")
+	dominicales_extras = fields.Field(column_name="Horas dominicales diurnas extras")
+	dominincales_nocturnas =fields.Field(column_name="Horas dominicales nocturnas")
+	dominincales_nocturnas_extras = fields.Field(column_name="Horas dominicales nocturnas extras")
+
+	def dehydrate_hora_diurna(self, turno):
+		return "%.2f" % float(turno.show_diurnas())
+	#end def
+
+	def dehydrate_hora_extra_diurna(self, turno):
+		return "%.2f" % float(turno.show_extra_duirna())
+	#end def
+
+	def dehydrate_hora_nocturna(self, turno):
+		return "%.2f" % float(turno.show_nocturnas())
+	#end def
+
+	def dehydrate_hora_nocturna_extra(self, turno):
+		return "%.2f" % float(turno.show_extra_nocturnas())
+	#end def
+
+	def dehydrate_dominicales(self, turno):
+		return "%.2f" % float(turno.show_dominicales_diurnas())
+	#end def
+
+	def dehydrate_dominicales_extras(self, turno):
+		return "%.2f" % float(turno.show_dominicales_diurnas_extra())
+	#end def
+
+	def dehydrate_dominincales_nocturnas(self, turno):
+		return "%.2f" % float(turno.show_dominicales_nocturnas())
+	#end def
+
+	def dehydrate_dominincales_nocturnas_extras(self, turno):
+		return "%.2f" % float(turno.show_dominicales_nocturnas_extra())
+	#end def
+
+	def dehydrate_empleado(self, turno):
+		return u'%s %s' % (turno.empleado.nombre, turno.empleado.apellidos)
+	#end def
+
+	class Meta:
+		model = Nomina
+		fields = ['empleado', 'cedula', 'cargo', 'hora_diurna', 'hora_extra_diurna', 'hora_nocturna', 'hora_nocturna_extra', 'dominicales', 'dominicales_extras', 'dominincales_nocturnas', 'dominincales_nocturnas_extras']
+		export_order = ['empleado', 'cedula', 'cargo', 'hora_diurna', 'hora_extra_diurna', 'hora_nocturna', 'hora_nocturna_extra', 'dominicales', 'dominicales_extras', 'dominincales_nocturnas', 'dominincales_nocturnas_extras']
+	# end class
+#end class
+
 reports.register_export(Nomina, [NominaResource, NominaFResource, NominaDescResource, NominaResuResource])
+reports.register_export(Turno, [TurnoResource])

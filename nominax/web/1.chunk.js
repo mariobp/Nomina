@@ -69,7 +69,7 @@ var CorteListComponent = (function () {
                 orderable: false,
                 searchable: false,
                 data: 'id',
-                render: __WEBPACK_IMPORTED_MODULE_1__lib_components__["b" /* TableComponent */].renderCheckRow
+                render: __WEBPACK_IMPORTED_MODULE_1__lib_components__["a" /* TableComponent */].renderCheckRow
             },
             { className: 'text-center', data: 'fecha_inicio' },
             { className: 'text-center', data: 'fecha_fin' },
@@ -93,7 +93,7 @@ var CorteListComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('table'),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__lib_components__["b" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__lib_components__["b" /* TableComponent */]) === "function" && _a || Object)
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__lib_components__["a" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__lib_components__["a" /* TableComponent */]) === "function" && _a || Object)
 ], CorteListComponent.prototype, "table", void 0);
 CorteListComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({ template: __webpack_require__("../../../../../src/app/nomina/corte/list.corte.component.html") }),
@@ -138,11 +138,14 @@ var CorteEditComponent = (function () {
     CorteEditComponent.prototype.descuento = function () {
         this._s.down('admin/nomina/nomina/export/free/2/?corte__id__exact=', this._form.item.id, 3);
     };
+    CorteEditComponent.prototype.resumen = function () {
+        this._s.down('admin/nomina/nomina/export/free/3/?corte__id__exact=', this._form.item.id, 3);
+    };
     return CorteEditComponent;
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__lib_components__["a" /* FormComponent */]) === "function" && _c || Object)
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__lib_components__["b" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__lib_components__["b" /* FormComponent */]) === "function" && _c || Object)
 ], CorteEditComponent.prototype, "_form", void 0);
 CorteEditComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -210,7 +213,7 @@ var _a, _b;
 /***/ "../../../../../src/app/nomina/corte/edit.corte.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ex-form #f icon=\"alarm_off\" title=\"Corte\" [form]=\"form\" [service]=\"service\" [columns]=\"columns\" [renderinputs]=\"renderinputs\" [deleteable]=\"deleteable\" [saveable]=\"saveable\">\n    <button (click)=\"plano1()\" custom-button class=\"btn btn-primary btn-responsive\" type=\"button\">Plano Bancolombia</button>\n    <button (click)=\"plano2()\" custom-button class=\"btn btn-primary btn-responsive\" type=\"button\">Plano Davivienda</button>\n    <button (click)=\"descuento()\" custom-button class=\"btn btn-primary btn-responsive\" type=\"button\">Descuento Bonificación</button>\n</ex-form>\n<router-outlet></router-outlet>\n<router-outlet name=\"descuento\"></router-outlet>\n"
+module.exports = "<ex-form #f icon=\"alarm_off\" title=\"Corte\" [form]=\"form\" [service]=\"service\" [columns]=\"columns\" [renderinputs]=\"renderinputs\" [deleteable]=\"deleteable\" [saveable]=\"saveable\">\n    <button (click)=\"plano1()\" custom-button class=\"btn btn-primary btn-responsive\" type=\"button\">Plano Bancolombia</button>\n    <button (click)=\"plano2()\" custom-button class=\"btn btn-primary btn-responsive\" type=\"button\">Plano Davivienda</button>\n    <button (click)=\"descuento()\" custom-button class=\"btn btn-primary btn-responsive\" type=\"button\">Descuento Bonificación</button>\n    <button (click)=\"resumen()\" custom-button class=\"btn btn-primary btn-responsive\" type=\"button\">Resumen</button>\n\n</ex-form>\n<router-outlet></router-outlet>\n<router-outlet name=\"descuento\"></router-outlet>\n"
 
 /***/ }),
 
@@ -275,14 +278,27 @@ var DescuentoListComponent = (function () {
                 orderable: false,
                 searchable: false,
                 data: 'id',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderCheckRow
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderCheckRow
             },
-            { data: 'cantidad', render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderDecimal },
+            { data: 'cantidad', render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderDecimal },
             {
                 orderable: false,
                 searchable: false,
                 className: 'truncate',
                 data: 'empleados'
+            },
+            {
+                orderable: false,
+                searchable: false,
+                data: 'recurrente',
+                className: 'text-center',
+                render: function (data, type, full, meta) {
+                    var res = '';
+                    if (!data) {
+                        res = 'disabled';
+                    }
+                    return "<button type=\"button\" (click)=\"nocEvent($event)\" class=\"btn btn-primary recurrente\" data-id=\"" + full.id + "\" " + res + "> Finalizar </button>";
+                }
             }
         ];
         if (!!this._r.snapshot.data['item'] && Object.keys(this._r.snapshot.data['item']).length !== 0) {
@@ -290,15 +306,32 @@ var DescuentoListComponent = (function () {
             this.title = "Descuentos deste " + this.corte.fecha_inicio + (!!this.corte.fecha_fin ? " hasta " + this.corte.fecha_fin : '');
         }
     }
+    DescuentoListComponent.prototype.nocEvent = function (event) {
+        console.log(event);
+    };
     DescuentoListComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.table.success = function (data) { return console.log(data); };
+        this.table.preAjax = function (data) {
+            if (_this.corte) {
+                data['corte'] = _this.corte.id;
+            }
+            return data;
+        };
         this.table.editlink = function () {
             var aux = _this.table.itemSelected;
             if (!!aux) {
                 return [{ outlets: { 'descuento': [aux.id, 'edit'] } }];
             }
             return [{ outlets: { 'descuento': [aux] } }];
+        };
+        this.table.drawCallback = function () {
+            var self = _this;
+            $(_this.table.table.nativeElement).on('click', '.recurrente', function () {
+                self._s.finalizarDescuento($(this).attr('data-id'));
+                setTimeout(function () {
+                    self.table.dataTable.ajax.reload();
+                }, 500);
+            });
         };
     };
     Object.defineProperty(DescuentoListComponent.prototype, "aggregable", {
@@ -329,7 +362,7 @@ var DescuentoListComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('table'),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */]) === "function" && _a || Object)
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */]) === "function" && _a || Object)
 ], DescuentoListComponent.prototype, "table", void 0);
 DescuentoListComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -354,11 +387,15 @@ var DescuentoEditComponent = (function () {
         this.form = this._fb.group({
             cantidad: [0, [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].pattern(/\d/)]],
             contratos: [[], [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required]],
-            corte: this.corte.id
+            concepto: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required]],
+            corte: this.corte.id,
+            recurrente: false
         });
         this.columns = ['col1'];
         this.renderinputs = [
-            { title: 'Cantidad', type: 'number', column: 'col1', name: 'cantidad' }
+            { title: 'Cantidad', type: 'number', column: 'col1', name: 'cantidad' },
+            { title: 'Concepto', type: 'string', column: 'col1', name: 'concepto' },
+            { title: 'Recurrente', type: 'checkbox', column: 'col1', name: 'recurrente' }
         ];
     }
     DescuentoEditComponent.prototype.ngOnInit = function () {
@@ -371,7 +408,7 @@ var DescuentoEditComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
-    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _e || Object)
+    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */]) === "function" && _e || Object)
 ], DescuentoEditComponent.prototype, "_form", void 0);
 DescuentoEditComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -424,6 +461,9 @@ var DescuentoService = (function (_super) {
         _this.setRedirectUrl('/nomina');
         return _this;
     }
+    DescuentoService.prototype.finalizarDescuento = function (id) {
+        return this._cl.post("nomina/finalizar/descuento/form/" + id + "/");
+    };
     return DescuentoService;
 }(__WEBPACK_IMPORTED_MODULE_2__lib_services__["a" /* CrudService */]));
 DescuentoService = __decorate([
@@ -439,7 +479,7 @@ var _a, _b;
 /***/ "../../../../../src/app/nomina/descuento/list.descuento.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ex-table #table [title]=\"title\" [icon]=\"icon\" [addlink]=\"addlink\" [aggregable]=\"aggregable\" [editable]=\"editable\" [deleteable]=\"deleteable\" [service]=\"service\" [multiselect]=\"multiselect\" [columns]=\"columns\">\n    <th>Cantidad</th>\n    <th>Aplicado a</th>\n</ex-table>\n"
+module.exports = "<ex-table #table [title]=\"title\" [icon]=\"icon\" [addlink]=\"addlink\" [aggregable]=\"aggregable\" [editable]=\"editable\" [deleteable]=\"deleteable\" [service]=\"service\" [multiselect]=\"multiselect\" [columns]=\"columns\">\n    <th>Cantidad</th>\n    <th>Aplicado a</th>\n    <th>Recurrente</th>\n</ex-table>\n"
 
 /***/ }),
 
@@ -528,7 +568,7 @@ NominaModule = __decorate([
 /***/ "../../../../../src/app/nomina/nomina/list.nomina.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ex-table #table [title]=\"title\" icon=\"monetization_on\" (selectedItemsChange)=\"onSelectedItemsChange($event)\" [order]=\"order\" [aggregable]=\"aggregable\" [editable]=\"editable\" [deleteable]=\"deleteable\" [service]=\"service\" [multiselect]=\"multiselect\" [columns]=\"columns\">\n    <th></th>\n    <th>Empleado</th>\n    <th>S base</th>\n    <th>Subsidio transporte</th>\n    <th>Recargos</th>\n    <th>T Devengado</th>\n    <th>H diurna</th>\n    <th>H extra diurna</th>\n    <th>H nocturna</th>\n    <th>H extra nocturna</th>\n    <th>H dominical diurna</th>\n    <th>H dominical nocturna</th>\n    <th>H dominical extra diurna</th>\n    <th>H dominical extra nocturna</th>\n    <th>Descuento salud</th>\n    <th>Descuentos adicionales</th>\n    <th>T deducido</th>\n    <th>Total</th>\n    <th>Adelanto</th>\n    <th>B neta</th>\n    <th>Descuento bonificación</th>\n    <th>Bonificación</th>\n    <th>Neto</th>\n    <th>T pagar</th>\n    <button [disabled]=\"itemList.length == 0\" (click)=\"finiquito()\" buttons class=\"btn btn-primary btn-responsive\" type=\"button\">Finiquito via Email</button>\n</ex-table>\n<!-- <pre>{{itemList | json}}</pre> -->\n"
+module.exports = "<ex-table #table [title]=\"title\" icon=\"monetization_on\" (selectedItemsChange)=\"onSelectedItemsChange($event)\" [order]=\"order\" [aggregable]=\"aggregable\" [editable]=\"editable\" [deleteable]=\"deleteable\" [service]=\"service\" [multiselect]=\"multiselect\" [columns]=\"columns\">\n    <th></th>\n    <th>Empleado</th>\n    <th>S base</th>\n    <th>Subsidio transporte</th>\n    <th>Recargos</th>\n    <th>T Devengado</th>\n    <th>H diurna</th>\n    <th>H extra diurna</th>\n    <th>H nocturna</th>\n    <th>H extra nocturna</th>\n    <th>H dominical diurna</th>\n    <th>H dominical nocturna</th>\n    <th>H dominical extra diurna</th>\n    <th>H dominical extra nocturna</th>\n    <th>Descuento salud</th>\n    <th>Descuentos adicionales</th>\n    <th>T deducido</th>\n    <th>Total</th>\n    <th>Adelanto</th>\n    <th>B neta</th>\n    <th>Descuento bonificación</th>\n    <th>Bonificación</th>\n    <th>Neto</th>\n    <th>T pagar</th>\n    <button (click)=\"finiquito()\" buttons class=\"btn btn-primary btn-responsive\" type=\"button\">Finiquito via Email</button>\n</ex-table>\n<!-- <pre>{{itemList | json}}</pre> -->\n"
 
 /***/ }),
 
@@ -644,7 +684,7 @@ var NominaListComponent = (function () {
                 orderable: false,
                 searchable: false,
                 data: 'id',
-                render: __WEBPACK_IMPORTED_MODULE_2__lib_components__["b" /* TableComponent */].renderCheckRow
+                render: __WEBPACK_IMPORTED_MODULE_2__lib_components__["a" /* TableComponent */].renderCheckRow
             },
             {
                 className: 'text-center',
@@ -808,7 +848,12 @@ var NominaListComponent = (function () {
             var variable = _a[_i];
             array.push(variable.id);
         }
-        NominaComponent.sendMail(NominaComponent.getQuery(array));
+        if (array.length > 0) {
+            NominaComponent.sendMail(NominaComponent.getQuery(array));
+        }
+        else {
+            NominaComponent.sendMail("?corte=" + this.corte.id);
+        }
     };
     NominaListComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -830,7 +875,7 @@ var NominaListComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('table'),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__lib_components__["b" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__lib_components__["b" /* TableComponent */]) === "function" && _a || Object)
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__lib_components__["a" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__lib_components__["a" /* TableComponent */]) === "function" && _a || Object)
 ], NominaListComponent.prototype, "table", void 0);
 NominaListComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({

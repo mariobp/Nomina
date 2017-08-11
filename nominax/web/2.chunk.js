@@ -56,7 +56,7 @@ var ContratoListComponent = (function () {
                 orderable: false,
                 searchable: false,
                 data: 'id',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderCheckRow
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderCheckRow
             },
             { data: 'tipo_contrato__nombre' },
             { data: 'salario_base' },
@@ -108,7 +108,7 @@ var ContratoListComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('table'),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */]) === "function" && _a || Object)
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */]) === "function" && _a || Object)
 ], ContratoListComponent.prototype, "table", void 0);
 ContratoListComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -165,7 +165,7 @@ var EditContratoComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
-    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _d || Object)
+    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */]) === "function" && _d || Object)
 ], EditContratoComponent.prototype, "_form", void 0);
 EditContratoComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -282,7 +282,7 @@ var EmpleadoListComponent = (function () {
                 orderable: false,
                 searchable: false,
                 data: 'id',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderCheckRow
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderCheckRow
             },
             { data: 'nombre' },
             { data: 'apellidos' },
@@ -380,7 +380,7 @@ __decorate([
 ], EmpleadoEditComponent.prototype, "empleado", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _c || Object)
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */]) === "function" && _c || Object)
 ], EmpleadoEditComponent.prototype, "_form", void 0);
 EmpleadoEditComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({

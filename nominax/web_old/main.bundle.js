@@ -1,4 +1,4 @@
-webpackJsonp([6],{
+webpackJsonp([8],{
 
 /***/ "../../../../../src async recursive":
 /***/ (function(module, exports, __webpack_require__) {
@@ -6,15 +6,22 @@ webpackJsonp([6],{
 var map = {
 	"./configuracion/configuracion.module": [
 		"../../../../../src/app/configuracion/configuracion.module.ts",
-		3
+		7,
+		0
 	],
 	"./empleados/empleados.module": [
 		"../../../../../src/app/empleados/empleados.module.ts",
-		1
+		2,
+		0
+	],
+	"./incapacidad/incapacidad.module": [
+		"../../../../../src/app/incapacidad/incapacidad.module.ts",
+		6
 	],
 	"./nomina/nomina.module": [
 		"../../../../../src/app/nomina/nomina.module.ts",
-		0
+		0,
+		1
 	],
 	"./obligaciones/obligaciones.module": [
 		"../../../../../src/app/obligaciones/obligaciones.module.ts",
@@ -26,14 +33,15 @@ var map = {
 	],
 	"./usuarios/usuarios.module": [
 		"../../../../../src/app/usuarios/usuarios.module.ts",
-		2
+		0,
+		3
 	]
 };
 function webpackAsyncContext(req) {
 	var ids = map[req];
 	if(!ids)
 		return Promise.reject(new Error("Cannot find module '" + req + "'."));
-	return __webpack_require__.e(ids[1]).then(function() {
+	return Promise.all(ids.slice(1).map(__webpack_require__.e)).then(function() {
 		return __webpack_require__(ids[0]);
 	});
 };
@@ -214,21 +222,25 @@ AppRouteModule = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__obligaciones_route__ = __webpack_require__("../../../../../src/app/obligaciones/route.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__configuracion_configuracion_route__ = __webpack_require__("../../../../../src/app/configuracion/configuracion.route.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__turno_route__ = __webpack_require__("../../../../../src/app/turno/route.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__incapacidad_route__ = __webpack_require__("../../../../../src/app/incapacidad/route.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppRoutes; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return AppMenuMeta; });
 
 
 var AppRoutes = [
-    { path: '', redirectTo: 'produccion/turno', pathMatch: 'full' },
+    { path: '', redirectTo: 'operacion/turno', pathMatch: 'full' },
     {
         path: '', component: __WEBPACK_IMPORTED_MODULE_0__lib_base_base_component__["a" /* BaseComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_1__auth_auth_guard__["a" /* AuthGuard */]], data: { preload: true }, children: [
             // { path: '', loadChildren: './home/home.module#HomeModule' },
-            { path: 'produccion', loadChildren: './turno/turno.module#TurnoModule' },
+            { path: 'operacion', loadChildren: './turno/turno.module#TurnoModule' },
             { path: '', loadChildren: './empleados/empleados.module#EmpleadosModule' },
             { path: '', loadChildren: './nomina/nomina.module#NominaModule' },
+            { path: '', loadChildren: './empleados/empleados.module#EmpleadosModule' },
+            { path: 'produccion', loadChildren: './turno/turno.module#TurnoModule' },
             { path: 'usuarios', loadChildren: './usuarios/usuarios.module#UsuariosModule' },
             { path: 'obligaciones', loadChildren: './obligaciones/obligaciones.module#ObligacionesModule', },
-            { path: 'configuracion', loadChildren: './configuracion/configuracion.module#ConfiguracionModule' }
+            { path: 'configuracion', loadChildren: './configuracion/configuracion.module#ConfiguracionModule' },
+            { path: 'incapacidad', loadChildren: './incapacidad/incapacidad.module#IncapacidadModule' }
         ]
     },
 ];
@@ -236,13 +248,15 @@ var AppRoutes = [
 
 
 
+
 var AppMenuMeta = [
     // { title: 'Inico', url: '/dashboard', icon: 'dashboard' },
     { title: 'Usuarios', icon: 'supervisor_account', children: __WEBPACK_IMPORTED_MODULE_2__usuarios_route__["b" /* UsuariosMenuMeta */] },
-    { title: 'Producción', icon: 'work', children: __WEBPACK_IMPORTED_MODULE_5__turno_route__["b" /* ProduccionMenuMeta */] },
+    { title: 'Operación', icon: 'work', children: __WEBPACK_IMPORTED_MODULE_5__turno_route__["b" /* ProduccionMenuMeta */] },
     { title: 'Obligaciones', icon: 'assignment', children: __WEBPACK_IMPORTED_MODULE_3__obligaciones_route__["b" /* ObligacionesMenuMeta */] },
     { title: 'Empleados', icon: 'account_box', url: '/empleados' },
     { title: 'Nomina', icon: 'monetization_on', url: '/nomina' },
+    { title: 'Incapacidad', icon: 'accessible', children: __WEBPACK_IMPORTED_MODULE_6__incapacidad_route__["b" /* IncapacidadMenuMeta */] },
     { title: 'Configuración', icon: 'settings_applications', children: __WEBPACK_IMPORTED_MODULE_4__configuracion_configuracion_route__["b" /* ConfiguracionMenuMeta */] }
 ];
 //# sourceMappingURL=app.routing.js.map
@@ -523,15 +537,18 @@ var AuthService = (function () {
     AuthService.prototype.login = function (body) {
         var _this = this;
         if (!body.username && !body.password) {
-            return;
+            return Promise.reject(null);
         }
-        this._cl.post('usuarios/login/', body)
+        return this._cl.post('usuarios/login/', body)
             .then(function (res) { return res.json(); })
             .then(function (data) {
             _this.addUser(data);
             _this._rt.navigate([_this.redirectUrl || '/']);
+            return Promise.resolve(data);
         })
-            .catch(function (err) { return console.log('error', err); });
+            .catch(function (err) {
+            return Promise.reject(err);
+        });
     };
     AuthService.prototype.logout = function () {
         var _this = this;
@@ -604,7 +621,7 @@ LockComponent = __decorate([
 /***/ "../../../../../src/app/auth/login/login.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container \">\n    <div class=\"row\">\n        <div class=\"col-md-4 col-sm-6 col-md-offset-4 col-sm-offset-3\">\n            <form novalidate (submit)=\"login()\" [formGroup]=\"form\">\n                <div class=\"card card-login card-hidden\">\n                    <div class=\"card-header text-center\" data-background-color=\"orange\">\n                        <h4 class=\"card-title\">Bienvenido</h4>\n                        <!-- <div class=\"social-line\">\n                            <a href=\"#btn\" class=\"btn btn-just-icon btn-simple\">\n                                <i class=\"fa fa-facebook-square\"></i>\n                            </a>\n                            <a href=\"#pablo\" class=\"btn btn-just-icon btn-simple\">\n                                <i class=\"fa fa-twitter\"></i>\n                            </a>\n                            <a href=\"#eugen\" class=\"btn btn-just-icon btn-simple\">\n                                <i class=\"fa fa-google-plus\"></i>\n                            </a>\n                        </div> -->\n                    </div>\n                    <!-- <p class=\"category text-center\">\n                        O bien,\n                    </p> -->\n                    <div class=\"card-content\">\n                        <div class=\"input-group\">\n                            <span class=\"input-group-addon\">\n                                <i class=\"material-icons\">face</i>\n                            </span>\n                            <div class=\"form-group label-floating\">\n                                <label class=\"control-label\">First Name</label>\n                                <input formControlName=\"username\" type=\"text\" class=\"form-control\">\n                            </div>\n                        </div>\n                        <div class=\"input-group\">\n                            <span class=\"input-group-addon\">\n                                <i class=\"material-icons\">lock_outline</i>\n                            </span>\n                            <div class=\"form-group label-floating\">\n                                <label class=\"control-label\">Password</label>\n                                <input formControlName=\"password\" type=\"password\" class=\"form-control\">\n                            </div>\n                        </div>\n                    </div>\n                    <!--  -->\n                    <div class=\"footer text-center\">\n                        <button type=\"submit\" class=\"btn btn-rose btn-simple btn-wd btn-lg\">Inicia sesión</button>\n                    </div>\n                </div>\n            </form>\n        </div>\n    </div>\n</div>\n"
+module.exports = "<div class=\"container \">\n    <div class=\"row\">\n        <div class=\"col-md-4 col-sm-6 col-md-offset-4 col-sm-offset-3\">\n            <form novalidate (submit)=\"login()\" [formGroup]=\"form\">\n                <div class=\"card card-login card-hidden\">\n                    <div class=\"card-header text-center\" data-background-color=\"orange\">\n                        <h4 class=\"card-title\">Bienvenido</h4>\n                    </div>\n                    <div class=\"card-content\">\n                        <div *ngIf=\"ready\" class=\"loader\">\n                            <svg class=\"circular\" viewBox=\"25 25 50 50\">\n                                <circle class=\"path\" cx=\"50\" cy=\"50\" r=\"20\" fill=\"none\" stroke-width=\"2\" stroke-miterlimit=\"10\" />\n                            </svg>\n                        </div>\n                        <div class=\"input-group\">\n                            <span class=\"input-group-addon\">\n                                <i class=\"material-icons\">face</i>\n                            </span>\n                            <div class=\"form-group label-floating\">\n                                <label class=\"control-label\">First Name</label>\n                                <input formControlName=\"username\" type=\"text\" class=\"form-control\">\n                            </div>\n                        </div>\n                        <div class=\"input-group\">\n                            <span class=\"input-group-addon\">\n                                <i class=\"material-icons\">lock_outline</i>\n                            </span>\n                            <div class=\"form-group label-floating\">\n                                <label class=\"control-label\">Password</label>\n                                <input formControlName=\"password\" type=\"password\" class=\"form-control\">\n                            </div>\n                        </div>\n                    </div>\n                    <div class=\"footer text-center\">\n                        <button type=\"submit\" class=\"btn btn-rose btn-simple btn-wd btn-lg\">Inicia sesión</button>\n                    </div>\n                </div>\n            </form>\n        </div>\n    </div>\n</div>\n"
 
 /***/ }),
 
@@ -635,20 +652,31 @@ var LoginComponent = (function () {
         this._ar = _ar;
         this._ls = _ls;
         this._fb = _fb;
+        this.ready = false;
         this.form = this._fb.group({
             username: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
             password: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required]
         });
-        // this.form.patchValue({
-        //     username: 'asistente1',
-        //     password: 'admin123456'
-        // });
     }
     LoginComponent.prototype.isValid = function () {
         return this.form.valid;
     };
     LoginComponent.prototype.login = function () {
-        this._ls.login(this.form.value);
+        var _this = this;
+        this.ready = true;
+        this._ls.login(this.form.value)
+            .then(function (data) { return _this.ready = false; })
+            .catch(function (err) {
+            _this.ready = false;
+            if (!!err) {
+                swal({
+                    title: 'Inicio de sesión fallido',
+                    text: 'El correo electrónico o la contraseña no son válidos.',
+                    type: 'warning',
+                    confirmButtonColor: '#213b78',
+                });
+            }
+        });
     };
     LoginComponent.prototype.isLogin = function () {
         this._ls.isLogin();
@@ -774,7 +802,7 @@ var EditBancoComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _a || Object)
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */]) === "function" && _a || Object)
 ], EditBancoComponent.prototype, "_form", void 0);
 EditBancoComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -796,7 +824,7 @@ var BancoListComponent = (function () {
                 orderable: false,
                 searchable: false,
                 data: 'id',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderCheckRow
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderCheckRow
             },
             { data: 'nombre' },
             { data: 'codigo' },
@@ -809,7 +837,7 @@ var BancoListComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('table'),
-    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */]) === "function" && _e || Object)
+    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */]) === "function" && _e || Object)
 ], BancoListComponent.prototype, "table", void 0);
 BancoListComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -932,7 +960,7 @@ var CargoListComponent = (function () {
                 orderable: false,
                 searchable: false,
                 data: 'id',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderCheckRow
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderCheckRow
             },
             { data: 'nombre' },
         ];
@@ -944,7 +972,7 @@ var CargoListComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('table'),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */]) === "function" && _a || Object)
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */]) === "function" && _a || Object)
 ], CargoListComponent.prototype, "table", void 0);
 CargoListComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -985,7 +1013,7 @@ var EditCargoComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _c || Object)
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */]) === "function" && _c || Object)
 ], EditCargoComponent.prototype, "_form", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('multi'),
@@ -1274,7 +1302,7 @@ var EditGeneralComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _a || Object)
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */]) === "function" && _a || Object)
 ], EditGeneralComponent.prototype, "_form", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('multi'),
@@ -1410,7 +1438,7 @@ var TarifarioListComponent = (function () {
                 orderable: false,
                 searchable: false,
                 data: 'id',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderCheckRow
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderCheckRow
             },
             { data: 'unidad__nombre' },
             { data: 'cargo__nombre' },
@@ -1421,7 +1449,7 @@ var TarifarioListComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('table'),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */]) === "function" && _a || Object)
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */]) === "function" && _a || Object)
 ], TarifarioListComponent.prototype, "table", void 0);
 TarifarioListComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -1460,7 +1488,7 @@ var EditTarifarioComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
-    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _d || Object)
+    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */]) === "function" && _d || Object)
 ], EditTarifarioComponent.prototype, "_form", void 0);
 EditTarifarioComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -1582,7 +1610,7 @@ var TipoContratoListComponent = (function () {
                 orderable: false,
                 searchable: false,
                 data: 'id',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderCheckRow
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderCheckRow
             },
             { data: 'nombre' },
             { data: 'modalidad_nombre' }
@@ -1592,7 +1620,7 @@ var TipoContratoListComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('table'),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */]) === "function" && _a || Object)
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */]) === "function" && _a || Object)
 ], TipoContratoListComponent.prototype, "table", void 0);
 TipoContratoListComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -1633,7 +1661,7 @@ var EditTipoContratoComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _c || Object)
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */]) === "function" && _c || Object)
 ], EditTipoContratoComponent.prototype, "_form", void 0);
 EditTipoContratoComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -1755,7 +1783,7 @@ var UnidadProduccionListComponent = (function () {
                 orderable: false,
                 searchable: false,
                 data: 'id',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderCheckRow
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderCheckRow
             },
             { data: 'nombre' },
         ];
@@ -1764,7 +1792,7 @@ var UnidadProduccionListComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('table'),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */]) === "function" && _a || Object)
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */]) === "function" && _a || Object)
 ], UnidadProduccionListComponent.prototype, "table", void 0);
 UnidadProduccionListComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -1797,7 +1825,7 @@ var EditUnidadProduccionComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _c || Object)
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */]) === "function" && _c || Object)
 ], EditUnidadProduccionComponent.prototype, "_form", void 0);
 EditUnidadProduccionComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -1913,6 +1941,390 @@ var _a, _b;
 
 /***/ }),
 
+/***/ "../../../../../src/app/incapacidad/pago/list.pago.incapacidad.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<ex-table #table title=\"Pago de Incapacidad\" icon=\"accessible\" [service]=\"service\" [multiselect]=\"multiselect\" [columns]=\"columns\">\n    <th>Tipo</th>\n    <th>Dia</th>\n    <th>Porcentaje</th>\n</ex-table>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/incapacidad/pago/pago.incapacidad.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_components__ = __webpack_require__("../../../../../src/lib/components.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pago_incapacidad_service__ = __webpack_require__("../../../../../src/app/incapacidad/pago/pago.incapacidad.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__tipo_tipo_incapacidad_service__ = __webpack_require__("../../../../../src/app/incapacidad/tipo/tipo.incapacidad.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PagoIncapacidadComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return PagoIncapacidadListComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return PagoIncapacidadEditComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+var PagoIncapacidadComponent = (function () {
+    function PagoIncapacidadComponent() {
+    }
+    return PagoIncapacidadComponent;
+}());
+PagoIncapacidadComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: '<router-outlet></router-outlet>'
+    })
+], PagoIncapacidadComponent);
+
+var PagoIncapacidadListComponent = (function () {
+    function PagoIncapacidadListComponent(_s) {
+        this._s = _s;
+        this.service = this._s;
+        this.multiselect = true;
+        this.aggregable = false;
+        this.editable = false;
+        this.deleteable = false;
+        this.columns = [
+            {
+                className: 'text-center',
+                orderable: false,
+                searchable: false,
+                data: 'id',
+                render: __WEBPACK_IMPORTED_MODULE_1__lib_components__["a" /* TableComponent */].renderCheckRow
+            },
+            { className: 'text-center', data: 'tipo__nombre' },
+            { className: 'text-center', data: 'dia' },
+            { className: 'text-center', data: 'porcentaje' }
+        ];
+    }
+    PagoIncapacidadListComponent.prototype.ngOnInit = function () {
+        this.table.success = function (data) { return console.log(data); };
+    };
+    return PagoIncapacidadListComponent;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('table'),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__lib_components__["a" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__lib_components__["a" /* TableComponent */]) === "function" && _a || Object)
+], PagoIncapacidadListComponent.prototype, "table", void 0);
+PagoIncapacidadListComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: __webpack_require__("../../../../../src/app/incapacidad/pago/list.pago.incapacidad.component.html")
+    }),
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__pago_incapacidad_service__["a" /* PagoIncapacidadService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__pago_incapacidad_service__["a" /* PagoIncapacidadService */]) === "function" && _b || Object])
+], PagoIncapacidadListComponent);
+
+var PagoIncapacidadEditComponent = (function () {
+    function PagoIncapacidadEditComponent(_fb, _s, _rt, _t) {
+        this._fb = _fb;
+        this._s = _s;
+        this._rt = _rt;
+        this._t = _t;
+        this.service = this._s;
+        this.itemTipo = function (item) { return "" + item.tipo__nombre; };
+        this.form = this._fb.group({
+            tipo: ['', [__WEBPACK_IMPORTED_MODULE_5__angular_forms__["Validators"].required]],
+            dia: ['', [__WEBPACK_IMPORTED_MODULE_5__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_5__angular_forms__["Validators"].min(1)]],
+            porcentaje: ['', [__WEBPACK_IMPORTED_MODULE_5__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_5__angular_forms__["Validators"].min(0), __WEBPACK_IMPORTED_MODULE_5__angular_forms__["Validators"].max(100)]]
+        });
+        this.columns = ['col1'];
+        this.renderinputs = [
+            { title: 'Dia', column: 'col1', name: 'dia', type: 'number' },
+            { title: 'Porcentaje', column: 'col1', name: 'porcentaje', type: 'number' }
+        ];
+    }
+    PagoIncapacidadEditComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this._form.successful = function (data) {
+            _this._rt.navigate(['incapacidad/pago']);
+        };
+    };
+    return PagoIncapacidadEditComponent;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__lib_components__["b" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__lib_components__["b" /* FormComponent */]) === "function" && _c || Object)
+], PagoIncapacidadEditComponent.prototype, "_form", void 0);
+PagoIncapacidadEditComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: "<ex-form #f icon=\"accessible\" title=\"Pago de Incapacidad\"\n        [form]=\"form\"\n        [service]=\"service\"\n        [columns]=\"columns\"\n        [renderinputs]=\"renderinputs\">\n            <div top-form class=\"row\">\n            <div class=\"col-lg-12\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_cargo\">Cargo:</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <label class=\"control-label\"></label>\n                            <ex-autocomplete\n                                    name=\"tipo\"\n                                    [form]=\"form\"\n                                    [service]=\"_t\"\n                                    [item]=\"_form.item\"\n                                    [itemVal]=\"itemTipo\">\n                            </ex-autocomplete>\n                        </div>\n                    </div>\n                </div>\n            </div>\n            </div>\n        </ex-form>"
+    }),
+    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_5__angular_forms__["FormBuilder"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__angular_forms__["FormBuilder"]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2__pago_incapacidad_service__["a" /* PagoIncapacidadService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__pago_incapacidad_service__["a" /* PagoIncapacidadService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_4__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__angular_router__["b" /* Router */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_3__tipo_tipo_incapacidad_service__["a" /* TipoIncapacidadService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__tipo_tipo_incapacidad_service__["a" /* TipoIncapacidadService */]) === "function" && _g || Object])
+], PagoIncapacidadEditComponent);
+
+var _a, _b, _c, _d, _e, _f, _g;
+//# sourceMappingURL=pago.incapacidad.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/incapacidad/pago/pago.incapacidad.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_services__ = __webpack_require__("../../../../../src/lib/services.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PagoIncapacidadService; });
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var PagoIncapacidadService = (function (_super) {
+    __extends(PagoIncapacidadService, _super);
+    function PagoIncapacidadService(_cl, _rt) {
+        var _this = _super.call(this, _cl, _rt, 'nomina/pago/incapacidad/') || this;
+        _this._cl = _cl;
+        _this._rt = _rt;
+        return _this;
+    }
+    return PagoIncapacidadService;
+}(__WEBPACK_IMPORTED_MODULE_2__lib_services__["a" /* CrudService */]));
+PagoIncapacidadService = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__lib_services__["b" /* CallService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__lib_services__["b" /* CallService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
+], PagoIncapacidadService);
+
+var _a, _b;
+//# sourceMappingURL=pago.incapacidad.service.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/incapacidad/route.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tipo_tipo_incapacidad_component__ = __webpack_require__("../../../../../src/app/incapacidad/tipo/tipo.incapacidad.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__tipo_tipo_incapacidad_service__ = __webpack_require__("../../../../../src/app/incapacidad/tipo/tipo.incapacidad.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pago_pago_incapacidad_component__ = __webpack_require__("../../../../../src/app/incapacidad/pago/pago.incapacidad.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pago_pago_incapacidad_service__ = __webpack_require__("../../../../../src/app/incapacidad/pago/pago.incapacidad.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return IncapacidadRoutes; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return IncapacidadMenuMeta; });
+
+
+
+
+var IncapacidadRoutes = [
+    {
+        path: '', children: [
+            {
+                path: 'tipo', component: __WEBPACK_IMPORTED_MODULE_0__tipo_tipo_incapacidad_component__["a" /* TipoIncapacidadComponent */], data: { miga: 'Tipo de incapacidad' }, children: [
+                    { path: '', component: __WEBPACK_IMPORTED_MODULE_0__tipo_tipo_incapacidad_component__["b" /* TipoIncapacidadListComponent */] },
+                    {
+                        path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_0__tipo_tipo_incapacidad_component__["c" /* TipoIncapacidadEditComponent */],
+                        data: { miga: 'Editar' }, resolve: { item: __WEBPACK_IMPORTED_MODULE_1__tipo_tipo_incapacidad_service__["a" /* TipoIncapacidadService */] }
+                    }
+                ]
+            },
+            {
+                path: 'pago', component: __WEBPACK_IMPORTED_MODULE_2__pago_pago_incapacidad_component__["a" /* PagoIncapacidadComponent */], data: { miga: 'Pago de incapacidad' }, children: [
+                    { path: '', component: __WEBPACK_IMPORTED_MODULE_2__pago_pago_incapacidad_component__["c" /* PagoIncapacidadListComponent */] },
+                    {
+                        path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_2__pago_pago_incapacidad_component__["b" /* PagoIncapacidadEditComponent */],
+                        data: { miga: 'Editar' }, resolve: { item: __WEBPACK_IMPORTED_MODULE_3__pago_pago_incapacidad_service__["a" /* PagoIncapacidadService */] }
+                    }
+                ]
+            }
+        ]
+    }
+];
+var IncapacidadMenuMeta = [
+    { title: 'Tipo', url: '/incapacidad/tipo', icon: 'extension' },
+    { title: 'Pago', url: '/incapacidad/pago', icon: 'extension' }
+];
+//# sourceMappingURL=route.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/incapacidad/tipo/list.tipo.incapacidad.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<ex-table #table title=\"Tipo de Incapacidad\" icon=\"accessible\" [service]=\"service\" [multiselect]=\"multiselect\" [columns]=\"columns\">\n    <th>Nombre</th>\n</ex-table>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/incapacidad/tipo/tipo.incapacidad.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_components__ = __webpack_require__("../../../../../src/lib/components.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__tipo_incapacidad_service__ = __webpack_require__("../../../../../src/app/incapacidad/tipo/tipo.incapacidad.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TipoIncapacidadComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return TipoIncapacidadListComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return TipoIncapacidadEditComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+var TipoIncapacidadComponent = (function () {
+    function TipoIncapacidadComponent() {
+    }
+    return TipoIncapacidadComponent;
+}());
+TipoIncapacidadComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: '<router-outlet></router-outlet>'
+    })
+], TipoIncapacidadComponent);
+
+var TipoIncapacidadListComponent = (function () {
+    function TipoIncapacidadListComponent(_s) {
+        this._s = _s;
+        this.service = this._s;
+        this.multiselect = true;
+        this.aggregable = false;
+        this.editable = false;
+        this.deleteable = false;
+        this.columns = [
+            {
+                className: 'text-center',
+                orderable: false,
+                searchable: false,
+                data: 'id',
+                render: __WEBPACK_IMPORTED_MODULE_1__lib_components__["a" /* TableComponent */].renderCheckRow
+            },
+            { data: 'nombre' }
+        ];
+    }
+    return TipoIncapacidadListComponent;
+}());
+TipoIncapacidadListComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: __webpack_require__("../../../../../src/app/incapacidad/tipo/list.tipo.incapacidad.component.html")
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__tipo_incapacidad_service__["a" /* TipoIncapacidadService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__tipo_incapacidad_service__["a" /* TipoIncapacidadService */]) === "function" && _a || Object])
+], TipoIncapacidadListComponent);
+
+var TipoIncapacidadEditComponent = (function () {
+    function TipoIncapacidadEditComponent(_fb, _s, _rt) {
+        this._fb = _fb;
+        this._s = _s;
+        this._rt = _rt;
+        this.service = this._s;
+        this.form = this._fb.group({
+            nombre: ['', [__WEBPACK_IMPORTED_MODULE_4__angular_forms__["Validators"].required]]
+        });
+        this.columns = ['col1'];
+        this.renderinputs = [
+            { title: 'Nombre', column: 'col1', name: 'nombre', type: 'text' }
+        ];
+    }
+    TipoIncapacidadEditComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this._form.successful = function (data) {
+            _this._rt.navigate(['incapacidad/tipo']);
+        };
+    };
+    return TipoIncapacidadEditComponent;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__lib_components__["b" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__lib_components__["b" /* FormComponent */]) === "function" && _b || Object)
+], TipoIncapacidadEditComponent.prototype, "_form", void 0);
+TipoIncapacidadEditComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: "<ex-form #f icon=\"accessible\" title=\"Tipo de Incapacidad\"\n        [form]=\"form\"\n        [service]=\"service\"\n        [columns]=\"columns\"\n        [renderinputs]=\"renderinputs\"></ex-form>"
+    }),
+    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__angular_forms__["FormBuilder"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__angular_forms__["FormBuilder"]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__tipo_incapacidad_service__["a" /* TipoIncapacidadService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__tipo_incapacidad_service__["a" /* TipoIncapacidadService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */]) === "function" && _e || Object])
+], TipoIncapacidadEditComponent);
+
+var _a, _b, _c, _d, _e;
+//# sourceMappingURL=tipo.incapacidad.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/incapacidad/tipo/tipo.incapacidad.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_services__ = __webpack_require__("../../../../../src/lib/services.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TipoIncapacidadService; });
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var TipoIncapacidadService = (function (_super) {
+    __extends(TipoIncapacidadService, _super);
+    function TipoIncapacidadService(_cl, _rt) {
+        var _this = _super.call(this, _cl, _rt, 'nomina/tipo/incapacidad/') || this;
+        _this._cl = _cl;
+        _this._rt = _rt;
+        return _this;
+    }
+    return TipoIncapacidadService;
+}(__WEBPACK_IMPORTED_MODULE_2__lib_services__["a" /* CrudService */]));
+TipoIncapacidadService = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__lib_services__["b" /* CallService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__lib_services__["b" /* CallService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
+], TipoIncapacidadService);
+
+var _a, _b;
+//# sourceMappingURL=tipo.incapacidad.service.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/obligaciones/cesantias/cesantias.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1976,7 +2388,7 @@ var EditCesantiasComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _a || Object)
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */]) === "function" && _a || Object)
 ], EditCesantiasComponent.prototype, "_form", void 0);
 EditCesantiasComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -1998,7 +2410,7 @@ var CesantiasListComponent = (function () {
                 orderable: false,
                 searchable: false,
                 data: 'id',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderCheckRow
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderCheckRow
             },
             { data: 'nombre' },
             { data: 'codigo' },
@@ -2008,7 +2420,7 @@ var CesantiasListComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('table'),
-    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */]) === "function" && _e || Object)
+    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */]) === "function" && _e || Object)
 ], CesantiasListComponent.prototype, "table", void 0);
 CesantiasListComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -2143,7 +2555,7 @@ var EditCompensacionComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _a || Object)
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */]) === "function" && _a || Object)
 ], EditCompensacionComponent.prototype, "_form", void 0);
 EditCompensacionComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -2165,7 +2577,7 @@ var CompensacionListComponent = (function () {
                 orderable: false,
                 searchable: false,
                 data: 'id',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderCheckRow
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderCheckRow
             },
             { data: 'nombre' },
             { data: 'codigo' },
@@ -2178,7 +2590,7 @@ var CompensacionListComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('table'),
-    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */]) === "function" && _e || Object)
+    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */]) === "function" && _e || Object)
 ], CompensacionListComponent.prototype, "table", void 0);
 CompensacionListComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -2313,7 +2725,7 @@ var EditEpsComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _a || Object)
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */]) === "function" && _a || Object)
 ], EditEpsComponent.prototype, "_form", void 0);
 EditEpsComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -2335,7 +2747,7 @@ var EpsListComponent = (function () {
                 orderable: false,
                 searchable: false,
                 data: 'id',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderCheckRow
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderCheckRow
             },
             { data: 'nombre' },
             { data: 'codigo' },
@@ -2348,7 +2760,7 @@ var EpsListComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('table'),
-    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */]) === "function" && _e || Object)
+    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */]) === "function" && _e || Object)
 ], EpsListComponent.prototype, "table", void 0);
 EpsListComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -2490,7 +2902,7 @@ var EditPensionComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _a || Object)
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */]) === "function" && _a || Object)
 ], EditPensionComponent.prototype, "_form", void 0);
 EditPensionComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -2512,7 +2924,7 @@ var PensionListComponent = (function () {
                 orderable: false,
                 searchable: false,
                 data: 'id',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderCheckRow
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderCheckRow
             },
             { data: 'nombre' },
             { data: 'codigo' },
@@ -2525,7 +2937,7 @@ var PensionListComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('table'),
-    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */]) === "function" && _e || Object)
+    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */]) === "function" && _e || Object)
 ], PensionListComponent.prototype, "table", void 0);
 PensionListComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -2700,6 +3112,7 @@ SelectiveStrategy = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_components__ = __webpack_require__("../../../../../src/lib/components.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__descuento_service__ = __webpack_require__("../../../../../src/app/turno/descuento/descuento.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__configuracion_unidadproduccion_unidadproduccion_service__ = __webpack_require__("../../../../../src/app/configuracion/unidadproduccion/unidadproduccion.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__configuracion_cargo_cargo_service__ = __webpack_require__("../../../../../src/app/configuracion/cargo/cargo.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DescuentoComponent; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return DescuentoListComponent; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return EditDescuentoComponent; });
@@ -2712,6 +3125,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -2742,9 +3156,10 @@ var DescuentoListComponent = (function () {
                 orderable: false,
                 searchable: false,
                 data: 'id',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderCheckRow
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderCheckRow
             },
             { data: 'unidad__nombre' },
+            { data: 'cargo__nombre' },
             { data: 'concepto' },
             { data: 'cantidad' },
             { data: 'fecha' },
@@ -2754,7 +3169,7 @@ var DescuentoListComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('table'),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */]) === "function" && _a || Object)
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */]) === "function" && _a || Object)
 ], DescuentoListComponent.prototype, "table", void 0);
 DescuentoListComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -2764,9 +3179,10 @@ DescuentoListComponent = __decorate([
 ], DescuentoListComponent);
 
 var EditDescuentoComponent = (function () {
-    function EditDescuentoComponent(_fb, _s, _u, _rt, _r) {
+    function EditDescuentoComponent(_fb, _s, _c, _u, _rt, _r) {
         this._fb = _fb;
         this._s = _s;
+        this._c = _c;
         this._u = _u;
         this._rt = _rt;
         this._r = _r;
@@ -2777,8 +3193,10 @@ var EditDescuentoComponent = (function () {
         this.placeholder = '';
         this.paramsUnidad = {};
         this.itemUnidad = function (item) { return "" + item.unidad__nombre; };
+        this.itemCargo = function (item) { return "" + item.cargo__nombre; };
         this.form = this._fb.group({
             unidad: [[], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
+            cargo: [[], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
             cantidad: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].min(1)]],
             concepto: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required]],
             fecha: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required]
@@ -2800,16 +3218,16 @@ var EditDescuentoComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _c || Object)
+    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */]) === "function" && _d || Object)
 ], EditDescuentoComponent.prototype, "_form", void 0);
 EditDescuentoComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         template: __webpack_require__("../../../../../src/app/turno/descuento/edit.descuento.html")
     }),
-    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__descuento_service__["a" /* DescuentoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__descuento_service__["a" /* DescuentoService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_5__configuracion_unidadproduccion_unidadproduccion_service__["a" /* UnidadProduccionService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__configuracion_unidadproduccion_unidadproduccion_service__["a" /* UnidadProduccionService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */]) === "function" && _h || Object])
+    __metadata("design:paramtypes", [typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_4__descuento_service__["a" /* DescuentoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__descuento_service__["a" /* DescuentoService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_6__configuracion_cargo_cargo_service__["a" /* CargoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__configuracion_cargo_cargo_service__["a" /* CargoService */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_5__configuracion_unidadproduccion_unidadproduccion_service__["a" /* UnidadProduccionService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__configuracion_unidadproduccion_unidadproduccion_service__["a" /* UnidadProduccionService */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _j || Object, typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */]) === "function" && _k || Object])
 ], EditDescuentoComponent);
 
-var _a, _b, _c, _d, _e, _f, _g, _h;
+var _a, _b, _d, _e, _f, _g, _h, _j, _k;
 //# sourceMappingURL=descuento.component.js.map
 
 /***/ }),
@@ -2867,14 +3285,202 @@ var _a, _b;
 /***/ "../../../../../src/app/turno/descuento/edit.descuento.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ex-form #f icon=\"work\" title=\"Producción\" [debug]=\"debug\" [form]=\"form\" [service]=\"service\" [columns]=\"columns\" [renderinputs]=\"renderinputs\">\n    <div top-form class=\"row\">\n        <div class=\"col-lg-12\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_unidad\">Unidad:</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <label class=\"control-label\"></label>\n                            <ex-autocomplete name=\"unidad\" [params]=\"paramsUnidad\" [form]=\"form\" [service]=\"_u\" [item]=\"_form.item\" [itemVal]=\"itemUnidad\"></ex-autocomplete>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</ex-form>\n"
+module.exports = "<ex-form #f icon=\"work\" title=\"Producción\" [debug]=\"debug\" [form]=\"form\" [service]=\"service\" [columns]=\"columns\" [renderinputs]=\"renderinputs\">\n    <div top-form class=\"row\">\n        <div class=\"col-lg-12\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_cargo\">Cargo:</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <label class=\"control-label\"></label>\n                            <ex-autocomplete name=\"cargo\" [service]=\"_c\" [form]=\"form\" [item]=\"_form.item\" [itemVal]=\"itemCargo\"></ex-autocomplete>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div top-form class=\"row\">\n        <div class=\"col-lg-12\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_unidad\">Unidad:</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <label class=\"control-label\"></label>\n                            <ex-autocomplete name=\"unidad\" [params]=\"paramsUnidad\" [form]=\"form\" [service]=\"_u\" [item]=\"_form.item\" [itemVal]=\"itemUnidad\"></ex-autocomplete>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</ex-form>\n"
 
 /***/ }),
 
 /***/ "../../../../../src/app/turno/descuento/list.descuento.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ex-table #table [title]=\"title\" [icon]=\"icon\" [service]=\"service\" [multiselect]=\"multiselect\" [order]=\"order\" [columns]=\"columns\">\n    <th>Unidad</th>\n    <th>Concepto</th>\n    <th>Cantidad</th>\n    <th>Fecha</th>\n</ex-table>\n"
+module.exports = "<ex-table #table [title]=\"title\" [icon]=\"icon\" [service]=\"service\" [multiselect]=\"multiselect\" [order]=\"order\" [columns]=\"columns\">\n    <th>Unidad</th>\n    <th>Cargo</th>\n    <th>Concepto</th>\n    <th>Cantidad</th>\n    <th>Fecha</th>\n</ex-table>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/turno/incapacidad/edit.incapacidad.html":
+/***/ (function(module, exports) {
+
+module.exports = "<ex-form #f icon=\"accessible\" title=\"Incapacidad\" [form]=\"form\" [service]=\"service\" [columns]=\"columns\" [renderinputs]=\"renderinputs\">\n    <div top-form class=\"row\">\n        <div class=\"col-lg-12\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_cargo\">Tipo:</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <label class=\"control-label\"></label>\n                            <ex-autocomplete name=\"tipo\" [service]=\"_t\" [form]=\"form\" [item]=\"_form.item\" [itemVal]=\"itemTipo\"></ex-autocomplete>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div top-form class=\"row\">\n        <div class=\"col-lg-12\">\n            <div class=\"form-horizontal\">\n                <div class=\"row\">\n                    <label class=\"col-lg-3 label-on-left\" for=\"id_cargo\">Empleado:</label>\n                    <div class=\"col-lg-9\">\n                        <div class=\"form-group label-floating is-empty\">\n                            <label class=\"control-label\"></label>\n                            <ex-autocomplete name=\"empleado\" [service]=\"_e\" [form]=\"form\" [item]=\"_form.item\" [itemVal]=\"itemEmpleado\" [render]=\"empleadoRender\"></ex-autocomplete>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</ex-form>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/turno/incapacidad/incapacidad.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_components__ = __webpack_require__("../../../../../src/lib/components.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__incapacidad_service__ = __webpack_require__("../../../../../src/app/turno/incapacidad/incapacidad.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__empleados_empleado_empleado_service__ = __webpack_require__("../../../../../src/app/empleados/empleado/empleado.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__incapacidad_tipo_tipo_incapacidad_service__ = __webpack_require__("../../../../../src/app/incapacidad/tipo/tipo.incapacidad.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return IncapacidadComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return IncapacidadListComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return EditIncapacidadComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+var IncapacidadComponent = (function () {
+    function IncapacidadComponent() {
+    }
+    return IncapacidadComponent;
+}());
+IncapacidadComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: '<router-outlet></router-outlet>'
+    })
+], IncapacidadComponent);
+
+var IncapacidadListComponent = (function () {
+    function IncapacidadListComponent(_as) {
+        this._as = _as;
+        this.icon = 'accessible';
+        this.title = 'Incapacidades';
+        this.service = this._as;
+        this.multiselect = true;
+        this.columns = [
+            {
+                className: 'text-center',
+                orderable: false,
+                searchable: false,
+                data: 'id',
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderCheckRow
+            },
+            { data: 'tipo__nombre' },
+            { data: 'dias' },
+            { data: 'empleado__nombre' },
+            { data: 'empleado__apellidos' },
+            { data: 'fecha' },
+        ];
+    }
+    return IncapacidadListComponent;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('table'),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */]) === "function" && _a || Object)
+], IncapacidadListComponent.prototype, "table", void 0);
+IncapacidadListComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: __webpack_require__("../../../../../src/app/turno/incapacidad/list.incapacidad.component.html")
+    }),
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4__incapacidad_service__["a" /* IncapacidadService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__incapacidad_service__["a" /* IncapacidadService */]) === "function" && _b || Object])
+], IncapacidadListComponent);
+
+var EditIncapacidadComponent = (function () {
+    function EditIncapacidadComponent(_fb, _s, _t, _e, _rt) {
+        this._fb = _fb;
+        this._s = _s;
+        this._t = _t;
+        this._e = _e;
+        this._rt = _rt;
+        this.service = this._s;
+        this.empleadoRender = function (item) { return item.nombre + " " + item.apellidos; };
+        this.itemTipo = function (item) { return "" + item.tipo__nombre; };
+        this.itemEmpleado = function (item) { return item.empleado__nombre + " " + item.empleado__apellidos; };
+        this.form = this._fb.group({
+            tipo: [[], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
+            empleado: [[], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
+            dias: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].min(1)]],
+            fecha: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required]
+        });
+        this.columns = ['col1'];
+        this.renderinputs = [
+            { column: 'col1', title: 'Días', type: 'number', name: 'dias' },
+            { column: 'col1', title: 'Fecha', type: 'text', name: 'fecha', class: 'datepicker' }
+        ];
+    }
+    EditIncapacidadComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this._form.successful = function (data) {
+            _this._rt.navigate(['operacion/incapacidad']);
+        };
+    };
+    return EditIncapacidadComponent;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */]) === "function" && _c || Object)
+], EditIncapacidadComponent.prototype, "_form", void 0);
+EditIncapacidadComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: __webpack_require__("../../../../../src/app/turno/incapacidad/edit.incapacidad.html")
+    }),
+    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"]) === "function" && _d || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_4__incapacidad_service__["a" /* IncapacidadService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__incapacidad_service__["a" /* IncapacidadService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_6__incapacidad_tipo_tipo_incapacidad_service__["a" /* TipoIncapacidadService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__incapacidad_tipo_tipo_incapacidad_service__["a" /* TipoIncapacidadService */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_5__empleados_empleado_empleado_service__["a" /* EmpleadoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__empleados_empleado_empleado_service__["a" /* EmpleadoService */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _j || Object])
+], EditIncapacidadComponent);
+
+var _a, _b, _c, _d, _f, _g, _h, _j;
+//# sourceMappingURL=incapacidad.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/turno/incapacidad/incapacidad.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_services__ = __webpack_require__("../../../../../src/lib/services.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return IncapacidadService; });
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var IncapacidadService = (function (_super) {
+    __extends(IncapacidadService, _super);
+    function IncapacidadService(_cl, _rt) {
+        var _this = _super.call(this, _cl, _rt, 'nomina/dia/incapacidad/') || this;
+        _this._cl = _cl;
+        _this._rt = _rt;
+        _super.prototype.setRedirectUrl.call(_this, '/operacion/incapacidad');
+        return _this;
+    }
+    return IncapacidadService;
+}(__WEBPACK_IMPORTED_MODULE_2__lib_services__["a" /* CrudService */]));
+IncapacidadService = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__lib_services__["b" /* CallService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__lib_services__["b" /* CallService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object])
+], IncapacidadService);
+
+var _a, _b;
+//# sourceMappingURL=incapacidad.service.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/turno/incapacidad/list.incapacidad.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<ex-table #table [title]=\"title\" [icon]=\"icon\" [service]=\"service\" [multiselect]=\"multiselect\" [order]=\"order\" [columns]=\"columns\">\n    <th>Tipo</th>\n    <th>Días</th>\n    <th>Nombre</th>\n    <th>Apellidos</th>\n    <th>Fecha</th>\n</ex-table>\n"
 
 /***/ }),
 
@@ -2951,7 +3557,7 @@ var ProduccionListComponent = (function () {
                 orderable: false,
                 searchable: false,
                 data: 'id',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderCheckRow
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderCheckRow
             },
             { data: 'cargo__nombre' },
             { data: 'unidad__nombre' },
@@ -2964,7 +3570,7 @@ var ProduccionListComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('table'),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */]) === "function" && _a || Object)
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */]) === "function" && _a || Object)
 ], ProduccionListComponent.prototype, "table", void 0);
 ProduccionListComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -3084,7 +3690,7 @@ var EditProduccionComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
-    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _d || Object)
+    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */]) === "function" && _d || Object)
 ], EditProduccionComponent.prototype, "_form", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('multi'),
@@ -3138,7 +3744,7 @@ var ProduccionService = (function (_super) {
         var _this = _super.call(this, _cl, _rt, 'turnos/produccion/') || this;
         _this._cl = _cl;
         _this._rt = _rt;
-        _super.prototype.setRedirectUrl.call(_this, '/produccion/produccion');
+        _super.prototype.setRedirectUrl.call(_this, '/operacion/produccion');
         return _this;
     }
     return ProduccionService;
@@ -3163,8 +3769,12 @@ var _a, _b;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__turno_turno_service__ = __webpack_require__("../../../../../src/app/turno/turno/turno.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__descuento_descuento_component__ = __webpack_require__("../../../../../src/app/turno/descuento/descuento.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__turno_descuento_descuento_service__ = __webpack_require__("../../../../../src/app/turno/descuento/descuento.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__turno_incapacidad_incapacidad_component__ = __webpack_require__("../../../../../src/app/turno/incapacidad/incapacidad.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__turno_incapacidad_incapacidad_service__ = __webpack_require__("../../../../../src/app/turno/incapacidad/incapacidad.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TurnoRoutes; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return ProduccionMenuMeta; });
+
+
 
 
 
@@ -3191,14 +3801,21 @@ var TurnoRoutes = [
                     { path: '', component: __WEBPACK_IMPORTED_MODULE_4__descuento_descuento_component__["b" /* DescuentoListComponent */] },
                     { path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_4__descuento_descuento_component__["c" /* EditDescuentoComponent */], data: { miga: 'Editar' }, resolve: { item: __WEBPACK_IMPORTED_MODULE_5__turno_descuento_descuento_service__["a" /* DescuentoService */] } }
                 ]
+            },
+            {
+                path: 'incapacidad', component: __WEBPACK_IMPORTED_MODULE_6__turno_incapacidad_incapacidad_component__["a" /* IncapacidadComponent */], data: { miga: 'Incapacidad' }, children: [
+                    { path: '', component: __WEBPACK_IMPORTED_MODULE_6__turno_incapacidad_incapacidad_component__["c" /* IncapacidadListComponent */] },
+                    { path: ':id/edit', component: __WEBPACK_IMPORTED_MODULE_6__turno_incapacidad_incapacidad_component__["b" /* EditIncapacidadComponent */], data: { miga: 'Editar' }, resolve: { item: __WEBPACK_IMPORTED_MODULE_7__turno_incapacidad_incapacidad_service__["a" /* IncapacidadService */] } }
+                ]
             }
         ]
     }
 ];
 var ProduccionMenuMeta = [
-    { title: 'Turnos', url: '/produccion/turno', icon: 'extension' },
-    { title: 'Producción', url: '/produccion/produccion', icon: 'extension' },
-    { title: 'Descuentos de producción', url: '/produccion/descuento', icon: 'extension' },
+    { title: 'Turnos', url: '/operacion/turno', icon: 'extension' },
+    { title: 'Producción', url: '/operacion/produccion', icon: 'extension' },
+    { title: 'Descuentos de producción', url: '/operacion/descuento', icon: 'extension' },
+    { title: 'Incapacidad', url: '/operacion/incapacidad', icon: 'extension' },
 ];
 //# sourceMappingURL=route.js.map
 
@@ -3293,7 +3910,7 @@ var TurnoListComponent = (function () {
                 orderable: false,
                 searchable: false,
                 data: 'id',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderCheckRow
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderCheckRow
             },
             {
                 data: 'empleado',
@@ -3308,56 +3925,56 @@ var TurnoListComponent = (function () {
                 orderable: false,
                 searchable: false,
                 className: 'text-center',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderDecimal
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderDecimal
             },
             {
                 data: 'h_extras',
                 orderable: false,
                 searchable: false,
                 className: 'text-center',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderDecimal
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderDecimal
             },
             {
                 data: 'h_nocturna',
                 orderable: false,
                 searchable: false,
                 className: 'text-center',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderDecimal
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderDecimal
             },
             {
                 data: 'h_nocturna_extras',
                 orderable: false,
                 searchable: false,
                 className: 'text-center',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderDecimal
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderDecimal
             },
             {
                 data: 'h_dominical',
                 orderable: false,
                 searchable: false,
                 className: 'text-center',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderDecimal
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderDecimal
             },
             {
                 data: 'h_dominical_extra',
                 orderable: false,
                 searchable: false,
                 className: 'text-center',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderDecimal
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderDecimal
             },
             {
                 data: 'h_dominical_nocturna',
                 orderable: false,
                 searchable: false,
                 className: 'text-center',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderDecimal
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderDecimal
             },
             {
                 data: 'h_dominical_extra_nocturna',
                 orderable: false,
                 searchable: false,
                 className: 'text-center',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderDecimal
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderDecimal
             }
         ];
     }
@@ -3447,11 +4064,9 @@ var TurnoEditComponent = (function () {
                 data.empleado__nombre = data.empleado;
                 data.empleado = data.empleado_id;
             }
-            console.log(data);
             return data;
         };
         this._form.successful = function (data) {
-            console.log(data);
             if (data && data._body !== '') {
                 _this._form.setItem(data.json());
             }
@@ -3474,7 +4089,7 @@ var TurnoEditComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _b || Object)
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */]) === "function" && _b || Object)
 ], TurnoEditComponent.prototype, "_form", void 0);
 TurnoEditComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -3524,7 +4139,7 @@ var TurnoService = (function (_super) {
         var _this = _super.call(this, _cl, _rt, 'turnos/turno/') || this;
         _this._cl = _cl;
         _this._rt = _rt;
-        _super.prototype.setRedirectUrl.call(_this, '/produccion/turno');
+        _super.prototype.setRedirectUrl.call(_this, '/operacion/turno');
         return _this;
     }
     return TurnoService;
@@ -3620,7 +4235,7 @@ var EditAdminComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _a || Object)
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */]) === "function" && _a || Object)
 ], EditAdminComponent.prototype, "_form", void 0);
 EditAdminComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -3641,14 +4256,14 @@ var ListAdminComponent = (function () {
                 orderable: false,
                 searchable: false,
                 data: 'id',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderCheckRow
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderCheckRow
             },
             {
                 className: 'text-center',
                 orderable: false,
                 searchable: false,
                 data: 'avatar',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderAvatar
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderAvatar
             },
             { data: 'username' },
             { data: 'first_name' },
@@ -3812,7 +4427,7 @@ var AsistenteEditComponent = (function () {
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('f'),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* FormComponent */]) === "function" && _a || Object)
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* FormComponent */]) === "function" && _a || Object)
 ], AsistenteEditComponent.prototype, "_form", void 0);
 AsistenteEditComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -3833,14 +4448,14 @@ var AsistenteListComponent = (function () {
                 orderable: false,
                 searchable: false,
                 data: 'id',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderCheckRow
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderCheckRow
             },
             {
                 className: 'text-center',
                 orderable: false,
                 searchable: false,
                 data: 'avatar',
-                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["b" /* TableComponent */].renderAvatar
+                render: __WEBPACK_IMPORTED_MODULE_3__lib_components__["a" /* TableComponent */].renderAvatar
             },
             { data: 'username' },
             { data: 'first_name' },
@@ -4288,8 +4903,8 @@ CardComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__form_form_component__ = __webpack_require__("../../../../../src/lib/form/form.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__table_table_component__ = __webpack_require__("../../../../../src/lib/table/table.component.ts");
 /* unused harmony reexport RenderInput */
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__form_form_component__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__table_table_component__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__form_form_component__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1__table_table_component__["a"]; });
 
 
 
@@ -4360,7 +4975,6 @@ var FormComponent = (function () {
         if (item) {
             this.item = item;
             this.form.patchValue(this.item);
-            console.log(item);
         }
     };
     FormComponent.prototype.prePatchValue = function (value) {
@@ -4419,7 +5033,7 @@ var FormComponent = (function () {
                         if (!!control.errors[key]) {
                             var messege = '';
                             var errors = _this.errorMessages[key];
-                            if (typeof errors === "function") {
+                            if (typeof errors === 'function') {
                                 messege = errors(control.errors[key]);
                             }
                             else {
@@ -5427,7 +6041,7 @@ SidebarComponent = __decorate([
 /***/ "../../../../../src/lib/table/table.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ex-card [icon]=\"icon\">\n    <nav class=\"navbar navbar-default\" style=\"border-bottom:none;padding:0\">\n        <div class=\"container-fluid\">\n            <div class=\"navbar-header\">\n                <button type=\"button\" class=\"navbar-toggle\" *ngIf=\"aggregable || editable || deleteable\">\n                    <span class=\"sr-only\">Toggle navigation</span>\n                    <span class=\"icon-bar\"></span>\n                    <span class=\"icon-bar\"></span>\n                    <span class=\"icon-bar\"></span>\n                </button>\n                <h4 class=\"navbar-brand card-title\" style=\"margin:0;margin-top:-7px;margin-left:-10px;\">{{title}}</h4>\n            </div>\n            <div class=\"navbar-collapse collapse navbar-responsive-collapse\" *ngIf=\"aggregable || editable || deleteable\">\n                <ul class=\"nav navbar-nav navbar-right\">\n                    <li *ngIf=\"selectedItems.length == 1 && editable\">\n                        <button [routerLink]=\"editlink\" class=\"btn btn-primary btn-just-icon\">\n                            <i class=\"material-icons\">create</i>\n                        </button>\n                    </li>\n                    <li *ngIf=\"selectedItems.length >= 1 && deleteable\">\n                        <button class=\"btn btn-primary btn-just-icon\" (click)=\"onDelete()\">\n                            <i class=\"material-icons\">delete</i>\n                        </button>\n                    </li>\n                    <li *ngIf=\"aggregable\">\n                        <button [routerLink]=\"addlink\" class=\"btn btn-primary btn-just-icon \">\n                            <i class=\"material-icons\">add</i>\n                        </button>\n                    </li>\n\n                </ul>\n            </div>\n            <ng-content select=\"[buttons]\"></ng-content>\n        </div>\n    </nav>\n    <div class=\"material-datatables\">\n        <table #table id=\"datatables\" class=\"table table-striped table-bordered table-responsive dt-responsive nowrap\" cellspacing=\"0\" width=\"100%\">\n            <thead>\n                <tr>\n                    <th>\n                        <div class=\"checkbox\">\n                            <label><input type=\"checkbox\" id=\"selectAll\"/></label>\n                        </div>\n                    </th>\n                    <ng-content></ng-content>\n                </tr>\n            </thead>\n        </table>\n    </div>\n    <!-- <pre> selectedItems: {{selectedItems | json }}</pre> -->\n</ex-card>\n"
+module.exports = "<ex-card [icon]=\"icon\">\n    <nav class=\"navbar navbar-default\" style=\"border-bottom:none;padding:0\">\n        <div class=\"container-fluid\">\n            <div class=\"navbar-header ex-responsive-header\">\n                <!-- <button type=\"button\" class=\"navbar-toggle\" *ngIf=\"aggregable || editable || deleteable\">\n                    <span class=\"sr-only\">Toggle navigation</span>\n                    <span class=\"icon-bar\"></span>\n                    <span class=\"icon-bar\"></span>\n                    <span class=\"icon-bar\"></span>\n                </button> -->\n                <h4 class=\"navbar-brand card-title\" style=\"margin:0;margin-top:-7px;margin-left:-10px;\">{{title}}</h4>\n            </div>\n            <!-- class=\"navbar-collapse collapse navbar-responsive-collapse\" -->\n            <div class=\"navbar-right ex-responsive\" *ngIf=\"aggregable || editable || deleteable \">\n                <ul class=\"nav navbar-nav \">\n                    <li *ngIf=\"selectedItems.length == 1 && editable\">\n                        <button [routerLink]=\"editlink\" class=\"btn btn-primary btn-just-icon \">\n                            <i class=\"material-icons\">create</i>\n                            <!-- <span class=\"hidden-lg hidden-md hidden-sm\">Editar</span> -->\n                        </button>\n                    </li>\n                    <li *ngIf=\"selectedItems.length >= 1 && deleteable\">\n                        <button class=\"btn btn-primary btn-just-icon\" (click)=\"onDelete()\">\n                            <i class=\"material-icons\">delete</i>\n                            <!-- <span class=\"hidden-lg hidden-md hidden-sm\">Eliminar</span> -->\n                        </button>\n                    </li>\n                    <li *ngIf=\"aggregable\">\n                        <button [routerLink]=\"addlink\" class=\"btn btn-primary btn-just-icon\">\n                            <i class=\"material-icons\">add</i>\n                            <!-- <span class=\"hidden-lg hidden-md hidden-sm\">Agregar</span> -->\n                        </button>\n                    </li>\n\n                </ul>\n            </div>\n            <ng-content select=\"[buttons]\"></ng-content>\n        </div>\n    </nav>\n    <div class=\"material-datatables\">\n        <table #table id=\"datatables\" class=\"table table-striped table-bordered table-responsive dt-responsive nowrap\" cellspacing=\"0\" width=\"100%\">\n            <thead>\n                <tr>\n                    <th>\n                        <div class=\"checkbox\">\n                            <label><input type=\"checkbox\" id=\"selectAll\"/></label>\n                        </div>\n                    </th>\n                    <ng-content></ng-content>\n                </tr>\n            </thead>\n        </table>\n    </div>\n    <!-- <pre> selectedItems: {{selectedItems | json }}</pre> -->\n</ex-card>\n"
 
 /***/ }),
 

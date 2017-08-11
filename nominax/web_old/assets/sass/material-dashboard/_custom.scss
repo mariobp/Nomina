@@ -29,3 +29,20 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.ex-responsive-header{
+    @media (max-width: 991px){
+        float: left;
+    }
+
+}
+.ex-responsive{
+    > ul{
+        @media (max-width: 768px){
+            float: right;
+        }
+        > li {
+            display: inline-block;
+        }
+    }
+}
