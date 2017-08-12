@@ -21,6 +21,7 @@ class Corte(models.Model):
     nocturna = models.IntegerField("Valor de recargo nocturno %", blank=True)
     dominical = models.IntegerField("Valor de recargo dominical o festivo %", blank=True)
     nocturna_dominical = models.IntegerField("Valor de recargo nocturno dominical o festivo %", blank=True)
+    salario_minimo_dia = models.IntegerField("Dia de salario mínimo")
     descuento_salud = models.IntegerField("Descuento de salud y pensión para empleado %", blank=True)
     tarifario = models.ManyToManyField(recursos.Tarifario, blank=True)
 

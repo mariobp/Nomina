@@ -37,6 +37,7 @@ class CorteForms(forms.ModelForm):
             instance.nocturna = config.nocturna
             instance.dominical = config.dominical
             instance.nocturna_dominical = config.nocturna_dominical
+            instance.salario_minimo_dia = config.salario_minimo_dia
             instance.descuento_salud = config.descuento_salud
             instance.extra_diurna = config.extra_diurna
             instance.extra_nocturna = config.extra_nocturna
