@@ -83,11 +83,11 @@ export class PagoIncapacidadEditComponent implements OnInit {
     renderinputs: RenderInput[];
     service = this._s;
 
-    @ViewChild('f') private _form: FormComponent;
+    @ViewChild('f') public _form: FormComponent;
 
     itemTipo = item => `${item.tipo__nombre}`;
 
-    constructor(private _fb: FormBuilder, private _s: PagoIncapacidadService, private _rt: Router, private _t: TipoIncapacidadService) {
+    constructor(private _fb: FormBuilder, private _s: PagoIncapacidadService, private _rt: Router, public _t: TipoIncapacidadService) {
         this.form = this._fb.group({
             tipo: ['', [Validators.required]],
             dia: ['', [Validators.required, Validators.min(1)]],

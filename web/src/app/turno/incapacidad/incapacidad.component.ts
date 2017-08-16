@@ -57,7 +57,7 @@ export class EditIncapacidadComponent implements OnInit {
     service = this._s;
     empleadoRender = item => `${item.nombre} ${item.apellidos}`;
 
-    @ViewChild('f') private _form: FormComponent;
+    @ViewChild('f') public _form: FormComponent;
 
     constructor(private _fb: FormBuilder, private _s: IncapacidadService, public _t: TipoIncapacidadService, public _e: EmpleadoService, private _rt: Router) {
         this.form = this._fb.group({
