@@ -121,11 +121,16 @@ class DiaIncapacidad(models.Model):
     # end def
 
     @classmethod
-    def porcentaje(cls, corte):
+    def porcentaje(cls, corte, salario_diario, salario_minimo_dia):
         dias = cls.get_incapacidades(corte)
         total = 0
         for dia in dias:
-            total = total + dia.costo()
+            costo = (dia.costo())/100*salario_diario
+            if costo >= salario_minimo_dia:
+                total = total + costo
+            else:
+                total = total + salario_minimo_dia
+            # end if
         # end for
         return total
     # end def
@@ -190,8 +195,7 @@ class Nomina(models.Model):
 
     def incapacidad(self):
         try:
-            pors = DiaIncapacidad.porcentaje(self.corte)
-            return pors/100*self.salario_base/30
+            return DiaIncapacidad.porcentaje(self.corte, self.salario_base/30, self.corte.salario_minimo_dia)
         except Exception as e:
             print e
     # end def
