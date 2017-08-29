@@ -67,7 +67,7 @@ class UnidadProduccionSupraList(MasterList):
     list_display = ['id', 'nombre']
     search_fields = ['nombre']
     list_filter = ['tarifario__cargo', 'id']
-    model = models.UnidadProduccioncontr
+    model = models.UnidadProduccion
 
     def get_queryset(self):
         queryset = super(UnidadProduccionSupraList, self).get_queryset()
@@ -555,7 +555,6 @@ class ContraoSupraList(supra.SupraListView):
 
     def get_queryset(self):
         queryset = super(ContraoSupraList, self).get_queryset()
-        
         if self.request.GET.get('num_page', False):
             if int(self.request.GET.get('num_page')) is 0:
                 self.paginate_by = None
