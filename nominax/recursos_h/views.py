@@ -606,7 +606,11 @@ class EmpleadoSupraList(supra.SupraListView):
             queryset = queryset.filter(cargo__in=cargos, contrato__tipo_contrato__modalidad=models.TipoContrato.PRODUCCION)
         # end if
         if self.request.GET.get('num_page', False):
-            self.paginate_by = self.request.GET.get('num_page', False)
+            if int(self.request.GET.get('num_page')) is 0:
+                self.paginate_by = None
+            else:
+                self.paginate_by = self.request.GET.get('num_page', False)
+            # end if
         # end if
         propiedad = self.request.GET.get('sort_property', False)
         orden = self.request.GET.get('sort_direction', False)

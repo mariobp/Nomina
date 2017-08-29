@@ -54,6 +54,7 @@ export class MultiComponent implements OnInit {
     filterList(query: object) {
         const parametros = query;
         parametros['num_page'] = 0;
+        console.log(parametros);
         this.service.list(parametros)
             .then(data => data.json())
             .then(data => {
