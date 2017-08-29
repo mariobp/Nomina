@@ -33,7 +33,7 @@ class Configuracion(models.Model):
 
     tarifario = models.ManyToManyField(recursos.Tarifario)
 
-    salario_minimo_dia = models.IntegerField("Dia de salario mínimo")
+    salario_minimo_dia = models.IntegerField("salario minimo legal vigente diario")
     descuento_salud = models.IntegerField("Descuento de salud y pensión para empleado %")
 
     nocturna = models.IntegerField("Valor de recargo nocturno %")

@@ -18,6 +18,11 @@ class CorteForms(forms.ModelForm):
     # end class
 
     @staticmethod
+    def find_by_turn(turno):
+        return models.Corte.objects.filter(fecha_inicio__lte=turno.entrada, fecha_fin__gte=turno.entrada).first()
+    # end def
+
+    @staticmethod
     def get_instance():
         instance = models.Corte.get_instance()
         config = conf.ConfiguracionForm.get_instance()
@@ -94,6 +99,8 @@ class DescuentoProduccionForm(forms.ModelForm):
 # end class
 
 class NominaForm(forms.ModelForm):
+    turno = None
+
     class Meta:
         model = models.Nomina
         exclude = ()
@@ -101,6 +108,12 @@ class NominaForm(forms.ModelForm):
 
     def clean_corte(self):
         if not 'corte' in self.cleaned_data or not self.cleaned_data['corte']:
+            if self.turno:
+                corte = CorteForms.find_by_turn(self.turno)
+                if corte:
+                    return corte
+                # end if
+            # end if
             return CorteForms.get_instance()
         # end if
         return self.cleaned_data['corte']
@@ -123,8 +136,9 @@ class NominaForm(forms.ModelForm):
     # end def
 
     @staticmethod
-    def get_instance(empleado):
-        corte = CorteForms.get_instance()
+    def get_instance(turno):
+        empleado = turno.empleado
+        corte = CorteForms.find_by_turn(turno)
         instance = models.Nomina.objects.filter(contrato__empleado=empleado, corte=corte).first()
         contr = rec.ContratoForm.get_instance(empleado, corte)
         form = NominaForm({'contrato': contr.pk}, instance = instance)
@@ -205,7 +219,7 @@ class NominaForm(forms.ModelForm):
 
 
 def cuando_apruebe(turno):
-    nom_form = NominaForm.get_instance(empleado = turno.empleado)
+    nom_form = NominaForm.get_instance(turno = turno)
     if nom_form.is_valid():
     	nom_form.save()
     else:
