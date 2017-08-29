@@ -67,7 +67,7 @@ class UnidadProduccionSupraList(MasterList):
     list_display = ['id', 'nombre']
     search_fields = ['nombre']
     list_filter = ['tarifario__cargo', 'id']
-    model = models.UnidadProduccion
+    model = models.UnidadProduccioncontr
 
     def get_queryset(self):
         queryset = super(UnidadProduccionSupraList, self).get_queryset()
@@ -556,7 +556,11 @@ class ContraoSupraList(supra.SupraListView):
     def get_queryset(self):
         queryset = super(ContraoSupraList, self).get_queryset()
         if self.request.GET.get('num_page', False):
-            self.paginate_by = self.request.GET.get('num_page', False)
+            if int(self.request.GET.get('num_page')) is 0:
+                self.paginate_by = None
+            else:
+                self.paginate_by = self.request.GET.get('num_page', False)
+            # end if
         # end if
         propiedad = self.request.GET.get('sort_property', False)
         orden = self.request.GET.get('sort_direction', False)
@@ -598,7 +602,7 @@ class EmpleadoSupraList(supra.SupraListView):
         queryset = super(EmpleadoSupraList, self).get_queryset()
         unidad = self.request.GET.get('cargo__tarifario__unidad', False)
         if unidad:
-            cargos = models.Cargo.objects.filter(tarifario__remplazado_por__isnull=True, tarifario__unidad__pk=unidad).values('pk')            
+            cargos = models.Cargo.objects.filter(tarifario__remplazado_por__isnull=True, tarifario__unidad__pk=unidad).values('pk')
             queryset = queryset.filter(cargo__in=cargos, contrato__tipo_contrato__modalidad=models.TipoContrato.PRODUCCION)
         # end if
         if self.request.GET.get('num_page', False):
