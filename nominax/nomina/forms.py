@@ -142,6 +142,7 @@ class NominaForm(forms.ModelForm):
         instance = models.Nomina.objects.filter(contrato__empleado=empleado, corte=corte).first()
         contr = rec.ContratoForm.get_instance(empleado, corte)
         form = NominaForm({'contrato': contr.pk}, instance = instance)
+        form.turno = turno
         return form
     # end def
 
