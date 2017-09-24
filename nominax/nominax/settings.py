@@ -27,6 +27,8 @@ SECRET_KEY = 'dvlyk+rzvt+gl19!5!$0&m#*8%qn#6dqij(w6*k5z!n@_=f1fl'
 DEBUG = True
 
 
+ADMINS = [('Mario', 'mariobarrios@exile.com.co'), ('Migue', 'luismorales@exile.com.co'), ('Yamid', 'yamidpico@exile.com.co')]
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
@@ -118,14 +120,14 @@ DATABASES = {
     }
 }
 
-#DATABASES['default']['HOST'] = '/cloudsql/vertical-airway-172321:us-east1:ingecol-db'
-#if os.getenv('GAE_INSTANCE'):
-#    pass
-#else:
-#    DATABASES['default']['HOST'] = '127.0.0.1'
+DATABASES['default']['HOST'] = '/cloudsql/vertical-airway-172321:us-east1:ingecol-db'
+if os.getenv('GAE_INSTANCE'):
+    pass
+else:
+    DATABASES['default']['HOST'] = '127.0.0.1'
 # end if
 
- 
+
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
@@ -204,3 +206,42 @@ WEB_ROOT = os.path.join(BASE_DIR, "web")
 
 ASSETS_URL = '/assets/'
 ASSETS_ROOT = os.path.join(BASE_DIR, "web/assets")
+
+
+# Logging
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        }
+    }
+}

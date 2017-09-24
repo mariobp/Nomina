@@ -138,6 +138,9 @@ var CorteEditComponent = (function () {
     CorteEditComponent.prototype.descuento = function () {
         this._s.down('admin/nomina/nomina/export/free/2/?corte__id__exact=', this._form.item.id, 3);
     };
+    CorteEditComponent.prototype.resumen = function () {
+        this._s.down('admin/nomina/nomina/export/free/3/?corte__id__exact=', this._form.item.id, 3);
+    };
     return CorteEditComponent;
 }());
 __decorate([
@@ -210,7 +213,7 @@ var _a, _b;
 /***/ "../../../../../src/app/nomina/corte/edit.corte.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ex-form #f icon=\"alarm_off\" title=\"Corte\" [form]=\"form\" [service]=\"service\" [columns]=\"columns\" [renderinputs]=\"renderinputs\" [deleteable]=\"deleteable\" [saveable]=\"saveable\">\n    <button (click)=\"plano1()\" custom-button class=\"btn btn-primary btn-responsive\" type=\"button\">Plano Bancolombia</button>\n    <button (click)=\"plano2()\" custom-button class=\"btn btn-primary btn-responsive\" type=\"button\">Plano Davivienda</button>\n    <button (click)=\"descuento()\" custom-button class=\"btn btn-primary btn-responsive\" type=\"button\">Descuento Bonificación</button>\n</ex-form>\n<router-outlet></router-outlet>\n<router-outlet name=\"descuento\"></router-outlet>\n"
+module.exports = "<ex-form #f icon=\"alarm_off\" title=\"Corte\" [form]=\"form\" [service]=\"service\" [columns]=\"columns\" [renderinputs]=\"renderinputs\" [deleteable]=\"deleteable\" [saveable]=\"saveable\">\n    <button (click)=\"plano1()\" custom-button class=\"btn btn-primary btn-responsive\" type=\"button\">Plano Bancolombia</button>\n    <button (click)=\"plano2()\" custom-button class=\"btn btn-primary btn-responsive\" type=\"button\">Plano Davivienda</button>\n    <button (click)=\"descuento()\" custom-button class=\"btn btn-primary btn-responsive\" type=\"button\">Descuento Bonificación</button>\n    <button (click)=\"resumen()\" custom-button class=\"btn btn-primary btn-responsive\" type=\"button\">Resumen</button>\n\n</ex-form>\n<router-outlet></router-outlet>\n<router-outlet name=\"descuento\"></router-outlet>\n"
 
 /***/ }),
 

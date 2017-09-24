@@ -25,7 +25,8 @@ class TurnoForm(forms.ModelForm):
 
     @staticmethod
     def get_turnos(corte, empleado):
-        turnos = models.Turno.objects.filter(empleado=empleado, entrada__gte=corte.fecha_inicio, aprobado=True)
+        print "corte, empleado", corte, empleado
+        turnos = models.Turno.objects.filter(empleado=empleado, entrada__gte=corte.fecha_inicio, aprobado=True, eliminado=False)
         if corte.fecha_fin:
             turnos = turnos.filter(entrada__date__lte=corte.fecha_fin)
         # end if
