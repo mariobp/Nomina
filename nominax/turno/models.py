@@ -6,21 +6,11 @@ from recursos_h import models as recursos
 from cuser.fields import CurrentUserField
 from django.contrib.auth.models import User
 from datedelta import datedelta, multi_datedelta, periodic_timedelta
-from datetime import date, timedelta, time
-
+from datetime import date, datetime,timedelta, time
 
 class RangoFecha(models.Model):
     fecha_inicio = models.DateTimeField()
-    fecha_fin = models.DateTimeField()
-
-    @staticmethod
-    def create(fecha_inicio, fecha_fin):
-        rango = RangoFecha()
-        rango.fecha_inicio = fecha_inicio
-        rango.fecha_fin = fecha_fin
-        rango.save()
-        return rango
-    # end def
+    fecha_fin    = models.DateTimeField()
 
     def datedelta(self):
         return datedelta(self.fecha_inicio, self.fecha_fin)
@@ -33,7 +23,6 @@ class RangoFecha(models.Model):
     def __unicode__(self):
         return "[%s - %s]" % (str(self.fecha_inicio), str(self.fecha_fin))
     # end def
-
 # end class
 
 class Turno(models.Model):

@@ -40,6 +40,7 @@ class Tarifario(models.Model):
     last_editor = CurrentUserField(related_name="last_edited_tarifario")
     eliminado = models.BooleanField(default=False)
     eliminado_por = models.ForeignKey(User, related_name="eliminado_por_tarifario", blank=True, null=True)
+    
     def __unicode__(self):
         return u"para el %s el(la) %s es a: $%s" % (str(self.cargo), str(self.unidad), str(self.precio))
     # end def
@@ -62,7 +63,6 @@ class Pension(models.Model):
         return u"%s" % (self.nombre)
     # end def
 # end class
-
 
 class Eps(models.Model):
     nombre = models.CharField(max_length=100)
@@ -189,7 +189,6 @@ class TipoContrato(models.Model):
         return u"%s" % (self.nombre)
     # end def
 # end class
-
 
 class Contrato(models.Model):
     empleado = models.ForeignKey(Empleado)

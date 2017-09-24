@@ -234,7 +234,12 @@ class multi_datedelta():
     # end def
 
     def empty(self):
-        return len(self.date_deltas) == 0
+        for delta in self.date_deltas:
+            if not delta.empty():
+                return False
+            # end if
+        # end for
+        return True
     # end if
 
     def __add__(self, date_delta):

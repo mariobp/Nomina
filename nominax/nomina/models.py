@@ -11,7 +11,6 @@ from django.contrib.auth.models import User
 from decimal import Decimal, getcontext
 from django.utils.functional import cached_property
 
-
 class Corte(models.Model):
     fecha_inicio = models.DateField()
     fecha_de_adelanto = models.DateField(blank=True, null=True)
@@ -441,5 +440,4 @@ class Nomina(models.Model):
     def __unicode__(self):
         return u"Nomina %s %s - %s" % (self.contrato.empleado.nombre, self.contrato.empleado.apellidos, self.fecha.strftime('%Y-%m-%d'))
     # end def
-
 # end class

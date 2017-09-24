@@ -410,7 +410,6 @@ class DescuentoProduccionSupraFormDelete(supra.SupraDeleteView):
 class TipoIncapacidadSupraList(MasterList):
     model = models.TipoIncapacidad
     list_display = ['id', 'nombre']
-
 # end class
 
 class TipoIncapacidadSupraForm(supra.SupraFormView):
@@ -445,7 +444,6 @@ class TipoIncapacidadSupraFormDelete(supra.SupraDeleteView):
 class PagoIncapacidadSupraList(MasterList):
     model = models.PagoIncapacidad
     list_display = ['id', 'tipo', 'dia', 'porcentaje', 'tipo__nombre']
-
 # end class
 
 class PagoIncapacidadSupraFormDelete(supra.SupraDeleteView):
@@ -480,7 +478,6 @@ class PagoIncapacidadSupraForm(supra.SupraFormView):
 class DiaIncapacidadSupraList(MasterList):
     model = models.DiaIncapacidad
     list_display = ['id', 'tipo', 'fecha', 'empleado', 'empleado__nombre', 'empleado__apellidos', 'dias','tipo__nombre',]
-
 # end class
 
 class DiaIncapacidadSupraForm(supra.SupraFormView):

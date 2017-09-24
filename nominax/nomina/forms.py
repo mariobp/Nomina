@@ -8,7 +8,7 @@ import models
 import decimal
 from configuracion import forms as conf
 from datetime import date, timedelta
-from turno.datedelta import datedelta, multi_datedelta
+from turno.datedelta import datedelta, multi_datedelta, periodic_timedelta
 import calendar
 
 class CorteForms(forms.ModelForm):
@@ -95,7 +95,6 @@ class DescuentoProduccionForm(forms.ModelForm):
         # end if
         return self.cleaned_data['corte']
     # end def
-
 # end class
 
 class NominaForm(forms.ModelForm):
@@ -148,6 +147,25 @@ class NominaForm(forms.ModelForm):
     def posibles_horas_extras(self):
         date_deltas = []
         for turn in self.month:
+            corte = self.instance.corte
+            config = conf.ConfiguracionForm.get_instance()
+
+            if turn.descontar_almuerzo:
+                almuerzo = periodic_timedelta(config.h_almuerzo_inicio, config.h_almuerzo_fin)
+            else:
+                almuerzo = datedelta()
+            # end if
+            delta = datedelta(turn.entrada, turn.salida)
+            horas_almuerzo = almuerzo.intersect(delta).horas()
+            date_deltas.append(delta.move_to_hour(self.instance.contrato.horas_trabajo_corte + horas_almuerzo))
+            print delta.move_to_hour(self.instance.contrato.horas_trabajo_corte + horas_almuerzo)
+        # end for
+        return multi_datedelta(date_deltas)
+    # end def
+
+    def posibles_horas_extras2(self):
+        date_deltas = []
+        for turn in self.month:
             date_deltas.append(datedelta(turn.entrada, turn.salida))
         # end for
         multi = multi_datedelta(date_deltas)
@@ -156,8 +174,6 @@ class NominaForm(forms.ModelForm):
     # end def
 
     def calcular_nomina(self, nomina):
-
-        print 'calcular_nomina', len(self.turnos)
 
         today = nomina.corte.fecha_fin or date.today()
         delta = datedelta.for_dates(nomina.inicio_mes, today + timedelta(days=1))
@@ -182,6 +198,8 @@ class NominaForm(forms.ModelForm):
         nomina.hora_diurna = deltas_diurno.horas()
         nomina.horas_nocturna = deltas_nocturno.horas()
         nomina.horas_dominicales = deltas_dominical_diurno.horas() + deltas_dominical_nocturno.horas()
+        
+        print "ok", rango_extra.empty()
 
         if rango_extra:
             deltas_diurno_extra = deltas_diurno.intersect(rango_extra)
