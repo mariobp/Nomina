@@ -159,7 +159,6 @@ class NominaForm(forms.ModelForm):
             delta = datedelta(turn.entrada, turn.salida)
             horas_almuerzo = almuerzo.intersect(delta).horas()
             date_deltas.append(delta.move_to_hour(self.instance.contrato.horas_trabajo_corte + horas_almuerzo))
-            print delta.move_to_hour(self.instance.contrato.horas_trabajo_corte + horas_almuerzo)
         # end for
         return multi_datedelta(date_deltas)
     # end def
@@ -175,13 +174,15 @@ class NominaForm(forms.ModelForm):
     # end def
 
     def calcular_nomina(self, nomina):
-
         today = nomina.corte.fecha_fin or date.today()
         delta = datedelta.for_dates(nomina.inicio_mes, today + timedelta(days=1))
         weeks = delta.timedelta().days / 7
         rango_extra = None
         if weeks >= 3:
-            rango_extra = self.posibles_horas_extras()
+            posibles_horas_extras = self.posibles_horas_extras()
+            if posibles_horas_extras.horas() > 0 and self.turnos.count()/posibles_horas_extras.horas() > self.instance.contrato.horas_trabajo_cort:
+                rango_extra = posibles_horas_extras
+            # end if
         # end if
         deltas_diurno = multi_datedelta()
         deltas_nocturno = multi_datedelta()
