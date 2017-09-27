@@ -99,9 +99,8 @@ class TurnoForm(forms.ModelForm):
             almuerzo = datedelta()
         # end if
 
-
-        horas_almuerzo = delta.intersect(almuerzo).horas()
-        delta_horas_extra = delta.move_to_hour(move_to_hour + 8)
+        horas_almuerzo = almuerzo.intersect(delta).horas()
+        delta_horas_extra = delta.move_to_hour(horas_almuerzo + 8)
 
         delta_dominicales = models.DiaDominical.multi_datedelta(delta)
         delta_festivos = models.DiaFestivo.multi_datedelta(delta)
@@ -117,24 +116,22 @@ class TurnoForm(forms.ModelForm):
         models.RangoFecha.objects.filter(diurna=turno).delete()
         models.RangoFecha.objects.filter(dominical=turno).delete()
 
-        for delta_single in delta_horas_extra.date_deltas:
-            extras = models.RangoFecha.create(delta_single.start_date, delta_single.end_date)
-            turno.estras.add(nocturna)
-        # end for
+        extras = models.RangoFecha.objects.create(fecha_inicio=delta_horas_extra.start_date, fecha_fin=delta_horas_extra.end_date)
+        turno.extras.add(extras)
 
         for delta_single in delta_nocturno.date_deltas:
-            nocturna = models.RangoFecha.create(delta_single.start_date, delta_single.end_date)
+            nocturna = models.RangoFecha.objects.create(fecha_inicio=delta_single.start_date, fecha_fin=delta_single.end_date)
             turno.nocturna.add(nocturna)
         # end for
 
         for delta_single in delta_diurno.date_deltas:
-            diurna = models.RangoFecha.create(delta_single.start_date, delta_single.end_date)
+            diurna = models.RangoFecha.objects.create(fecha_inicio=delta_single.start_date, fecha_fin=delta_single.end_date)
             turno.diurna.add(diurna)
         # end for
 
         if not delta_dominicales_festivos.empty():
             for delta_single in delta_dominicales_festivos.difference(almuerzo).date_deltas:
-                dominical = models.RangoFecha.create(delta_single.start_date, delta_single.end_date)
+                dominical = models.RangoFecha.objects.create(fecha_inicio=delta_single.start_date, fecha_fin=delta_single.end_date)
                 turno.dominical.add(dominical)
             # end for
         # end if

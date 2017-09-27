@@ -237,7 +237,6 @@ class NominaForm(forms.ModelForm):
     # end def
 # end class
 
-
 def cuando_apruebe(turno):
     nom_form = NominaForm.get_instance(turno = turno)
     if nom_form.is_valid():
