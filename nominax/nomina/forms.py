@@ -200,8 +200,7 @@ class NominaForm(forms.ModelForm):
         nomina.hora_diurna = deltas_diurno.horas()
         nomina.horas_nocturna = deltas_nocturno.horas()
         nomina.horas_dominicales = deltas_dominical_diurno.horas() + deltas_dominical_nocturno.horas()
-        
-        print "ok", rango_extra.empty()
+    
 
         if rango_extra:
             deltas_diurno_extra = deltas_diurno.intersect(rango_extra)

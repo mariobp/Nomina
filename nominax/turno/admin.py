@@ -31,7 +31,6 @@ class TurnoAdmin(admin.ModelAdmin):
 			total = total + total_horas"""
 			
 		# 	forms.TurnoForm.update_form(turno, {})
-		#print diurnas, nocturnas, total
 		return queryset
 	# end def
 	

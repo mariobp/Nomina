@@ -25,7 +25,6 @@ class TurnoForm(forms.ModelForm):
 
     @staticmethod
     def get_turnos(corte, empleado):
-        print "corte, empleado", corte, empleado
         turnos = models.Turno.objects.filter(empleado=empleado, entrada__gte=corte.fecha_inicio, aprobado=True, eliminado=False)
         if corte.fecha_fin:
             turnos = turnos.filter(entrada__date__lte=corte.fecha_fin)
@@ -93,14 +92,18 @@ class TurnoForm(forms.ModelForm):
         nocturno = periodic_timedelta(h_recargo_nocturno_inicio, h_recargo_nocturno_fin)
         delta = datedelta(fecha_hora_entrada, fecha_hora_salida)
 
+        delta_horas_extra = delta.move_to_hour(8)#revisar este valor
+
         if self.instance.descontar_almuerzo:
             almuerzo = periodic_timedelta(h_almuerzo_inicio, h_almuerzo_fin)
+            
         else:
-            almuerzo = datedelta()
+            almuerzo = datedelta(h_almuerzo_inicio, h_almuerzo_inicio)
         # end if
 
         horas_almuerzo = almuerzo.intersect(delta).horas()
-        delta_horas_extra = delta.move_to_hour(horas_almuerzo + 8)
+
+        delta_horas_extra = delta_horas_extra.move_to_hour(horas_almuerzo)
 
         delta_dominicales = models.DiaDominical.multi_datedelta(delta)
         delta_festivos = models.DiaFestivo.multi_datedelta(delta)
@@ -116,9 +119,11 @@ class TurnoForm(forms.ModelForm):
         models.RangoFecha.objects.filter(diurna=turno).delete()
         models.RangoFecha.objects.filter(dominical=turno).delete()
 
+
         if not delta_horas_extra.empty():
             extras = models.RangoFecha.objects.create(fecha_inicio=delta_horas_extra.start_date, fecha_fin=delta_horas_extra.end_date)
             turno.extras.add(extras)
+            print turno.extras.count()
         # end if
 
         for delta_single in delta_nocturno.date_deltas:
@@ -137,6 +142,8 @@ class TurnoForm(forms.ModelForm):
                 turno.dominical.add(dominical)
             # end for
         # end if
+
+
 
     # end def
 

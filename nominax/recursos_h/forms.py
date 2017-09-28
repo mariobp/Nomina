@@ -25,7 +25,6 @@ class MasterEdit(forms.ModelForm):
 class TarifarioForm(forms.ModelForm):
 
     def save(self, commit=False):
-        print commit
         tarifa = super(TarifarioForm, self).save(commit)
 
         if not commit:
