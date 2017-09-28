@@ -116,8 +116,10 @@ class TurnoForm(forms.ModelForm):
         models.RangoFecha.objects.filter(diurna=turno).delete()
         models.RangoFecha.objects.filter(dominical=turno).delete()
 
-        extras = models.RangoFecha.objects.create(fecha_inicio=delta_horas_extra.start_date, fecha_fin=delta_horas_extra.end_date)
-        turno.extras.add(extras)
+        if not delta_horas_extra.empty():
+            extras = models.RangoFecha.objects.create(fecha_inicio=delta_horas_extra.start_date, fecha_fin=delta_horas_extra.end_date)
+            turno.extras.add(extras)
+        # end if
 
         for delta_single in delta_nocturno.date_deltas:
             nocturna = models.RangoFecha.objects.create(fecha_inicio=delta_single.start_date, fecha_fin=delta_single.end_date)
