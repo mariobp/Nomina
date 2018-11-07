@@ -29,6 +29,7 @@ class ConfiguracionSupraList(supra.SupraListView):
     time_format = "%H:%M"
 
     ordering = ['-id']
+    paginate_by = 1
 
     def tarifario(self, obj, now):
         lista = []
