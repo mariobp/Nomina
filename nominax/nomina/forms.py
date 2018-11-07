@@ -10,6 +10,7 @@ from configuracion import forms as conf
 from datetime import date, timedelta
 from turno.datedelta import datedelta, multi_datedelta, periodic_timedelta
 import calendar
+from datetime import date
 
 class CorteForms(forms.ModelForm):
     class Meta:
@@ -31,6 +32,8 @@ class CorteForms(forms.ModelForm):
             ultimo_corte = models.Corte.objects.all().order_by('fecha_inicio').last()
             if ultimo_corte:
             	instance.fecha_inicio = ultimo_corte.fecha_fin + timedelta(days=1)
+            else:
+                instance.fecha_inicio = date.today().replace(day=config.primer_dia)
             # end if
         # end if
         if not instance.cerrado:
