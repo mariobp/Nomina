@@ -138,6 +138,8 @@ class NominaForm(forms.ModelForm):
     def get_instance(turno):
         empleado = turno.empleado
         corte = CorteForms.find_by_turn(turno)
+        if not corte:
+            corte = CorteForms.get_instance()
         instance = models.Nomina.objects.filter(contrato__empleado=empleado, corte=corte).first()
         contr = rec.ContratoForm.get_instance(empleado, corte)
         form = NominaForm({'contrato': contr.pk}, instance = instance)
