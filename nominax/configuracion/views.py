@@ -28,6 +28,8 @@ class ConfiguracionSupraList(supra.SupraListView):
                     'nocturna_dominical', 'nit', 'numero_cuenta', 'tipo_cuenta', 'tarifario']
     time_format = "%H:%M"
 
+    ordering = ['-id']
+
     def tarifario(self, obj, now):
         lista = []
         for u in obj.tarifario.all():
