@@ -204,7 +204,7 @@ class Nomina(models.Model):
         total = 0
         for pro in produccion:
             tarifa = recursos.Tarifario.objects.filter(unidad=pro.unidad, cargo=self.contrato.empleado.cargo, remplazado_por__isnull=True).last()
-            sub_total = pro.cantidad/pro.empleados.count()*tarifa.precio 
+            sub_total = pro.cantidad/pro.empleados.count()*tarifa.precio
             total = total + sub_total
         # end for
         return total
@@ -247,6 +247,11 @@ class Nomina(models.Model):
     # end def
 
     @cached_property
+    def salario_hora_total(self):
+        return self.salario_hora_adelanto + self.salario_hora_nomina
+    # end def
+
+    @cached_property
     def salario_produccion_adelanto(self):
         adelanto = self.salario_produccion(self.corte.fecha_inicio, self.corte.fecha_de_adelanto)
         if self.descuento_produccion > adelanto:
@@ -256,7 +261,26 @@ class Nomina(models.Model):
     # end def
 
     @cached_property
+    def salario_hora_adelanto(self):
+        adelanto = self.calcular_hora_diurna
+        if adelanto > self.salario_base/2:
+            adelanto = self.salario_base/2
+        # end if
+        return adelanto
+    # end def
+
+    @cached_property
     def salario_produccion_nomina(self):
+        nomina = self.salario_produccion(self.corte.fecha_de_adelanto, self.corte.fecha_fin)
+        adelanto = self.salario_produccion(self.corte.fecha_inicio, self.corte.fecha_de_adelanto)
+        if self.descuento_produccion > adelanto:
+            return nomina - (self.descuento_produccion - adelanto)
+        # end if
+        return nomina
+    # end def
+
+    @cached_property
+    def salario_hora_nomina(self):
         nomina = self.salario_produccion(self.corte.fecha_de_adelanto, self.corte.fecha_fin)
         adelanto = self.salario_produccion(self.corte.fecha_inicio, self.corte.fecha_de_adelanto)
         if self.descuento_produccion > adelanto:
@@ -290,7 +314,10 @@ class Nomina(models.Model):
 
     @cached_property
     def bonificacion_neta(self):
-        bonificacion = self.salario_produccion_adelanto + self.salario_produccion_nomina - self.total_devengado
+        if self.contrato.tipo_contrato.modalidad == recursos.TipoContrato.PRODUCCION:
+            bonificacion = self.salario_produccion_adelanto + self.salario_produccion_nomina - self.total_devengado
+        elif self.contrato.tipo_contrato.modalidad == recursos.TipoContrato.POR_HORA:
+            bonificacion = self.salario_hora_adelanto + self.salario_hora_nomina - self.total_devengado
         if bonificacion < 0:
             return 0
         # end if
@@ -311,6 +338,8 @@ class Nomina(models.Model):
             return self.salario_produccion_adelanto
         elif self.contrato.tipo_contrato.modalidad == recursos.TipoContrato.SALARIO_FIJO:
             return self.salario_base/2
+        elif self.contrato.tipo_contrato.modalidad == recursos.TipoContrato.POR_HORA:
+            return self.calcular_hora_diurna/2
         # end if
         return 0
     # end def
@@ -324,6 +353,8 @@ class Nomina(models.Model):
                 return self.total_devengado - self.salario_produccion_adelanto
             # end if
             return self.bonificacion + self.total_devengado
+        elif self.contrato.tipo_contrato.modalidad == recursos.TipoContrato.POR_HORA:
+            return self.total_devengado - self.salario_produccion_adelanto
         # end if
         return 0
     # end def
