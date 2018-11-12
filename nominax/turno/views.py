@@ -82,9 +82,13 @@ class MasterList(supra.SupraListView):
 class TurnoSupraForm(supra.SupraFormView):
     model = models.Turno
     form_class = forms.TurnoForm
-    list_display = ('id', 'empleado_id', 'empleado', 'entrada', 'extras','salida', 'aprobado', 'creator', 'last_editor',)
+    list_display = ('id', 'empleado_id', 'empleado', 'entrada', 'extras','salida', 'aprobado', 'creator', 'last_editor', 
+        'h_extras', 
+        'h_nocturna', 
+        'h_diurna', 
+        'h_dominical', 
+    )
     
-    """
     def h_extras(self, obj, now):
         if hasattr(self, 'instance') and self.instance:
             return self.instance.horas_extras()
@@ -108,7 +112,7 @@ class TurnoSupraForm(supra.SupraFormView):
             return self.instance.horas_dominical()
         return None
     # end def
-    """
+
     @method_decorator(check_login)
     @csrf_exempt
     def dispatch(self, request, *args, **kwargs):
