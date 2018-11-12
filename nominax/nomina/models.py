@@ -262,11 +262,7 @@ class Nomina(models.Model):
 
     @cached_property
     def salario_hora_adelanto(self):
-        adelanto = self.calcular_hora_diurna
-        if adelanto > self.salario_base/2:
-            adelanto = self.salario_base/2
-        # end if
-        return adelanto
+        return self.salario_base/2
     # end def
 
     @cached_property
@@ -281,9 +277,11 @@ class Nomina(models.Model):
 
     @cached_property
     def salario_hora_nomina(self):
-        nomina = self.salario_produccion(self.corte.fecha_de_adelanto, self.corte.fecha_fin)
-        adelanto = self.salario_produccion(self.corte.fecha_inicio, self.corte.fecha_de_adelanto)
-        if self.descuento_produccion > adelanto:
+        adelanto = self.salario_hora_adelanto
+
+        nomina = self.calcular_hora_diurna - adelanto
+
+        if nomina < adelanto:
             return nomina - (self.descuento_produccion - adelanto)
         # end if
         return nomina
@@ -339,7 +337,7 @@ class Nomina(models.Model):
         elif self.contrato.tipo_contrato.modalidad == recursos.TipoContrato.SALARIO_FIJO:
             return self.salario_base/2
         elif self.contrato.tipo_contrato.modalidad == recursos.TipoContrato.POR_HORA:
-            return self.calcular_hora_diurna/2
+            return self.salario_hora_adelanto
         # end if
         return 0
     # end def
@@ -354,7 +352,7 @@ class Nomina(models.Model):
             # end if
             return self.bonificacion + self.total_devengado
         elif self.contrato.tipo_contrato.modalidad == recursos.TipoContrato.POR_HORA:
-            return self.total_devengado - self.salario_produccion_adelanto
+            return self.total_devengado - self.salario_hora_adelanto
         # end if
         return 0
     # end def
@@ -380,17 +378,19 @@ class Nomina(models.Model):
 
     @cached_property
     def total_pagar(self):
-        return self.neto - self.adelanto
+        return self.total - self.adelanto
     # end def
 
     @cached_property
     def recargos(self):
         recargos = 0
-        recargos = recargos + self.calcular_hora_extra_diurna
+
         recargos = recargos + self.calcular_hora_nocturna
-        recargos = recargos + self.calcular_hora_extra_nocturna
         recargos = recargos + self.calcular_hora_dominical_diurna
         recargos = recargos + self.calcular_hora_dominical_nocturna
+        
+        recargos = recargos + self.calcular_hora_extra_diurna
+        recargos = recargos + self.calcular_hora_extra_nocturna
         recargos = recargos + self.calcular_hora_dominical_extra_diurna
         recargos = recargos + self.calcular_hora_dominical_extra_nocturna
         return recargos
