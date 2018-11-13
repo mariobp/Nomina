@@ -52,7 +52,6 @@ export class CallService {
     getOptions(headersList: any, par?: any): RequestOptions {
         const options = new RequestOptions();
         const headers = new Headers();
-        console.log(par);
         headersList = headersList || this.json;
         for (const key in headersList) {
             if (headersList[key]) {
@@ -62,12 +61,10 @@ export class CallService {
         if (!!par) {
             const query = new URLSearchParams();
             for (const key in par) {
-                console.log(key, par[key]);
                 if (par[key] !== '') {
                     query.set(key, par[key]);
                 }
             }
-            console.log(query);
             options.search = query;
         }
         options.headers = headers;
@@ -76,7 +73,6 @@ export class CallService {
     }
 
     get(url: string, params?: any, head?: any): Promise<Response> {
-        // console.log(this.getUrl(url));
         return this._http.get(this.getUrl(url), this.getOptions(head, params)).toPromise();
     }
 

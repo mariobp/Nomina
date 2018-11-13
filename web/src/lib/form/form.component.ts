@@ -82,10 +82,9 @@ export class FormComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-        if (!!this._ar.snapshot.data['item'] && Object.keys(this._ar.snapshot.data['item']).length !== 0) {
-            this.setItem(this._ar.snapshot.data['item']);
-        }
-        this.form.valueChanges.subscribe(data => this.onValueChanged(data));
+        this._ar.paramMap.subscribe(params => {
+           this.init();
+        })
     }
 
     ngAfterViewInit() {
@@ -159,6 +158,13 @@ export class FormComponent implements OnInit, AfterViewInit {
         }
     }
 
+    init() {
+        if (!!this._ar.snapshot.data['item'] && Object.keys(this._ar.snapshot.data['item']).length !== 0) {
+            this.setItem(this._ar.snapshot.data['item']);
+        }
+        this.form.valueChanges.subscribe(data => this.onValueChanged(data));
+    }
+
     save(back?: boolean) {
         if (!!this.service && this.form.valid) {
             const body = this.preSave(this.form.value);
@@ -175,7 +181,7 @@ export class FormComponent implements OnInit, AfterViewInit {
                             confirmButtonColor: '#213b78',
                         });
                     })
-                    .catch(error => this._error(error, 'Ha ocurrido un error al intentar gurdar los datos'));
+                    .catch(error => this._error(error, 'Ha ocurrido un error al intentar guardar los datos'));
             } else {
                 this.service.add(body)
                     .then(data => {
@@ -191,7 +197,7 @@ export class FormComponent implements OnInit, AfterViewInit {
                             this.successful(data);
                         }
                     })
-                    .catch(error => this._error(error, 'Ha ocurrido un error al intentar gurdar los datos'));
+                    .catch(error => this._error(error, 'Ha ocurrido un error al intentar guardar los datos'));
             }
         } else {
             console.error('no se ha definido un service para este formulario')
@@ -238,7 +244,6 @@ export class FormComponent implements OnInit, AfterViewInit {
                         });
                     })
                     .catch(err => {
-                        console.log(err)
                         this._error(err, 'No se han podido eliminar los registros')
                     })
             }, () => { });
@@ -259,10 +264,8 @@ export class FormComponent implements OnInit, AfterViewInit {
 
     _error(error: any, defaultMgs: string) {
         this._ready = false;
-        console.log(error);
         switch (error.status) {
             case 0:
-                console.log(error);
                 swal({
                     title: 'Sin Conexión!',
                     text: 'Verifique su Conexión a Internet.',

@@ -5080,7 +5080,7 @@ var FormComponent = (function () {
                         confirmButtonColor: '#213b78',
                     });
                 })
-                    .catch(function (error) { return _this._error(error, 'Ha ocurrido un error al intentar gurdar los datos'); });
+                    .catch(function (error) { return _this._error(error, 'Ha ocurrido un error al intentar guardar los datos'); });
             }
             else {
                 this.service.add(body)
@@ -5097,7 +5097,7 @@ var FormComponent = (function () {
                         _this.successful(data);
                     }
                 })
-                    .catch(function (error) { return _this._error(error, 'Ha ocurrido un error al intentar gurdar los datos'); });
+                    .catch(function (error) { return _this._error(error, 'Ha ocurrido un error al intentar guardar los datos'); });
             }
         }
         else {

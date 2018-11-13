@@ -8,6 +8,7 @@ import { DescuentoComponent, DescuentoListComponent, EditDescuentoComponent } fr
 import { DescuentoService } from '../turno/descuento/descuento.service';
 import { IncapacidadComponent, EditIncapacidadComponent, IncapacidadListComponent } from '../turno/incapacidad/incapacidad.component';
 import { IncapacidadService } from '../turno/incapacidad/incapacidad.service';
+import { RedirectComponent } from './redirect/redirect.component';
 
 export const TurnoRoutes: Routes = [
     {
@@ -35,6 +36,9 @@ export const TurnoRoutes: Routes = [
                     { path: '', component: IncapacidadListComponent },
                     { path: ':id/edit', component: EditIncapacidadComponent, data: { miga: 'Editar' }, resolve: { item: IncapacidadService } }
                 ]
+            },
+            {
+                path: 'redirect', component: RedirectComponent,
             }
         ]
     }
@@ -46,5 +50,4 @@ export const ProduccionMenuMeta: MenuMeta[] = [
     { title: 'Producción', url: '/operacion/produccion', icon: 'extension' },
     { title: 'Descuentos de producción', url: '/operacion/descuento', icon: 'extension' },
     { title: 'Incapacidad', url: '/operacion/incapacidad', icon: 'extension' },
-
 ];

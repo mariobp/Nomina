@@ -118,12 +118,10 @@ export class CrudBase implements Resolve<any> {
                 if (item) {
                     return item;
                 }
-                console.log(`Item was not found: ${id}`);
                 this.router.navigate([this.conf.redirect || '/']);
                 return null;
             })
             .catch(error => {
-                console.log(`Retrieval error: ${error}`);
                 this.router.navigate([this.conf.redirect || '/']);
                 return null;
             });

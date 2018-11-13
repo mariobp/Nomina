@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { TableComponent, RenderInput, FormComponent } from '../../../lib/components';
 import { TurnoService } from './turno.service';
 import { BsNotify } from '../../../lib/bs.notify';
@@ -114,7 +114,12 @@ export class TurnoEditComponent implements OnInit {
 
     options: any[] = [];
 
-    constructor(private _fb: FormBuilder, private _s: TurnoService, private _rt: Router, private _es: EmpleadoService) {
+    constructor(
+        private _fb: FormBuilder,
+        private _s: TurnoService,
+        private _rt: Router,
+        private _es: EmpleadoService,
+        ) {
         this.form = this._fb.group({
             aprobado: [false, [Validators.required]],
             empleado: ['', [Validators.required, Validators.pattern(/\d/)]],
@@ -164,20 +169,19 @@ export class TurnoEditComponent implements OnInit {
         }, () => { });
     }
     ngOnInit() {
-        this._form.prePatchValue = data => {
-            this._form.deleteable = !data.aprobado;
-            this._form.saveable = !data.aprobado;
-            if (!!data.empleado_id) {
-                data.empleado__nombre = data.empleado;
-                data.empleado = data.empleado_id;
-            }
-            return data;
-        }
+        this._form.prePatchValue = data => this.setData(data);
         this._form.successful = data => {
             if (data && data._body !== '') {
-                this._form.setItem(data.json());
+                const info = data.json();
+                const item = this._form.item;
+                const newData = this.setData(info);
+                if (item) {
+                    this._form.setItem(newData);
+                } else {
+                    const url = `/operacion/turno/${info.id}/edit`;
+                    this._rt.navigate(['operacion', 'redirect'], { queryParams: { url }});
+                }
             }
-
         }
 
         this._form.back = () => {
@@ -204,5 +208,15 @@ export class TurnoEditComponent implements OnInit {
             const value = this.options.filter(data => data.id === val)[0];
             return val ? (value ? `${value.nombre} ${value.apellidos}` : '') : null;
         }
+    }
+
+    private setData(data): any {
+        this._form.deleteable = !data.aprobado;
+        this._form.saveable = !data.aprobado;
+        if (!!data.empleado_id) {
+            data.empleado__nombre = data.empleado;
+            data.empleado = data.empleado_id;
+        }
+        return data;
     }
 }

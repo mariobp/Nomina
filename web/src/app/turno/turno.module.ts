@@ -18,6 +18,7 @@ import { DescuentoService } from '../turno/descuento/descuento.service';
 import { IncapacidadComponent, EditIncapacidadComponent, IncapacidadListComponent } from './incapacidad/incapacidad.component';
 import { IncapacidadService } from './incapacidad/incapacidad.service';
 import { TipoIncapacidadService } from '../incapacidad/tipo/tipo.incapacidad.service';
+import { RedirectComponent } from '../turno/redirect/redirect.component';
 
 @NgModule({
     imports: [
@@ -41,7 +42,8 @@ import { TipoIncapacidadService } from '../incapacidad/tipo/tipo.incapacidad.ser
         EditDescuentoComponent,
         IncapacidadComponent,
         EditIncapacidadComponent,
-        IncapacidadListComponent
+        IncapacidadListComponent,
+        RedirectComponent
     ],
     providers: [
         TurnoService,
