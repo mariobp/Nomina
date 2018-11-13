@@ -96,19 +96,19 @@ class TurnoSupraForm(supra.SupraFormView):
     # end def
 
     def h_nocturna(self, obj, now):
-        if self.instance:
+        if hasattr(self, 'instance') and self.instance:
             return self.instance.horas_nocturna()
         return None
     # end def
 
     def h_diurna(self, obj, now):
-        if self.instance:
+        if hasattr(self, 'instance') and self.instance:
             return self.instance.horas_diurna()
         return None
     # end def
 
     def h_dominical(self, obj, now):
-        if self.instance:
+        if hasattr(self, 'instance') and self.instance:
             return self.instance.horas_dominical()
         return None
     # end def
