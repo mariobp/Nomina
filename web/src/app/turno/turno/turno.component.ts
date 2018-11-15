@@ -109,6 +109,7 @@ export class TurnoEditComponent implements OnInit {
     columns: string[];
     renderinputs: RenderInput[];
     service = this._s;
+    isUpdated = false;
 
     @ViewChild('f') public _form: FormComponent;
 
@@ -151,8 +152,15 @@ export class TurnoEditComponent implements OnInit {
         ];
         this.form.get('empleado').valueChanges
             .startWith(null)
-            .subscribe(name => this.filterVal(name));
+            .subscribe(name => {
+                if (this.isUpdated) {
+                    this.filterVal('');
+                } else {
+                    this.filterVal(name);
+                }
+            });
     }
+
     aprobate() {
         swal({
             title: 'Estás seguro de aprobar este turno? ',
@@ -169,14 +177,15 @@ export class TurnoEditComponent implements OnInit {
         }, () => { });
     }
     ngOnInit() {
-        this._form.prePatchValue = data => this.setData(data);
+        this._form.prePatchValue = data =>  this.setData(data);
+
         this._form.successful = data => {
             if (data && data._body !== '') {
-                const info = data.json();
                 const item = this._form.item;
-                const newData = this.setData(info);
+                const info = data.json();
                 if (item) {
-                    this._form.setItem(newData);
+                    this.isUpdated = true;
+                    this._form.setItem(info);
                 } else {
                     const url = `/operacion/turno/${info.id}/edit`;
                     this._rt.navigate(['operacion', 'redirect'], { queryParams: { url }});
@@ -203,7 +212,9 @@ export class TurnoEditComponent implements OnInit {
     displayFn = val => {
 
         if (this.options.length === 0 && !!this._form.item) {
-            return `${this._form.item.empleado__nombre} ${this._form.item.empleado__apellidos}`
+            return `${this._form.item.empleado__nombre} ${this._form.item.empleado__apellidos}`;
+        }else if (!!this._form.item) {
+            return `${this._form.item.empleado__nombre} ${this._form.item.empleado__apellidos}`;
         } else {
             const value = this.options.filter(data => data.id === val)[0];
             return val ? (value ? `${value.nombre} ${value.apellidos}` : '') : null;
@@ -215,6 +226,7 @@ export class TurnoEditComponent implements OnInit {
         this._form.saveable = !data.aprobado;
         if (!!data.empleado_id) {
             data.empleado__nombre = data.empleado;
+            data.empleado__apellidos = '';
             data.empleado = data.empleado_id;
         }
         return data;
