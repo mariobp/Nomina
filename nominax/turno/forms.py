@@ -91,9 +91,8 @@ class TurnoForm(forms.ModelForm):
 
         nocturno = periodic_timedelta(h_recargo_nocturno_inicio, h_recargo_nocturno_fin)
         delta = datedelta(fecha_hora_entrada, fecha_hora_salida)
-
+        
         delta_horas_extra = delta.move_to_hour(8)#revisar este valor
-
         if self.instance.descontar_almuerzo:
             almuerzo = periodic_timedelta(h_almuerzo_inicio, h_almuerzo_fin)
             
@@ -102,7 +101,7 @@ class TurnoForm(forms.ModelForm):
         # end if
 
         horas_almuerzo = almuerzo.intersect(delta).horas()
-
+        
         delta_horas_extra = delta_horas_extra.move_to_hour(horas_almuerzo)
 
         delta_dominicales = models.DiaDominical.multi_datedelta(delta)
