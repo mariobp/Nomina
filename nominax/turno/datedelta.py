@@ -21,9 +21,11 @@ class datedelta():
     # end def
 
     def move_to_hour(self, hours):
-        start_date = self.start_date + timedelta(hours=hours)
-        if start_date <= self.end_date:
-            return datedelta(start_date, self.end_date)
+        if not self.empty():
+            start_date = self.start_date + timedelta(hours=hours)
+            if start_date <= self.end_date:
+                return datedelta(start_date, self.end_date)
+            # end if
         # end if
         return datedelta()
     # end def
