@@ -105,7 +105,7 @@ DATABASES = {
         'NAME': 'nominax_deploy',
         'USER': 'nominax_user',
         'PASSWORD': 'admin123456',
-        'HOST': '13.58.110.230',
+        'HOST': 'localhost',
         'POST': '5432'
     },
     'default2': {
