@@ -31,18 +31,12 @@ ADMINS = [('Mario', 'mariobarrios@exile.com.co'), ('Migue', 'luismorales@exile.c
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'mariobarrios@exile.com.co'
-EMAIL_HOST_PASSWORD = 'grwlbpmnvfxlofjz'
+EMAIL_HOST_USER = 'correoexile'
+EMAIL_HOST_PASSWORD = 'seguro#12'
 
 ALLOWED_HOSTS = [
-    'localhost',
-    '104.236.33.228',
-    '192.168.1.17',
-    '192.168.1.19',
-    '127.0.0.1',
-    '192.168.189.128',
     '*',
 ]
 
@@ -108,8 +102,8 @@ WSGI_APPLICATION = 'nominax.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'nomina',
-        'USER': 'piscix',
+        'NAME': 'nominax_deploy',
+        'USER': 'nominax_user',
         'PASSWORD': 'admin123456',
         'HOST': '13.58.110.230',
         'POST': '5432'
