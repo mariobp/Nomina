@@ -101,7 +101,7 @@ WSGI_APPLICATION = 'nominax.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'nominax_deploy',
         'USER': 'nominax_user',
         'PASSWORD': 'admin123456',
